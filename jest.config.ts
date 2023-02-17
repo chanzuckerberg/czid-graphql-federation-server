@@ -77,8 +77,8 @@ export default {
 
   // An array of file extensions your modules use
   moduleFileExtensions: [
+    "js",
     "ts",
-    // "tsx",
     "json",
   ],
 

@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  gql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "czid-graphql"
+    platform: linux/amd64
+    restart: always
+    environment:
+      API_URL: http://backend.genepinet.localdev:3000
+    ports:
+      - "4444:4444"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules # Use node_modules built in container, not from the mounted source dir

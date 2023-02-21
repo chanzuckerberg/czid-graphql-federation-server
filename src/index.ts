@@ -4,7 +4,7 @@ import { request, gql } from "graphql-request";
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
-const typeDefs = `#graphql
+export const typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
   # This "Project" type defines the queryable fields for every book in our data source.
@@ -34,7 +34,7 @@ const typeDefs = `#graphql
 `;
 
 // TODO: Remove hardcoded cookie
-const fetchProject = async (parent, args, contextValue, info) => {
+export const fetchProject = async (parent, args, contextValue, info) => {
   console.log(args);
   console.log("parent", parent);
   console.log("args", args);
@@ -52,8 +52,9 @@ const fetchProject = async (parent, args, contextValue, info) => {
       }
     }
   `;
+  const api_url = process.env.API_URL;
   const res = await request(
-    "http://localhost:3000/graphql",
+    api_url,
     query,
     { projectId: parseInt(projectId) },
     // The czid-cookie is thus named because
@@ -65,14 +66,16 @@ const fetchProject = async (parent, args, contextValue, info) => {
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves projects from the "projects" array above.
-const resolvers = {
+export const resolvers = {
   Query: {
     project: async (parent, args, contextValue, info) =>
       await fetchProject(parent, args, contextValue, info),
   },
 };
 const server = new ApolloServer({ typeDefs, resolvers });
+const port = 4444;
 const { url } = await startStandaloneServer(server, {
+  listen: { port },
   context: async ({ req }) => {
     return {
       headers: req.headers,

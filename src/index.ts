@@ -52,8 +52,9 @@ export const fetchProject = async (parent, args, contextValue, info) => {
       }
     }
   `;
+  const api_url = process.env.API_URL;
   const res = await request(
-    "http://localhost:3000/graphql",
+    api_url,
     query,
     { projectId: parseInt(projectId) },
     // The czid-cookie is thus named because
@@ -72,7 +73,9 @@ export const resolvers = {
   },
 };
 const server = new ApolloServer({ typeDefs, resolvers });
+const port = 4444;
 const { url } = await startStandaloneServer(server, {
+  listen: { port },
   context: async ({ req }) => {
     return {
       headers: req.headers,

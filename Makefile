@@ -2,7 +2,7 @@
 help: ## display help for this makefile
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: build ## Run tests
+.PHONY: build ## Build docker images
 build:
 	docker compose build
 
@@ -10,6 +10,10 @@ build:
 test:
 	docker compose run --rm gql npm test
 
-.PHONY: local-init ## Run tests
+.PHONY: local-init ## Start the service
 local-init:
 	docker compose up -d
+
+.PHONY: local-stop ## Stop the service
+local-init:
+	docker compose stop

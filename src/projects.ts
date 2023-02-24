@@ -1,5 +1,3 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
 import { request, gql } from "graphql-request";
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
@@ -34,7 +32,7 @@ export const typeDefs = `#graphql
 `;
 
 // TODO: Remove hardcoded cookie
-export const fetchProject = async (parent, args, contextValue, info) => {
+const fetchProject = async (parent, args, contextValue, info) => {
   console.log(args);
   console.log("parent", parent);
   console.log("args", args);

@@ -28,8 +28,13 @@ test("query for project data", async () => {
   });
 
   const response = await testServer.executeOperation({
-    query: "query MyQuery($id: Int) { project(id: $id) {id name} }",
-    variables: { id: testProject.id },
+    query: `query Project($projectId: Int!) {
+  project(id: $projectId) {
+    id
+    name
+  }
+}`,
+    variables: { projectId: testProject.id },
   });
 
   expect(response.body.kind).toEqual("single");

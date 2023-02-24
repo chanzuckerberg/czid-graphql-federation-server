@@ -15,5 +15,5 @@ local-init:
 	docker compose up -d
 
 .PHONY: local-stop ## Stop the service
-local-init:
+local-stop:
 	docker compose stop

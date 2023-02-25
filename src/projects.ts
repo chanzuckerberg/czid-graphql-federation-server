@@ -51,13 +51,18 @@ const fetchProject = async (parent, args, contextValue, info) => {
     }
   `;
   const api_url = process.env.API_URL;
+
+  var headers = {};
+  if (requestHeaders && "czid-cookie" in requestHeaders) {
+    headers["Cookie"] = requestHeaders["czid-cookie"];
+  }
   const res = await request(
     api_url,
     query,
     { projectId: parseInt(projectId) },
     // The czid-cookie is thus named because
     // the apollo server client strips out the "cookie" header
-    { Cookie: requestHeaders["czid-cookie"] }
+    headers
   );
   return res.project;
 };

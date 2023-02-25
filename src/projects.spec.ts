@@ -1,7 +1,6 @@
 import { typeDefs, resolvers } from "./projects";
 import { ApolloServer } from "@apollo/server";
 import { faker } from "@faker-js/faker";
-
 import nock from "nock";
 
 test("query for project data", async () => {
@@ -9,36 +8,34 @@ test("query for project data", async () => {
     id: faker.datatype.number(),
     name: faker.commerce.productName(),
     createdAt: faker.date.past(),
-    updated_at: faker.date.past(),
     public_access: faker.datatype.boolean(),
-    days_to_keey_sample_private: faker.datatype.number(),
-    background_flag: faker.datatype.number(),
-    description: faker.lorem.paragraph(),
-    subsample_default: faker.datatype.number(),
-    max_input_fragments_default: faker.datatype.number(),
     total_sample_count: faker.datatype.number(),
   };
-
-  const scope = nock(process.env.API_URL)
-    .post("/graphql")
-    .reply(200, testProject);
+  const apiUrl = new URL(process.env.API_URL);
+  const scope = nock(apiUrl.origin)
+    .post(apiUrl.pathname, /.*/)
+    .reply(200, { data: { project: testProject } });
   const testServer = new ApolloServer({
     typeDefs,
     resolvers,
   });
 
+  const query = `
+    query Project($projectId: Int!) {
+      project(id: $projectId) {
+        id
+        name
+      }
+    }`;
   const response = await testServer.executeOperation({
-    query: `query Project($projectId: Int!) {
-  project(id: $projectId) {
-    id
-    name
-  }
-}`,
+    query: query,
     variables: { projectId: testProject.id },
   });
 
   expect(response.body.kind).toEqual("single");
-  console.log(response.body);
   expect(scope.isDone()).toBe(true);
-  // expect(response.body.singleResult.errors).toBeUndefined();
+  // @ts-ignore
+  const projResponse = response.body.singleResult.data.project;
+  // @ts-ignore
+  expect(projResponse.name).toEqual(testProject.name);
 });

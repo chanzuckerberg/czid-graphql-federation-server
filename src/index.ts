@@ -1,9 +1,8 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { gql } from "graphql-request";
-import { typeDefs } from "./czid-graphql-typedef";
-import { fetchSample } from "./czid-graphql-queries/get_sample";
-import { fetchProject } from "./czid-graphql-queries/get_project";
+import { typeDefs } from "./czid-graphql-typedef.js";
+import { fetchSample } from "./czid-graphql-queries/get_sample.js";
+import { fetchProject } from "./czid-graphql-queries/get_project.js";
 
 
 // Resolvers define the technique for fetching the types defined in the

@@ -3,6 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./czid-graphql-typedef.js";
 import { fetchSample } from "./czid-graphql-queries/get_sample.js";
 import { fetchProject } from "./czid-graphql-queries/get_project.js";
+import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist.js";
 
 
 // Resolvers define the technique for fetching the types defined in the
@@ -13,6 +14,8 @@ export const resolvers = {
       await fetchProject(parent, args, contextValue, info),
     sample: async (parent, args, contextValue, info) =>
       await fetchSample(parent, args, contextValue, info),
+    taxonDist: async (parent, args, contextValue, info) =>
+      await fetchTaxonDist(parent, args, contextValue, info),
   },
 };
 

@@ -10,6 +10,5 @@ export const fetchTaxonDist = async (parent, args, contextValue, info) => {
   );
   var output = await res.json();
   output = toCamelCase(output);
-  console.log(output);
   return output;
 };

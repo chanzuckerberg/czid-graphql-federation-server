@@ -34,6 +34,7 @@ export type Query = {
   project?: Maybe<Project>;
   projects?: Maybe<Array<Maybe<Project>>>;
   sample?: Maybe<Sample>;
+  taxonDist?: Maybe<TaxonDist>;
 };
 
 
@@ -44,6 +45,12 @@ export type QueryProjectArgs = {
 
 export type QuerySampleArgs = {
   sampleId: Scalars['Int'];
+};
+
+
+export type QueryTaxonDistArgs = {
+  backgroundId: Scalars['Int'];
+  taxId: Scalars['Int'];
 };
 
 export type Sample = {
@@ -76,6 +83,21 @@ export type Sample = {
   useTaxonWhitelist?: Maybe<Scalars['Boolean']>;
   userId?: Maybe<Scalars['Int']>;
   webCommit?: Maybe<Scalars['String']>;
+};
+
+export type TaxonDist = {
+  __typename?: 'TaxonDist';
+  mergedNtNr?: Maybe<TaxonDistributionObject>;
+  nr?: Maybe<TaxonDistributionObject>;
+  nt?: Maybe<TaxonDistributionObject>;
+};
+
+export type TaxonDistributionObject = {
+  __typename?: 'TaxonDistributionObject';
+  mean?: Maybe<Scalars['Float']>;
+  rpmList?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  stdev?: Maybe<Scalars['Float']>;
+  taxLevel?: Maybe<Scalars['Int']>;
 };
 
 
@@ -148,21 +170,27 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Project: ResolverTypeWrapper<Project>;
   Query: ResolverTypeWrapper<{}>;
   Sample: ResolverTypeWrapper<Sample>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  TaxonDist: ResolverTypeWrapper<TaxonDist>;
+  TaxonDistributionObject: ResolverTypeWrapper<TaxonDistributionObject>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  Float: Scalars['Float'];
   Int: Scalars['Int'];
   Project: Project;
   Query: {};
   Sample: Sample;
   String: Scalars['String'];
+  TaxonDist: TaxonDist;
+  TaxonDistributionObject: TaxonDistributionObject;
 };
 
 export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
@@ -184,6 +212,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType, RequireFields<QuerySampleArgs, 'sampleId'>>;
+  taxonDist?: Resolver<Maybe<ResolversTypes['TaxonDist']>, ParentType, ContextType, RequireFields<QueryTaxonDistArgs, 'backgroundId' | 'taxId'>>;
 };
 
 export type SampleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Sample'] = ResolversParentTypes['Sample']> = {
@@ -218,9 +247,26 @@ export type SampleResolvers<ContextType = any, ParentType extends ResolversParen
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TaxonDistResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaxonDist'] = ResolversParentTypes['TaxonDist']> = {
+  mergedNtNr?: Resolver<Maybe<ResolversTypes['TaxonDistributionObject']>, ParentType, ContextType>;
+  nr?: Resolver<Maybe<ResolversTypes['TaxonDistributionObject']>, ParentType, ContextType>;
+  nt?: Resolver<Maybe<ResolversTypes['TaxonDistributionObject']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TaxonDistributionObjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaxonDistributionObject'] = ResolversParentTypes['TaxonDistributionObject']> = {
+  mean?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  rpmList?: Resolver<Maybe<Array<Maybe<ResolversTypes['Float']>>>, ParentType, ContextType>;
+  stdev?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  taxLevel?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Sample?: SampleResolvers<ContextType>;
+  TaxonDist?: TaxonDistResolvers<ContextType>;
+  TaxonDistributionObject?: TaxonDistributionObjectResolvers<ContextType>;
 };
 

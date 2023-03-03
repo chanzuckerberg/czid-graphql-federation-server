@@ -1,7 +1,6 @@
 export const typeDefs = `#graphql
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
-  # This "Project" type defines the queryable fields for every book in our data source.
   type Project {
     id: Int
     name: String
@@ -49,6 +48,19 @@ export const typeDefs = `#graphql
     defaultBackgroundId: Int
   }
 
+  type TaxonDistributionObject {
+    taxLevel: Int
+    mean: Float
+    stdev: Float
+    rpmList: [Float]
+  }
+
+  type TaxonDist {
+    mergedNtNr: TaxonDistributionObject
+    nr: TaxonDistributionObject
+    nt: TaxonDistributionObject
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -56,5 +68,6 @@ export const typeDefs = `#graphql
     project(id: Int!): Project
     projects: [Project]
     sample(sampleId: Int!): Sample
+    taxonDist(backgroundId: Int!, taxId: Int!): TaxonDist
 }
 `;

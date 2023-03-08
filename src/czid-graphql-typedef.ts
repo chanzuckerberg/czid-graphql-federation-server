@@ -61,6 +61,13 @@ export const typeDefs = `#graphql
     nt: TaxonDistributionObject
   }
 
+  type TaxonDescription {
+    taxId: Int
+    title: String
+    summary: String
+    wikiUrl: String
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -69,5 +76,6 @@ export const typeDefs = `#graphql
     projects: [Project]
     sample(sampleId: Int!): Sample
     taxonDist(backgroundId: Int!, taxId: Int!): TaxonDist
-}
+    taxonDescription(taxonIdList: [Int!]): [TaxonDescription]
+  }
 `;

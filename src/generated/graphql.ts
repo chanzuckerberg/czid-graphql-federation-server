@@ -34,6 +34,7 @@ export type Query = {
   project?: Maybe<Project>;
   projects?: Maybe<Array<Maybe<Project>>>;
   sample?: Maybe<Sample>;
+  taxonDescription?: Maybe<Array<Maybe<TaxonDescription>>>;
   taxonDist?: Maybe<TaxonDist>;
 };
 
@@ -45,6 +46,11 @@ export type QueryProjectArgs = {
 
 export type QuerySampleArgs = {
   sampleId: Scalars['Int'];
+};
+
+
+export type QueryTaxonDescriptionArgs = {
+  taxonIdList?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 
@@ -83,6 +89,14 @@ export type Sample = {
   useTaxonWhitelist?: Maybe<Scalars['Boolean']>;
   userId?: Maybe<Scalars['Int']>;
   webCommit?: Maybe<Scalars['String']>;
+};
+
+export type TaxonDescription = {
+  __typename?: 'TaxonDescription';
+  summary?: Maybe<Scalars['String']>;
+  taxId?: Maybe<Scalars['Int']>;
+  title?: Maybe<Scalars['String']>;
+  wikiUrl?: Maybe<Scalars['String']>;
 };
 
 export type TaxonDist = {
@@ -176,6 +190,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Sample: ResolverTypeWrapper<Sample>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  TaxonDescription: ResolverTypeWrapper<TaxonDescription>;
   TaxonDist: ResolverTypeWrapper<TaxonDist>;
   TaxonDistributionObject: ResolverTypeWrapper<TaxonDistributionObject>;
 };
@@ -189,6 +204,7 @@ export type ResolversParentTypes = {
   Query: {};
   Sample: Sample;
   String: Scalars['String'];
+  TaxonDescription: TaxonDescription;
   TaxonDist: TaxonDist;
   TaxonDistributionObject: TaxonDistributionObject;
 };
@@ -212,6 +228,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType, RequireFields<QuerySampleArgs, 'sampleId'>>;
+  taxonDescription?: Resolver<Maybe<Array<Maybe<ResolversTypes['TaxonDescription']>>>, ParentType, ContextType, Partial<QueryTaxonDescriptionArgs>>;
   taxonDist?: Resolver<Maybe<ResolversTypes['TaxonDist']>, ParentType, ContextType, RequireFields<QueryTaxonDistArgs, 'backgroundId' | 'taxId'>>;
 };
 
@@ -247,6 +264,14 @@ export type SampleResolvers<ContextType = any, ParentType extends ResolversParen
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TaxonDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaxonDescription'] = ResolversParentTypes['TaxonDescription']> = {
+  summary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  taxId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  wikiUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type TaxonDistResolvers<ContextType = any, ParentType extends ResolversParentTypes['TaxonDist'] = ResolversParentTypes['TaxonDist']> = {
   mergedNtNr?: Resolver<Maybe<ResolversTypes['TaxonDistributionObject']>, ParentType, ContextType>;
   nr?: Resolver<Maybe<ResolversTypes['TaxonDistributionObject']>, ParentType, ContextType>;
@@ -266,6 +291,7 @@ export type Resolvers<ContextType = any> = {
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Sample?: SampleResolvers<ContextType>;
+  TaxonDescription?: TaxonDescriptionResolvers<ContextType>;
   TaxonDist?: TaxonDistResolvers<ContextType>;
   TaxonDistributionObject?: TaxonDistributionObjectResolvers<ContextType>;
 };

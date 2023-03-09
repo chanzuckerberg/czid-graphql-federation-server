@@ -4,6 +4,7 @@ import { typeDefs } from "./czid-graphql-typedef.js";
 import { fetchSample } from "./czid-graphql-queries/get_sample.js";
 import { fetchProject } from "./czid-graphql-queries/get_project.js";
 import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist.js";
+import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 
 
 // Resolvers define the technique for fetching the types defined in the
@@ -19,7 +20,13 @@ export const resolvers = {
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
+    // Install a landing page plugin based on NODE_ENV
+    process.env.NODE_ENV === 'production'
+      ? ApolloServerPluginLandingPageProductionDefault({ })
+      : ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
+  ],
+});
 
 const port = 4444;
 const { url } = await startStandaloneServer(server, {

@@ -21,5 +21,4 @@ services:
           - gql.czidnet.localdev
 networks:
   czidnet:
-    external:
-      name: czidnet
+    name: czidnet

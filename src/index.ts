@@ -25,7 +25,18 @@ const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
     process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({ })
       : ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
-  ],
+    {
+      requestDidStart: ( requestContext ) => {
+        if ( requestContext.request.http?.headers.has( 'x-apollo-tracing' ) ) {
+          return;
+        }
+        const query = requestContext.request.query?.replace( /\s+/g, ' ' ).trim();
+        const variables = JSON.stringify( requestContext.request.variables );
+        console.log( new Date().toISOString(), `- [Request Started] { query: ${ query }, variables: ${ variables }, operationName: ${ requestContext.request.operationName } }` );
+        return;
+      },
+    },
+  ]
 });
 
 const port = 4444;

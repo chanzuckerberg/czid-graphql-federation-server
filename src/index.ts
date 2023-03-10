@@ -5,6 +5,7 @@ import { fetchSample } from "./czid-graphql-queries/get_sample.js";
 import { fetchProject } from "./czid-graphql-queries/get_project.js";
 import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist.js";
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
+import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions.js";
 
 
 // Resolvers define the technique for fetching the types defined in the
@@ -17,6 +18,8 @@ export const resolvers = {
       await fetchSample(parent, args, contextValue, info),
     taxonDist: async (parent, args, contextValue, info) =>
       await fetchTaxonDist(parent, args, contextValue, info),
+    taxonDescription: async (parent, args, contextValue, info) =>
+      await fetchTaxonDescription(parent, args, contextValue, info),
   },
 };
 

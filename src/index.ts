@@ -4,6 +4,7 @@ import { typeDefs } from "./czid-graphql-typedef.js";
 import { fetchSample } from "./czid-graphql-queries/get_sample.js";
 import { fetchProject } from "./czid-graphql-queries/get_project.js";
 import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist.js";
+import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
 import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions.js";
 
 
@@ -22,7 +23,27 @@ export const resolvers = {
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
+    // Install a landing page plugin based on NODE_ENV. In Development
+    // we want to make sure to load up apollo's interactive gql interface
+    // and enable the includeCookies flag so we send auth info to rails,
+    // and in production we just want to display a basic landing page.
+    process.env.NODE_ENV === 'production'
+      ? ApolloServerPluginLandingPageProductionDefault({ })
+      : ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
+    {
+      requestDidStart: ( requestContext ) => {
+        if ( requestContext.request.http?.headers.has( 'x-apollo-tracing' ) ) {
+          return;
+        }
+        const query = requestContext.request.query?.replace( /\s+/g, ' ' ).trim();
+        const variables = JSON.stringify( requestContext.request.variables );
+        console.log( new Date().toISOString(), `- [Request Started] { query: ${ query }, variables: ${ variables }, operationName: ${ requestContext.request.operationName } }` );
+        return;
+      },
+    },
+  ]
+});
 
 const port = 4444;
 const { url } = await startStandaloneServer(server, {

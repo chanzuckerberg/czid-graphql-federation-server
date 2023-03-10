@@ -9,9 +9,18 @@ services:
     platform: linux/amd64
     restart: always
     environment:
-      API_URL: http://backend.genepinet.localdev:3000
+      API_URL: http://web:3001/graphql
     ports:
       - "4444:4444"
+      - "9229:9229"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules # Use node_modules built in container, not from the mounted source dir
+    command: ["npm", "run", "watch"]
+    networks:
+      czidnet:
+        aliases:
+          - gql.czidnet.localdev
+networks:
+  czidnet:
+    name: czidnet

@@ -1,8 +1,6 @@
 module "stack" {
   source              = "git@github.com:chanzuckerberg/happy//terraform/modules/happy-stack-eks?ref=main"
-  happy_config_secret = var.happy_config_secret
   image_tag           = var.image_tag
-  happymeta_          = var.happymeta_
   image_tags          = jsondecode(var.image_tags)
   stack_name          = var.stack_name
   deployment_stage    = "dev"

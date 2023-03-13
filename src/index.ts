@@ -5,6 +5,8 @@ import { fetchSample } from "./czid-graphql-queries/get_sample.js";
 import { fetchProject } from "./czid-graphql-queries/get_project.js";
 import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist.js";
 import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions.js";
+import { fetchBulkDownload } from "./czid-rest-requests/get_bulk_downloads.js";
+import { fetchBulkDownloadType } from "./czid-rest-requests/get_bulk_download_type.js";
 
 
 // Resolvers define the technique for fetching the types defined in the
@@ -19,6 +21,10 @@ export const resolvers = {
       await fetchTaxonDist(parent, args, contextValue, info),
     taxonDescription: async (parent, args, contextValue, info) =>
       await fetchTaxonDescription(parent, args, contextValue, info),
+    bulkDownload: async (parent, args, contextValue, info) =>
+      await fetchBulkDownload(parent, args, contextValue, info),
+    bulkDownloadType: async (parent, args, contextValue, info) =>
+      await fetchBulkDownloadType(parent, args, contextValue, info),
   },
 };
 

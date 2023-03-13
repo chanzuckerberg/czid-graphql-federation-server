@@ -6,7 +6,7 @@
     "default_compose_env_file": ".env.ecr",
     "slice_default_tag": "branch-main",
     "services": [
-        "gql-federation"
+        "gql"
     ],
     "environments": {
         "dev": {

@@ -14,7 +14,10 @@ module "stack" {
       memory              = "100Mi"
       cpu                 = "100m"
       health_check_path   = "/",
-      service_type        = "PRIVATE"
+      service_type        = "PRIVATE" // I think? you want internal here:
+      // INTERNAL - OIDC protected ALB
+      // EXTERNAL - external ALB
+      // PRIVATE - cluster IP only, no ALB at all
     }
   }
   tasks = {

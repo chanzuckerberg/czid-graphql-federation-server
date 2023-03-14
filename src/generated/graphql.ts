@@ -14,6 +14,61 @@ export type Scalars = {
   Float: number;
 };
 
+export type BulkDownload = {
+  __typename?: 'BulkDownload';
+  analysisCount?: Maybe<Scalars['Int']>;
+  analysisType?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  downloadName?: Maybe<Scalars['String']>;
+  downloadType?: Maybe<Scalars['String']>;
+  ecsTaskArn?: Maybe<Scalars['String']>;
+  errorMessage?: Maybe<Scalars['String']>;
+  executionType?: Maybe<Scalars['String']>;
+  fileSize?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  logUrl?: Maybe<Scalars['String']>;
+  numSamples?: Maybe<Scalars['Int']>;
+  outputFileSize?: Maybe<Scalars['Int']>;
+  params?: Maybe<BulkDownloadParams>;
+  paramsJson?: Maybe<Scalars['String']>;
+  presignedOutputUrl?: Maybe<Scalars['String']>;
+  progress?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['Int']>;
+  userName?: Maybe<Scalars['String']>;
+};
+
+export type BulkDownloadParams = {
+  __typename?: 'BulkDownloadParams';
+  background?: Maybe<BulkDownloadParamsBackground>;
+};
+
+export type BulkDownloadParamsBackground = {
+  __typename?: 'BulkDownloadParamsBackground';
+  displayName?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type BulkDownloadType = {
+  __typename?: 'BulkDownloadType';
+  category?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  executionType?: Maybe<Scalars['String']>;
+  fields?: Maybe<Array<Maybe<BulkDownloadTypeField>>>;
+  fileTypeDisplay?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  workflows?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type BulkDownloadTypeField = {
+  __typename?: 'BulkDownloadTypeField';
+  displayName?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
 export type Project = {
   __typename?: 'Project';
   background_flag?: Maybe<Scalars['Int']>;
@@ -31,11 +86,23 @@ export type Project = {
 
 export type Query = {
   __typename?: 'Query';
+  bulkDownload?: Maybe<BulkDownload>;
+  bulkDownloadType?: Maybe<BulkDownloadType>;
   project?: Maybe<Project>;
   projects?: Maybe<Array<Maybe<Project>>>;
   sample?: Maybe<Sample>;
   taxonDescription?: Maybe<Array<Maybe<TaxonDescription>>>;
   taxonDist?: Maybe<TaxonDist>;
+};
+
+
+export type QueryBulkDownloadArgs = {
+  bulkDowloadId: Scalars['Int'];
+};
+
+
+export type QueryBulkDownloadTypeArgs = {
+  bulkDowloadId: Scalars['Int'];
 };
 
 
@@ -184,6 +251,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  BulkDownload: ResolverTypeWrapper<BulkDownload>;
+  BulkDownloadParams: ResolverTypeWrapper<BulkDownloadParams>;
+  BulkDownloadParamsBackground: ResolverTypeWrapper<BulkDownloadParamsBackground>;
+  BulkDownloadType: ResolverTypeWrapper<BulkDownloadType>;
+  BulkDownloadTypeField: ResolverTypeWrapper<BulkDownloadTypeField>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Project: ResolverTypeWrapper<Project>;
@@ -198,6 +270,11 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  BulkDownload: BulkDownload;
+  BulkDownloadParams: BulkDownloadParams;
+  BulkDownloadParamsBackground: BulkDownloadParamsBackground;
+  BulkDownloadType: BulkDownloadType;
+  BulkDownloadTypeField: BulkDownloadTypeField;
   Float: Scalars['Float'];
   Int: Scalars['Int'];
   Project: Project;
@@ -207,6 +284,61 @@ export type ResolversParentTypes = {
   TaxonDescription: TaxonDescription;
   TaxonDist: TaxonDist;
   TaxonDistributionObject: TaxonDistributionObject;
+};
+
+export type BulkDownloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['BulkDownload'] = ResolversParentTypes['BulkDownload']> = {
+  analysisCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  analysisType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  downloadName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  downloadType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ecsTaskArn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  errorMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  executionType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fileSize?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  logUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  numSamples?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  outputFileSize?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  params?: Resolver<Maybe<ResolversTypes['BulkDownloadParams']>, ParentType, ContextType>;
+  paramsJson?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  presignedOutputUrl?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  userName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type BulkDownloadParamsResolvers<ContextType = any, ParentType extends ResolversParentTypes['BulkDownloadParams'] = ResolversParentTypes['BulkDownloadParams']> = {
+  background?: Resolver<Maybe<ResolversTypes['BulkDownloadParamsBackground']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type BulkDownloadParamsBackgroundResolvers<ContextType = any, ParentType extends ResolversParentTypes['BulkDownloadParamsBackground'] = ResolversParentTypes['BulkDownloadParamsBackground']> = {
+  displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  value?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type BulkDownloadTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['BulkDownloadType'] = ResolversParentTypes['BulkDownloadType']> = {
+  category?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  executionType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fields?: Resolver<Maybe<Array<Maybe<ResolversTypes['BulkDownloadTypeField']>>>, ParentType, ContextType>;
+  fileTypeDisplay?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  workflows?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type BulkDownloadTypeFieldResolvers<ContextType = any, ParentType extends ResolversParentTypes['BulkDownloadTypeField'] = ResolversParentTypes['BulkDownloadTypeField']> = {
+  displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ProjectResolvers<ContextType = any, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = {
@@ -225,6 +357,8 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  bulkDownload?: Resolver<Maybe<ResolversTypes['BulkDownload']>, ParentType, ContextType, RequireFields<QueryBulkDownloadArgs, 'bulkDowloadId'>>;
+  bulkDownloadType?: Resolver<Maybe<ResolversTypes['BulkDownloadType']>, ParentType, ContextType, RequireFields<QueryBulkDownloadTypeArgs, 'bulkDowloadId'>>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType, RequireFields<QuerySampleArgs, 'sampleId'>>;
@@ -288,6 +422,11 @@ export type TaxonDistributionObjectResolvers<ContextType = any, ParentType exten
 };
 
 export type Resolvers<ContextType = any> = {
+  BulkDownload?: BulkDownloadResolvers<ContextType>;
+  BulkDownloadParams?: BulkDownloadParamsResolvers<ContextType>;
+  BulkDownloadParamsBackground?: BulkDownloadParamsBackgroundResolvers<ContextType>;
+  BulkDownloadType?: BulkDownloadTypeResolvers<ContextType>;
+  BulkDownloadTypeField?: BulkDownloadTypeFieldResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Sample?: SampleResolvers<ContextType>;

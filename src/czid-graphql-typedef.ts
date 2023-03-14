@@ -68,6 +68,58 @@ export const typeDefs = `#graphql
     wikiUrl: String
   }
 
+  type BulkDownload {
+    id: Int
+    paramsJson: String
+    downloadType: String
+    status: String
+    errorMessage: String
+    userId: Int
+    createdAt: String
+    updatedAt: String
+    progress: Float
+    ecsTaskArn: String
+    outputFileSize: Int
+    description: String
+    analysisType: String
+    analysisCount: Int
+    numSamples: Int
+    downloadName: String
+    fileSize: String
+    userName: String
+    executionType: String
+    logUrl: String
+    params: BulkDownloadParams
+    presignedOutputUrl: String
+    # pipelineRuns: []
+    # workflowRuns: []
+  }
+
+  type BulkDownloadParams {
+    background: BulkDownloadParamsBackground
+  }
+
+  type BulkDownloadParamsBackground {
+    value: Int
+    displayName: String
+  }
+
+  type BulkDownloadType {
+    type: String
+    displayName: String
+    description: String
+    category: String
+    executionType: String
+    fields: [BulkDownloadTypeField]
+    fileTypeDisplay: String
+    workflows: [String]
+  }
+
+  type BulkDownloadTypeField {
+    type: String
+    displayName: String
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -77,5 +129,7 @@ export const typeDefs = `#graphql
     sample(sampleId: Int!): Sample
     taxonDist(backgroundId: Int!, taxId: Int!): TaxonDist
     taxonDescription(taxonIdList: [Int!]): [TaxonDescription]
+    bulkDownload(bulkDowloadId: Int!): BulkDownload
+    bulkDownloadType(bulkDowloadId: Int!): BulkDownloadType
   }
 `;

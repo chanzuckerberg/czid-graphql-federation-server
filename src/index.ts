@@ -38,7 +38,7 @@ const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
       ? ApolloServerPluginLandingPageProductionDefault({ })
       : ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
     {
-      requestDidStart: ( requestContext ) => {
+      requestDidStart: async ( requestContext ) => {
         if ( requestContext.request.http?.headers.has( 'x-apollo-tracing' ) ) {
           return;
         }

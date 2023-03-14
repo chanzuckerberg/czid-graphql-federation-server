@@ -16,7 +16,7 @@ module "stack" {
       port                = 4444,
       memory              = "1500Mi"
       cpu                 = "1500m"
-      health_check_path   = "/",
+      health_check_path   = "/health",
       service_type        = "INTERNAL"
       // INTERNAL - OIDC protected ALB
       // EXTERNAL - external ALB

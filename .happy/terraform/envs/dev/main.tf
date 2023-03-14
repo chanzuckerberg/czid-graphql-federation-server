@@ -7,7 +7,7 @@ module "stack" {
   stack_prefix        = "/${var.stack_name}"
   k8s_namespace       = "czid-dev-happy-happy-env"
   services = {
-    czid = {
+    gql = {
       name                = "gql-federation",
       desired_count       = 2,
       port                = 4444,

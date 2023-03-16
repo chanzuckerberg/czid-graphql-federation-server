@@ -22,6 +22,7 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 .vscode
+.happy
 docker-compose.yml
 node_modules
 LICENSE

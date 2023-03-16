@@ -1,5 +1,5 @@
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs } from "./czid-graphql-typedef.js";
 import { fetchSample } from "./czid-graphql-queries/get_sample.js";
 import { fetchProject } from "./czid-graphql-queries/get_project.js";
@@ -8,6 +8,11 @@ import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPag
 import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions.js";
 import { fetchBulkDownload } from "./czid-rest-requests/get_bulk_downloads.js";
 import { fetchBulkDownloadType } from "./czid-rest-requests/get_bulk_download_type.js";
+import pkg from 'body-parser';
+import express from 'express';
+import cors from 'cors';
+
+const { json } = pkg;
 
 
 // Resolvers define the technique for fetching the types defined in the
@@ -29,6 +34,7 @@ export const resolvers = {
   },
 };
 
+const app = express();
 const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
     // Install a landing page plugin based on NODE_ENV. In Development
     // we want to make sure to load up apollo's interactive gql interface
@@ -38,7 +44,7 @@ const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
       ? ApolloServerPluginLandingPageProductionDefault({ })
       : ApolloServerPluginLandingPageLocalDefault({ includeCookies: true }),
     {
-      requestDidStart: ( requestContext ) => {
+      requestDidStart: async ( requestContext ) => {
         if ( requestContext.request.http?.headers.has( 'x-apollo-tracing' ) ) {
           return;
         }
@@ -52,12 +58,21 @@ const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
 });
 
 const port = 4444;
-const { url } = await startStandaloneServer(server, {
-  listen: { port },
+
+await server.start();
+app.use('/graphql', cors<cors.CorsRequest>(), json(), expressMiddleware(server, {
   context: async ({ req }) => {
     return {
       headers: req.headers,
     };
   },
+}));
+
+// Healthcheck to make our infra happy
+app.get('/health', (req, res) => {
+  res.status(200).send('healthy');
 });
-console.log(`🚀 Server ready at ${url}`);
+
+await new Promise<void>((resolve) => app.listen({ port: port }, resolve));
+
+console.log(`🚀 Server ready!`);

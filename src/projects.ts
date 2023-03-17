@@ -31,12 +31,7 @@ export const typeDefs = `#graphql
 }
 `;
 
-// TODO: Remove hardcoded cookie
 const fetchProject = async (parent, args, contextValue, info) => {
-  console.log(args);
-  console.log("parent", parent);
-  console.log("args", args);
-  console.log("contextValue", contextValue);
   const projectId = args.id;
   const requestHeaders = contextValue.headers;
   const query = gql`

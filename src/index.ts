@@ -8,12 +8,12 @@ import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPag
 import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions.js";
 import { fetchBulkDownload } from "./czid-rest-requests/get_bulk_downloads.js";
 import { fetchBulkDownloadType } from "./czid-rest-requests/get_bulk_download_type.js";
+import { updateSampleNotes } from "./czid-rest-requests/update_sample_notes.js";
 import pkg from 'body-parser';
 import express from 'express';
 import cors from 'cors';
 
 const { json } = pkg;
-
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves projects from the "projects" array above.
@@ -31,6 +31,10 @@ export const resolvers = {
       await fetchBulkDownload(parent, args, contextValue, info),
     bulkDownloadType: async (parent, args, contextValue, info) =>
       await fetchBulkDownloadType(parent, args, contextValue, info),
+  },
+  Mutation: {
+    updateSampleNotes: async (parent, args, contextValue, info) =>
+      await updateSampleNotes(parent, args, contextValue, info),
   },
 };
 

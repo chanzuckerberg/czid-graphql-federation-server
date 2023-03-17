@@ -120,6 +120,12 @@ export const typeDefs = `#graphql
     displayName: String
   }
 
+  type MutationResponse {
+    status: String
+    message: String
+    errors: [String]
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -131,5 +137,9 @@ export const typeDefs = `#graphql
     taxonDescription(taxonIdList: [Int!]): [TaxonDescription]
     bulkDownload(bulkDowloadId: Int!): BulkDownload
     bulkDownloadType(bulkDowloadId: Int!): BulkDownloadType
+  }
+
+  type Mutation {
+    updateSampleNotes(sampleId: Int!, value: String!, authenticityToken: String!): MutationResponse
   }
 `;

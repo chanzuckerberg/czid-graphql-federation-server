@@ -15,13 +15,20 @@ export const makeCZIDGraphQLRequest = async (query, variables, headers) => {
   return res;
 };
 
-export const makeCZIDRestRequest = async (path, headers) => {
+export const makeCZIDRestRequest = async (path, headers, method='GET', body={}) => {
   const api_url = process.env.API_URL;
-  const res = await fetch(api_url + path, {
+  const fetchParams = {
+    method: method,
     headers: {
       Cookie: headers["czid-cookie"],
-    },
-  });
+    }
+  }
+
+  if (method === 'POST') {
+    fetchParams['body'] = body;
+  }
+
+  const res = await fetch(api_url + path, fetchParams);
   return res;
 }
 

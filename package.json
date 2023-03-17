@@ -7,6 +7,7 @@
   "scripts": {
     "compile": "tsc",
     "start": "npm run compile && nodemon --esm ./src/index.ts",
+    "watch": "tsc -p tsconfig.dev.json -watch | nodemon --inspect=0.0.0.0:9229 ./dist/src/index.js",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen.cjs"
   },
@@ -22,11 +23,13 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
+    "@apollo/gateway": "^2.3.2",
     "@apollo/server": "^4.3.1",
     "@faker-js/faker": "^7.6.0",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "nock": "^13.3.0",
+    "lodash": "^4.17.21",
     "node-fetch": "^3.3.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.4",

@@ -8,7 +8,7 @@
     "compile": "tsc",
     "start": "npm run compile && nodemon --esm ./src/index.ts",
     "watch": "tsc -p tsconfig.dev.json -watch | nodemon --inspect=0.0.0.0:9229 ./dist/src/index.js",
-    "test": "jest",
+    "test": "jest ./src/",
     "codegen": "graphql-codegen --config codegen.cjs"
   },
   "repository": {

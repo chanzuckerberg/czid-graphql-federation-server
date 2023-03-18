@@ -171,11 +171,10 @@ export default {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  transform: {},
-  //transform: {
-    //'^.+\\.(ts|tsx)?$': ['ts-jest', {useESM: true}],
-    //"^.+\\.(js|jsx)$": "babel-jest",
-  //},
+  transform: {
+    '^.+\\.(ts|tsx)?$': ['ts-jest', { useESM: true }],
+    "^.+\\.(js|jsx)$": "babel-jest",
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

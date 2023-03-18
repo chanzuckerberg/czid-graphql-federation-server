@@ -1,4 +1,4 @@
-import { makeCZIDRestRequest, toCamelCase } from "../helpers.js";
+import { makeCZIDRestRequest, toCamelCase } from "../helpers";
 
 export const fetchTaxonDist = async (parent, args, contextValue, info) => {
   const backgroundId = args.backgroundId;

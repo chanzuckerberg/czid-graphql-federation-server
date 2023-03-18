@@ -1,4 +1,4 @@
-import { makeCZIDRestRequest, toCamelCase } from "../helpers.js";
+import { makeCZIDRestRequest, toCamelCase } from "../helpers";
 import { FormData } from "node-fetch";
 
 export const updateSampleNotes = async (parent, args, contextValue, info) => {

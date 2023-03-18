@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 
-import { typeDefs } from "./czid-graphql-typedef.js";
-import { resolvers } from "./resolvers.js";
+import { typeDefs } from "./czid-graphql-typedef";
+import { resolvers } from "./resolvers";
 
 import { faker } from "@faker-js/faker";
 import nock from "nock";

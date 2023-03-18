@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { makeCZIDGraphQLRequest } from "../helpers.js";
+import { makeCZIDGraphQLRequest } from "../helpers";
 
 export const fetchProject = async (parent, args, contextValue, info) => {
   const projectId = args.id;

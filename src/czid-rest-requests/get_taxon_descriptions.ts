@@ -1,5 +1,5 @@
-import { TaxonDescription } from "../generated/graphql.js";
-import { makeCZIDRestRequest } from "../helpers.js";
+import { TaxonDescription } from "../generated/graphql";
+import { makeCZIDRestRequest } from "../helpers";
 
 export const fetchTaxonDescription = async (parent, args, contextValue, info) => {
   const taxonIdList = args.taxonIdList;

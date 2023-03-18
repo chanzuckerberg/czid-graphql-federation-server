@@ -1,9 +1,9 @@
 import { ApolloServer } from "@apollo/server";
 
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs } from "./czid-graphql-typedef.js";
+import { typeDefs } from "./czid-graphql-typedef";
 import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default';
-import { resolvers } from "./resolvers.js";
+import { resolvers } from "./resolvers";
 import pkg from 'body-parser';
 import express from 'express';
 import cors from 'cors';

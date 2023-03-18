@@ -1,5 +1,5 @@
-import { BulkDownloadType, TaxonDescription } from "../generated/graphql.js";
-import { makeCZIDRestRequest, toCamelCase } from "../helpers.js";
+import { BulkDownloadType, TaxonDescription } from "../generated/graphql";
+import { makeCZIDRestRequest, toCamelCase } from "../helpers";
 
 export const fetchBulkDownloadType = async (parent, args, contextValue, info) => {
   const bulkDowloadId = args.bulkDowloadId;

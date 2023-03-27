@@ -1,10 +1,10 @@
-import { fetchSample } from "./czid-graphql-queries/get_sample";
-import { fetchProject } from "./czid-graphql-queries/get_project";
-import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist";
-import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions";
-import { fetchBulkDownload } from "./czid-rest-requests/get_bulk_downloads";
-import { fetchBulkDownloadType } from "./czid-rest-requests/get_bulk_download_type";
-import { updateSampleNotes } from "./czid-rest-requests/update_sample_notes";
+import { fetchSample } from "./czid-graphql-queries/get_sample.js";
+import { fetchProject } from "./czid-graphql-queries/get_project.js";
+import { fetchTaxonDist } from "./czid-rest-requests/get_taxon_dist.js";
+import { fetchTaxonDescription } from "./czid-rest-requests/get_taxon_descriptions.js";
+import { fetchBulkDownload } from "./czid-rest-requests/get_bulk_downloads.js";
+import { fetchBulkDownloadType } from "./czid-rest-requests/get_bulk_download_type.js";
+import { updateSampleNotes } from "./czid-rest-requests/update_sample_notes.js";
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves projects from the "projects" array above.

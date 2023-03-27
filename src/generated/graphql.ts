@@ -116,12 +116,12 @@ export type Query = {
 
 
 export type QueryBulkDownloadArgs = {
-  bulkDowloadId: Scalars['Int'];
+  bulkDownloadId: Scalars['Int'];
 };
 
 
 export type QueryBulkDownloadTypeArgs = {
-  bulkDowloadId: Scalars['Int'];
+  bulkDownloadId: Scalars['Int'];
 };
 
 
@@ -391,8 +391,8 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  bulkDownload?: Resolver<Maybe<ResolversTypes['BulkDownload']>, ParentType, ContextType, RequireFields<QueryBulkDownloadArgs, 'bulkDowloadId'>>;
-  bulkDownloadType?: Resolver<Maybe<ResolversTypes['BulkDownloadType']>, ParentType, ContextType, RequireFields<QueryBulkDownloadTypeArgs, 'bulkDowloadId'>>;
+  bulkDownload?: Resolver<Maybe<ResolversTypes['BulkDownload']>, ParentType, ContextType, RequireFields<QueryBulkDownloadArgs, 'bulkDownloadId'>>;
+  bulkDownloadType?: Resolver<Maybe<ResolversTypes['BulkDownloadType']>, ParentType, ContextType, RequireFields<QueryBulkDownloadTypeArgs, 'bulkDownloadId'>>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType, RequireFields<QuerySampleArgs, 'sampleId'>>;

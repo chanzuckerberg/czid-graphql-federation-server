@@ -135,8 +135,8 @@ export const typeDefs = `#graphql
     sample(sampleId: Int!): Sample
     taxonDist(backgroundId: Int!, taxId: Int!): TaxonDist
     taxonDescription(taxonIdList: [Int!]): [TaxonDescription]
-    bulkDownload(bulkDowloadId: Int!): BulkDownload
-    bulkDownloadType(bulkDowloadId: Int!): BulkDownloadType
+    bulkDownload(bulkDownloadId: Int!): BulkDownload
+    bulkDownloadType(bulkDownloadId: Int!): BulkDownloadType
   }
 
   type Mutation {

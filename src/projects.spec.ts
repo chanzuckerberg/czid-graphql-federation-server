@@ -38,7 +38,6 @@ test("query for project data", async () => {
   expect(response.body.kind).toEqual("single");
   expect(scope.isDone()).toBe(true);
   // @ts-ignore
-  const projResponse = response.body.singleResult.data.project;
-  // @ts-ignore
+  const projResponse: Project = response.body.singleResult.data.project;
   expect(projResponse.name).toEqual(testProject.name);
 });

@@ -9,7 +9,7 @@ services:
     platform: linux/amd64
     restart: always
     environment:
-      API_URL: http://web:3000/graphql
+      API_URL: http://web:3001/graphql
     ports:
       - "4444:4444"
       - "9229:9229"

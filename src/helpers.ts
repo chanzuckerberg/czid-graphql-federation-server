@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import _ from 'lodash';
 
 export const makeCZIDGraphQLRequest = async (query, variables, headers) => {
-  const api_url = process.env.API_URL;
+  const api_url = process.env.API_URL + "/graphql";
   var req_headers = {}
   if (headers !== undefined ) {
      req_headers = {

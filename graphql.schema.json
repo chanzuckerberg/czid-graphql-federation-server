@@ -871,7 +871,7 @@
             "description": null,
             "args": [
               {
-                "name": "bulkDowloadId",
+                "name": "bulkDownloadId",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
@@ -900,7 +900,7 @@
             "description": null,
             "args": [
               {
-                "name": "bulkDowloadId",
+                "name": "bulkDownloadId",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",

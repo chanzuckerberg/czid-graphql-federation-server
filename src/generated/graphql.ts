@@ -129,12 +129,12 @@ export type Query = {
 
 
 export type QueryBulkDownloadArgs = {
-  bulkDowloadId: Scalars['Int'];
+  bulkDownloadId: Scalars['Int'];
 };
 
 
 export type QueryBulkDownloadTypeArgs = {
-  bulkDowloadId: Scalars['Int'];
+  bulkDownloadId: Scalars['Int'];
 };
 
 

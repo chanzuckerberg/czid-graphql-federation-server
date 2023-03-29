@@ -2,10 +2,10 @@ import { BulkDownloadType, TaxonDescription } from "../generated/graphql.js";
 import { makeCZIDRestRequest, toCamelCase } from "../helpers.js";
 
 export const fetchBulkDownloadType = async (parent, args, contextValue, info) => {
-  const bulkDowloadId = args.bulkDowloadId;
+  const bulkDownloadId = args.bulkDownloadId;
   const requestHeaders = contextValue.headers;
   const res = await makeCZIDRestRequest(
-    "bulk_downloads/" + bulkDowloadId,
+    "bulk_downloads/" + bulkDownloadId,
     requestHeaders
   );
   const bulkDownload: BulkDownloadApiResponse =

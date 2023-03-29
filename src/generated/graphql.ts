@@ -69,6 +69,25 @@ export type BulkDownloadTypeField = {
   type?: Maybe<Scalars['String']>;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  updateSampleNotes?: Maybe<MutationResponse>;
+};
+
+
+export type MutationUpdateSampleNotesArgs = {
+  authenticityToken: Scalars['String'];
+  sampleId: Scalars['Int'];
+  value: Scalars['String'];
+};
+
+export type MutationResponse = {
+  __typename?: 'MutationResponse';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  message?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
+};
+
 export type Project = {
   __typename?: 'Project';
   background_flag?: Maybe<Scalars['Int']>;
@@ -258,6 +277,8 @@ export type ResolversTypes = {
   BulkDownloadTypeField: ResolverTypeWrapper<BulkDownloadTypeField>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  Mutation: ResolverTypeWrapper<{}>;
+  MutationResponse: ResolverTypeWrapper<MutationResponse>;
   Project: ResolverTypeWrapper<Project>;
   Query: ResolverTypeWrapper<{}>;
   Sample: ResolverTypeWrapper<Sample>;
@@ -277,6 +298,8 @@ export type ResolversParentTypes = {
   BulkDownloadTypeField: BulkDownloadTypeField;
   Float: Scalars['Float'];
   Int: Scalars['Int'];
+  Mutation: {};
+  MutationResponse: MutationResponse;
   Project: Project;
   Query: {};
   Sample: Sample;
@@ -338,6 +361,17 @@ export type BulkDownloadTypeResolvers<ContextType = any, ParentType extends Reso
 export type BulkDownloadTypeFieldResolvers<ContextType = any, ParentType extends ResolversParentTypes['BulkDownloadTypeField'] = ResolversParentTypes['BulkDownloadTypeField']> = {
   displayName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  updateSampleNotes?: Resolver<Maybe<ResolversTypes['MutationResponse']>, ParentType, ContextType, RequireFields<MutationUpdateSampleNotesArgs, 'authenticityToken' | 'sampleId' | 'value'>>;
+};
+
+export type MutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['MutationResponse'] = ResolversParentTypes['MutationResponse']> = {
+  errors?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -427,6 +461,8 @@ export type Resolvers<ContextType = any> = {
   BulkDownloadParamsBackground?: BulkDownloadParamsBackgroundResolvers<ContextType>;
   BulkDownloadType?: BulkDownloadTypeResolvers<ContextType>;
   BulkDownloadTypeField?: BulkDownloadTypeFieldResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
+  MutationResponse?: MutationResponseResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Sample?: SampleResolvers<ContextType>;

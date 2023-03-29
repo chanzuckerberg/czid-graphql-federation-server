@@ -10,8 +10,9 @@ build:
 test:
 	docker compose run --rm gql npm test
 
-.PHONY: local-init ## Start the service
+.PHONY: local-init ## Build & start the service
 local-init:
+	docker compose build
 	docker compose up -d
 
 .PHONY: local-start ## Start the service
@@ -21,3 +22,9 @@ local-start:
 .PHONY: local-stop ## Stop the service
 local-stop:
 	docker compose stop
+
+.PHONY: local-clean ## Delete the service.
+local-clean:
+	docker compose stop
+	docker compose down
+

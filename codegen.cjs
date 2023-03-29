@@ -1,17 +1,16 @@
-
 /** @type {import('@graphql-codegen/cli').CodegenConfig} */
 
 const config = {
   overwrite: true,
-  schema: "http://localhost:4444",
+  schema: "http://localhost:4444/graphql",
   generates: {
     "src/generated/graphql.ts": {
-      plugins: ["typescript", "typescript-resolvers"]
+      plugins: ["typescript", "typescript-resolvers"],
     },
     "./graphql.schema.json": {
-      plugins: ["introspection"]
-    }
-  }
+      plugins: ["introspection"],
+    },
+  },
 };
 
 module.exports = config;

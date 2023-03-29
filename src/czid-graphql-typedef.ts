@@ -126,6 +126,40 @@ export const typeDefs = `#graphql
     errors: [String]
   }
 
+  type PipelineData {
+    stages: [Stage]
+    status: String
+  }
+
+  type Stage {
+    name: String
+    steps: [Step]
+    jobStatus: String
+  }
+
+  type Step {
+    name: String
+    description: String
+    inputVariables: [Variable]
+    outputFiles: [OutputFile]
+    inputEdges: [Int]
+    outputEdges: [Int]
+    status: String
+    startTime: String
+    endTime: String
+    resources: [String]
+  }
+
+  type Variable {
+    name: String
+    type: String
+  }
+
+  type OutputFile {
+    displayName: String
+    url: String
+  }
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
@@ -137,6 +171,7 @@ export const typeDefs = `#graphql
     taxonDescription(taxonIdList: [Int!]): [TaxonDescription]
     bulkDownload(bulkDowloadId: Int!): BulkDownload
     bulkDownloadType(bulkDowloadId: Int!): BulkDownloadType
+    pipelineData(sampleId: Int!, pipelineVersion: String): PipelineData
   }
 
   type Mutation {

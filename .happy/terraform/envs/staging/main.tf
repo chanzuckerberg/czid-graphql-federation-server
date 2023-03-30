@@ -3,9 +3,9 @@ module "stack" {
   image_tag        = var.image_tag
   image_tags       = jsondecode(var.image_tags)
   stack_name       = var.stack_name
-  deployment_stage = "dev"
+  deployment_stage = "staging"
   stack_prefix     = "/${var.stack_name}"
-  k8s_namespace    = "czid-dev-happy-happy-env"
+  k8s_namespace    = "czid-staging-happy-happy-env"
   additional_env_vars = {
     API_URL = "https://sandbox.czid.org"
   }

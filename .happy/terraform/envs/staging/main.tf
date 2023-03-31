@@ -21,7 +21,7 @@ module "stack" {
       // INTERNAL - OIDC protected ALB
       // EXTERNAL - external ALB
       // PRIVATE - cluster IP only, no ALB at all
-      platform_architecture = "arm64",
+      platform_architecture = "amd64",
     }
   }
   tasks = {

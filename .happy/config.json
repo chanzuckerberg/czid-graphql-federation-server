@@ -11,7 +11,6 @@
     "environments": {
         "dev": {
             "aws_profile": "idseq-dev",
-            "secret_arn": "happy/env-czid-dev-config",
             "terraform_directory": ".happy/terraform/envs/dev",
             "log_group_prefix": "/happy/czid/dev",
             "auto_run_migrations": true,
@@ -22,11 +21,38 @@
                 "auth_method": "eks",
                 "context": "czid-dev-eks"
             }
+        },
+        "staging": {
+            "aws_profile": "idseq-dev",
+            "terraform_directory": ".happy/terraform/envs/staging",
+            "log_group_prefix": "/happy/czid/staging",
+            "auto_run_migrations": true,
+            "task_launch_type": "k8s",
+            "k8s": {
+                "namespace": "czid-staging-happy-happy-env",
+                "cluster_id": "czid-staging-eks",
+                "auth_method": "eks",
+                "context": "czid-staging-eks"
+            }
+        },
+        "prod": {
+            "aws_profile": "idseq-prod",
+            "terraform_directory": ".happy/terraform/envs/prod",
+            "log_group_prefix": "/happy/czid/prod",
+            "auto_run_migrations": true,
+            "task_launch_type": "k8s",
+            "k8s": {
+                "namespace": "czid-prod-happy-happy-env",
+                "cluster_id": "czid-prod-eks",
+                "auth_method": "eks",
+                "context": "czid-prod-eks"
+            }
         }
     },
     "features": {
         "enable_happy_api_usage": true,
-        "enable_ecr_auto_creation": true
+        "enable_ecr_auto_creation": true,
+        "enable_dynamo_locking": true
     },
     "tasks": {
         "migrate": [],

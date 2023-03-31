@@ -459,8 +459,8 @@ export type ProjectResolvers<ContextType = any, ParentType extends ResolversPare
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  bulkDownload?: Resolver<Maybe<ResolversTypes['BulkDownload']>, ParentType, ContextType, RequireFields<QueryBulkDownloadArgs, 'bulkDowloadId'>>;
-  bulkDownloadType?: Resolver<Maybe<ResolversTypes['BulkDownloadType']>, ParentType, ContextType, RequireFields<QueryBulkDownloadTypeArgs, 'bulkDowloadId'>>;
+  bulkDownload?: Resolver<Maybe<ResolversTypes['BulkDownload']>, ParentType, ContextType, RequireFields<QueryBulkDownloadArgs, 'bulkDownloadId'>>;
+  bulkDownloadType?: Resolver<Maybe<ResolversTypes['BulkDownloadType']>, ParentType, ContextType, RequireFields<QueryBulkDownloadTypeArgs, 'bulkDownloadId'>>;
   pipelineData?: Resolver<Maybe<ResolversTypes['PipelineData']>, ParentType, ContextType, RequireFields<QueryPipelineDataArgs, 'sampleId'>>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
   projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;

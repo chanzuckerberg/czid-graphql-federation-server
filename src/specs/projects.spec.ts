@@ -18,6 +18,7 @@ test("query for project data", async () => {
   const scope = nock(apiUrl.origin)
     .post(apiUrl.pathname, /.*/)
     .reply(200, { data: { project: testProject } });
+
   const testServer = new ApolloServer({
     typeDefs,
     resolvers,

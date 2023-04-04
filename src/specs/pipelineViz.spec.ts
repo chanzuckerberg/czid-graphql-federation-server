@@ -20,6 +20,9 @@ test("query for pipeline data", async () => {
 
   const testSampleId = faker.datatype.number();
   const testPipelineVersion = faker.datatype.string();
+  // const apiUrl = new URL(
+  //   `${process.env.API_URL}/graphql`
+  // );
   const apiUrl = new URL(
     `${process.env.API_URL}samples/${testSampleId}/pipeline_viz/${testPipelineVersion}.json`
   );
@@ -49,6 +52,7 @@ test("query for pipeline data", async () => {
 
   expect(response.body.kind).toEqual("single");
   expect(scope.isDone()).toBe(true);
+  // @ts-ignore
   expect(response.body.singleResult.errors).toBeUndefined();
   // @ts-ignore
   const pipelineDataResponse: PipelineData = response.body.singleResult.data.pipelineData;

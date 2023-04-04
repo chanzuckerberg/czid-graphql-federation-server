@@ -10,9 +10,8 @@ export const fetchBulkDownload = async (parent, args, contextValue, info) => {
   );
   const bulkDownload: BulkDownloadApiResponse =
     (await res.json()) as BulkDownloadApiResponse;
-  console.log(bulkDownload)
   const ret: BulkDownload = transform(bulkDownload);
-  console.log(ret)
+
   return ret;
 };
 

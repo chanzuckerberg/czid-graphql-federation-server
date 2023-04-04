@@ -14,7 +14,7 @@ resource "aws_lb_target_group" "pathbased_targetgroup" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = local.vpc_id
-  health_check = {
+  health_check {
     path = "/health"
   }
 }
@@ -38,6 +38,19 @@ resource "kubernetes_manifest" "test-crd6" {
         }
         targetGroupARN = aws_lb_target_group.pathbased_targetgroup.arn
         targetType = "instance"
+        networking = {
+          ingress = [{
+            from = [
+              {
+                securityGroup = { groupId = "sg-02b0da7cace31c56b"}
+              }
+            ]
+            ports = [{
+              protocol = "TCP"
+              port = "30000"
+            }]
+          }]
+        }
     }
   }
 }

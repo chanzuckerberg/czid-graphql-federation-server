@@ -45,10 +45,7 @@ resource "kubernetes_manifest" "test-crd6" {
                 securityGroup = { groupId = "sg-02b0da7cace31c56b"}
               }
             ]
-            ports = [{
-              protocol = "TCP"
-              port = "30000"
-            }]
+            ports = []
           }]
         }
     }

@@ -16,6 +16,7 @@ resource "aws_lb_target_group" "pathbased_targetgroup" {
   vpc_id   = local.vpc_id
   health_check = {
     path = "/health"
+  }
 }
 
 resource "kubernetes_manifest" "test-crd6" {

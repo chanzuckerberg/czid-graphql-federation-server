@@ -2,6 +2,9 @@ locals {
   k8s_namespace    = "czid-staging-happy-happy-env"
   deployment_stage = "staging"
   service_port = "4444"
+  web_lb_name = "czid-staging-web"
+  health_check_path = "/health"
+  default_service_name = "gql"
 }
 
 module "stack" {
@@ -22,7 +25,7 @@ module "stack" {
       port              = local.service_port,
       memory            = "1500Mi",
       cpu               = "1500m",
-      health_check_path = "/health",
+      health_check_path = local.health_check_path
       // INTERNAL - OIDC protected ALB
       // EXTERNAL - external ALB
       // PRIVATE - cluster IP only, no ALB at all

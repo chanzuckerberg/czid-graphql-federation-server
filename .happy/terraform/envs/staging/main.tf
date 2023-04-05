@@ -2,9 +2,8 @@ locals {
   k8s_namespace    = "czid-staging-happy-happy-env"
   deployment_stage = "staging"
   service_port = "4444"
-  web_lb_name = "czid-staging-web"
   health_check_path = "/health"
-  default_service_name = "gql"
+  secret  = jsondecode(nonsensitive(data.kubernetes_secret.integration_secret.data.integration_secret))
 }
 
 module "stack" {
@@ -35,4 +34,17 @@ module "stack" {
   }
   tasks = {
   }
+}
+
+module alb_path_routing {
+  source = "./modules/alb_path_routing"
+  stack_name = var.stack_name
+  k8s_service_name = "${var.stack_name}-gql"
+  k8s_namespace = local.k8s_namespace
+  deployment_stage = local.deployment_stage
+  health_check_path = local.health_check_path
+  service_port = local.service_port
+  path_match = "/graphqlfed*"
+  web_lb_name = "czid-staging-web"
+  vpc_id = local.secret["cloud_env"]["vpc_id"]
 }

@@ -7,7 +7,7 @@ module "stack" {
   stack_prefix     = "/${var.stack_name}"
   k8s_namespace    = "czid-prod-happy-happy-env"
   additional_env_vars = {
-    API_URL = "https://sandbox.czid.org"
+    API_URL = "https://czid.org"
   }
   services = {
     gql = {

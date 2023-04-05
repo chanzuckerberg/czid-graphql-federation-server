@@ -36,6 +36,13 @@ const server = new ApolloServer({ typeDefs, resolvers,  plugins: [
 const port = 4444;
 
 await server.start();
+app.use('/graphqlfed', cors<cors.CorsRequest>(), json(), expressMiddleware(server, {
+  context: async ({ req }) => {
+    return {
+      headers: req.headers,
+    };
+  },
+}));
 app.use('/graphql', cors<cors.CorsRequest>(), json(), expressMiddleware(server, {
   context: async ({ req }) => {
     return {

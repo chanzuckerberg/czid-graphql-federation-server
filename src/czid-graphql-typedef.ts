@@ -165,7 +165,6 @@ export const typeDefs = `#graphql
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     project(id: Int!): Project
-    projects: [Project]
     sample(sampleId: Int!): Sample
     taxonDist(backgroundId: Int!, taxId: Int!): TaxonDist
     taxonDescription(taxonIdList: [Int!]): [TaxonDescription]

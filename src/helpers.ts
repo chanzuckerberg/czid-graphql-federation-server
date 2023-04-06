@@ -37,7 +37,6 @@ export const makeCZIDRestRequest = async (path, headers, method='GET', body={}) 
   if (method === 'POST') {
     fetchParams['body'] = body;
   }
-  console.log('api_url', api_url + path)
 
   const res = await fetch(api_url + path, fetchParams);
   return res;

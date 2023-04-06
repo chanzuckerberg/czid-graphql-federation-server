@@ -23,7 +23,7 @@ test("query for taxon description data", async () => {
     },
   };
 
-  const taxonIdList = Object.values(testTaxonDescriptions).map((taxon) => taxon.taxid).join(',');
+  const taxonIdList = Object.values(testTaxonDescriptions).map((taxon) => taxon.taxid) //.join(',');
   const apiUrl = new URL(process.env.API_URL + "taxon_descriptions?taxon_list=" + taxonIdList);
   const scope = nock(apiUrl.origin)
     .get(apiUrl.pathname + apiUrl.search)
@@ -50,12 +50,12 @@ test("query for taxon description data", async () => {
   });
 
   expect(response.body.kind).toEqual("single");
-  console.log('pending mocks', scope.pendingMocks());
+
   expect(scope.isDone()).toBe(true);
   // @ts-ignore
   expect(response.body.singleResult.errors).toBeUndefined();
   // @ts-ignore
-  const taxonDescriptionsResponse: TaxonDescription[] = response.body.singleResult.data.taxonDescriptions;
+  const taxonDescriptionsResponse: TaxonDescription[] = response.body.singleResult.data.taxonDescription;
   taxonDescriptionsResponse.forEach((taxonDescription, index) => {
     const testTaxonDescription = Object.values(testTaxonDescriptions)[index];
     expect(taxonDescription.taxId).toEqual(testTaxonDescription.taxid);

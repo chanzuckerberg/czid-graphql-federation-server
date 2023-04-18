@@ -1,5 +1,5 @@
 locals {
-  deployment_stage  = "sandbox"
+  deployment_stage  = "dev" # I have a ticket open, but don't make this "sandbox" right now.
   service_port      = "4444"
   health_check_path = "/health"
   secret            = jsondecode(nonsensitive(data.kubernetes_secret.integration_secret.data.integration_secret))

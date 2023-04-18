@@ -9,6 +9,19 @@
         "gql"
     ],
     "environments": {
+        "sandbox": {
+            "aws_profile": "idseq-dev",
+            "terraform_directory": ".happy/terraform/envs/sandbox",
+            "log_group_prefix": "/happy/czid/sandbox",
+            "auto_run_migrations": true,
+            "task_launch_type": "k8s",
+            "k8s": {
+                "namespace": "czid-sandbox-happy-happy-env",
+                "cluster_id": "czid-sandbox-eks",
+                "auth_method": "eks",
+                "context": "czid-sandbox-eks"
+            }
+        },
         "dev": {
             "aws_profile": "idseq-dev",
             "terraform_directory": ".happy/terraform/envs/dev",

@@ -30,7 +30,12 @@ module "stack" {
   services = {
     gql = merge(local.target_group_config[local.service_type], {
       name              = "gql-federation",
-      aws_iam_policy_json = "{}" # Temp workaround for bug.
+      aws_iam_policy_json = jsonencode({"Version": "2012-10-17", "Statement": [        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "none:null",
+            "Resource": "*"
+        }]}) # Temp workaround for bug.
       desired_count     = 1,
       port              = local.service_port,
       memory            = "1500Mi",

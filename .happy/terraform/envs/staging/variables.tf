@@ -29,11 +29,6 @@ variable "stack_name" {
   description = "Happy Path stack name"
 }
 
-variable "happy_config_secret" {
-  type        = string
-  description = "Happy Path configuration secret name"
-}
-
 variable "k8s_cluster_id" {
   type        = string
   description = "EKS K8S Cluster ID"

@@ -28,6 +28,7 @@ module "stack" {
       // INTERNAL - OIDC protected ALB
       // EXTERNAL - external ALB
       // PRIVATE - cluster IP only, no ALB at all
+      // TARGET_GROUP_ONLY - Only create a target group for use with an existing ALB
       service_type      = "INTERNAL",
       platform_architecture = "amd64",
     }

@@ -1,16 +1,15 @@
 locals {
-  deployment_stage        = "dev"
-  service_port            = "4444"
-  health_check_path       = "/health"
-  secret                  = jsondecode(nonsensitive(data.kubernetes_secret.integration_secret.data.integration_secret))
-  service_type            = var.stack_name == "sandbox-stack" ? "TARGET_GROUP_ONLY" : "INTERNAL"
-  target_group_config     = {
+  magic_stack_name  = "sandbox-stack"
+  alb_name          = "czid-sandbox-web"
+  deployment_stage  = "dev"
+  service_type      = var.stack_name == local.magic_stack_name ? "TARGET_GROUP_ONLY" : "INTERNAL"
+  routing_config    = {
     "INTERNAL" = {},
     "TARGET_GROUP_ONLY" = {
-      path = "/graphqlfed",
+      path = "/graphqlfed*",
       alb = {
-        name = "czid-sandbox-web",
-        listener_port = local.service_port,
+        name = local.alb_name,
+        listener_port = 443,
       }
     }
   }
@@ -25,50 +24,24 @@ module "stack" {
   stack_prefix     = "/${var.stack_name}"
   k8s_namespace    = var.k8s_namespace
   additional_env_vars = {
-    API_URL = "https://staging.czid.org"
+    API_URL = "https://sandbox.czid.org"
   }
   services = {
-    gql = merge(local.target_group_config[local.service_type], {
-      name              = "gql-federation",
-      aws_iam_policy_json = jsonencode({"Version": "2012-10-17", "Statement": [        {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": "none:null",
-            "Resource": "*"
-        }]}) # Temp workaround for bug.
-      desired_count     = 1,
-      port              = local.service_port,
-      memory            = "1500Mi",
-      cpu               = "1500m",
-      health_check_path = local.health_check_path
+    gql = merge(local.routing_config[local.service_type], {
+      name              = "gql-federation"
+      desired_count     = 1
+      port              = "4444"
+      memory            = "1500Mi"
+      cpu               = "1500m"
+      health_check_path = "/health"
       // INTERNAL - OIDC protected ALB
       // EXTERNAL - external ALB
       // PRIVATE - cluster IP only, no ALB at all
       // TARGET_GROUP_ONLY - Only create a target group for use with an existing ALB
       service_type          = local.service_type
-      platform_architecture = "amd64",
+      platform_architecture = "amd64"
     })
   }
   tasks = {
   }
 }
-
-# If our stack name is "sandbox-stack" we want it to serve traffic for
-# sandbox.czid.org/graphqlfed, so we need to give terraform some extra
-# configuration info about how to do that. Otherwise, we just want to
-# use a stack-name-gql.happy.sandbox.czid.org DNS name and ALB.
-/*
-module "alb_path_routing" {
-  count             = var.stack_name != "sandbox-stack" ? 1 : 0
-  source            = "./modules/alb_path_routing"
-  stack_name        = var.stack_name
-  k8s_service_name  = "${var.stack_name}-gql"
-  k8s_namespace     = var.k8s_namespace
-  deployment_stage  = local.deployment_stage
-  health_check_path = local.health_check_path
-  service_port      = local.service_port
-  path_match        = "/graphqlfed*"
-  web_lb_name       = "czid-sandbox-web"
-  vpc_id            = local.secret["cloud_env"]["vpc_id"]
-}
-*/

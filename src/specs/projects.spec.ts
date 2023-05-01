@@ -1,7 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 
-import { typeDefs } from "./czid-graphql-typedef";
-import { resolvers } from "./resolvers";
+import { typeDefs } from "../czid-graphql-typedef";
+import { resolvers } from "../resolvers";
 
 import { faker } from "@faker-js/faker";
 import nock from "nock";
@@ -14,10 +14,11 @@ test("query for project data", async () => {
     public_access: faker.datatype.boolean(),
     total_sample_count: faker.datatype.number(),
   };
-  const apiUrl = new URL(process.env.API_URL);
+  const apiUrl = new URL(process.env.API_URL + "/graphql");
   const scope = nock(apiUrl.origin)
     .post(apiUrl.pathname, /.*/)
     .reply(200, { data: { project: testProject } });
+
   const testServer = new ApolloServer({
     typeDefs,
     resolvers,

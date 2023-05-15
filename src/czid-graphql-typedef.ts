@@ -124,6 +124,7 @@ export const typeDefs = `#graphql
     status: String
     message: String
     errors: [String]
+    data: Sample
   }
 
   type PipelineData {

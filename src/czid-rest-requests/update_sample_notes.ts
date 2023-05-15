@@ -13,12 +13,32 @@ export const updateSampleNotes = async (parent, args, contextValue, info) => {
   formData.set("authenticity_token", authenticityToken);
 
   const res = await makeCZIDRestRequest(
-    "samples/" + sampleId + "/save_metadata",
-    requestHeaders,
-    "POST",
+    "samples/" + sampleId + "/save_metadata", 
+    requestHeaders, 
+    "POST", 
     formData
   );
-  var output = await res.json();
-  output = toCamelCase(output);
+  const jsonResponse = await res.json();
+  let output = {};
+  if (typeof jsonResponse === "object") {
+    output = toCamelCase({
+      ...jsonResponse,
+      data: {
+        id: sampleId,
+        sampleNotes: notes,
+      },
+    });
+  } else {
+    output = toCamelCase({
+      status: "error",
+      message: "Error updating sample notes",
+      errors: [jsonResponse],
+      data: {
+        id: sampleId,
+        sampleNotes: notes,
+      },
+    });
+  }
+
   return output;
 };

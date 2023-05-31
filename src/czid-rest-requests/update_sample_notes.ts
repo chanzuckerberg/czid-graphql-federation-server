@@ -18,27 +18,19 @@ export const updateSampleNotes = async (parent, args, contextValue, info) => {
     "POST", 
     formData
   );
-  const jsonResponse = await res.json();
-  let output = {};
-  if (typeof jsonResponse === "object") {
-    output = toCamelCase({
+  const jsonResponse: {
+    status? : string, 
+    message?: string, 
+    errors?: string[]
+  }  = await res.json();
+
+  let output = toCamelCase({
       ...jsonResponse,
-      data: {
+      sample: {
         id: sampleId,
         sampleNotes: notes,
       },
     });
-  } else {
-    output = toCamelCase({
-      status: "error",
-      message: "Error updating sample notes",
-      errors: [jsonResponse],
-      data: {
-        id: sampleId,
-        sampleNotes: notes,
-      },
-    });
-  }
 
   return output;
 };

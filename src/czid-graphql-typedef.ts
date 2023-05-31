@@ -120,11 +120,11 @@ export const typeDefs = `#graphql
     displayName: String
   }
 
-  type MutationResponse {
+  type UpdateSampleNotesResponse {
     status: String
     message: String
     errors: [String]
-    data: Sample
+    sample: Sample
   }
 
   type PipelineData {
@@ -175,6 +175,6 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
-    updateSampleNotes(sampleId: Int!, value: String!, authenticityToken: String!): MutationResponse
+    updateSampleNotes(sampleId: Int!, value: String!, authenticityToken: String!): UpdateSampleNotesResponse
   }
 `;

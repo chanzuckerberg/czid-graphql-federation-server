@@ -3,7 +3,7 @@ import { typeDefs } from "../czid-graphql-typedef";
 import { resolvers } from "../resolvers";
 import { faker } from "@faker-js/faker";
 import nock from "nock";
-import { MutationResponse } from "../generated/graphql";
+import { UpdateSampleNotesResponse } from "../generated/graphql";
 import FormData from "form-data";
 
 test("mutation to update sample notes", async () => {
@@ -47,6 +47,6 @@ test("mutation to update sample notes", async () => {
   expect(response.body.singleResult.errors).toBeUndefined();
   expect(scope.isDone()).toBe(true);
   // @ts-ignore
-  const updateSampleNotesResponse: MutationResponse = response.body.singleResult.data.updateSampleNotes;
+  const updateSampleNotesResponse: UpdateSampleNotesResponse = response.body.singleResult.data.updateSampleNotes;
   expect(updateSampleNotesResponse.status).toBe('success');
 });

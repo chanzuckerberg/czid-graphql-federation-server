@@ -71,7 +71,7 @@ export type BulkDownloadTypeField = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  updateSampleNotes?: Maybe<MutationResponse>;
+  updateSampleNotes?: Maybe<UpdateSampleNotesResponse>;
 };
 
 
@@ -79,13 +79,6 @@ export type MutationUpdateSampleNotesArgs = {
   authenticityToken: Scalars['String'];
   sampleId: Scalars['Int'];
   value: Scalars['String'];
-};
-
-export type MutationResponse = {
-  __typename?: 'MutationResponse';
-  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
-  message?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
 };
 
 export type OutputFile = {
@@ -121,7 +114,6 @@ export type Query = {
   bulkDownloadType?: Maybe<BulkDownloadType>;
   pipelineData?: Maybe<PipelineData>;
   project?: Maybe<Project>;
-  projects?: Maybe<Array<Maybe<Project>>>;
   sample?: Maybe<Sample>;
   taxonDescription?: Maybe<Array<Maybe<TaxonDescription>>>;
   taxonDist?: Maybe<TaxonDist>;
@@ -240,6 +232,14 @@ export type TaxonDistributionObject = {
   taxLevel?: Maybe<Scalars['Int']>;
 };
 
+export type UpdateSampleNotesResponse = {
+  __typename?: 'UpdateSampleNotesResponse';
+  errors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  message?: Maybe<Scalars['String']>;
+  sample?: Maybe<Sample>;
+  status?: Maybe<Scalars['String']>;
+};
+
 export type Variable = {
   __typename?: 'Variable';
   name?: Maybe<Scalars['String']>;
@@ -324,7 +324,6 @@ export type ResolversTypes = {
   Float: ResolverTypeWrapper<Scalars['Float']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
-  MutationResponse: ResolverTypeWrapper<MutationResponse>;
   OutputFile: ResolverTypeWrapper<OutputFile>;
   PipelineData: ResolverTypeWrapper<PipelineData>;
   Project: ResolverTypeWrapper<Project>;
@@ -336,6 +335,7 @@ export type ResolversTypes = {
   TaxonDescription: ResolverTypeWrapper<TaxonDescription>;
   TaxonDist: ResolverTypeWrapper<TaxonDist>;
   TaxonDistributionObject: ResolverTypeWrapper<TaxonDistributionObject>;
+  UpdateSampleNotesResponse: ResolverTypeWrapper<UpdateSampleNotesResponse>;
   Variable: ResolverTypeWrapper<Variable>;
 };
 
@@ -350,7 +350,6 @@ export type ResolversParentTypes = {
   Float: Scalars['Float'];
   Int: Scalars['Int'];
   Mutation: {};
-  MutationResponse: MutationResponse;
   OutputFile: OutputFile;
   PipelineData: PipelineData;
   Project: Project;
@@ -362,6 +361,7 @@ export type ResolversParentTypes = {
   TaxonDescription: TaxonDescription;
   TaxonDist: TaxonDist;
   TaxonDistributionObject: TaxonDistributionObject;
+  UpdateSampleNotesResponse: UpdateSampleNotesResponse;
   Variable: Variable;
 };
 
@@ -421,14 +421,7 @@ export type BulkDownloadTypeFieldResolvers<ContextType = any, ParentType extends
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  updateSampleNotes?: Resolver<Maybe<ResolversTypes['MutationResponse']>, ParentType, ContextType, RequireFields<MutationUpdateSampleNotesArgs, 'authenticityToken' | 'sampleId' | 'value'>>;
-};
-
-export type MutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['MutationResponse'] = ResolversParentTypes['MutationResponse']> = {
-  errors?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
-  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  updateSampleNotes?: Resolver<Maybe<ResolversTypes['UpdateSampleNotesResponse']>, ParentType, ContextType, RequireFields<MutationUpdateSampleNotesArgs, 'authenticityToken' | 'sampleId' | 'value'>>;
 };
 
 export type OutputFileResolvers<ContextType = any, ParentType extends ResolversParentTypes['OutputFile'] = ResolversParentTypes['OutputFile']> = {
@@ -463,7 +456,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   bulkDownloadType?: Resolver<Maybe<ResolversTypes['BulkDownloadType']>, ParentType, ContextType, RequireFields<QueryBulkDownloadTypeArgs, 'bulkDownloadId'>>;
   pipelineData?: Resolver<Maybe<ResolversTypes['PipelineData']>, ParentType, ContextType, RequireFields<QueryPipelineDataArgs, 'sampleId'>>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectArgs, 'id'>>;
-  projects?: Resolver<Maybe<Array<Maybe<ResolversTypes['Project']>>>, ParentType, ContextType>;
   sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType, RequireFields<QuerySampleArgs, 'sampleId'>>;
   taxonDescription?: Resolver<Maybe<Array<Maybe<ResolversTypes['TaxonDescription']>>>, ParentType, ContextType, Partial<QueryTaxonDescriptionArgs>>;
   taxonDist?: Resolver<Maybe<ResolversTypes['TaxonDist']>, ParentType, ContextType, RequireFields<QueryTaxonDistArgs, 'backgroundId' | 'taxId'>>;
@@ -545,6 +537,14 @@ export type TaxonDistributionObjectResolvers<ContextType = any, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UpdateSampleNotesResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdateSampleNotesResponse'] = ResolversParentTypes['UpdateSampleNotesResponse']> = {
+  errors?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sample?: Resolver<Maybe<ResolversTypes['Sample']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type VariableResolvers<ContextType = any, ParentType extends ResolversParentTypes['Variable'] = ResolversParentTypes['Variable']> = {
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -558,7 +558,6 @@ export type Resolvers<ContextType = any> = {
   BulkDownloadType?: BulkDownloadTypeResolvers<ContextType>;
   BulkDownloadTypeField?: BulkDownloadTypeFieldResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
-  MutationResponse?: MutationResponseResolvers<ContextType>;
   OutputFile?: OutputFileResolvers<ContextType>;
   PipelineData?: PipelineDataResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
@@ -569,6 +568,7 @@ export type Resolvers<ContextType = any> = {
   TaxonDescription?: TaxonDescriptionResolvers<ContextType>;
   TaxonDist?: TaxonDistResolvers<ContextType>;
   TaxonDistributionObject?: TaxonDistributionObjectResolvers<ContextType>;
+  UpdateSampleNotesResponse?: UpdateSampleNotesResponseResolvers<ContextType>;
   Variable?: VariableResolvers<ContextType>;
 };
 

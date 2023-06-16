@@ -1,0 +1,11 @@
+sources:
+  - name: CZID
+    handler:
+      graphql:
+        endpoint: ${API_URL}/graphql
+        source: ./sources/czid-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['cookie']}"
+serve:
+  port: 4444
+  endpoint: "/graphqlfed"

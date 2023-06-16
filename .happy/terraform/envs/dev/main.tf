@@ -22,7 +22,7 @@ module "stack" {
       // EXTERNAL - external ALB
       // PRIVATE - cluster IP only, no ALB at all
       // TARGET_GROUP_ONLY - Only create a target group for use with an existing ALB
-      platform_architecture = "amd64",
+      platform_architecture = "arm64",
     }
   }
   tasks = {

@@ -2,14 +2,10 @@
   "name": "czi-graphql-federation",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "index.js",
   "scripts": {
-    "compile": "tsc",
-    "start": "npm run compile && nodemon --esm ./src/index.ts",
-    "watch": "tsc -p tsconfig.dev.json -watch | nodemon --experimental-modules --inspect=0.0.0.0:9229 ./dist/src/index.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "codegen": "graphql-codegen --config codegen.cjs"
+    "start": "mesh start",
+    "build": "mesh build",
+    "dev": "mesh dev"
   },
   "repository": {
     "type": "git",
@@ -23,28 +19,11 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
-    "@apollo/gateway": "^2.3.2",
-    "@apollo/server": "^4.3.1",
-    "@faker-js/faker": "^7.6.0",
-    "graphql": "^16.6.0",
-    "graphql-request": "^5.1.0",
-    "nock": "^13.3.0",
-    "lodash": "^4.17.21",
-    "node-fetch": "^3.3.0",
-    "nodemon": "^2.0.20",
-    "prettier": "^2.8.4",
-    "ts-node": "^10.9.1"
+    "@graphql-mesh/cli": "^0.83.2",
+    "@graphql-mesh/graphql": "^0.94.0",
+    "graphql": "^16.6.0"
   },
-  "devDependencies": {
-    "@graphql-codegen/cli": "3.2.0",
-    "@graphql-codegen/introspection": "3.0.1",
-    "@graphql-codegen/typescript": "3.0.1",
-    "@graphql-codegen/typescript-resolvers": "3.1.0",
-    "@types/jest": "^29.4.0",
-    "@types/node": "^18.11.18",
-    "graphql-codegen": "^0.4.0",
-    "jest": "^29.4.3",
-    "ts-jest": "^29.0.5",
-    "typescript": "^4.9.5"
+  "overrides": {
+    "graphql": "^16.6.0"
   }
 }

@@ -6,17 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     image: "czid-graphql"
-    platform: linux/amd64
+    platform: linux/arm64
     restart: always
     environment:
-      API_URL: http://web:3001/
+      API_URL: http://web:3001
     ports:
       - "4444:4444"
-      - "9229:9229"
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules # Use node_modules built in container, not from the mounted source dir
-    command: ["npm", "run", "watch"]
     networks:
       czidnet:
         aliases:

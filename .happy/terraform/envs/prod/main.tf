@@ -40,7 +40,7 @@ module "stack" {
       // PRIVATE - cluster IP only, no ALB at all
       // TARGET_GROUP_ONLY - Only create a target group for use with an existing ALB
       service_type          = local.service_type
-      platform_architecture = "amd64"
+      platform_architecture = "arm64"
     })
   }
   tasks = {

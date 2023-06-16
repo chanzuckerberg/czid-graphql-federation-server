@@ -27,4 +27,3 @@ local-stop:
 local-clean:
 	docker compose stop
 	docker compose down
-

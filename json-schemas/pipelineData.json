@@ -1,0 +1,138 @@
+{
+    "type": "object",
+    "properties": {
+        "stages": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "str"
+                    },
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "str"
+                                },
+                                "description": {
+                                    "type": "str"
+                                },
+                                "inputVariables": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "str"
+                                            },
+                                            "type": {
+                                                "type": "str"
+                                            }
+                                        }
+                                    }
+                                },
+                                "outputFiles": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "displayName": {
+                                                "type": "str"
+                                            },
+                                            "url": {
+                                                "type": "NoneType"
+                                            }
+                                        }
+                                    }
+                                },
+                                "inputEdges": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "int"
+                                    }
+                                },
+                                "outputEdges": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "int"
+                                    }
+                                },
+                                "status": {
+                                    "type": "str"
+                                },
+                                "startTime": {
+                                    "type": "NoneType"
+                                },
+                                "endTime": {
+                                    "type": "NoneType"
+                                },
+                                "resources": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "jobStatus": {
+                        "type": "str"
+                    }
+                }
+            }
+        },
+        "edges": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "to": {
+                        "type": "object",
+                        "properties": {
+                            "stageIndex": {
+                                "type": "int"
+                            },
+                            "stepIndex": {
+                                "type": "int"
+                            }
+                        }
+                    },
+                    "from": {
+                        "type": "object",
+                        "properties": {
+                            "stageIndex": {
+                                "type": "int"
+                            },
+                            "stepIndex": {
+                                "type": "int"
+                            }
+                        }
+                    },
+                    "files": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "displayName": {
+                                    "type": "str"
+                                },
+                                "url": {
+                                    "type": "NoneType"
+                                }
+                            }
+                        }
+                    },
+                    "isIntraStage": {
+                        "type": "bool"
+                    }
+                }
+            }
+        },
+        "status": {
+            "type": "str"
+        }
+    }
+}

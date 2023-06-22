@@ -1,0 +1,3765 @@
+{
+    "stages": [
+        {
+            "name": "Host Filtering",
+            "steps": [
+                {
+                    "name": "Validate Input",
+                    "description": "Validates input files are .fastq format; truncates to 75 million fragments",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "file_ext",
+                            "type": "String"
+                        },
+                        {
+                            "name": "max_input_fragments",
+                            "type": "Int"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "validate_input_summary.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "fastqs.count",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        77
+                    ],
+                    "outputEdges": [
+                        0,
+                        1,
+                        3
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "STAR",
+                    "description": "Implements step for Host Subtraction",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "nucleotide_type",
+                            "type": "String"
+                        },
+                        {
+                            "name": "host_genome",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "unmapped1.fastq",
+                            "url": null
+                        },
+                        {
+                            "displayName": "unmapped2.fastq",
+                            "url": null
+                        },
+                        {
+                            "displayName": "Log.final.out",
+                            "url": null
+                        },
+                        {
+                            "displayName": "reads_per_gene.star.tab",
+                            "url": null
+                        },
+                        {
+                            "displayName": "picard_insert_metrics.txt",
+                            "url": null
+                        },
+                        {
+                            "displayName": "insert_size_histogram.pdf",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        0,
+                        80
+                    ],
+                    "outputEdges": [
+                        4,
+                        5
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Trimmomatic",
+                    "description": "Removes adapter sequences",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "trimmomatic1.fastq",
+                            "url": null
+                        },
+                        {
+                            "displayName": "trimmomatic2.fastq",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        4,
+                        82
+                    ],
+                    "outputEdges": [
+                        6
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Price Seq",
+                    "description": "Removes low-quality reads",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "priceseq1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "priceseq2.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        6
+                    ],
+                    "outputEdges": [
+                        7
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "CZID-dedup",
+                    "description": "Identifies and collapses duplicate reads",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "dedup1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "dedup2.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "clusters.csv",
+                            "url": null
+                        },
+                        {
+                            "displayName": "duplicate_cluster_sizes.tsv",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        7
+                    ],
+                    "outputEdges": [
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
+                        15,
+                        16,
+                        17,
+                        18,
+                        19,
+                        20,
+                        21,
+                        22
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "LZW",
+                    "description": "Removes low-complexity reads",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "lzw1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "lzw2.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        8
+                    ],
+                    "outputEdges": [
+                        23
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Bowtie2",
+                    "description": "Removes remaining host reads",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "bowtie2_1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "bowtie2_2.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "bowtie2_merged.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        9,
+                        23,
+                        83
+                    ],
+                    "outputEdges": [
+                        24
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Subsample",
+                    "description": "Randomly subsamples 1 million fragments",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "max_subsample_fragments",
+                            "type": "Int"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "subsampled_1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "subsampled_2.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "subsampled_merged.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        10,
+                        24
+                    ],
+                    "outputEdges": [
+                        25,
+                        26
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "STAR",
+                    "description": "Remove human reads using STAR",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "human_star_genome",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "unmapped_human_1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "unmapped_human_2.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        1,
+                        11,
+                        25,
+                        81
+                    ],
+                    "outputEdges": [
+                        27
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Bowtie2",
+                    "description": "Remove residual human reads using Bowtie2",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "human_bowtie2_genome",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "bowtie2_human_1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "bowtie2_human_2.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "bowtie2_human_merged.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        12,
+                        27
+                    ],
+                    "outputEdges": [
+                        28
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "GSNAP",
+                    "description": "Removes all potentially-human sequences",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "gsnap_filter_1.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "gsnap_filter_2.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "gsnap_filter_merged.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        13,
+                        26,
+                        28,
+                        84
+                    ],
+                    "outputEdges": [
+                        29,
+                        30,
+                        31,
+                        32,
+                        33
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                }
+            ],
+            "jobStatus": "finished"
+        },
+        {
+            "name": "Minimap2/Diamond alignment",
+            "steps": [
+                {
+                    "name": "Alignment Minimap2",
+                    "description": "Align remaining reads to the NCBI NT database using minimap2",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "minimap2_db",
+                            "type": "String"
+                        },
+                        {
+                            "name": "minimap2_args",
+                            "type": "String"
+                        },
+                        {
+                            "name": "minimap2_prefix",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "gsnap.m8",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        29,
+                        85
+                    ],
+                    "outputEdges": [
+                        34,
+                        35
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Call Hits Minimap2",
+                    "description": "Assign accessions from minimap2 to taxon",
+                    "inputVariables": [
+                        {
+                            "name": "minimap2_prefix",
+                            "type": "String"
+                        },
+                        {
+                            "name": "min_read_length",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "gsnap.deduped.m8",
+                            "url": null
+                        },
+                        {
+                            "displayName": "gsnap.hitsummary.tab",
+                            "url": null
+                        },
+                        {
+                            "displayName": "gsnap_counts_with_dcr.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        17,
+                        39,
+                        86
+                    ],
+                    "outputEdges": [
+                        36,
+                        37,
+                        38
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Alignment Diamond",
+                    "description": "Align remaining reads to the NCBI NR database using diamond",
+                    "inputVariables": [
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "diamond_db",
+                            "type": "String"
+                        },
+                        {
+                            "name": "diamond_args",
+                            "type": "String"
+                        },
+                        {
+                            "name": "diamond_prefix",
+                            "type": "String"
+                        },
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "rapsearch2.m8",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        30,
+                        95
+                    ],
+                    "outputEdges": [
+                        39,
+                        40,
+                        41,
+                        42,
+                        43
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Call Hits Diamond",
+                    "description": "Assign accessions from diamond to taxon",
+                    "inputVariables": [
+                        {
+                            "name": "diamond_prefix",
+                            "type": "String"
+                        },
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "rapsearch2.deduped.m8",
+                            "url": null
+                        },
+                        {
+                            "displayName": "rapsearch2.hitsummary.tab",
+                            "url": null
+                        },
+                        {
+                            "displayName": "rapsearch2_counts_with_dcr.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        18,
+                        40,
+                        87
+                    ],
+                    "outputEdges": [
+                        44,
+                        45,
+                        46,
+                        47,
+                        48
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Combine Taxon Counts",
+                    "description": "Count preliminary taxon hits.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "taxon_counts_with_dcr.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        48
+                    ],
+                    "outputEdges": [
+                        49
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Annotated Fasta",
+                    "description": "Annotate non-host FASTA with preliminary NCBI accession IDs.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "annotated_merged.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "unidentified.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        14,
+                        31,
+                        41,
+                        44
+                    ],
+                    "outputEdges": [
+                        50,
+                        51
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                }
+            ],
+            "jobStatus": "finished"
+        },
+        {
+            "name": "Post Processing",
+            "steps": [
+                {
+                    "name": "Assembly",
+                    "description": "Assemble non-host reads using SPAdes.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "min_contig_length",
+                            "type": "Int"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/contigs.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/contigs_all.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/scaffolds.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/read-contig.sam",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/contig_stats.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        19,
+                        32
+                    ],
+                    "outputEdges": [
+                        52,
+                        53,
+                        54,
+                        55
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Coverage Stats",
+                    "description": "Calculate coverage statistics for assembled contigs",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/contig_coverage.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/contig_coverage_summary.csv",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        52
+                    ],
+                    "outputEdges": [
+                        56
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Download Accessions Gsnap Accessions",
+                    "description": "Generate FASTA of candidate references matched during GSNAP / NT alignment.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [],
+                    "inputEdges": [
+                        34,
+                        36,
+                        88
+                    ],
+                    "outputEdges": [],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Download Accessions Rapsearch2 Accessions",
+                    "description": "Generate FASTA of candidate references matched during RAPSearch2 / NR alignment.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [],
+                    "inputEdges": [
+                        42,
+                        45,
+                        89
+                    ],
+                    "outputEdges": [],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Blast Contigs Refined Gsnap",
+                    "description": "BLAST assembled contigs against candidate references from NT; reassign corresponding reads to the matched taxon.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "use_deuterostome_filter",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "use_taxon_whitelist",
+                            "type": "Boolean"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/gsnap.blast.m8",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/gsnap.reassigned.m8",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/gsnap.hitsummary2.tab",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_gsnap_counts_with_dcr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/gsnap_contig_summary.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/gsnap.blast.top.m8",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        20,
+                        35,
+                        37,
+                        53,
+                        90
+                    ],
+                    "outputEdges": [
+                        57,
+                        58,
+                        59,
+                        60,
+                        61
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Blast Contigs Refined Rapsearch2",
+                    "description": "BLAST assembled contigs against candidate references from NR; reassign corresponding reads to the matched taxon.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "use_taxon_whitelist",
+                            "type": "Boolean"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/rapsearch2.blast.m8",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/rapsearch2.reassigned.m8",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/rapsearch2.hitsummary2.tab",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_rapsearch2_counts_with_dcr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/rapsearch2_contig_summary.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/rapsearch2.blast.top.m8",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        21,
+                        43,
+                        46,
+                        54,
+                        91
+                    ],
+                    "outputEdges": [
+                        62,
+                        63,
+                        64,
+                        65,
+                        66
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Compute Merged Taxon Counts",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "use_deuterostome_filter",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "use_taxon_whitelist",
+                            "type": "Boolean"
+                        }
+                    ],
+                    "outputFiles": [],
+                    "inputEdges": [
+                        22,
+                        59,
+                        64,
+                        92
+                    ],
+                    "outputEdges": [],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Combine Taxon Counts",
+                    "description": "Count taxon hits after the reassignment based on the BLAST results.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/refined_taxon_counts_with_dcr.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        60,
+                        65,
+                        97
+                    ],
+                    "outputEdges": [
+                        67
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Combine Json",
+                    "description": "Record statistics on the assembled contigs.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/combined_contig_summary.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        61,
+                        66,
+                        98
+                    ],
+                    "outputEdges": [
+                        68
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Annotated Fasta",
+                    "description": "Annotate non-host FASTA with NCBI accession IDs after the BLAST-based match refinement.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/refined_annotated_merged.fa",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_unidentified.fa",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        15,
+                        33,
+                        57,
+                        62
+                    ],
+                    "outputEdges": [
+                        69
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Taxid Fasta",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/refined_taxid_annot.fasta",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        58,
+                        63,
+                        69,
+                        93
+                    ],
+                    "outputEdges": [
+                        70
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Taxid Locator",
+                    "description": "Annotate non-host FASTA with revised Taxonomy IDs after the BLAST-based match refinement.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "assembly/refined_taxid_annot_sorted_nt.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_nt.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_annot_sorted_nr.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_nr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_annot_sorted_genus_nt.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_genus_nt.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_annot_sorted_genus_nr.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_genus_nr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_annot_sorted_family_nt.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_family_nt.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_annot_sorted_family_nr.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_family_nr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "assembly/refined_taxid_locations_combined.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        70
+                    ],
+                    "outputEdges": [
+                        71
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                }
+            ],
+            "jobStatus": "finished"
+        },
+        {
+            "name": "Experimental",
+            "steps": [
+                {
+                    "name": "Generate Taxid Fasta",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "taxid_annot.fasta",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        38,
+                        47,
+                        50,
+                        94
+                    ],
+                    "outputEdges": [
+                        72
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Taxid Locator",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "taxid_annot_sorted_nt.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_nt.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_annot_sorted_nr.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_nr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_annot_sorted_genus_nt.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_genus_nt.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_annot_sorted_genus_nr.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_genus_nr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_annot_sorted_family_nt.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_family_nt.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_annot_sorted_family_nr.fasta",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_family_nr.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "taxid_locations_combined.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        72
+                    ],
+                    "outputEdges": [
+                        73
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Alignment Viz",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "align_viz.summary",
+                            "url": null
+                        },
+                        {
+                            "displayName": "align_viz/*.align_viz.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "longest_reads/*.longest_5_reads.fasta",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        73,
+                        96
+                    ],
+                    "outputEdges": [
+                        74
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Srst2",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "file_ext",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "out.log",
+                            "url": null
+                        },
+                        {
+                            "displayName": "out__genes__ARGannot_r2__results.txt",
+                            "url": null
+                        },
+                        {
+                            "displayName": "out__fullgenes__ARGannot_r2__results.txt",
+                            "url": null
+                        },
+                        {
+                            "displayName": "amr_processed_results.csv",
+                            "url": null
+                        },
+                        {
+                            "displayName": "amr_summary_results.csv",
+                            "url": null
+                        },
+                        {
+                            "displayName": "output__.ARGannot_r2.sorted.bam",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        78
+                    ],
+                    "outputEdges": [
+                        75
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Generate Coverage Viz",
+                    "description": "",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "coverage_viz_summary.json",
+                            "url": null
+                        },
+                        {
+                            "displayName": "coverage_viz/*_coverage_viz.json",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        99
+                    ],
+                    "outputEdges": [
+                        76
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                },
+                {
+                    "name": "Nonhost Fastq",
+                    "description": "Filter original fastq/fasta input files to only contain non-host reads processed by CZ ID.",
+                    "inputVariables": [
+                        {
+                            "name": "docker_image_id",
+                            "type": "String"
+                        },
+                        {
+                            "name": "s3_wd_uri",
+                            "type": "String"
+                        },
+                        {
+                            "name": "use_taxon_whitelist",
+                            "type": "Boolean"
+                        }
+                    ],
+                    "outputFiles": [
+                        {
+                            "displayName": "nonhost_fastq_out.count",
+                            "url": null
+                        },
+                        {
+                            "displayName": "nonhost_R1.fastq",
+                            "url": null
+                        },
+                        {
+                            "displayName": "nonhost_R2.fastq",
+                            "url": null
+                        }
+                    ],
+                    "inputEdges": [
+                        16,
+                        79
+                    ],
+                    "outputEdges": [
+                        2
+                    ],
+                    "status": "notStarted",
+                    "startTime": null,
+                    "endTime": null,
+                    "resources": []
+                }
+            ],
+            "jobStatus": "finished"
+        }
+    ],
+    "edges": [
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 1
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "validate_input_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 8
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "validate_input_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 3,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "nonhost_fastq_out.count",
+                    "url": null
+                },
+                {
+                    "displayName": "nonhost_R1.fastq",
+                    "url": null
+                },
+                {
+                    "displayName": "nonhost_R2.fastq",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "fastqs.count",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 2
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "unmapped1.fastq",
+                    "url": null
+                },
+                {
+                    "displayName": "unmapped2.fastq",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "Log.final.out",
+                    "url": null
+                },
+                {
+                    "displayName": "reads_per_gene.star.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "picard_insert_metrics.txt",
+                    "url": null
+                },
+                {
+                    "displayName": "insert_size_histogram.pdf",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 3
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "trimmomatic1.fastq",
+                    "url": null
+                },
+                {
+                    "displayName": "trimmomatic2.fastq",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "priceseq1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "priceseq2.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "dedup1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "dedup2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 6
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "dedup1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "dedup2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 7
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "dedup1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "dedup2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 8
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "dedup1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "dedup2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 9
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "dedup1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "dedup2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "dedup1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "dedup2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 9
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "clusters.csv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 1
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 0
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 6
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "duplicate_cluster_sizes.tsv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 6
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "lzw1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "lzw2.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 7
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 6
+            },
+            "files": [
+                {
+                    "displayName": "bowtie2_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "bowtie2_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "bowtie2_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 8
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 7
+            },
+            "files": [
+                {
+                    "displayName": "subsampled_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "subsampled_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "subsampled_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 7
+            },
+            "files": [
+                {
+                    "displayName": "subsampled_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "subsampled_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "subsampled_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 9
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 8
+            },
+            "files": [
+                {
+                    "displayName": "unmapped_human_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "unmapped_human_2.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 9
+            },
+            "files": [
+                {
+                    "displayName": "bowtie2_human_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "bowtie2_human_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "bowtie2_human_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 0
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_filter_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_filter_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_filter_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 0
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_filter_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 9
+            },
+            "from": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_filter_1.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_2.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_filter_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 2
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "gsnap.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "gsnap.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 2
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "gsnap.deduped.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap.hitsummary.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "gsnap.deduped.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap.hitsummary.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 0
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "gsnap.hitsummary.tab",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 1
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 3
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.deduped.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2.deduped.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2.hitsummary.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2.hitsummary.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2_counts_with_dcr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 3
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.deduped.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2.hitsummary.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.deduped.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2.hitsummary.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 0
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2.hitsummary.tab",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 4
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "rapsearch2_counts_with_dcr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "rapsearch2_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "taxon_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 0
+            },
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "annotated_merged.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "from": {
+                "stageIndex": 1,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "unidentified.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 1
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "assembly/contigs.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/scaffolds.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/read-contig.sam",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/contig_stats.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "assembly/contigs.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/scaffolds.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/read-contig.sam",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/contig_stats.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "assembly/contigs.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/scaffolds.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/read-contig.sam",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/contig_stats.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "assembly/contigs_all.fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "assembly/contig_coverage.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/contig_coverage_summary.csv",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 9
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "assembly/gsnap.blast.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.reassigned.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.hitsummary2.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_gsnap_counts_with_dcr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap_contig_summary.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.blast.top.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 10
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "assembly/gsnap.blast.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.reassigned.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.hitsummary2.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_gsnap_counts_with_dcr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap_contig_summary.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.blast.top.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 6
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "assembly/gsnap.reassigned.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap.hitsummary2.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/gsnap_contig_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 7
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "assembly/refined_gsnap_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 8
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "assembly/gsnap_contig_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 9
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "assembly/rapsearch2.blast.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.reassigned.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.hitsummary2.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_rapsearch2_counts_with_dcr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2_contig_summary.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.blast.top.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 10
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "assembly/rapsearch2.blast.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.reassigned.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.hitsummary2.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_rapsearch2_counts_with_dcr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2_contig_summary.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.blast.top.m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 6
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "assembly/rapsearch2.reassigned.m8",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2.hitsummary2.tab",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/rapsearch2_contig_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 7
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "assembly/refined_rapsearch2_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 8
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "assembly/rapsearch2_contig_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 7
+            },
+            "files": [
+                {
+                    "displayName": "assembly/refined_taxon_counts_with_dcr.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 8
+            },
+            "files": [
+                {
+                    "displayName": "assembly/combined_contig_summary.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 10
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 9
+            },
+            "files": [
+                {
+                    "displayName": "assembly/refined_annotated_merged.fa",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_unidentified.fa",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 11
+            },
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "assembly/refined_taxid_annot.fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 2,
+                "stepIndex": 11
+            },
+            "files": [
+                {
+                    "displayName": "assembly/refined_taxid_annot_sorted_nt.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_nt.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_annot_sorted_nr.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_nr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_annot_sorted_genus_nt.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_genus_nt.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_annot_sorted_genus_nr.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_genus_nr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_annot_sorted_family_nt.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_family_nt.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_annot_sorted_family_nr.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_family_nr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly/refined_taxid_locations_combined.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 1
+            },
+            "from": {
+                "stageIndex": 3,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "taxid_annot.fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 2
+            },
+            "from": {
+                "stageIndex": 3,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "taxid_annot_sorted_nt.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_nt.json",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_annot_sorted_nr.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_nr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_annot_sorted_genus_nt.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_genus_nt.json",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_annot_sorted_genus_nr.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_genus_nr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_annot_sorted_family_nt.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_family_nt.json",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_annot_sorted_family_nr.fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_family_nr.json",
+                    "url": null
+                },
+                {
+                    "displayName": "taxid_locations_combined.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": true
+        },
+        {
+            "from": {
+                "stageIndex": 3,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "align_viz.summary",
+                    "url": null
+                },
+                {
+                    "displayName": "align_viz/*.align_viz.json",
+                    "url": null
+                },
+                {
+                    "displayName": "longest_reads/*.longest_5_reads.fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "from": {
+                "stageIndex": 3,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "out.log",
+                    "url": null
+                },
+                {
+                    "displayName": "out__genes__ARGannot_r2__results.txt",
+                    "url": null
+                },
+                {
+                    "displayName": "out__fullgenes__ARGannot_r2__results.txt",
+                    "url": null
+                },
+                {
+                    "displayName": "amr_processed_results.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "amr_summary_results.csv",
+                    "url": null
+                },
+                {
+                    "displayName": "output__.ARGannot_r2.sorted.bam",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "from": {
+                "stageIndex": 3,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "coverage_viz_summary.json",
+                    "url": null
+                },
+                {
+                    "displayName": "coverage_viz/*_coverage_viz.json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "fastqs_0",
+                    "url": null
+                },
+                {
+                    "displayName": "fastqs_1",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "fastqs_0",
+                    "url": null
+                },
+                {
+                    "displayName": "fastqs_1",
+                    "url": null
+                },
+                {
+                    "displayName": "resist_genome_db",
+                    "url": null
+                },
+                {
+                    "displayName": "resist_genome_bed",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "fastqs_0",
+                    "url": null
+                },
+                {
+                    "displayName": "fastqs_1",
+                    "url": null
+                },
+                {
+                    "displayName": "nonhost_fasta_refined_taxid_annot_fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "valid_input1_fastq",
+                    "url": null
+                },
+                {
+                    "displayName": "valid_input2_fastq",
+                    "url": null
+                },
+                {
+                    "displayName": "star_genome",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 8
+            },
+            "files": [
+                {
+                    "displayName": "valid_input1_fastq",
+                    "url": null
+                },
+                {
+                    "displayName": "valid_input2_fastq",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "adapter_fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 6
+            },
+            "files": [
+                {
+                    "displayName": "bowtie2_genome",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 0,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_genome",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "minimap2_local_db_path",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 1
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "taxon_blacklist",
+                    "url": null
+                },
+                {
+                    "displayName": "deuterostome_db",
+                    "url": null
+                },
+                {
+                    "displayName": "accession2taxid_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "taxon_blacklist",
+                    "url": null
+                },
+                {
+                    "displayName": "deuterostome_db",
+                    "url": null
+                },
+                {
+                    "displayName": "accession2taxid_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "nt_db",
+                    "url": null
+                },
+                {
+                    "displayName": "nt_loc_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 3
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "nr_db",
+                    "url": null
+                },
+                {
+                    "displayName": "nr_loc_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "taxon_blacklist",
+                    "url": null
+                },
+                {
+                    "displayName": "deuterostome_db",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly_nt_refseq_fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 5
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "taxon_blacklist",
+                    "url": null
+                },
+                {
+                    "displayName": "assembly_nr_refseq_fasta",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 6
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                },
+                {
+                    "displayName": "taxon_blacklist",
+                    "url": null
+                },
+                {
+                    "displayName": "deuterostome_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 10
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 0
+            },
+            "files": [
+                {
+                    "displayName": "lineage_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 1,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "diamond_local_db_path",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 2
+            },
+            "files": [
+                {
+                    "displayName": "nt_db",
+                    "url": null
+                },
+                {
+                    "displayName": "nt_loc_db",
+                    "url": null
+                },
+                {
+                    "displayName": "gsnap_m8_gsnap_deduped_m8",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 7
+            },
+            "files": [
+                {
+                    "displayName": "merged_taxon_counts_with_dcr_json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 2,
+                "stepIndex": 8
+            },
+            "files": [
+                {
+                    "displayName": "merged_contig_summary_json",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        },
+        {
+            "to": {
+                "stageIndex": 3,
+                "stepIndex": 4
+            },
+            "files": [
+                {
+                    "displayName": "gsnap_m8_gsnap_deduped_m8",
+                    "url": null
+                },
+                {
+                    "displayName": "refined_gsnap_in_gsnap_reassigned_m8",
+                    "url": null
+                },
+                {
+                    "displayName": "refined_gsnap_in_gsnap_hitsummary2_tab",
+                    "url": null
+                },
+                {
+                    "displayName": "refined_gsnap_in_gsnap_blast_top_m8",
+                    "url": null
+                },
+                {
+                    "displayName": "contig_in_contig_coverage_json",
+                    "url": null
+                },
+                {
+                    "displayName": "contig_in_contig_stats_json",
+                    "url": null
+                },
+                {
+                    "displayName": "contig_in_contigs_fasta",
+                    "url": null
+                },
+                {
+                    "displayName": "nt_info_db",
+                    "url": null
+                }
+            ],
+            "isIntraStage": false
+        }
+    ],
+    "status": "finished"
+}

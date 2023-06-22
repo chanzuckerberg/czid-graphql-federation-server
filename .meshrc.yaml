@@ -1,11 +1,53 @@
 sources:
-  - name: CZID
+  - name: CZIDGQL
     handler:
       graphql:
-        endpoint: ${API_URL}/graphql
-        source: ./sources/czid-schema.graphql
+        endpoint: http://localhost:3001/graphql
+        source: ./czid-graphql.schema
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
+  - name: CZIDREST
+    handler:
+      jsonSchema:
+        endpoint: http://localhost:3001
+        operations:
+          - type: Query
+            field: BulkDownload
+            path: /bulk_downloads/{args.bulkDownloadId}
+            method: GET
+            responseSchema: ./json-schemas/bulkDownloads.json
+            responseTypeName: BulkDownload
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: PipelineData
+            path: /samples/{args.sampleId}/pipeline_viz/7.0.json
+            method: GET
+            responseSchema: ./json-schemas/pipelineData.json
+            responseTypeName: PipelineData
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: TaxonDist
+            path: /backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}
+            method: GET
+            responseSchema: ./json-schemas/taxonDist.json
+            responseTypeName: TaxonDist
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: UpdateSampleNotes
+            path: /samples/{args.sampleId}/save_metadata
+            method: POST
+            requestSample:
+            responseSchema: ./json-schemas/updateSampleNotes.json
+            responseTypeName: UpdateSampleNotes
+            headers:
+              Cookie: "{context.headers['cookie']}"
+      transforms:
+        - namingConvention:
+            typeNames: camelCase
+            fieldNames: camelCase
 serve:
   port: 4444
   endpoint: "/graphqlfed"

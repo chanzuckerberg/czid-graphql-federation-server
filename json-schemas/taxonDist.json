@@ -1,0 +1,65 @@
+{
+    "type": "object",
+    "properties": {
+        "merged_NT_NR": {
+            "type": "object",
+            "properties": {
+                "tax_level": {
+                    "type": "int"
+                },
+                "mean": {
+                    "type": "float"
+                },
+                "stdev": {
+                    "type": "float"
+                },
+                "rpm_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "float"
+                    }
+                }
+            }
+        },
+        "NR": {
+            "type": "object",
+            "properties": {
+                "tax_level": {
+                    "type": "int"
+                },
+                "mean": {
+                    "type": "float"
+                },
+                "stdev": {
+                    "type": "float"
+                },
+                "rpm_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "float"
+                    }
+                }
+            }
+        },
+        "NT": {
+            "type": "object",
+            "properties": {
+                "tax_level": {
+                    "type": "int"
+                },
+                "mean": {
+                    "type": "float"
+                },
+                "stdev": {
+                    "type": "float"
+                },
+                "rpm_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "float"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,16 +1,11 @@
 on:
   push:
     branches:
-       - sandbox
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch name'
-        required: true
+      - main
 
-name: Deploy graphQL federation to sandbox
+name: Deploy graphQL Federation to staging
 jobs:
-  update-sandbox:
+  release-api:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write
@@ -20,18 +15,18 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-west-2
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_SANDBOX }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_STAGING }}
           role-duration-seconds: 1200
-          role-session-name: CzidGraphQLFederationUpdateSandbox
+          role-session-name: CzidGraphQLFederationUpdateStaging
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Print branch name
-        run: echo "Deploying branch ${{ github.ref }} to sandbox"
-      - name: Update sandbox
+        run: echo "Deploying branch ${{ github.ref }} to staging"
+      - name: Update staging
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.11.0
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: sandbox
-          create-tag: false
-          stack-name: sandbox-stack
-          happy-version: 0.87.0
+          env: staging
+          create-tag: true
+          stack-name: staging-stack
+          happy_version: 0.87.0

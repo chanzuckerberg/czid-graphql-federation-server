@@ -1,8 +1,10 @@
 # Pull Request
 
-## Description
+## JIRA Ticket
 
 [CZID-XXXX]
+
+## Description
 
 *The intended change, motivation and consequences.*
 

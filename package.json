@@ -19,12 +19,11 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
-    "@graphql-mesh/cli": "^0.82.35",
-    "@graphql-mesh/graphql": "^0.93.1",
-    "@graphql-mesh/json-schema": "^0.94.1",
-    "graphql": "^16.6.0"
+    "@graphql-mesh/cli": "^0.85.1",
+    "@graphql-mesh/graphql": "^0.94.4",
+    "@graphql-mesh/json-schema": "^0.94.6",
+    "graphql": "^16.7.1"
   },
   "overrides": {
-    "graphql": "^16.6.0"
   }
 }

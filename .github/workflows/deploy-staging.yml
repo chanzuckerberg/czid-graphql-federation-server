@@ -5,7 +5,7 @@ on:
 
 name: Deploy graphQL Federation to staging
 jobs:
-  release-api:
+  update-staging:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write

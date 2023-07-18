@@ -2,14 +2,14 @@ sources:
   - name: CZIDGQL
     handler:
       graphql:
-        endpoint: http://localhost:3001/graphql
-        source: ./czid-graphql.schema
+        endpoint: ${API_URL}/graphql
+        source: ./sources/czid-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
   - name: CZIDREST
     handler:
       jsonSchema:
-        endpoint: http://localhost:3001
+        endpoint: ${API_URL}/
         operations:
           - type: Query
             field: BulkDownload
@@ -39,7 +39,7 @@ sources:
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata
             method: POST
-            requestSample:
+            requestSample: {"value": "test", "field": "notes", "authenticityToken": "test"}
             responseSchema: ./json-schemas/updateSampleNotes.json
             responseTypeName: UpdateSampleNotes
             headers:

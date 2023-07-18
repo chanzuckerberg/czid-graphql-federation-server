@@ -17,7 +17,7 @@ jobs:
       contents: read
     steps:
       - name: Assume happy-api deployement role
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: us-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_SANDBOX }}
@@ -32,6 +32,6 @@ jobs:
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: sandbox
-          create-tag: false
+          create-tag: true
           stack-name: sandbox-stack
-          happy-version: 0.87.0
+          happy-version: 0.92.0

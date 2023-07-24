@@ -30,7 +30,7 @@ jobs:
       - name: Print branch name
         run: echo "Deploying branch $(git branch --show-current) to sandbox"
       - name: Update sandbox
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.11.0
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.12.0
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: sandbox

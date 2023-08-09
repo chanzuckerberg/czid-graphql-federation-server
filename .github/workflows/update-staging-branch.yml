@@ -18,7 +18,7 @@ jobs:
         run: echo "Updating staging branch from $(git branch --show-current)"
       - name: Update staging branch
         run: |
-          git merge --ff  --commit main
+          git merge --ff --commit origin/main
           git push
       - name: Staging branch SHA
         run: echo "$(git branch --show-current) HEAD is at $(git rev-parse HEAD)"

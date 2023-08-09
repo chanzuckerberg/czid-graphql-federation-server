@@ -3,7 +3,7 @@ on:
     branches:
       - main
 
-name: Deploy graphQL Federation to staging
+name: Merge main branch into staging branch
 jobs:
   update-staging:
     runs-on: [ARM64, self-hosted, Linux]
@@ -16,7 +16,8 @@ jobs:
         run: echo "Updating staging branch from $(git branch --show-current)"
       - name: Update staging branch
         run: |
-          git checkout -B staging
-          git push --force origin staging
+          git checkout staging
+          git merge --ff  --commit main
+          git push
       - name: Staging branch SHA
         run: echo "$(git branch --show-current) HEAD is at $(git rev-parse HEAD)"

@@ -12,13 +12,32 @@ To run this service locally, run
 
 Note that [set up CZ ID setup](https://github.com/chanzuckerberg/czid-web-private/wiki/%5BDev%5D-A-starting-point:-initial-setup) needs to be completed first, to have the docker network configuration in place.  In the  local development environment, CZ ID is run with a nginx reverse proxy that forwards graphql requests to the federation server.
 
-## Code Generation
+The [Yoga GraphiQL interface](http://localhost:3000/graphqlfed) can be used to manually perform queries against graphQL Mesh.  Note that you need to login via CZ ID first for queries to succeed.
+
+## Deploying to live environments
+
+This project is configured with a sandbox, staging, and sandbox environment.  In each environment, the Yoga GraphiQL interface is accessible at https://[ENV].czid.org/graphqlfed (as with the dev env, you will need to login to CZ ID first).
+
+### Sandbox deployment
+
+There are two ways to [trigger a deploy to the sandbox environment](https://github.com/chanzuckerberg/czid-graphql-federation-server/blob/main/.github/workflows/deploy-sandbox.yml):
+
+1. Merge or push a branch to the `sandbox` branch.
+1. Manually [trigger a branch to be deployed in Actions](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/deploy-sandbox.yml), by clicking `Run workflow`, and setting the `Use workflow from` option to the branch you wish to deploy to sandbox.
+
+### Staging deployment
+
+Whenever there is a push to the `main` branch (generally when a PR is merged), that triggers [a Github Action that pushes the `main` branch to the `staging` branch](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/update-staging-branch.yml).  That in turn triggers [another Github Action which deploys the `staging` branch to the staging environment](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/deploy-staging.yml)
+
+## Working with this project
+
+### Code Generation
 
 This project uses [graphql-code-generator](https://github.com/dotansimha/graphql-code-generatora) in order to generate types for graphql related entities (queries, mutations, types, etc) as well as the graphql schema in json format.
 
 In order to generate the code simply run `npm run codegen`.
 
-## Adding new REST endpoints
+### Adding new REST endpoints
 
 A common task in this repo is to configure graphQL Mesh to federate an existing REST endpoint response from the CZID backend into a graphQL schema.  This is the typical workflow for the task:
 
@@ -27,7 +46,7 @@ A common task in this repo is to configure graphQL Mesh to federate an existing 
 `python generate_mesh_schema.py sample-responses/bulkDownloads.json json-schemas/bulkDownloads.json`
 3. Update the `meshrc.yml` file add the new endpoint being federated. Use one of the existing types as a template
 
-### Obtaining REST API responses
+#### Obtaining REST API responses
 
 There are a couple of ways you can obtain the sample REST API responses to use for federation.
 

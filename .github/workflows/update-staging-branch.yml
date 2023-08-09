@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Deploy graphQL Federation to staging
+jobs:
+  update-staging:
+    runs-on: [ARM64, self-hosted, Linux]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Source branch name
+        run: echo "Updating staging branch from $(git branch --show-current)"
+      - name: Update staging branch
+        run: |
+          git checkout -B staging
+          git push --force origin staging
+      - name: Staging branch SHA
+        run: echo "$(git branch --show-current) HEAD is at $(git rev-parse HEAD)"

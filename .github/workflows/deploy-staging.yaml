@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - staging
+      - 'staging'
 
 name: Deploy staging branch to staging env
 jobs:

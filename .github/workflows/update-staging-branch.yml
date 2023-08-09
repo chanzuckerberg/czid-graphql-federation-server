@@ -12,11 +12,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: staging
       - name: Source branch name
         run: echo "Updating staging branch from $(git branch --show-current)"
       - name: Update staging branch
         run: |
-          git checkout staging
           git merge --ff  --commit main
           git push
       - name: Staging branch SHA

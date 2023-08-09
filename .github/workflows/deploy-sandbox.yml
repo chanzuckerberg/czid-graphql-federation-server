@@ -6,7 +6,7 @@ on:
 
 name: Deploy to sandbox env
 jobs:
-  update-sandbox:
+  deploy-to-sandbox-env:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write

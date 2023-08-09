@@ -5,7 +5,7 @@ on:
 
 name: Deploy staging branch to staging env
 jobs:
-  update-staging:
+  deploy-to-staging-env:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write

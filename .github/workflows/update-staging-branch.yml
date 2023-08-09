@@ -5,7 +5,7 @@ on:
 
 name: Merge main branch into staging branch
 jobs:
-  update-staging:
+  update-staging-branch:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       contents: write

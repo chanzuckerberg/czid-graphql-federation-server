@@ -1,15 +1,24 @@
 on:
   push:
     branches:
-      - 'staging'
+      - main
 
-name: Deploy staging branch to staging env
+name: Update staging branch and deploy to staging env
 jobs:
   deploy-to-staging-env:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write
+      contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Push main branch to staging
+        run: |
+          git checkout -B staging
+          git push --force origin staging
+      - name: Show staging branch SHA
+        run: echo "$(git branch --show-current) HEAD is at $(git rev-parse HEAD)"
       - name: Assume happy-api deployment role
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -17,13 +26,12 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_STAGING }}
           role-duration-seconds: 1200
           role-session-name: CzidGraphQLFederationUpdateStaging
-      - name: Update staging
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.12.0
+      - name: Deploy to staging env
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.13.0
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: staging
           create-tag: true
           stack-name: staging-stack
           happy-version: 0.92.0
-      - name: Deployed branch and SHA
-        run: echo "Deployed SHA $(git rev-parse HEAD) from $(git branch --show-current) branch"
+          github-repo-branch: staging

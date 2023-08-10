@@ -10,6 +10,7 @@ jobs:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write
+      contents: read
     steps:
       - name: Assume happy-api deployment role
         uses: aws-actions/configure-aws-credentials@v2

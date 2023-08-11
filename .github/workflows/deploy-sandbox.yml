@@ -3,37 +3,29 @@ on:
     branches:
        - sandbox
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch name'
-        required: true
 
-name: Deploy graphQL federation to sandbox
+name: Deploy to sandbox env
 jobs:
-  update-sandbox:
+  deploy-to-sandbox-env:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write
       contents: read
     steps:
-      - name: Assume happy-api deployement role
+      - name: Assume happy-api deployment role
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: us-west-2
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_SANDBOX }}
           role-duration-seconds: 1200
           role-session-name: CzidGraphQLFederationUpdateSandbox
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.inputs.branch || 'sandbox' }}
-      - name: Print branch name
-        run: echo "Deploying branch $(git branch --show-current) to sandbox"
       - name: Update sandbox
-        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.12.0
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.13.0
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: sandbox
           create-tag: true
           stack-name: sandbox-stack
           happy-version: 0.92.0
+      - name: Deployed branch and SHA
+        run: echo "Deployed SHA $(git rev-parse HEAD) from $(git branch --show-current) branch"

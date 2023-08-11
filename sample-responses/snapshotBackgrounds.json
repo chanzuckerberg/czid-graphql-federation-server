@@ -1,0 +1,49 @@
+{
+    "other_backgrounds": [
+        {
+            "id": 26,
+            "name": "NID human CSF HC",
+            "created_at": "2018-05-09T18:17:57.000-07:00",
+            "updated_at": "2018-08-16T17:21:46.000-07:00",
+            "description": null,
+            "public_access": 1,
+            "ready": 1,
+            "user_id": null,
+            "mass_normalized": false
+        },
+        {
+            "id": 93,
+            "name": "NID Human CSF v3",
+            "created_at": "2018-09-24T11:14:47.000-07:00",
+            "updated_at": "2020-02-06T19:27:29.000-08:00",
+            "description": null,
+            "public_access": 1,
+            "ready": 1,
+            "user_id": null,
+            "mass_normalized": false
+        },
+        {
+            "id": 200,
+            "name": "jhan test normalized ",
+            "created_at": "2020-07-08T13:00:35.000-07:00",
+            "updated_at": "2020-07-08T13:00:40.000-07:00",
+            "description": "background normalized by input mass created using samples in medical detectives with erccs",
+            "public_access": null,
+            "ready": 1,
+            "user_id": 247,
+            "mass_normalized": false
+        },
+        {
+            "id": 201,
+            "name": "test mass normalized bg default",
+            "created_at": "2020-07-09T17:24:58.000-07:00",
+            "updated_at": "2020-07-09T17:25:02.000-07:00",
+            "description": null,
+            "public_access": null,
+            "ready": 1,
+            "user_id": 247,
+            "mass_normalized": true
+        }
+    ],
+    "owned_backgrounds": []
+}

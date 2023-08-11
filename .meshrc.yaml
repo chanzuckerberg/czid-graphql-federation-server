@@ -35,6 +35,21 @@ sources:
             responseTypeName: TaxonDist
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: Background
+            path: /pub/{args.snapshotShareId}/backgrounds.json
+            method: GET
+            responseSchema: ./json-schemas/coverageVizSummary.json
+            responseTypeName: Background
+            headers:
+              Cookie: "{context.headers['cookie']}"
+            transforms:
+              - resolverComposition:
+                  composition:
+                    - composer: transforms#snapshotShareBackgroundResolver
+                      resolver: accession_coverage_stats_resolver
+                    # - path: $.errors
+                    #   resolver: Error
           - type: Mutation
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata

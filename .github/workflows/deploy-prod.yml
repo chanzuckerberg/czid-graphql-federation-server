@@ -1,0 +1,42 @@
+# We use release-please to manage the changelog based on git commits which looks for
+# commit messages starting with feat: or fix: and makes a semantic versioning bump
+# accordingly. release-please creates a PR with the proposed bump and once approved
+# & merged it creates the git tag & release. Then we have another github action that
+# is triggered when the git release is published and runs the deploy-happy-stack
+# action to deploy to prod
+on:
+  release:
+    types: [published]
+
+name: Deploy prod branch to prod env
+jobs:
+  update-prod:
+    runs-on: [ARM64, self-hosted, Linux]
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Push main branch to prod
+        run: |
+          git checkout -B prod
+          git push --force origin prod
+      - name: Show prod branch SHA
+        run: echo "$(git branch --show-current) HEAD is at $(git rev-parse HEAD)"
+      - name: Assume happy-api deployment role
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: us-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_PROD }}
+          role-duration-seconds: 1200
+          role-session-name: CzidGraphQLFederationUpdateProd
+      - name: Deploy to production env
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@deploy-happy-stack-v1.13.0
+        with:
+          tfe-token: ${{ secrets.TFE_TOKEN }}
+          env: prod
+          create-tag: true
+          stack-name: prod-stack
+          happy-version: 0.92.0
+          github-repo-branch: prod

@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "other_backgrounds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "int"
+          },
+          "name": {
+            "type": "str"
+          },
+          "description": {
+            "type": "NoneType"
+          },
+          "is_public": {
+            "type": "int"
+          },
+          "mass_normalized": {
+            "type": "bool"
+          },
+          "owned": {
+            "type": "bool"
+          }
+        }
+      }
+    }
+  },
+  "owned_backgrounds": {
+    "type": "array",
+    "items": {
+      "type": "object"
+    }
+  }
+}

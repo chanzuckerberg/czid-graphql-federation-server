@@ -39,7 +39,7 @@ sources:
             field: Background
             path: /pub/{args.snapshotShareId}/backgrounds.json
             method: GET
-            responseSchema: ./json-schemas/coverageVizSummary.json
+            responseSchema: ./json-schemas/snapshotBackground.json
             responseTypeName: Background
             headers:
               Cookie: "{context.headers['cookie']}"

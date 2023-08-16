@@ -28,6 +28,14 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
+            field: Samples
+            path: /samples/index_v2.json?projectId={args.projectId}&basic=true
+            method: GET
+            responseSchema: ./json-schemas/samples.json
+            responseTypeName: Samples
+            headers:
+              Cookie: "{context.headers['cookie']}" 
+          - type: Query
             field: TaxonDist
             path: /backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}
             method: GET

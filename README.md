@@ -20,6 +20,8 @@ The [Yoga GraphiQL interface](http://localhost:3000/graphqlfed) can be used to m
 
 This project uses [the `release-please` action](https://github.com/google-github-actions/release-please-action) to automatically create release PRs for deploying to production.  This action requires commits (including PR titles) to be written using [Conventional Commit messages](https://www.conventionalcommits.org/).  The `release-please` repo has a [brief overview of Conventional Commit](https://github.com/google-github-actions/release-please-action#how-should-i-write-my-commits).  See [the Production Deplyment section](#production-deployment) for more details about the deploy process.
 
+In the [CZI validation action](https://github.com/chanzuckerberg/github-actions/blob/main/.github/actions/conventional-commits/action.yml#L9C32-L9C64), the types `chore|feat|fix|revert|docs|style` are allowed.
+
 ### Code Generation
 
 This project uses [graphql-code-generator](https://github.com/dotansimha/graphql-code-generatora) in order to generate types for graphql related entities (queries, mutations, types, etc) as well as the graphql schema in json format.
@@ -39,12 +41,12 @@ A common task in this repo is to configure graphQL Mesh to federate an existing 
 
 There are a couple of ways you can obtain the sample REST API responses to use for federation.
 
-1. The easiest way is to open the browser developer tools and navigate to https://czid.org or https://staging.czid.org. REST API responses can viewed and copied from the request shown in the `Network` tab.
+1. The easiest way is to open the browser developer tools and navigate to CZID [production](https://czid.org) or [staging](https://staging.czid.org) site. REST API responses can viewed and copied from the request shown in the `Network` tab.
 2. Another option is to use an API client like Postman. Here you will have to include the `Cookie` that you can obtain from the frontend network tab in your browser and add the parameters you need.
 
 ## Deploying to live environments
 
-This project is configured with a sandbox, staging, and sandbox environment.  In each environment, the Yoga GraphiQL interface is accessible at https://[ENV].czid.org/graphqlfed (as with the dev env, you will need to login to CZ ID first).
+This project is configured with a sandbox, staging, and production environment.  In each environment, the Yoga GraphiQL interface is accessible at https://[ENV].czid.org/graphqlfed (as with the dev env, you will need to login to CZ ID first).
 
 ### Sandbox deployment
 

@@ -1,16 +1,10 @@
-# We use release-please to manage the changelog based on git commits which looks for
-# commit messages starting with feat: or fix: and makes a semantic versioning bump
-# accordingly. release-please creates a PR with the proposed bump and once approved
-# & merged it creates the git tag & release. Then we have another github action that
-# is triggered when the git release is published and runs the deploy-happy-stack
-# action to deploy to prod
 on:
   release:
     types: [published]
 
-name: Deploy prod branch to prod env
+name: Update prod branch and deploy to prod env
 jobs:
-  update-prod:
+  deploy-to-prod-env:
     runs-on: [ARM64, self-hosted, Linux]
     permissions:
       id-token: write

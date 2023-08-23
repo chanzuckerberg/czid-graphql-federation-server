@@ -11,11 +11,8 @@ export const resolvers: Resolvers = {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
       const data = await response.json();
-      console.log('output', data);
       const ret = data.other_backgrounds.concat(data.owned_backgrounds);
-      // return ret
       return ret.map((item: any) => {
         return {
           ...item,

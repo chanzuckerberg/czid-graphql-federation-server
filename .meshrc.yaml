@@ -43,16 +43,6 @@ sources:
             responseTypeName: Background
             headers:
               Cookie: "{context.headers['cookie']}"
-            additionalResolvers:
-              - ./resolvers.ts
-            # transforms:
-            #   - resolverComposition:
-            #       composition:
-            #         - composer: transforms#snapshotShareBackgroundResolver
-            #           resolver: accession_coverage_stats_resolver
-            #         # - path: $.errors
-            #         #   resolver: Error
-
           - type: Mutation
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata
@@ -68,6 +58,8 @@ sources:
             fieldNames: camelCase
       additionalResolvers:
         - ./resolvers.ts
+additionalResolvers:
+  - ./resolvers.ts
 serve:
   port: 4444
   endpoint: "/graphqlfed"

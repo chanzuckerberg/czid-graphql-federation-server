@@ -28,7 +28,7 @@ export type Query = {
   BulkDownload?: Maybe<GeneratedMeshSchema>;
   PipelineData?: Maybe<PipelineData>;
   TaxonDist?: Maybe<TaxonDist>;
-  Background?: Maybe<Background>;
+  Background?: Maybe<Array<Maybe<query_Background_items>>>;
 };
 
 
@@ -181,16 +181,12 @@ export type query_TaxonDist_NT = {
   rpm_list?: Maybe<Array<Maybe<Scalars['JSON']['output']>>>;
 };
 
-export type Background = {
-  other_backgrounds?: Maybe<Array<Maybe<query_Background_other_backgrounds_items>>>;
-};
-
-export type query_Background_other_backgrounds_items = {
+export type query_Background_items = {
   id?: Maybe<Scalars['JSON']['output']>;
   name?: Maybe<Scalars['JSON']['output']>;
   description?: Maybe<Scalars['JSON']['output']>;
   is_public?: Maybe<Scalars['JSON']['output']>;
-  mass_normalized?: Maybe<Scalars['JSON']['output']>;
+  is_mass_normalized?: Maybe<Scalars['JSON']['output']>;
   owned?: Maybe<Scalars['JSON']['output']>;
 };
 

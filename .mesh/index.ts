@@ -63,7 +63,7 @@ export type Query = {
   BulkDownload?: Maybe<GeneratedMeshSchema>;
   PipelineData?: Maybe<PipelineData>;
   TaxonDist?: Maybe<TaxonDist>;
-  Background?: Maybe<Background>;
+  Background?: Maybe<Array<Maybe<query_Background_items>>>;
 };
 
 
@@ -618,16 +618,12 @@ export type query_TaxonDist_NT = {
   rpm_list?: Maybe<Array<Maybe<Scalars['JSON']['output']>>>;
 };
 
-export type Background = {
-  other_backgrounds?: Maybe<Array<Maybe<query_Background_other_backgrounds_items>>>;
-};
-
-export type query_Background_other_backgrounds_items = {
+export type query_Background_items = {
   id?: Maybe<Scalars['JSON']['output']>;
   name?: Maybe<Scalars['JSON']['output']>;
   description?: Maybe<Scalars['JSON']['output']>;
   is_public?: Maybe<Scalars['JSON']['output']>;
-  mass_normalized?: Maybe<Scalars['JSON']['output']>;
+  is_mass_normalized?: Maybe<Scalars['JSON']['output']>;
   owned?: Maybe<Scalars['JSON']['output']>;
 };
 
@@ -784,8 +780,7 @@ export type ResolversTypes = ResolversObject<{
   query_TaxonDist_merged_NT_NR: ResolverTypeWrapper<query_TaxonDist_merged_NT_NR>;
   query_TaxonDist_NR: ResolverTypeWrapper<query_TaxonDist_NR>;
   query_TaxonDist_NT: ResolverTypeWrapper<query_TaxonDist_NT>;
-  Background: ResolverTypeWrapper<Background>;
-  query_Background_other_backgrounds_items: ResolverTypeWrapper<query_Background_other_backgrounds_items>;
+  query_Background_items: ResolverTypeWrapper<query_Background_items>;
   mutationInput_UpdateSampleNotes_input_Input: mutationInput_UpdateSampleNotes_input_Input;
   ObjMap: ResolverTypeWrapper<Scalars['ObjMap']['output']>;
   HTTPMethod: HTTPMethod;
@@ -843,8 +838,7 @@ export type ResolversParentTypes = ResolversObject<{
   query_TaxonDist_merged_NT_NR: query_TaxonDist_merged_NT_NR;
   query_TaxonDist_NR: query_TaxonDist_NR;
   query_TaxonDist_NT: query_TaxonDist_NT;
-  Background: Background;
-  query_Background_other_backgrounds_items: query_Background_other_backgrounds_items;
+  query_Background_items: query_Background_items;
   mutationInput_UpdateSampleNotes_input_Input: mutationInput_UpdateSampleNotes_input_Input;
   ObjMap: Scalars['ObjMap']['output'];
 }>;
@@ -888,7 +882,7 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   BulkDownload?: Resolver<Maybe<ResolversTypes['GeneratedMeshSchema']>, ParentType, ContextType, Partial<QueryBulkDownloadArgs>>;
   PipelineData?: Resolver<Maybe<ResolversTypes['PipelineData']>, ParentType, ContextType, Partial<QueryPipelineDataArgs>>;
   TaxonDist?: Resolver<Maybe<ResolversTypes['TaxonDist']>, ParentType, ContextType, Partial<QueryTaxonDistArgs>>;
-  Background?: Resolver<Maybe<ResolversTypes['Background']>, ParentType, ContextType, Partial<QueryBackgroundArgs>>;
+  Background?: Resolver<Maybe<Array<Maybe<ResolversTypes['query_Background_items']>>>, ParentType, ContextType, Partial<QueryBackgroundArgs>>;
 }>;
 
 export type MutationResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
@@ -1389,17 +1383,12 @@ export type query_TaxonDist_NTResolvers<ContextType = MeshContext, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BackgroundResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Background'] = ResolversParentTypes['Background']> = ResolversObject<{
-  other_backgrounds?: Resolver<Maybe<Array<Maybe<ResolversTypes['query_Background_other_backgrounds_items']>>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type query_Background_other_backgrounds_itemsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Background_other_backgrounds_items'] = ResolversParentTypes['query_Background_other_backgrounds_items']> = ResolversObject<{
+export type query_Background_itemsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Background_items'] = ResolversParentTypes['query_Background_items']> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   is_public?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  mass_normalized?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
+  is_mass_normalized?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   owned?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -1453,8 +1442,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   query_TaxonDist_merged_NT_NR?: query_TaxonDist_merged_NT_NRResolvers<ContextType>;
   query_TaxonDist_NR?: query_TaxonDist_NRResolvers<ContextType>;
   query_TaxonDist_NT?: query_TaxonDist_NTResolvers<ContextType>;
-  Background?: BackgroundResolvers<ContextType>;
-  query_Background_other_backgrounds_items?: query_Background_other_backgrounds_itemsResolvers<ContextType>;
+  query_Background_items?: query_Background_itemsResolvers<ContextType>;
   ObjMap?: GraphQLScalarType;
 }>;
 
@@ -1523,7 +1511,7 @@ const czidgqlHandler = new GraphqlHandler({
             });
 const czidrestHandler = new JsonSchemaHandler({
               name: "CZIDREST",
-              config: {"endpoint":"http://web:3000/","operations":[{"type":"Query","field":"BulkDownload","path":"/bulk_downloads/{args.bulkDownloadId}","method":"GET","responseSchema":"./json-schemas/bulkDownloads.json","responseTypeName":"BulkDownload","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"PipelineData","path":"/samples/{args.sampleId}/pipeline_viz/7.0.json","method":"GET","responseSchema":"./json-schemas/pipelineData.json","responseTypeName":"PipelineData","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"TaxonDist","path":"/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}","method":"GET","responseSchema":"./json-schemas/taxonDist.json","responseTypeName":"TaxonDist","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"Background","path":"/pub/{args.snapshotShareId}/backgrounds.json","method":"GET","responseSchema":"./json-schemas/snapshotBackground.json","responseTypeName":"Background","headers":{"Cookie":"{context.headers['cookie']}"},"transforms":[{"resolverComposition":{"composition":[{"composer":"transforms#snapshotShareBackgroundResolver","resolver":"accession_coverage_stats_resolver"}]}}]},{"type":"Mutation","field":"UpdateSampleNotes","path":"/samples/{args.sampleId}/save_metadata","method":"POST","requestSample":{"value":"test","field":"notes","authenticityToken":"test"},"responseSchema":"./json-schemas/updateSampleNotes.json","responseTypeName":"UpdateSampleNotes","headers":{"Cookie":"{context.headers['cookie']}"}}]},
+              config: {"endpoint":"http://web:3000/","operations":[{"type":"Query","field":"BulkDownload","path":"/bulk_downloads/{args.bulkDownloadId}","method":"GET","responseSchema":"./json-schemas/bulkDownloads.json","responseTypeName":"BulkDownload","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"PipelineData","path":"/samples/{args.sampleId}/pipeline_viz/7.0.json","method":"GET","responseSchema":"./json-schemas/pipelineData.json","responseTypeName":"PipelineData","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"TaxonDist","path":"/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}","method":"GET","responseSchema":"./json-schemas/taxonDist.json","responseTypeName":"TaxonDist","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"Background","path":"/pub/{args.snapshotShareId}/backgrounds.json","method":"GET","responseSchema":"./json-schemas/snapshotBackground.json","responseTypeName":"Background","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Mutation","field":"UpdateSampleNotes","path":"/samples/{args.sampleId}/save_metadata","method":"POST","requestSample":{"value":"test","field":"notes","authenticityToken":"test"},"responseSchema":"./json-schemas/updateSampleNotes.json","responseTypeName":"UpdateSampleNotes","headers":{"Cookie":"{context.headers['cookie']}"}}]},
               baseDir,
               cache,
               pubsub,
@@ -1541,7 +1529,10 @@ sources[1] = {
           handler: czidrestHandler,
           transforms: czidrestTransforms
         }
-const additionalResolvers = [] as any[]
+const additionalResolvers = await Promise.all([
+        import("../resolvers.ts")
+            .then(m => m.resolvers || m.default || m)
+      ]);
 const merger = new(StitchingMerger as any)({
         cache,
         pubsub,

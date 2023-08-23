@@ -1,33 +1,28 @@
 // resolvers.ts
-import fetch from 'node-fetch';
-import { Resolvers } from './.mesh';
-
-// export default {
-//   Query: {
-//     CZID: async () => {
-//       const response = await fetch('http://web:3001/graphql');
-//       const data = await response.json();
-//       return data;
-//     },
-//     Background: async () => {
-//       console.log('Background resolver');
-//     },
-//   },
-// };
+import fetch from "node-fetch";
+import { Resolvers } from "./.mesh";
 
 export const resolvers: Resolvers = {
-  // Background: {
-  //   resolve(root, args, context, info) {
-  //     console.log('Background resolver');
-  //   }
-  // },
-  Background: {
-    other_backgrounds: async (root, args, context, info) => {
-      console.log('other_backgrounds resolver');
-      return [];
-    }
+  Query: {
+    Background: async (root, args, context, info) => {
+      const response = await fetch(`http://web:3000/pub/${args.snapshotShareId}/backgrounds.json`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response);
+      const data = await response.json();
+      console.log('output', data);
+      const ret = data.other_backgrounds.concat(data.owned_backgrounds);
+      // return ret
+      return ret.map((item: any) => {
+        return {
+          ...item,
+          is_mass_normalized: item.mass_normalized
+        };
+      }, []);
+    },
   },
+};
 
-}
-
-// export default resolvers;

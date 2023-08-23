@@ -24,6 +24,5 @@
     "@graphql-mesh/json-schema": "^0.94.6",
     "graphql": "^16.7.1"
   },
-  "overrides": {
-  }
+  "overrides": {}
 }

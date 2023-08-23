@@ -14,22 +14,13 @@ Note that [set up CZ ID setup](https://github.com/chanzuckerberg/czid-web-privat
 
 The [Yoga GraphiQL interface](http://localhost:3000/graphqlfed) can be used to manually perform queries against graphQL Mesh.  Note that you need to login via CZ ID first for queries to succeed.
 
-## Deploying to live environments
+## Project tooling and workflows
 
-This project is configured with a sandbox, staging, and sandbox environment.  In each environment, the Yoga GraphiQL interface is accessible at https://[ENV].czid.org/graphqlfed (as with the dev env, you will need to login to CZ ID first).
+### release-please
 
-### Sandbox deployment
+This project uses [the `release-please` action](https://github.com/google-github-actions/release-please-action) to automatically create release PRs for deploying to production.  This action requires commits (including PR titles) to be written using [Conventional Commit messages](https://www.conventionalcommits.org/).  The `release-please` repo has a [brief overview of Conventional Commit](https://github.com/google-github-actions/release-please-action#how-should-i-write-my-commits).  See [the Production Deplyment section](#production-deployment) for more details about the deploy process.
 
-There are two ways to [trigger a deploy to the sandbox environment](https://github.com/chanzuckerberg/czid-graphql-federation-server/blob/main/.github/workflows/deploy-sandbox.yml):
-
-1. Merge or push a branch to the `sandbox` branch.
-1. Manually [trigger a branch to be deployed in Actions](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/deploy-sandbox.yml), by clicking `Run workflow`, and setting the `Use workflow from` option to the branch you wish to deploy to sandbox.
-
-### Staging deployment
-
-Whenever there is a push to the `main` branch (generally when a PR is merged), that triggers [a Github Action that pushes the `main` branch to the `staging` branch](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/update-staging-branch.yml).  That in turn triggers [another Github Action which deploys the `staging` branch to the staging environment](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/deploy-staging.yml)
-
-## Working with this project
+In the [CZI validation action](https://github.com/chanzuckerberg/github-actions/blob/main/.github/actions/conventional-commits/action.yml#L9C32-L9C64), the types `chore|feat|fix|revert|docs|style` are allowed.
 
 ### Code Generation
 
@@ -50,5 +41,28 @@ A common task in this repo is to configure graphQL Mesh to federate an existing 
 
 There are a couple of ways you can obtain the sample REST API responses to use for federation.
 
-1. The easiest way is to open the browser developer tools and navigate to https://czid.org or https://staging.czid.org. REST API responses can viewed and copied from the request shown in the `Network` tab.
+1. The easiest way is to open the browser developer tools and navigate to CZID [production](https://czid.org) or [staging](https://staging.czid.org) site. REST API responses can viewed and copied from the request shown in the `Network` tab.
 2. Another option is to use an API client like Postman. Here you will have to include the `Cookie` that you can obtain from the frontend network tab in your browser and add the parameters you need.
+
+## Deploying to live environments
+
+This project is configured with a sandbox, staging, and production environment.  In each environment, the Yoga GraphiQL interface is accessible at https://[ENV].czid.org/graphqlfed (as with the dev env, you will need to login to CZ ID first).
+
+### Sandbox deployment
+
+There are two ways to [trigger a deploy to the sandbox environment](https://github.com/chanzuckerberg/czid-graphql-federation-server/blob/main/.github/workflows/deploy-sandbox.yml):
+
+1. Merge or push a branch to the `sandbox` branch.
+1. Manually [trigger a branch to be deployed in Actions](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/deploy-sandbox.yml), by clicking `Run workflow`, and setting the `Use workflow from` option to the branch you wish to deploy to sandbox.
+
+### Staging deployment
+
+When there is a push to the `main` branch, the [`deploy-staging` workflow](https://github.com/chanzuckerberg/czid-graphql-federation-server/actions/workflows/deploy-staging.yml) pushes the `main` branch onto the `staging` branch, and deploys to the staging environment
+
+### Production deployment
+
+When there is a push to the `main` branch (generally via PR merge), a release PR is created by the Release Please action.  When this PR is merged, Release Please will publish a Github release, which triggers a prod deployment.
+
+## TODO
+
+In the future, we will probably want to run CZ ID E2E tests on every commit, and possibly before release PRs are merged.  Those tests are currently under development, but once we have confidence in our E2E tests, we can move towards a continuous deployment model with the federation server.

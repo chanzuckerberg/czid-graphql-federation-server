@@ -10,7 +10,7 @@
         "type": "str"
       },
       "description": {
-        "type": "NoneType"
+        "type": "str"
       },
       "is_public": {
         "type": "int"

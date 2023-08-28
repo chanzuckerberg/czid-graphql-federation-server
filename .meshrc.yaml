@@ -20,14 +20,6 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
-            field: PersistedBackground
-            path: /persisted_backgrounds/{args.projectId}
-            method: GET
-            responseSchema: ./json-schemas/persistedBackground.json
-            responseTypeName: PersistedBackground
-            headers:
-              Cookie: "{context.headers['cookie']}"
-          - type: Query
             field: PipelineData
             path: /samples/{args.sampleId}/pipeline_viz/7.0.json
             method: GET
@@ -64,6 +56,10 @@ sources:
         - namingConvention:
             typeNames: camelCase
             fieldNames: camelCase
+      additionalResolvers:
+        - ./resolvers.ts
+additionalResolvers:
+  - ./resolvers.ts
 serve:
   port: 4444
   endpoint: "/graphqlfed"

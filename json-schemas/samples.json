@@ -12,14 +12,24 @@
                     "name": {
                         "type": "str"
                     },
-                    "created_at": {
-                        "type": "str"
+                    "entity": {
+                        "type": "object",
+                        "properties": {
+                            "created_at": {
+                                "type": "str"
+                            },
+                            "project_id": {
+                                "type": "int"
+                            }
+                        }
                     },
-                    "project_id": {
-                        "type": "int"
-                    },
-                    "host_genome_id": {
-                        "type": "int"
+                    "reference_genome": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "int"
+                            }
+                        }
                     }
                 }
             }

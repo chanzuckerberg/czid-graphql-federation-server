@@ -472,10 +472,13 @@ const schemaAST = {
             }
           ],
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "Samples"
+            "kind": "ListType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "query_Samples_items"
+              }
             }
           },
           "directives": [
@@ -642,7 +645,7 @@ const schemaAST = {
               },
               "value": {
                 "kind": "StringValue",
-                "value": "http://web:3001/"
+                "value": "http://web:3000/"
               }
             }
           ]
@@ -1889,37 +1892,7 @@ const schemaAST = {
       "kind": "ObjectTypeDefinition",
       "name": {
         "kind": "Name",
-        "value": "Samples"
-      },
-      "fields": [
-        {
-          "kind": "FieldDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "samples"
-          },
-          "arguments": [],
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "query_Samples_samples_items"
-              }
-            }
-          },
-          "directives": []
-        }
-      ],
-      "interfaces": [],
-      "directives": []
-    },
-    {
-      "kind": "ObjectTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "query_Samples_samples_items"
+        "value": "query_Samples_items"
       },
       "fields": [
         {
@@ -1965,7 +1938,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "query_Samples_samples_items_entity"
+              "value": "query_Samples_items_entity"
             }
           },
           "directives": []
@@ -1981,7 +1954,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "query_Samples_samples_items_reference_genome"
+              "value": "query_Samples_items_reference_genome"
             }
           },
           "directives": []
@@ -1994,7 +1967,7 @@ const schemaAST = {
       "kind": "ObjectTypeDefinition",
       "name": {
         "kind": "Name",
-        "value": "query_Samples_samples_items_entity"
+        "value": "query_Samples_items_entity"
       },
       "fields": [
         {
@@ -2037,7 +2010,7 @@ const schemaAST = {
       "kind": "ObjectTypeDefinition",
       "name": {
         "kind": "Name",
-        "value": "query_Samples_samples_items_reference_genome"
+        "value": "query_Samples_items_reference_genome"
       },
       "fields": [
         {

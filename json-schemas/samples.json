@@ -1,35 +1,30 @@
 {
-    "type": "object",
-    "properties": {
-        "samples": {
-            "type": "array",
-            "items": {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "int"
+            },
+            "name": {
+                "type": "str"
+            },
+            "entity": {
+                "type": "object",
+                "properties": {
+                    "created_at": {
+                        "type": "str"
+                    },
+                    "project_id": {
+                        "type": "int"
+                    }
+                }
+            },
+            "reference_genome": {
                 "type": "object",
                 "properties": {
                     "id": {
                         "type": "int"
-                    },
-                    "name": {
-                        "type": "str"
-                    },
-                    "entity": {
-                        "type": "object",
-                        "properties": {
-                            "created_at": {
-                                "type": "str"
-                            },
-                            "project_id": {
-                                "type": "int"
-                            }
-                        }
-                    },
-                    "reference_genome": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "int"
-                            }
-                        }
                     }
                 }
             }

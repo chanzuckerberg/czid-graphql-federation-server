@@ -17,8 +17,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { CzidgqlTypes } from './sources/CZIDGQL/types';
 import type { CzidrestTypes } from './sources/CZIDREST/types';
+import type { CzidgqlTypes } from './sources/CZIDGQL/types';
 import * as importedModule$0 from "./sources/CZIDGQL/introspectionSchema";
 import * as importedModule$1 from "./sources/CZIDREST/schemaWithAnnotations";
 export type Maybe<T> = T | null;
@@ -62,7 +62,7 @@ export type Query = {
   user: User;
   BulkDownload?: Maybe<GeneratedMeshSchema>;
   PipelineData?: Maybe<PipelineData>;
-  Samples?: Maybe<Samples>;
+  Samples?: Maybe<Array<Maybe<query_Samples_items>>>;
   TaxonDist?: Maybe<TaxonDist>;
 };
 
@@ -591,23 +591,19 @@ export type query_PipelineData_edges_items_files_items = {
   url?: Maybe<Scalars['JSON']['output']>;
 };
 
-export type Samples = {
-  samples?: Maybe<Array<Maybe<query_Samples_samples_items>>>;
-};
-
-export type query_Samples_samples_items = {
+export type query_Samples_items = {
   id?: Maybe<Scalars['JSON']['output']>;
   name?: Maybe<Scalars['JSON']['output']>;
-  entity?: Maybe<query_Samples_samples_items_entity>;
-  reference_genome?: Maybe<query_Samples_samples_items_reference_genome>;
+  entity?: Maybe<query_Samples_items_entity>;
+  reference_genome?: Maybe<query_Samples_items_reference_genome>;
 };
 
-export type query_Samples_samples_items_entity = {
+export type query_Samples_items_entity = {
   created_at?: Maybe<Scalars['JSON']['output']>;
   project_id?: Maybe<Scalars['JSON']['output']>;
 };
 
-export type query_Samples_samples_items_reference_genome = {
+export type query_Samples_items_reference_genome = {
   id?: Maybe<Scalars['JSON']['output']>;
 };
 
@@ -787,10 +783,9 @@ export type ResolversTypes = ResolversObject<{
   query_PipelineData_edges_items_to: ResolverTypeWrapper<query_PipelineData_edges_items_to>;
   query_PipelineData_edges_items_from: ResolverTypeWrapper<query_PipelineData_edges_items_from>;
   query_PipelineData_edges_items_files_items: ResolverTypeWrapper<query_PipelineData_edges_items_files_items>;
-  Samples: ResolverTypeWrapper<Samples>;
-  query_Samples_samples_items: ResolverTypeWrapper<query_Samples_samples_items>;
-  query_Samples_samples_items_entity: ResolverTypeWrapper<query_Samples_samples_items_entity>;
-  query_Samples_samples_items_reference_genome: ResolverTypeWrapper<query_Samples_samples_items_reference_genome>;
+  query_Samples_items: ResolverTypeWrapper<query_Samples_items>;
+  query_Samples_items_entity: ResolverTypeWrapper<query_Samples_items_entity>;
+  query_Samples_items_reference_genome: ResolverTypeWrapper<query_Samples_items_reference_genome>;
   TaxonDist: ResolverTypeWrapper<TaxonDist>;
   query_TaxonDist_merged_NT_NR: ResolverTypeWrapper<query_TaxonDist_merged_NT_NR>;
   query_TaxonDist_NR: ResolverTypeWrapper<query_TaxonDist_NR>;
@@ -848,10 +843,9 @@ export type ResolversParentTypes = ResolversObject<{
   query_PipelineData_edges_items_to: query_PipelineData_edges_items_to;
   query_PipelineData_edges_items_from: query_PipelineData_edges_items_from;
   query_PipelineData_edges_items_files_items: query_PipelineData_edges_items_files_items;
-  Samples: Samples;
-  query_Samples_samples_items: query_Samples_samples_items;
-  query_Samples_samples_items_entity: query_Samples_samples_items_entity;
-  query_Samples_samples_items_reference_genome: query_Samples_samples_items_reference_genome;
+  query_Samples_items: query_Samples_items;
+  query_Samples_items_entity: query_Samples_items_entity;
+  query_Samples_items_reference_genome: query_Samples_items_reference_genome;
   TaxonDist: TaxonDist;
   query_TaxonDist_merged_NT_NR: query_TaxonDist_merged_NT_NR;
   query_TaxonDist_NR: query_TaxonDist_NR;
@@ -898,7 +892,7 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryuserArgs, 'archetypes' | 'email' | 'institution' | 'name' | 'role' | 'segments'>>;
   BulkDownload?: Resolver<Maybe<ResolversTypes['GeneratedMeshSchema']>, ParentType, ContextType, Partial<QueryBulkDownloadArgs>>;
   PipelineData?: Resolver<Maybe<ResolversTypes['PipelineData']>, ParentType, ContextType, Partial<QueryPipelineDataArgs>>;
-  Samples?: Resolver<Maybe<ResolversTypes['Samples']>, ParentType, ContextType, Partial<QuerySamplesArgs>>;
+  Samples?: Resolver<Maybe<Array<Maybe<ResolversTypes['query_Samples_items']>>>, ParentType, ContextType, Partial<QuerySamplesArgs>>;
   TaxonDist?: Resolver<Maybe<ResolversTypes['TaxonDist']>, ParentType, ContextType, Partial<QueryTaxonDistArgs>>;
 }>;
 
@@ -1369,26 +1363,21 @@ export type query_PipelineData_edges_items_files_itemsResolvers<ContextType = Me
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SamplesResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Samples'] = ResolversParentTypes['Samples']> = ResolversObject<{
-  samples?: Resolver<Maybe<Array<Maybe<ResolversTypes['query_Samples_samples_items']>>>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type query_Samples_samples_itemsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Samples_samples_items'] = ResolversParentTypes['query_Samples_samples_items']> = ResolversObject<{
+export type query_Samples_itemsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Samples_items'] = ResolversParentTypes['query_Samples_items']> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  entity?: Resolver<Maybe<ResolversTypes['query_Samples_samples_items_entity']>, ParentType, ContextType>;
-  reference_genome?: Resolver<Maybe<ResolversTypes['query_Samples_samples_items_reference_genome']>, ParentType, ContextType>;
+  entity?: Resolver<Maybe<ResolversTypes['query_Samples_items_entity']>, ParentType, ContextType>;
+  reference_genome?: Resolver<Maybe<ResolversTypes['query_Samples_items_reference_genome']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type query_Samples_samples_items_entityResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Samples_samples_items_entity'] = ResolversParentTypes['query_Samples_samples_items_entity']> = ResolversObject<{
+export type query_Samples_items_entityResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Samples_items_entity'] = ResolversParentTypes['query_Samples_items_entity']> = ResolversObject<{
   created_at?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   project_id?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type query_Samples_samples_items_reference_genomeResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Samples_samples_items_reference_genome'] = ResolversParentTypes['query_Samples_samples_items_reference_genome']> = ResolversObject<{
+export type query_Samples_items_reference_genomeResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_Samples_items_reference_genome'] = ResolversParentTypes['query_Samples_items_reference_genome']> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -1469,10 +1458,9 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   query_PipelineData_edges_items_to?: query_PipelineData_edges_items_toResolvers<ContextType>;
   query_PipelineData_edges_items_from?: query_PipelineData_edges_items_fromResolvers<ContextType>;
   query_PipelineData_edges_items_files_items?: query_PipelineData_edges_items_files_itemsResolvers<ContextType>;
-  Samples?: SamplesResolvers<ContextType>;
-  query_Samples_samples_items?: query_Samples_samples_itemsResolvers<ContextType>;
-  query_Samples_samples_items_entity?: query_Samples_samples_items_entityResolvers<ContextType>;
-  query_Samples_samples_items_reference_genome?: query_Samples_samples_items_reference_genomeResolvers<ContextType>;
+  query_Samples_items?: query_Samples_itemsResolvers<ContextType>;
+  query_Samples_items_entity?: query_Samples_items_entityResolvers<ContextType>;
+  query_Samples_items_reference_genome?: query_Samples_items_reference_genomeResolvers<ContextType>;
   TaxonDist?: TaxonDistResolvers<ContextType>;
   query_TaxonDist_merged_NT_NR?: query_TaxonDist_merged_NT_NRResolvers<ContextType>;
   query_TaxonDist_NR?: query_TaxonDist_NRResolvers<ContextType>;
@@ -1535,7 +1523,7 @@ const czidrestTransforms = [];
 const additionalTypeDefs = [] as any[];
 const czidgqlHandler = new GraphqlHandler({
               name: "CZIDGQL",
-              config: {"endpoint":"http://web:3001/graphql","source":"./sources/czid-schema.graphql","operationHeaders":{"Cookie":"{context.headers['cookie']}"}},
+              config: {"endpoint":"http://web:3000/graphql","source":"./sources/czid-schema.graphql","operationHeaders":{"Cookie":"{context.headers['cookie']}"}},
               baseDir,
               cache,
               pubsub,
@@ -1545,7 +1533,7 @@ const czidgqlHandler = new GraphqlHandler({
             });
 const czidrestHandler = new JsonSchemaHandler({
               name: "CZIDREST",
-              config: {"endpoint":"http://web:3001/","operations":[{"type":"Query","field":"BulkDownload","path":"/bulk_downloads/{args.bulkDownloadId}","method":"GET","responseSchema":"./json-schemas/bulkDownloads.json","responseTypeName":"BulkDownload","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"PipelineData","path":"/samples/{args.sampleId}/pipeline_viz/7.0.json","method":"GET","responseSchema":"./json-schemas/pipelineData.json","responseTypeName":"PipelineData","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"Samples","path":"/samples/index_v2.json?projectId={args.projectId}","method":"GET","responseSchema":"./json-schemas/samples.json","responseTypeName":"Samples","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"TaxonDist","path":"/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}","method":"GET","responseSchema":"./json-schemas/taxonDist.json","responseTypeName":"TaxonDist","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Mutation","field":"UpdateSampleNotes","path":"/samples/{args.sampleId}/save_metadata","method":"POST","requestSample":{"value":"test","field":"notes","authenticityToken":"test"},"responseSchema":"./json-schemas/updateSampleNotes.json","responseTypeName":"UpdateSampleNotes","headers":{"Cookie":"{context.headers['cookie']}"}}]},
+              config: {"endpoint":"http://web:3000/","operations":[{"type":"Query","field":"BulkDownload","path":"/bulk_downloads/{args.bulkDownloadId}","method":"GET","responseSchema":"./json-schemas/bulkDownloads.json","responseTypeName":"BulkDownload","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"PipelineData","path":"/samples/{args.sampleId}/pipeline_viz/7.0.json","method":"GET","responseSchema":"./json-schemas/pipelineData.json","responseTypeName":"PipelineData","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"Samples","path":"/samples/index_v2.json?projectId={args.projectId}","method":"GET","responseSchema":"./json-schemas/samples.json","responseTypeName":"Samples","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"TaxonDist","path":"/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}","method":"GET","responseSchema":"./json-schemas/taxonDist.json","responseTypeName":"TaxonDist","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Mutation","field":"UpdateSampleNotes","path":"/samples/{args.sampleId}/save_metadata","method":"POST","requestSample":{"value":"test","field":"notes","authenticityToken":"test"},"responseSchema":"./json-schemas/updateSampleNotes.json","responseTypeName":"UpdateSampleNotes","headers":{"Cookie":"{context.headers['cookie']}"}}]},
               baseDir,
               cache,
               pubsub,

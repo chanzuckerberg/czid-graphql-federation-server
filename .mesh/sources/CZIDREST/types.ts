@@ -27,7 +27,7 @@ export type Scalars = {
 export type Query = {
   BulkDownload?: Maybe<GeneratedMeshSchema>;
   PipelineData?: Maybe<PipelineData>;
-  Samples?: Maybe<Samples>;
+  Samples?: Maybe<Array<Maybe<query_Samples_items>>>;
   TaxonDist?: Maybe<TaxonDist>;
 };
 
@@ -154,23 +154,19 @@ export type query_PipelineData_edges_items_files_items = {
   url?: Maybe<Scalars['JSON']['output']>;
 };
 
-export type Samples = {
-  samples?: Maybe<Array<Maybe<query_Samples_samples_items>>>;
-};
-
-export type query_Samples_samples_items = {
+export type query_Samples_items = {
   id?: Maybe<Scalars['JSON']['output']>;
   name?: Maybe<Scalars['JSON']['output']>;
-  entity?: Maybe<query_Samples_samples_items_entity>;
-  reference_genome?: Maybe<query_Samples_samples_items_reference_genome>;
+  entity?: Maybe<query_Samples_items_entity>;
+  reference_genome?: Maybe<query_Samples_items_reference_genome>;
 };
 
-export type query_Samples_samples_items_entity = {
+export type query_Samples_items_entity = {
   created_at?: Maybe<Scalars['JSON']['output']>;
   project_id?: Maybe<Scalars['JSON']['output']>;
 };
 
-export type query_Samples_samples_items_reference_genome = {
+export type query_Samples_items_reference_genome = {
   id?: Maybe<Scalars['JSON']['output']>;
 };
 

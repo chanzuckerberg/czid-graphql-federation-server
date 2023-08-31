@@ -5,7 +5,10 @@ import { Resolvers } from "./.mesh";
 export const resolvers: Resolvers = {
   Query: {
     Samples: async (root, args, context, info) => {
-      const response = await fetch(`http://web:3000/samples/index_v2.json?projectId=${args.projectId}`, {
+      console.log("Samples resolver called");
+      // @ts-ignore
+      console.log("headers: ", context);
+      const response = await fetch(`http://web:3001/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -23,7 +26,7 @@ export const resolvers: Resolvers = {
             },
             reference_genome: {
               id: item.host_genome_id,
-            },
+            }
           };
       }, []);
     },

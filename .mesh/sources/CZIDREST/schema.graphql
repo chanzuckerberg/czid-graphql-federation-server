@@ -9,10 +9,10 @@ directive @globalOptions(sourceName: String, endpoint: String, operationHeaders:
 
 directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
 
-type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") {
+type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3000/") {
   BulkDownload(bulkDownloadId: String): GeneratedMeshSchema @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
   PipelineData(sampleId: String): PipelineData @httpOperation(path: "/samples/{args.sampleId}/pipeline_viz/7.0.json", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
-  Samples(projectId: String): Samples @httpOperation(path: "/samples/index_v2.json?projectId={args.projectId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
+  Samples(projectId: String): [query_Samples_items] @httpOperation(path: "/samples/index_v2.json?projectId={args.projectId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
   TaxonDist(backgroundId: String, taxonId: String): TaxonDist @httpOperation(path: "/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
 }
 
@@ -121,23 +121,19 @@ type query_PipelineData_edges_items_files_items {
   url: JSON
 }
 
-type Samples {
-  samples: [query_Samples_samples_items]
-}
-
-type query_Samples_samples_items {
+type query_Samples_items {
   id: JSON
   name: JSON
-  entity: query_Samples_samples_items_entity
-  reference_genome: query_Samples_samples_items_reference_genome
+  entity: query_Samples_items_entity
+  reference_genome: query_Samples_items_reference_genome
 }
 
-type query_Samples_samples_items_entity {
+type query_Samples_items_entity {
   created_at: JSON
   project_id: JSON
 }
 
-type query_Samples_samples_items_reference_genome {
+type query_Samples_items_reference_genome {
   id: JSON
 }
 

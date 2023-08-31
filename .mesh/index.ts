@@ -1523,7 +1523,7 @@ const czidrestTransforms = [];
 const additionalTypeDefs = [] as any[];
 const czidgqlHandler = new GraphqlHandler({
               name: "CZIDGQL",
-              config: {"endpoint":"http://web:3000/graphql","source":"./sources/czid-schema.graphql","operationHeaders":{"Cookie":"{context.headers['cookie']}"}},
+              config: {"endpoint":"http://web:3001/graphql","source":"./sources/czid-schema.graphql","operationHeaders":{"Cookie":"{context.headers['cookie']}"}},
               baseDir,
               cache,
               pubsub,
@@ -1533,7 +1533,7 @@ const czidgqlHandler = new GraphqlHandler({
             });
 const czidrestHandler = new JsonSchemaHandler({
               name: "CZIDREST",
-              config: {"endpoint":"http://web:3000/","operations":[{"type":"Query","field":"BulkDownload","path":"/bulk_downloads/{args.bulkDownloadId}","method":"GET","responseSchema":"./json-schemas/bulkDownloads.json","responseTypeName":"BulkDownload","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"PipelineData","path":"/samples/{args.sampleId}/pipeline_viz/7.0.json","method":"GET","responseSchema":"./json-schemas/pipelineData.json","responseTypeName":"PipelineData","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"Samples","path":"/samples/index_v2.json?projectId={args.projectId}","method":"GET","responseSchema":"./json-schemas/samples.json","responseTypeName":"Samples","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"TaxonDist","path":"/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}","method":"GET","responseSchema":"./json-schemas/taxonDist.json","responseTypeName":"TaxonDist","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Mutation","field":"UpdateSampleNotes","path":"/samples/{args.sampleId}/save_metadata","method":"POST","requestSample":{"value":"test","field":"notes","authenticityToken":"test"},"responseSchema":"./json-schemas/updateSampleNotes.json","responseTypeName":"UpdateSampleNotes","headers":{"Cookie":"{context.headers['cookie']}"}}]},
+              config: {"endpoint":"http://web:3001/","operations":[{"type":"Query","field":"BulkDownload","path":"/bulk_downloads/{args.bulkDownloadId}","method":"GET","responseSchema":"./json-schemas/bulkDownloads.json","responseTypeName":"BulkDownload","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"PipelineData","path":"/samples/{args.sampleId}/pipeline_viz/7.0.json","method":"GET","responseSchema":"./json-schemas/pipelineData.json","responseTypeName":"PipelineData","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"Samples","path":"/samples/index_v2.json?projectId={args.projectId}","method":"GET","responseSchema":"./json-schemas/samples.json","responseTypeName":"Samples","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Query","field":"TaxonDist","path":"/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}","method":"GET","responseSchema":"./json-schemas/taxonDist.json","responseTypeName":"TaxonDist","headers":{"Cookie":"{context.headers['cookie']}"}},{"type":"Mutation","field":"UpdateSampleNotes","path":"/samples/{args.sampleId}/save_metadata","method":"POST","requestSample":{"value":"test","field":"notes","authenticityToken":"test"},"responseSchema":"./json-schemas/updateSampleNotes.json","responseTypeName":"UpdateSampleNotes","headers":{"Cookie":"{context.headers['cookie']}"}}]},
               baseDir,
               cache,
               pubsub,

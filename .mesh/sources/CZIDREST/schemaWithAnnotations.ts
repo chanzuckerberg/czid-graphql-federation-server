@@ -645,7 +645,7 @@ const schemaAST = {
               },
               "value": {
                 "kind": "StringValue",
-                "value": "http://web:3000/"
+                "value": "http://web:3001/"
               }
             }
           ]

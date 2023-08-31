@@ -6,10 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     image: "czid-graphql"
-    platform: linux/amd64
+    platform: linux/arm64
     restart: always
     environment:
-      API_URL: http://web:3000
+      API_URL: http://web:3001
     ports:
       - "4444:4444"
     volumes:

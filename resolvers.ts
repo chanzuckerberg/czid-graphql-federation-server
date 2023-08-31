@@ -5,9 +5,7 @@ import { Resolvers } from "./.mesh";
 export const resolvers: Resolvers = {
   Query: {
     Samples: async (root, args, context, info) => {
-      console.log("Samples resolver called");
-      // @ts-ignore
-      console.log("headers: ", context);
+      console.log(context);
       const response = await fetch(`http://web:3001/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`, {
         method: 'GET',
         headers: {

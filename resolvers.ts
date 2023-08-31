@@ -5,10 +5,11 @@ import { Resolvers } from "./.mesh";
 export const resolvers: Resolvers = {
   Query: {
     Samples: async (root, args, context, info) => {
-      console.log(context);
       const response = await fetch(`http://web:3001/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`, {
         method: 'GET',
         headers: {
+          // @ts-ignore
+          'Cookie': context.request.headers.get("cookie"),
           'Content-Type': 'application/json',
         },
       });

@@ -12,7 +12,7 @@ directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMet
 type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") {
   BulkDownload(bulkDownloadId: String): GeneratedMeshSchema @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
   PipelineData(sampleId: String): PipelineData @httpOperation(path: "/samples/{args.sampleId}/pipeline_viz/7.0.json", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
-  Samples(projectId: String): [query_Samples_items] @httpOperation(path: "/samples/index_v2.json?projectId={args.projectId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
+  Samples(projectId: String): [query_Samples_items] @httpOperation(path: "/samples/index_v2.json?projectId={args.projectId}", httpMethod: GET)
   TaxonDist(backgroundId: String, taxonId: String): TaxonDist @httpOperation(path: "/backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}", operationSpecificHeaders: "{\"Cookie\":\"{context.headers['cookie']}\"}", httpMethod: GET)
 }
 

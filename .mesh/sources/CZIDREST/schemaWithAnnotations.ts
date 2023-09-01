@@ -504,17 +504,6 @@ const schemaAST = {
                   "kind": "Argument",
                   "name": {
                     "kind": "Name",
-                    "value": "operationSpecificHeaders"
-                  },
-                  "value": {
-                    "kind": "StringValue",
-                    "value": "{\"Cookie\":\"{context.headers['cookie']}\"}"
-                  }
-                },
-                {
-                  "kind": "Argument",
-                  "name": {
-                    "kind": "Name",
                     "value": "httpMethod"
                   },
                   "value": {

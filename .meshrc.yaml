@@ -33,8 +33,6 @@ sources:
             method: GET
             responseSchema: ./json-schemas/samples.json
             responseTypeName: Samples
-            headers:
-              Cookie: "{context.headers['cookie']}"
           - type: Query
             field: TaxonDist
             path: /backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}

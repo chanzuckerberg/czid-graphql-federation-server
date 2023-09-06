@@ -54,8 +54,6 @@ sources:
         - namingConvention:
             typeNames: camelCase
             fieldNames: camelCase
-      additionalResolvers:
-        - ./resolvers.ts
 additionalResolvers:
   - ./resolvers.ts
 serve:

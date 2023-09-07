@@ -41,8 +41,6 @@ sources:
             method: GET
             responseSchema: ./json-schemas/snapshotBackground.json
             responseTypeName: Background
-            headers:
-              Cookie: "{context.headers['cookie']}"
           - type: Mutation
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata

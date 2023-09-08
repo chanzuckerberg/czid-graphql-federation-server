@@ -14,6 +14,14 @@ Note that [set up CZ ID setup](https://github.com/chanzuckerberg/czid-web-privat
 
 The [Yoga GraphiQL interface](http://localhost:3000/graphqlfed) can be used to manually perform queries against graphQL Mesh.  Note that you need to login via CZ ID first for queries to succeed.
 
+## Configuration Philosophy
+
+This project is built on top of the Graphql Mesh framework. This framework was selected due to the fact that it provides a fair bit of functionality from configuration alone. The configurations are defined in the `.meshrc` file and can handle fetching data from an API and simple [transforms](https://the-guild.dev/graphql/mesh/docs/transforms/transforms-introduction).
+
+However, when the configuration based transforms are not sufficient, and custom code is required, it can be inlcuded in the `resolver.ts` file.
+
+As a rule of thumb, the resolver.ts file should be avoided and all endpoints should be federated via the `.meshrc` file, to the extent possible.
+
 ## Project tooling and workflows
 
 ### release-please

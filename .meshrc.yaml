@@ -49,6 +49,12 @@ sources:
             responseTypeName: TaxonDist
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: Background
+            path: /pub/{args.snapshotShareId}/backgrounds.json
+            method: GET
+            responseSchema: ./json-schemas/snapshotBackground.json
+            responseTypeName: Background
           - type: Mutation
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata

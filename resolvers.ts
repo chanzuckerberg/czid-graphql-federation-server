@@ -1,23 +1,19 @@
 // resolvers.ts
-import fetch from "node-fetch";
 import { Resolvers } from "./.mesh";
+import { get } from "./utils";
 
 export const resolvers: Resolvers = {
   Query: {
+    AmrWorkflowResults: async (root, args, context, info) => {
+      const { quality_metrics, report_table_data } = await get(`http://web:3001/workflow_runs/${args.workflowRunId}/results`, context);
+      return {
+        metric_amr: quality_metrics,
+        amr_hit: report_table_data,
+      };
+    },
     Background: async (root, args, context, info) => {
-      const response = await fetch(
-        `http://web:3001/pub/${args.snapshotShareId}/backgrounds.json`,
-        {
-          method: "GET",
-          headers: {
-            // @ts-ignore
-            Cookie: context.request.headers.get("cookie"),
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      const ret = data.other_backgrounds.concat(data.owned_backgrounds);
+      const { other_backgrounds, owned_backgrounds } = await get(`http://web:3001/pub/${args.snapshotShareId}/backgrounds.json`, context);
+      const ret = other_backgrounds.concat(owned_backgrounds);
       return ret.map((item: any) => {
         return {
           ...item,
@@ -26,20 +22,11 @@ export const resolvers: Resolvers = {
       }, []);
     },
     Samples: async (root, args, context, info) => {
-      const response = await fetch(
+      const { samples } = await get(
         `http://web:3001/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`,
-        {
-          method: "GET",
-          headers: {
-            // @ts-ignore
-            Cookie: context.request.headers.get("cookie"),
-            "Content-Type": "application/json",
-          },
-        }
+        context,
       );
-      const data = await response.json();
-      const ret = data.samples;
-      return ret.map((item: any) => {
+      return samples.map((item: any) => {
         return {
           id: item.id,
           name: item.name,
@@ -53,5 +40,22 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
+    ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
+      const { coverage_viz, quality_metrics, taxon_info } = await get(`http://web:3001/workflow_runs/${args.workflowRunId}/results`, context);
+      return {
+        metric_consensus_genome: {
+          ...quality_metrics,
+          coverage_viz: coverage_viz,
+        },
+        reference_genome: {
+          accession_id: taxon_info.accession_id,
+          accession_name: taxon_info.accession_name,
+          taxon: {
+            id: taxon_info.taxon_id,
+            name: taxon_info.taxon_name,
+          },
+        }
+      };
+    }, 
   },
 };

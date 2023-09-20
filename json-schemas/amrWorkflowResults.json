@@ -1,0 +1,102 @@
+{
+    "type": "object",
+    "properties": {
+        "metric_amr": {
+            "type": "object",
+            "properties": {
+                "total_reads": {
+                    "type": "int"
+                },
+                "qc_percent": {
+                    "type": "float"
+                },
+                "adjusted_remaining_reads": {
+                    "type": "int"
+                },
+                "compression_ratio": {
+                    "type": "float"
+                },
+                "total_ercc_reads": {
+                    "type": "int"
+                },
+                "fraction_subsampled": {
+                    "type": "float"
+                },
+                "insert_size_mean": {
+                    "type": "int"
+                },
+                "insert_size_standard_deviation": {
+                    "type": "float"
+                },
+                "percent_remaining": {
+                    "type": "float"
+                }
+            }
+        },
+        "amr_hit": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "drug_class": {
+                        "type": "str"
+                    },
+                    "gene": {
+                        "type": "str"
+                    },
+                    "gene_id": {
+                        "type": "str"
+                    },
+                    "gene_family": {
+                        "type": "str"
+                    },
+                    "high_level_drug_class": {
+                        "type": "str"
+                    },
+                    "mechanism": {
+                        "type": "str"
+                    },
+                    "model": {
+                        "type": "str"
+                    },
+                    "contigs": {
+                        "type": "str"
+                    },
+                    "cutoff": {
+                        "type": "str"
+                    },
+                    "contig_coverage_breadth": {
+                        "type": "str"
+                    },
+                    "contig_percent_id": {
+                        "type": "str"
+                    },
+                    "reads": {
+                        "type": "str"
+                    },
+                    "rpm": {
+                        "type": "float"
+                    },
+                    "read_coverage_breadth": {
+                        "type": "str"
+                    },
+                    "read_coverage_depth": {
+                        "type": "str"
+                    },
+                    "dpm": {
+                        "type": "float"
+                    },
+                    "read_species": {
+                        "type": "str"
+                    },
+                    "contig_species": {
+                        "type": "str"
+                    },
+                    "aro_accession": {
+                        "type": "str"
+                    }
+                }
+            }
+        }
+    }
+}

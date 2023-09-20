@@ -12,6 +12,12 @@ sources:
         endpoint: ${API_URL}/
         operations:
           - type: Query
+            field: AmrWorkflowResults
+            path: /workflow_runs/{args.workflowRunId}/results
+            method: GET
+            responseSchema: ./json-schemas/amrWorkflowResults.json
+            responseTypeName: AmrWorkflowResults
+          - type: Query
             field: BulkDownload
             path: /bulk_downloads/{args.bulkDownloadId}
             method: GET
@@ -19,6 +25,12 @@ sources:
             responseTypeName: BulkDownload
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: ConsensusGenomeWorkflowResults
+            path: /workflow_runs/{args.workflowRunId}/results
+            method: GET
+            responseSchema: ./json-schemas/consensusGenomeWorkflowResults.json
+            responseTypeName: ConsensusGenomeWorkflowResults
           - type: Query
             field: PersistedBackground
             path: /persisted_backgrounds/{args.projectId}

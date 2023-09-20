@@ -1,0 +1,94 @@
+{
+    "type": "object",
+    "properties": {
+        "metric_consensus_genome": {
+            "type": "object",
+            "properties": {
+                "ercc_mapped_reads": {
+                    "type": "int"
+                },
+                "mapped_reads": {
+                    "type": "int"
+                },
+                "n_actg": {
+                    "type": "int"
+                },
+                "n_ambiguous": {
+                    "type": "int"
+                },
+                "n_missing": {
+                    "type": "int"
+                },
+                "ref_snps": {
+                    "type": "int"
+                },
+                "total_reads": {
+                    "type": "int"
+                },
+                "percent_identity": {
+                    "type": "float"
+                },
+                "gc_percent": {
+                    "type": "float"
+                },
+                "percent_genome_called": {
+                    "type": "float"
+                },
+                "reference_genome_length": {
+                    "type": "int"
+                },
+                "coverage_viz": {
+                    "type": "object",
+                    "properties": {
+                        "total_length": {
+                            "type": "int"
+                        },
+                        "coverage": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "int"
+                                }
+                            }
+                        },
+                        "coverage_bin_size": {
+                            "type": "float"
+                        },
+                        "max_aligned_length": {
+                            "type": "int"
+                        },
+                        "coverage_depth": {
+                            "type": "float"
+                        },
+                        "coverage_breadth": {
+                            "type": "float"
+                        }
+                    }
+                }
+            }
+        },
+        "reference_genome": {
+            "type": "object",
+            "properties": {
+                "accession_id": {
+                    "type": "str"
+                },
+                "accession_name": {
+                    "type": "str"
+                },
+                "taxon": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "int"
+                        },
+                        "name": {
+                            "type": "str"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

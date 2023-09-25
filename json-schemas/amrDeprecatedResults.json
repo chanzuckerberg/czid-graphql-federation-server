@@ -1,0 +1,50 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "int"
+            },
+            "gene": {
+                "type": "str"
+            },
+            "allele": {
+                "type": "str"
+            },
+            "coverage": {
+                "type": "float"
+            },
+            "depth": {
+                "type": "float"
+            },
+            "pipeline_run_id": {
+                "type": "int"
+            },
+            "drug_family": {
+                "type": "str"
+            },
+            "created_at": {
+                "type": "str"
+            },
+            "updated_at": {
+                "type": "str"
+            },
+            "annotation_gene": {
+                "type": "str"
+            },
+            "genbank_accession": {
+                "type": "str"
+            },
+            "total_reads": {
+                "type": "int"
+            },
+            "rpm": {
+                "type": "float"
+            },
+            "dpm": {
+                "type": "float"
+            }
+        }
+    }
+}

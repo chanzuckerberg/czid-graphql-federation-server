@@ -12,6 +12,14 @@ sources:
         endpoint: ${API_URL}/
         operations:
           - type: Query
+            field: AmrDeprecatedResults
+            path: /samples/{args.sampleId}/amr.json
+            method: GET
+            responseSchema: ./json-schemas/amrDeprecatedResults.json
+            responseTypeName: AmrDeprecatedResults
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
             field: AmrWorkflowResults
             path: /workflow_runs/{args.workflowRunId}/results
             method: GET

@@ -40,6 +40,12 @@ sources:
             responseSchema: ./json-schemas/consensusGenomeWorkflowResults.json
             responseTypeName: ConsensusGenomeWorkflowResults
           - type: Query
+            field: MngsWorkflowResults
+            path: /samples/{args.sampleId}.json
+            method: GET
+            responseSchema: ./json-schemas/mngsWorkflowResults.json
+            responseTypeName: MngsWorkflowResults
+          - type: Query
             field: PersistedBackground
             path: /persisted_backgrounds/{args.projectId}
             method: GET
@@ -55,6 +61,12 @@ sources:
             responseTypeName: PipelineData
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: Samples
+            path: /samples/{args.sampleId}.json
+            method: GET
+            responseSchema: ./json-schemas/samples.json
+            responseTypeName: Samples
           - type: Query
             field: Samples
             path: /samples/index_v2.json?projectId={args.projectId}

@@ -15,8 +15,25 @@
                     "created_at": {
                         "type": "str"
                     },
-                    "project_id": {
+                    "updated_at": {
+                        "type": "str"
+                    },
+                    "owner_user_id": {
                         "type": "int"
+                    },
+                    "producing_run_id": {
+                        "type": "int"
+                    },
+                    "project": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "int"
+                            },
+                            "name": {
+                                "type": "str"
+                            }
+                        }
                     }
                 }
             },
@@ -25,6 +42,64 @@
                 "properties": {
                     "id": {
                         "type": "int"
+                    },
+                    "background_id": {
+                        "type": "int"
+                    }
+                }
+            },
+            "sequence_reads": {
+                "type": "object",
+                "properties": {
+                    "sequencing_technology": {
+                        "type": "str"
+                    }
+                }
+            },
+            "file": {
+                "type": "object",
+                "properties": {
+                    "upload_status": {
+                        "type": "str"
+                    },
+                    "upload_error": {
+                        "type": "str"
+                    }
+                }
+            },
+            "runs": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "int"
+                        },
+                        "status": {
+                            "type": "str"
+                        },
+                        "started_at": {
+                            "type": "str"
+                        },
+                        "workflow_version_id": {
+                            "type": "str"
+                        },
+                        "inputs_json": {
+                            "type": "object",
+                            "properties": {
+                                "alignment_config_name": {
+                                    "type": "str"
+                                }
+                            }
+                        },
+                        "outputs_json": {
+                            "type": "object",
+                            "properties": {
+                                "input_error": {
+                                    "type": "str"
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "properties": {
+        "metric_mngs": {
+            "type": "object",
+            "properties": {
+                "assembled": {
+                    "type": "int"
+                },
+                "adjusted_remaining_reads": {
+                    "type": "int"
+                },
+                "total_ercc_reads": {
+                    "type": "int"
+                }
+            }
+        }
+    }
+}

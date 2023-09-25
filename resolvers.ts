@@ -1,18 +1,19 @@
 // resolvers.ts
 import { Resolvers } from "./.mesh";
-import { get } from "./utils";
+import { get, notFound } from "./httpUtils";
+import { formatSample, formatSamples } from "./samplesQueryUtils";
 
 export const resolvers: Resolvers = {
   Query: {
     AmrWorkflowResults: async (root, args, context, info) => {
-      const { quality_metrics, report_table_data } = await get(`http://web:3001/workflow_runs/${args.workflowRunId}/results`, context);
+      const { quality_metrics, report_table_data } = await get(`/workflow_runs/${args.workflowRunId}/results`, context);
       return {
         metric_amr: quality_metrics,
         amr_hit: report_table_data,
       };
     },
     Background: async (root, args, context, info) => {
-      const { other_backgrounds, owned_backgrounds } = await get(`http://web:3001/pub/${args.snapshotShareId}/backgrounds.json`, context);
+      const { other_backgrounds, owned_backgrounds } = await get(`/pub/${args.snapshotShareId}/backgrounds.json`, context);
       const ret = other_backgrounds.concat(owned_backgrounds);
       return ret.map((item: any) => {
         return {
@@ -21,27 +22,31 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
+    MngsWorkflowResults: async (root, args, context, info) => {
+      const data = await get(`/samples/${args.sampleId}.json`, context);
+      const pipelineRun = data.pipeline_runs[0] || {}
+      return {
+        metric_mngs: {
+          assembled: pipelineRun?.assembled,
+          adjusted_remaining_reads: pipelineRun?.adjusted_remaining_reads,
+          total_ercc_reads: pipelineRun?.total_ercc_reads,
+        }
+      };
+    },
     Samples: async (root, args, context, info) => {
-      const { samples } = await get(
-        `http://web:3001/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`,
-        context,
-      );
-      return samples.map((item: any) => {
-        return {
-          id: item.id,
-          name: item.name,
-          entity: {
-            created_at: item.created_at,
-            project_id: item.project_id,
-          },
-          reference_genome: {
-            id: item.host_genome_id,
-          },
-        };
-      }, []);
+      if (args.sampleId) {
+        const sample = await get(`/samples/${args.sampleId}.json`, context);
+        if (args.projectId && sample.project.id !== parseInt(args.projectId)) {
+          return notFound(`Sample ${args.sampleId} not found in project ${args.projectId}`);
+        }
+        return formatSample(sample);
+      } else if (args.projectId) {
+        const { samples } = await get(`/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`, context);
+        return formatSamples(samples);
+      }
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
-      const { coverage_viz, quality_metrics, taxon_info } = await get(`http://web:3001/workflow_runs/${args.workflowRunId}/results`, context);
+      const { coverage_viz, quality_metrics, taxon_info } = await get(`/workflow_runs/${args.workflowRunId}/results`, context);
       return {
         metric_consensus_genome: {
           ...quality_metrics,

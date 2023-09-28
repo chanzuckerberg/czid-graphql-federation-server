@@ -1,0 +1,11 @@
+{
+    "type": "object",
+    "properties": {
+        "project_id": {
+            "type": "int"
+        },
+        "background_id": {
+            "type": "int"
+        }
+    }
+}

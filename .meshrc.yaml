@@ -62,6 +62,12 @@ sources:
             responseSchema: ./json-schemas/samples.json
             responseTypeName: Samples
           - type: Query
+            field: CoverageVizSummary
+            path: /samples/{args.sampleId}/coverage_viz_summary
+            method: GET
+            responseSchema: ./json-schemas/coverageVizSummary.json
+            responseTypeName: CoverageVizSummary
+          - type: Query
             field: TaxonDist
             path: /backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}
             method: GET

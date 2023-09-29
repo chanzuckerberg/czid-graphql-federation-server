@@ -10,14 +10,6 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Push main branch to prod
-        run: |
-          git checkout -B prod
-          git push --force origin prod
-      - name: Show prod branch SHA
-        run: echo "$(git branch --show-current) HEAD is at $(git rev-parse HEAD)"
       - name: Assume happy-api deployment role
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -33,4 +25,3 @@ jobs:
           create-tag: true
           stack-name: prod-stack
           happy-version: 0.92.0
-          github-repo-branch: prod

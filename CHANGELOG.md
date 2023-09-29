@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.1.0...v1.1.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* **ci:** deploy-prod action should deploy release tag, not main ([#66](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/66)) ([9fbaacd](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/9fbaacd119cabb9ec061dbad800086e1a361369e))
+
 ## [1.1.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.0.0...v1.1.0) (2023-09-28)
 
 

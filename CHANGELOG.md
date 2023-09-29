@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.0.0...v1.1.0) (2023-09-28)
+
+
+### Features
+
+* **api:** federate GET  '/samples/index_v2' endpt ([5177ba5](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5177ba512de544b7cd3d552f2bbde6e6c48333ba))
+* **api:** federate GET  '/samples/index_v2' endpt ([5177ba5](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5177ba512de544b7cd3d552f2bbde6e6c48333ba))
+* **api:** federate GET '/samples/{sampleId}.json' endpt ([#55](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/55)) ([be44021](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/be440216ac0ddb1c06166e1158c998498afa3c49))
+* **api:** federate GET '/samples/{sampleId}/amr.json' endpt ([#56](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/56)) ([8d1cf7b](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/8d1cf7b66dbea095f67df71d5ccc23256866debd))
+* **api:** federate GET '/workflow_runs/{workflowRunId}/results' endpt ([#51](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/51)) ([30d8196](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/30d81962b54be6966352fdf7dedadaaf8ae5de5b))
+
 ## 1.0.0 (2023-08-11)
 
 

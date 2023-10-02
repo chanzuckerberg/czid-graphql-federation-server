@@ -1,0 +1,11 @@
+{ 
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "tax_id": {
+                "type": "int"
+            }
+        }
+    }
+}

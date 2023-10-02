@@ -1,0 +1,5142 @@
+{
+    "all_tax_ids": [
+      -200151340,
+      10566,
+      -200011118,
+      2050018,
+      1986198,
+      694448,
+      -200,
+      2746750,
+      2743758,
+      2609793,
+      2013702,
+      203449,
+      175245,
+      100272,
+      77133,
+      -100,
+      286,
+      515393,
+      395598,
+      75612,
+      303,
+      357,
+      2055153,
+      561,
+      562,
+      570,
+      573,
+      583,
+      584,
+      590,
+      28901,
+      620,
+      624,
+      623,
+      626,
+      351614,
+      629,
+      28152,
+      662,
+      670,
+      724,
+      727,
+      1243,
+      1403934,
+      1301,
+      1313,
+      1386,
+      1428,
+      1396,
+      2745,
+      1897729,
+      3705,
+      3711,
+      4441,
+      319929,
+      4442,
+      4512,
+      4513,
+      4557,
+      4558,
+      5820,
+      36330,
+      6209,
+      6210,
+      6292,
+      6293,
+      6333,
+      181606,
+      45882,
+      6397,
+      35632,
+      6484,
+      1406391,
+      6578,
+      6579,
+      7215,
+      7226,
+      29487,
+      1851568,
+      30079,
+      79782,
+      31295,
+      1296328,
+      46580,
+      99802,
+      53335,
+      553,
+      55822,
+      55823,
+      60942,
+      480255,
+      61471,
+      61478,
+      71953,
+      984161,
+      95102,
+      1611554,
+      115250,
+      537346,
+      537343,
+      129337,
+      33941,
+      156132,
+      676789,
+      168752,
+      667509,
+      196951,
+      262353,
+      236439,
+      236440,
+      333750,
+      337042,
+      693996,
+      1508224,
+      28295,
+      11137,
+      694002,
+      2501960,
+      1928434,
+      1699096,
+      1508222,
+      1160968,
+      694007,
+      694005,
+      694003,
+      290028,
+      1653394,
+      11620,
+      1742990,
+      494023,
+      1857014,
+      1484056,
+      2602897,
+      2602898
+    ],
+    "metadata": {
+      "pipelineRunStatus": "SUCCEEDED",
+      "hasErrors": false,
+      "jobStatus": "CHECKED",
+      "reportReady": true,
+      "preSubsamplingCount": 20014,
+      "postSubsamplingCount": 20014,
+      "taxonWhitelisted": false,
+      "hasByteRanges": true,
+      "alignVizAvailable": true
+    },
+    "counts": {
+      "1": {
+        "303": {
+          "genus_tax_id": 286,
+          "name": "Pseudomonas putida",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -11.7353,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 33.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 2,
+            "e_value": -50.5412,
+            "source_count_type": null,
+            "percent_identity": 95.119,
+            "alignment_length": 102.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "553": {
+          "genus_tax_id": 53335,
+          "name": "Pantoea ananatis",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -18.4989,
+            "source_count_type": null,
+            "percent_identity": 95.0,
+            "alignment_length": 40.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "562": {
+          "genus_tax_id": 561,
+          "name": "Escherichia coli",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 99,
+            "e_value": -19.7148,
+            "source_count_type": null,
+            "percent_identity": 99.2349,
+            "alignment_length": 40.1515,
+            "rpm": 11.192625077585243,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 135,
+            "e_value": -67.6755,
+            "source_count_type": null,
+            "percent_identity": 99.9055,
+            "alignment_length": 121.867,
+            "rpm": 15.262670560343512,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "573": {
+          "genus_tax_id": 570,
+          "name": "Klebsiella pneumoniae",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 12,
+            "e_value": -21.8198,
+            "source_count_type": null,
+            "percent_identity": 99.8333,
+            "alignment_length": 39.8333,
+            "rpm": 1.35668182758609,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 1,
+            "contig_r": 6
+          },
+          "nt": {
+            "count": 2,
+            "e_value": -41.7312,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 79.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "584": {
+          "genus_tax_id": 583,
+          "name": "Proteus mirabilis",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -14.2284,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 32.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "623": {
+          "genus_tax_id": 620,
+          "name": "Shigella flexneri",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -20.2993,
+            "source_count_type": null,
+            "percent_identity": 97.6,
+            "alignment_length": 41.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "624": {
+          "genus_tax_id": 620,
+          "name": "Shigella sonnei",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 4,
+            "e_value": -18.1504,
+            "source_count_type": null,
+            "percent_identity": 99.4,
+            "alignment_length": 37.25,
+            "rpm": 0.45222727586203,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "670": {
+          "genus_tax_id": 662,
+          "name": "Vibrio parahaemolyticus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 7,
+            "e_value": -13.5237,
+            "source_count_type": null,
+            "percent_identity": 97.1714,
+            "alignment_length": 30.7143,
+            "rpm": 0.7913977327585525,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "727": {
+          "genus_tax_id": 724,
+          "name": "Haemophilus influenzae",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 3,
+            "e_value": -31.1669,
+            "source_count_type": null,
+            "percent_identity": 79.688,
+            "alignment_length": 64.0,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "1313": {
+          "genus_tax_id": 1301,
+          "name": "Streptococcus pneumoniae",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -26.3726,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 50.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "1396": {
+          "genus_tax_id": 1386,
+          "name": "Bacillus cereus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -15.6005,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 41.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "1428": {
+          "genus_tax_id": 1386,
+          "name": "Bacillus thuringiensis",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -15.6005,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 41.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "3711": {
+          "genus_tax_id": 3705,
+          "name": "Brassica rapa",
+          "common_name": "field mustard",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2281,
+            "source_count_type": null,
+            "percent_identity": 97.561,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "4442": {
+          "genus_tax_id": 4441,
+          "name": "Camellia sinensis",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2498,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 39.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "4513": {
+          "genus_tax_id": 4512,
+          "name": "Hordeum vulgare",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 4,
+            "e_value": -70.9497,
+            "source_count_type": null,
+            "percent_identity": 98.684,
+            "alignment_length": 145.5,
+            "rpm": 0.45222727586203,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "4558": {
+          "genus_tax_id": 4557,
+          "name": "Sorghum bicolor",
+          "common_name": "sorghum",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -16.9522,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 43.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "6210": {
+          "genus_tax_id": 6209,
+          "name": "Echinococcus granulosus",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -12.8775,
+            "source_count_type": null,
+            "percent_identity": 97.436,
+            "alignment_length": 39.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "6293": {
+          "genus_tax_id": 6292,
+          "name": "Wuchereria bancrofti",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -26.0809,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 50.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "6579": {
+          "genus_tax_id": 6578,
+          "name": "Pecten maximus",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -16.2005,
+            "source_count_type": null,
+            "percent_identity": 92.0,
+            "alignment_length": 50.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "7226": {
+          "genus_tax_id": 7215,
+          "name": "Drosophila mauritiana",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2498,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 39.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "10566": {
+          "genus_tax_id": -200151340,
+          "name": "Human papillomavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 6,
+            "e_value": -15.6858,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 34.3333,
+            "rpm": 0.678340913793045,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "11137": {
+          "genus_tax_id": 693996,
+          "name": "Human coronavirus 229E",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 3675,
+            "e_value": -270.662,
+            "source_count_type": null,
+            "percent_identity": 99.7466,
+            "alignment_length": 691.364,
+            "rpm": 415.48380969824007,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 21,
+            "contig_r": 3591
+          },
+          "nt": {
+            "count": 3694,
+            "e_value": -296.797,
+            "source_count_type": null,
+            "percent_identity": 99.929,
+            "alignment_length": 2968.51,
+            "rpm": 417.6318892585847,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 21,
+            "contig_r": 3591
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "11620": {
+          "genus_tax_id": 1653394,
+          "name": "Lassa mammarenavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nt": {
+            "count": 9,
+            "e_value": -15.3236,
+            "source_count_type": null,
+            "percent_identity": 99.1304,
+            "alignment_length": 41.4,
+            "rpm": 1.0175113706895675,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "28152": {
+          "genus_tax_id": 629,
+          "name": "Yersinia kristensenii",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -28.4815,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "28295": {
+          "genus_tax_id": 693996,
+          "name": "Porcine epidemic diarrhea virus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -4.33348,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 24.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "28901": {
+          "genus_tax_id": 590,
+          "name": "Salmonella enterica",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 8,
+            "e_value": -13.6366,
+            "source_count_type": null,
+            "percent_identity": 98.8625,
+            "alignment_length": 31.75,
+            "rpm": 0.90445455172406,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 1,
+            "e_value": -16.9522,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 43.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "33941": {
+          "genus_tax_id": 129337,
+          "name": "Geobacillus thermoleovorans",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -14.9914,
+            "source_count_type": null,
+            "percent_identity": 86.7,
+            "alignment_length": 45.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "35632": {
+          "genus_tax_id": 6397,
+          "name": "Lumbricus rubellus",
+          "common_name": "humus earthworm",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2281,
+            "source_count_type": null,
+            "percent_identity": 97.561,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "36330": {
+          "genus_tax_id": 5820,
+          "name": "Plasmodium ovale",
+          "common_name": "malaria parasite P. ovale",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -4.27327,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 21.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "45882": {
+          "genus_tax_id": 6333,
+          "name": "Trichinella britovi",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -3.12726,
+            "source_count_type": null,
+            "percent_identity": 90.5,
+            "alignment_length": 21.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "55823": {
+          "genus_tax_id": 55822,
+          "name": "Xironogiton victoriensis",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -11.4834,
+            "source_count_type": null,
+            "percent_identity": 92.683,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "61478": {
+          "genus_tax_id": 61471,
+          "name": "Timema douglasi",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -11.528,
+            "source_count_type": null,
+            "percent_identity": 97.297,
+            "alignment_length": 37.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "75612": {
+          "genus_tax_id": 286,
+          "name": "Pseudomonas mandelii",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -35.7945,
+            "source_count_type": null,
+            "percent_identity": 85.149,
+            "alignment_length": 101.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "77133": {
+          "genus_tax_id": -200,
+          "name": "uncultured bacterium",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 3,
+            "e_value": -53.7076,
+            "source_count_type": null,
+            "percent_identity": 98.5863,
+            "alignment_length": 99.0,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "79782": {
+          "genus_tax_id": 30079,
+          "name": "Cimex lectularius",
+          "common_name": "bed bug",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -16.8954,
+            "source_count_type": null,
+            "percent_identity": 93.878,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "99802": {
+          "genus_tax_id": 46580,
+          "name": "Spirometra erinaceieuropaei",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 3,
+            "e_value": -18.2867,
+            "source_count_type": null,
+            "percent_identity": 98.0393,
+            "alignment_length": 47.0,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "100272": {
+          "genus_tax_id": -200,
+          "name": "uncultured eukaryote",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 6,
+            "e_value": -11.9817,
+            "source_count_type": null,
+            "percent_identity": 97.7825,
+            "alignment_length": 37.3333,
+            "rpm": 0.678340913793045,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "175245": {
+          "genus_tax_id": -200,
+          "name": "uncultured fungus",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.9049,
+            "source_count_type": null,
+            "percent_identity": 97.778,
+            "alignment_length": 42.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "181606": {
+          "genus_tax_id": 6333,
+          "name": "Trichinella sp. T9",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -3.12205,
+            "source_count_type": null,
+            "percent_identity": 90.5,
+            "alignment_length": 21.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "203449": {
+          "genus_tax_id": -200,
+          "name": "uncultured marine eukaryote",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 8,
+            "e_value": -2.3562,
+            "source_count_type": null,
+            "percent_identity": 66.667,
+            "alignment_length": 66.0,
+            "rpm": 0.90445455172406,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "236440": {
+          "genus_tax_id": 236439,
+          "name": "Semium hirtum",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -18.2678,
+            "source_count_type": null,
+            "percent_identity": 95.918,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "262353": {
+          "genus_tax_id": 196951,
+          "name": "Echinolittorina aspera",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -10.8537,
+            "source_count_type": null,
+            "percent_identity": 97.222,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "290028": {
+          "genus_tax_id": 694002,
+          "name": "Human coronavirus HKU1",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 13,
+            "e_value": -11.1828,
+            "source_count_type": null,
+            "percent_identity": 91.4077,
+            "alignment_length": 36.3846,
+            "rpm": 1.4697386465515974,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "319929": {
+          "genus_tax_id": 4441,
+          "name": "Camellia saluenensis",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -13.5526,
+            "source_count_type": null,
+            "percent_identity": 97.5,
+            "alignment_length": 40.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "337042": {
+          "genus_tax_id": 333750,
+          "name": "Alphapapillomavirus 7",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 78,
+            "e_value": -46.544,
+            "source_count_type": null,
+            "percent_identity": 99.2744,
+            "alignment_length": 74.7051,
+            "rpm": 8.818431879309585,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 4,
+            "contig_r": 54
+          },
+          "nt": {
+            "count": 116,
+            "e_value": -105.689,
+            "source_count_type": null,
+            "percent_identity": 99.9244,
+            "alignment_length": 187.457,
+            "rpm": 13.11459099999887,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 5,
+            "contig_r": 60
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "351614": {
+          "genus_tax_id": 626,
+          "name": "Xenorhabdus stockiae",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -19.8625,
+            "source_count_type": null,
+            "percent_identity": 85.85,
+            "alignment_length": 49.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "395598": {
+          "genus_tax_id": 286,
+          "name": "Pseudomonas reinekei",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -13.4735,
+            "source_count_type": null,
+            "percent_identity": 89.583,
+            "alignment_length": 48.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "480255": {
+          "genus_tax_id": 60942,
+          "name": "Chtonobdella whitmani",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -12.226,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "494023": {
+          "genus_tax_id": 1742990,
+          "name": "Paeniglutamicibacter antarcticus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -12.4413,
+            "source_count_type": null,
+            "percent_identity": 93.9,
+            "alignment_length": 33.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "515393": {
+          "genus_tax_id": 286,
+          "name": "Pseudomonas yamanorum",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -13.4735,
+            "source_count_type": null,
+            "percent_identity": 89.583,
+            "alignment_length": 48.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "537343": {
+          "genus_tax_id": 115250,
+          "name": "Chalarus spurius",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -10.8537,
+            "source_count_type": null,
+            "percent_identity": 97.222,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "537346": {
+          "genus_tax_id": 115250,
+          "name": "Chalarus longicaudis",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -12.226,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "667509": {
+          "genus_tax_id": 168752,
+          "name": "Moerisia inkermanica",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -8.78321,
+            "source_count_type": null,
+            "percent_identity": 91.892,
+            "alignment_length": 37.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "676789": {
+          "genus_tax_id": 156132,
+          "name": "Prasinoderma singulare",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -7.41084,
+            "source_count_type": null,
+            "percent_identity": 89.189,
+            "alignment_length": 37.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "694003": {
+          "genus_tax_id": 694002,
+          "name": "Betacoronavirus 1",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 11474,
+            "e_value": -249.037,
+            "source_count_type": null,
+            "percent_identity": 98.3255,
+            "alignment_length": 741.984,
+            "rpm": 1297.213940810233,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 35,
+            "contig_r": 10878
+          },
+          "nt": {
+            "count": 11941,
+            "e_value": -268.477,
+            "source_count_type": null,
+            "percent_identity": 99.6074,
+            "alignment_length": 2670.79,
+            "rpm": 1350.011475267125,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 37,
+            "contig_r": 10889
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "694005": {
+          "genus_tax_id": 694002,
+          "name": "Murine coronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 20,
+            "e_value": -8.78085,
+            "source_count_type": null,
+            "percent_identity": 93.14,
+            "alignment_length": 31.45,
+            "rpm": 2.26113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "694007": {
+          "genus_tax_id": 694002,
+          "name": "Tylonycteris bat coronavirus HKU4",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -3.02641,
+            "source_count_type": null,
+            "percent_identity": 63.3,
+            "alignment_length": 30.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "694448": {
+          "genus_tax_id": -200011118,
+          "name": "unidentified human coronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -14.7144,
+            "source_count_type": null,
+            "percent_identity": 97.1,
+            "alignment_length": 35.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "pathogenFlags": [
+            "knownPathogen"
+          ],
+          "pathogenFlag": "knownPathogen",
+          "annotation": null
+        },
+        "984161": {
+          "genus_tax_id": 71953,
+          "name": "Inocybe cf. dulcamara EL59-05",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -12.9003,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 37.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1160968": {
+          "genus_tax_id": 694002,
+          "name": "Rabbit coronavirus HKU14",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 3,
+            "e_value": -4.64659,
+            "source_count_type": null,
+            "percent_identity": 91.3333,
+            "alignment_length": 22.3333,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 2,
+            "e_value": -25.064,
+            "source_count_type": null,
+            "percent_identity": 98.246,
+            "alignment_length": 57.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1296328": {
+          "genus_tax_id": 31295,
+          "name": "Haplosporidium littoralis",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -8.78321,
+            "source_count_type": null,
+            "percent_identity": 91.892,
+            "alignment_length": 37.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1403934": {
+          "genus_tax_id": 1243,
+          "name": "Leuconostoc sp. DORA_2",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -18.9136,
+            "source_count_type": null,
+            "percent_identity": 90.0,
+            "alignment_length": 40.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1406391": {
+          "genus_tax_id": 6484,
+          "name": "Nassarius glans",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -10.8537,
+            "source_count_type": null,
+            "percent_identity": 97.222,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1484056": {
+          "genus_tax_id": 1857014,
+          "name": "Tamilnaduibacter salinus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -21.52,
+            "source_count_type": null,
+            "percent_identity": 87.0,
+            "alignment_length": 50.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1508222": {
+          "genus_tax_id": 694002,
+          "name": "Longquan Aa mouse coronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -13.1069,
+            "source_count_type": null,
+            "percent_identity": 94.25,
+            "alignment_length": 35.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1508224": {
+          "genus_tax_id": 693996,
+          "name": "Lucheng Rn rat coronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 10,
+            "e_value": -9.52713,
+            "source_count_type": null,
+            "percent_identity": 90.55,
+            "alignment_length": 32.25,
+            "rpm": 1.130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1611554": {
+          "genus_tax_id": 95102,
+          "name": "Ruppellia nigrescens",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -16.256,
+            "source_count_type": null,
+            "percent_identity": 97.727,
+            "alignment_length": 44.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1699096": {
+          "genus_tax_id": 694002,
+          "name": "Camel coronavirus HKU23",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 3,
+            "e_value": -4.4214,
+            "source_count_type": null,
+            "percent_identity": 91.9667,
+            "alignment_length": 20.3333,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1851568": {
+          "genus_tax_id": 29487,
+          "name": "Photorhabdus namnaonensis",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -21.6342,
+            "source_count_type": null,
+            "percent_identity": 97.7,
+            "alignment_length": 43.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1897729": {
+          "genus_tax_id": 2745,
+          "name": "Halomonas aestuarii",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -41.284,
+            "source_count_type": null,
+            "percent_identity": 89.109,
+            "alignment_length": 101.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1928434": {
+          "genus_tax_id": 694002,
+          "name": "Betacoronavirus sp.",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 14,
+            "e_value": -13.4164,
+            "source_count_type": null,
+            "percent_identity": 92.4,
+            "alignment_length": 39.0714,
+            "rpm": 1.582795465517105,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "1986198": {
+          "genus_tax_id": -200011118,
+          "name": "Coronaviridae sp.",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -9.07572,
+            "source_count_type": null,
+            "percent_identity": 96.5,
+            "alignment_length": 28.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2013702": {
+          "genus_tax_id": -200,
+          "name": "Betaproteobacteria bacterium HGW-Betaproteobacteria-11",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -5.76447,
+            "source_count_type": null,
+            "percent_identity": 95.5,
+            "alignment_length": 22.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2050018": {
+          "genus_tax_id": -200011118,
+          "name": "Rodent coronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 7,
+            "e_value": -9.01796,
+            "source_count_type": null,
+            "percent_identity": 86.3126,
+            "alignment_length": 30.5714,
+            "rpm": 0.7913977327585525,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 1,
+            "contig_r": 4
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2055153": {
+          "genus_tax_id": 357,
+          "name": "Agrobacterium sp. LAD9",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -26.0391,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2501960": {
+          "genus_tax_id": 694002,
+          "name": "China Rattus coronavirus HKU24",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -13.1834,
+            "source_count_type": null,
+            "percent_identity": 91.45,
+            "alignment_length": 39.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2602898": {
+          "genus_tax_id": 2602897,
+          "name": "Asterophila perknasteri",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -12.8557,
+            "source_count_type": null,
+            "percent_identity": 95.122,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2609793": {
+          "genus_tax_id": -200,
+          "name": "Expression vector pUC57-Kan-mcr-1",
+          "common_name": "",
+          "category": null,
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -85.732,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 144.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2743758": {
+          "genus_tax_id": -200,
+          "name": "Expression vector pUC57-Kan-blaKPC-2",
+          "common_name": "",
+          "category": null,
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -85.732,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 144.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "2746750": {
+          "genus_tax_id": -200,
+          "name": "Cloning vector pAAV-EF1A-Gephyrin.FingR-GFP-CCR5TC",
+          "common_name": "",
+          "category": null,
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -90.5147,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 151.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        },
+        "-100": {
+          "genus_tax_id": -200,
+          "name": "all taxa with neither family nor genus classification",
+          "common_name": null,
+          "category": null,
+          "is_phage": false,
+          "nr": {
+            "count": 11,
+            "e_value": -15.099,
+            "source_count_type": null,
+            "percent_identity": 96.3273,
+            "alignment_length": 36.1818,
+            "rpm": 1.2436250086205825,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "annotation": null
+        }
+      },
+      "2": {
+        "286": {
+          "genus_tax_id": 286,
+          "name": "Pseudomonas",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -11.7353,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 33.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 5,
+            "e_value": -32.7648,
+            "source_count_type": null,
+            "percent_identity": 90.9106,
+            "alignment_length": 80.4,
+            "rpm": 0.5652840948275375,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            515393,
+            395598,
+            75612,
+            303
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "357": {
+          "genus_tax_id": 357,
+          "name": "Agrobacterium",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -26.0391,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            2055153
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "561": {
+          "genus_tax_id": 561,
+          "name": "Escherichia",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 99,
+            "e_value": -19.7148,
+            "source_count_type": null,
+            "percent_identity": 99.2349,
+            "alignment_length": 40.1515,
+            "rpm": 11.192625077585243,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 135,
+            "e_value": -67.6755,
+            "source_count_type": null,
+            "percent_identity": 99.9055,
+            "alignment_length": 121.867,
+            "rpm": 15.262670560343512,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            562
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "570": {
+          "genus_tax_id": 570,
+          "name": "Klebsiella",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 12,
+            "e_value": -21.8198,
+            "source_count_type": null,
+            "percent_identity": 99.8333,
+            "alignment_length": 39.8333,
+            "rpm": 1.35668182758609,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 1,
+            "contig_r": 6
+          },
+          "nt": {
+            "count": 2,
+            "e_value": -41.7312,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 79.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            573
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "583": {
+          "genus_tax_id": 583,
+          "name": "Proteus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -14.2284,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 32.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            584
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "590": {
+          "genus_tax_id": 590,
+          "name": "Salmonella",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 8,
+            "e_value": -13.6366,
+            "source_count_type": null,
+            "percent_identity": 98.8625,
+            "alignment_length": 31.75,
+            "rpm": 0.90445455172406,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "nt": {
+            "count": 1,
+            "e_value": -16.9522,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 43.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            28901
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "620": {
+          "genus_tax_id": 620,
+          "name": "Shigella",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 5,
+            "e_value": -18.5802,
+            "source_count_type": null,
+            "percent_identity": 99.04,
+            "alignment_length": 38.0,
+            "rpm": 0.5652840948275375,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            624,
+            623
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "626": {
+          "genus_tax_id": 626,
+          "name": "Xenorhabdus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -19.8625,
+            "source_count_type": null,
+            "percent_identity": 85.85,
+            "alignment_length": 49.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            351614
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "629": {
+          "genus_tax_id": 629,
+          "name": "Yersinia",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -28.4815,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            28152
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "662": {
+          "genus_tax_id": 662,
+          "name": "Vibrio",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 7,
+            "e_value": -13.5237,
+            "source_count_type": null,
+            "percent_identity": 97.1714,
+            "alignment_length": 30.7143,
+            "rpm": 0.7913977327585525,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            670
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "724": {
+          "genus_tax_id": 724,
+          "name": "Haemophilus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 3,
+            "e_value": -31.1669,
+            "source_count_type": null,
+            "percent_identity": 79.688,
+            "alignment_length": 64.0,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            727
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "1243": {
+          "genus_tax_id": 1243,
+          "name": "Leuconostoc",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -18.9136,
+            "source_count_type": null,
+            "percent_identity": 90.0,
+            "alignment_length": 40.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1403934
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "1301": {
+          "genus_tax_id": 1301,
+          "name": "Streptococcus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -26.3726,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 50.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1313
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "1386": {
+          "genus_tax_id": 1386,
+          "name": "Bacillus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -15.6005,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1428,
+            1396
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "2745": {
+          "genus_tax_id": 2745,
+          "name": "Halomonas",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -41.284,
+            "source_count_type": null,
+            "percent_identity": 89.109,
+            "alignment_length": 101.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1897729
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "3705": {
+          "genus_tax_id": 3705,
+          "name": "Brassica",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2281,
+            "source_count_type": null,
+            "percent_identity": 97.561,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            3711
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "4441": {
+          "genus_tax_id": 4441,
+          "name": "Camellia",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 3,
+            "e_value": -14.0174,
+            "source_count_type": null,
+            "percent_identity": 99.1667,
+            "alignment_length": 39.3333,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            319929,
+            4442
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "4512": {
+          "genus_tax_id": 4512,
+          "name": "Hordeum",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 4,
+            "e_value": -70.9497,
+            "source_count_type": null,
+            "percent_identity": 98.684,
+            "alignment_length": 145.5,
+            "rpm": 0.45222727586203,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            4513
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "4557": {
+          "genus_tax_id": 4557,
+          "name": "Sorghum",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -16.9522,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 43.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            4558
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "5820": {
+          "genus_tax_id": 5820,
+          "name": "Plasmodium",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -4.27327,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 21.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            36330
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "6209": {
+          "genus_tax_id": 6209,
+          "name": "Echinococcus",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -12.8775,
+            "source_count_type": null,
+            "percent_identity": 97.436,
+            "alignment_length": 39.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            6210
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "6292": {
+          "genus_tax_id": 6292,
+          "name": "Wuchereria",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -26.0809,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 50.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            6293
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "6333": {
+          "genus_tax_id": 6333,
+          "name": "Trichinella",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -3.12466,
+            "source_count_type": null,
+            "percent_identity": 90.5,
+            "alignment_length": 21.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            181606,
+            45882
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "6397": {
+          "genus_tax_id": 6397,
+          "name": "Lumbricus",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2281,
+            "source_count_type": null,
+            "percent_identity": 97.561,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            35632
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "6484": {
+          "genus_tax_id": 6484,
+          "name": "Nassarius",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -10.8537,
+            "source_count_type": null,
+            "percent_identity": 97.222,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1406391
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "6578": {
+          "genus_tax_id": 6578,
+          "name": "Pecten",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -16.2005,
+            "source_count_type": null,
+            "percent_identity": 92.0,
+            "alignment_length": 50.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            6579
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "7215": {
+          "genus_tax_id": 7215,
+          "name": "Drosophila",
+          "common_name": "fruit flies",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -14.2498,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 39.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            7226
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "29487": {
+          "genus_tax_id": 29487,
+          "name": "Photorhabdus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -21.6342,
+            "source_count_type": null,
+            "percent_identity": 97.7,
+            "alignment_length": 43.5,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1851568
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "30079": {
+          "genus_tax_id": 30079,
+          "name": "Cimex",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -16.8954,
+            "source_count_type": null,
+            "percent_identity": 93.878,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            79782
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "31295": {
+          "genus_tax_id": 31295,
+          "name": "Haplosporidium",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -8.78321,
+            "source_count_type": null,
+            "percent_identity": 91.892,
+            "alignment_length": 37.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1296328
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "46580": {
+          "genus_tax_id": 46580,
+          "name": "Spirometra",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 3,
+            "e_value": -18.2867,
+            "source_count_type": null,
+            "percent_identity": 98.0393,
+            "alignment_length": 47.0,
+            "rpm": 0.3391704568965225,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            99802
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "53335": {
+          "genus_tax_id": 53335,
+          "name": "Pantoea",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 1,
+            "e_value": -18.4989,
+            "source_count_type": null,
+            "percent_identity": 95.0,
+            "alignment_length": 40.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            553
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "55822": {
+          "genus_tax_id": 55822,
+          "name": "Xironogiton",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -11.4834,
+            "source_count_type": null,
+            "percent_identity": 92.683,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            55823
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "60942": {
+          "genus_tax_id": 60942,
+          "name": "Chtonobdella",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -12.226,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            480255
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "61471": {
+          "genus_tax_id": 61471,
+          "name": "Timema",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -11.528,
+            "source_count_type": null,
+            "percent_identity": 97.297,
+            "alignment_length": 37.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            61478
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "71953": {
+          "genus_tax_id": 71953,
+          "name": "Inocybe",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -12.9003,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 37.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            984161
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "95102": {
+          "genus_tax_id": 95102,
+          "name": "Ruppellia",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -16.256,
+            "source_count_type": null,
+            "percent_identity": 97.727,
+            "alignment_length": 44.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1611554
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "115250": {
+          "genus_tax_id": 115250,
+          "name": "Chalarus",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -11.5399,
+            "source_count_type": null,
+            "percent_identity": 98.611,
+            "alignment_length": 36.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            537346,
+            537343
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "129337": {
+          "genus_tax_id": 129337,
+          "name": "Geobacillus",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -14.9914,
+            "source_count_type": null,
+            "percent_identity": 86.7,
+            "alignment_length": 45.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            33941
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "156132": {
+          "genus_tax_id": 156132,
+          "name": "Prasinoderma",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -7.41084,
+            "source_count_type": null,
+            "percent_identity": 89.189,
+            "alignment_length": 37.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            676789
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "168752": {
+          "genus_tax_id": 168752,
+          "name": "Moerisia",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -8.78321,
+            "source_count_type": null,
+            "percent_identity": 91.892,
+            "alignment_length": 37.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            667509
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "196951": {
+          "genus_tax_id": 196951,
+          "name": "Echinolittorina",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -10.8537,
+            "source_count_type": null,
+            "percent_identity": 97.222,
+            "alignment_length": 36.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            262353
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "236439": {
+          "genus_tax_id": 236439,
+          "name": "Semium",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 1,
+            "e_value": -18.2678,
+            "source_count_type": null,
+            "percent_identity": 95.918,
+            "alignment_length": 49.0,
+            "rpm": 0.1130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            236440
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "333750": {
+          "genus_tax_id": 333750,
+          "name": "Alphapapillomavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 78,
+            "e_value": -46.544,
+            "source_count_type": null,
+            "percent_identity": 99.2744,
+            "alignment_length": 74.7051,
+            "rpm": 8.818431879309585,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 4,
+            "contig_r": 54
+          },
+          "nt": {
+            "count": 116,
+            "e_value": -105.689,
+            "source_count_type": null,
+            "percent_identity": 99.9244,
+            "alignment_length": 187.457,
+            "rpm": 13.11459099999887,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 5,
+            "contig_r": 60
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            337042
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "693996": {
+          "genus_tax_id": 693996,
+          "name": "Alphacoronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 3687,
+            "e_value": -269.948,
+            "source_count_type": null,
+            "percent_identity": 99.7267,
+            "alignment_length": 689.565,
+            "rpm": 416.8404915258261,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 21,
+            "contig_r": 3591
+          },
+          "nt": {
+            "count": 3694,
+            "e_value": -296.797,
+            "source_count_type": null,
+            "percent_identity": 99.929,
+            "alignment_length": 2968.51,
+            "rpm": 417.6318892585847,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 21,
+            "contig_r": 3591
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1508224,
+            28295,
+            11137
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "694002": {
+          "genus_tax_id": 694002,
+          "name": "Betacoronavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 11532,
+            "e_value": -247.831,
+            "source_count_type": null,
+            "percent_identity": 98.293,
+            "alignment_length": 738.407,
+            "rpm": 1303.7712363102323,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 35,
+            "contig_r": 10878
+          },
+          "nt": {
+            "count": 11943,
+            "e_value": -268.436,
+            "source_count_type": null,
+            "percent_identity": 99.6072,
+            "alignment_length": 2670.36,
+            "rpm": 1350.237588905056,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 37,
+            "contig_r": 10889
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            2501960,
+            1928434,
+            1699096,
+            1508222,
+            1160968,
+            694007,
+            694005,
+            694003,
+            290028
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "1653394": {
+          "genus_tax_id": 1653394,
+          "name": "Mammarenavirus",
+          "common_name": "",
+          "category": "viruses",
+          "is_phage": false,
+          "nt": {
+            "count": 9,
+            "e_value": -15.3236,
+            "source_count_type": null,
+            "percent_identity": 99.1304,
+            "alignment_length": 41.4,
+            "rpm": 1.0175113706895675,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            11620
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "1742990": {
+          "genus_tax_id": 1742990,
+          "name": "Paeniglutamicibacter",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -12.4413,
+            "source_count_type": null,
+            "percent_identity": 93.9,
+            "alignment_length": 33.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            494023
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "1857014": {
+          "genus_tax_id": 1857014,
+          "name": "Tamilnaduibacter",
+          "common_name": "",
+          "category": "bacteria",
+          "is_phage": false,
+          "nr": {
+            "count": 2,
+            "e_value": -21.52,
+            "source_count_type": null,
+            "percent_identity": 87.0,
+            "alignment_length": 50.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            1484056
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "2602897": {
+          "genus_tax_id": 2602897,
+          "name": "Asterophila",
+          "common_name": "",
+          "category": "eukaryota",
+          "is_phage": false,
+          "nt": {
+            "count": 2,
+            "e_value": -12.8557,
+            "source_count_type": null,
+            "percent_identity": 95.122,
+            "alignment_length": 41.0,
+            "rpm": 0.226113637931015,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            2602898
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "-200151340": {
+          "genus_tax_id": -200151340,
+          "name": "non-genus-specific reads in family Papillomaviridae",
+          "common_name": null,
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 6,
+            "e_value": -15.6858,
+            "source_count_type": null,
+            "percent_identity": 100.0,
+            "alignment_length": 34.3333,
+            "rpm": 0.678340913793045,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            10566
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "-200011118": {
+          "genus_tax_id": -200011118,
+          "name": "non-genus-specific reads in family Coronaviridae",
+          "common_name": null,
+          "category": "viruses",
+          "is_phage": false,
+          "nr": {
+            "count": 10,
+            "e_value": -9.59916,
+            "source_count_type": null,
+            "percent_identity": 89.4288,
+            "alignment_length": 30.6,
+            "rpm": 1.130568189655075,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            2050018,
+            1986198,
+            694448
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        },
+        "-200": {
+          "genus_tax_id": -200,
+          "name": "all taxa with neither family nor genus classification",
+          "common_name": null,
+          "category": null,
+          "is_phage": false,
+          "nr": {
+            "count": 13,
+            "e_value": -13.663,
+            "source_count_type": null,
+            "percent_identity": 96.2,
+            "alignment_length": 34.0,
+            "rpm": 1.4697386465515974,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null,
+            "contigs": 1,
+            "contig_r": 4
+          },
+          "nt": {
+            "count": 22,
+            "e_value": -33.0946,
+            "source_count_type": null,
+            "percent_identity": 94.459,
+            "alignment_length": 73.5,
+            "rpm": 2.487250017241165,
+            "bg_mean": null,
+            "bg_stdev": null,
+            "bg_mean_mass_normalized": null,
+            "bg_stdev_mass_normalized": null,
+            "z_score": null
+          },
+          "max_z_score": null,
+          "agg_score": null,
+          "species_tax_ids": [
+            2746750,
+            2743758,
+            2609793,
+            2013702,
+            203449,
+            175245,
+            100272,
+            77133,
+            -100
+          ],
+          "annotation": null,
+          "species_annotations": {
+            "hit": 0,
+            "not_a_hit": 0,
+            "inconclusive": 0
+          }
+        }
+      }
+    },
+    "lineage": {
+      "2": {
+        "name": "Bacteria",
+        "parent": null,
+        "rank": "superkingdom"
+      },
+      "286": {
+        "name": "Pseudomonas",
+        "parent": 135621,
+        "rank": "genus"
+      },
+      "356": {
+        "name": "Rhizobiales",
+        "parent": 28211,
+        "rank": "order"
+      },
+      "357": {
+        "name": "Agrobacterium",
+        "parent": 82115,
+        "rank": "genus"
+      },
+      "543": {
+        "name": "Enterobacteriaceae",
+        "parent": 91347,
+        "rank": "family"
+      },
+      "561": {
+        "name": "Escherichia",
+        "parent": 543,
+        "rank": "genus"
+      },
+      "570": {
+        "name": "Klebsiella",
+        "parent": 543,
+        "rank": "genus"
+      },
+      "583": {
+        "name": "Proteus",
+        "parent": 1903414,
+        "rank": "genus"
+      },
+      "590": {
+        "name": "Salmonella",
+        "parent": 543,
+        "rank": "genus"
+      },
+      "620": {
+        "name": "Shigella",
+        "parent": 543,
+        "rank": "genus"
+      },
+      "626": {
+        "name": "Xenorhabdus",
+        "parent": 1903414,
+        "rank": "genus"
+      },
+      "629": {
+        "name": "Yersinia",
+        "parent": 1903411,
+        "rank": "genus"
+      },
+      "641": {
+        "name": "Vibrionaceae",
+        "parent": 135623,
+        "rank": "family"
+      },
+      "662": {
+        "name": "Vibrio",
+        "parent": 641,
+        "rank": "genus"
+      },
+      "712": {
+        "name": "Pasteurellaceae",
+        "parent": 135625,
+        "rank": "family"
+      },
+      "724": {
+        "name": "Haemophilus",
+        "parent": 712,
+        "rank": "genus"
+      },
+      "1224": {
+        "name": "Proteobacteria",
+        "parent": "2_-650",
+        "rank": "phylum"
+      },
+      "1236": {
+        "name": "Gammaproteobacteria",
+        "parent": 1224,
+        "rank": "class"
+      },
+      "1239": {
+        "name": "Firmicutes",
+        "parent": "2_-650",
+        "rank": "phylum"
+      },
+      "1243": {
+        "name": "Leuconostoc",
+        "parent": 81850,
+        "rank": "genus"
+      },
+      "1268": {
+        "name": "Micrococcaceae",
+        "parent": 85006,
+        "rank": "family"
+      },
+      "1300": {
+        "name": "Streptococcaceae",
+        "parent": 186826,
+        "rank": "family"
+      },
+      "1301": {
+        "name": "Streptococcus",
+        "parent": 1300,
+        "rank": "genus"
+      },
+      "1385": {
+        "name": "Bacillales",
+        "parent": 91061,
+        "rank": "order"
+      },
+      "1386": {
+        "name": "Bacillus",
+        "parent": 186817,
+        "rank": "genus"
+      },
+      "1760": {
+        "name": "Actinobacteria",
+        "parent": 201174,
+        "rank": "class"
+      },
+      "2745": {
+        "name": "Halomonas",
+        "parent": 28256,
+        "rank": "genus"
+      },
+      "2759": {
+        "name": "Eukaryota",
+        "parent": null,
+        "rank": "superkingdom"
+      },
+      "3041": {
+        "name": "Chlorophyta",
+        "parent": 33090,
+        "rank": "phylum"
+      },
+      "3398": {
+        "name": "Magnoliopsida",
+        "parent": 35493,
+        "rank": "class"
+      },
+      "3699": {
+        "name": "Brassicales",
+        "parent": 3398,
+        "rank": "order"
+      },
+      "3700": {
+        "name": "Brassicaceae",
+        "parent": 3699,
+        "rank": "family"
+      },
+      "3705": {
+        "name": "Brassica",
+        "parent": 3700,
+        "rank": "genus"
+      },
+      "4441": {
+        "name": "Camellia",
+        "parent": 27065,
+        "rank": "genus"
+      },
+      "4479": {
+        "name": "Poaceae",
+        "parent": 38820,
+        "rank": "family"
+      },
+      "4512": {
+        "name": "Hordeum",
+        "parent": 4479,
+        "rank": "genus"
+      },
+      "4557": {
+        "name": "Sorghum",
+        "parent": 4479,
+        "rank": "genus"
+      },
+      "4751": {
+        "name": "Fungi",
+        "parent": 2759,
+        "rank": "kingdom"
+      },
+      "5204": {
+        "name": "Basidiomycota",
+        "parent": 4751,
+        "rank": "phylum"
+      },
+      "5338": {
+        "name": "Agaricales",
+        "parent": 155619,
+        "rank": "order"
+      },
+      "5794": {
+        "name": "Apicomplexa",
+        "parent": "2759_-650",
+        "rank": "phylum"
+      },
+      "5819": {
+        "name": "Haemosporida",
+        "parent": 422676,
+        "rank": "order"
+      },
+      "5820": {
+        "name": "Plasmodium",
+        "parent": 1639119,
+        "rank": "genus"
+      },
+      "6073": {
+        "name": "Cnidaria",
+        "parent": 33208,
+        "rank": "phylum"
+      },
+      "6074": {
+        "name": "Hydrozoa",
+        "parent": 6073,
+        "rank": "class"
+      },
+      "6157": {
+        "name": "Platyhelminthes",
+        "parent": 33208,
+        "rank": "phylum"
+      },
+      "6199": {
+        "name": "Cestoda",
+        "parent": 6157,
+        "rank": "class"
+      },
+      "6201": {
+        "name": "Cyclophyllidea",
+        "parent": 6199,
+        "rank": "order"
+      },
+      "6208": {
+        "name": "Taeniidae",
+        "parent": 6201,
+        "rank": "family"
+      },
+      "6209": {
+        "name": "Echinococcus",
+        "parent": 6208,
+        "rank": "genus"
+      },
+      "6231": {
+        "name": "Nematoda",
+        "parent": 33208,
+        "rank": "phylum"
+      },
+      "6236": {
+        "name": "Rhabditida",
+        "parent": 119089,
+        "rank": "order"
+      },
+      "6292": {
+        "name": "Wuchereria",
+        "parent": 6296,
+        "rank": "genus"
+      },
+      "6296": {
+        "name": "Onchocercidae",
+        "parent": 6236,
+        "rank": "family"
+      },
+      "6329": {
+        "name": "Trichinellida",
+        "parent": 119088,
+        "rank": "order"
+      },
+      "6332": {
+        "name": "Trichinellidae",
+        "parent": 6329,
+        "rank": "family"
+      },
+      "6333": {
+        "name": "Trichinella",
+        "parent": 6332,
+        "rank": "genus"
+      },
+      "6340": {
+        "name": "Annelida",
+        "parent": 33208,
+        "rank": "phylum"
+      },
+      "6392": {
+        "name": "Lumbricidae",
+        "parent": 2803884,
+        "rank": "family"
+      },
+      "6397": {
+        "name": "Lumbricus",
+        "parent": 6392,
+        "rank": "genus"
+      },
+      "6447": {
+        "name": "Mollusca",
+        "parent": 33208,
+        "rank": "phylum"
+      },
+      "6448": {
+        "name": "Gastropoda",
+        "parent": 6447,
+        "rank": "class"
+      },
+      "6479": {
+        "name": "Neogastropoda",
+        "parent": 6448,
+        "rank": "order"
+      },
+      "6483": {
+        "name": "Nassariidae",
+        "parent": 6479,
+        "rank": "family"
+      },
+      "6484": {
+        "name": "Nassarius",
+        "parent": 6483,
+        "rank": "genus"
+      },
+      "6544": {
+        "name": "Bivalvia",
+        "parent": 6447,
+        "rank": "class"
+      },
+      "6566": {
+        "name": "Pectinidae",
+        "parent": 106218,
+        "rank": "family"
+      },
+      "6578": {
+        "name": "Pecten",
+        "parent": 6566,
+        "rank": "genus"
+      },
+      "6656": {
+        "name": "Arthropoda",
+        "parent": 33208,
+        "rank": "phylum"
+      },
+      "7020": {
+        "name": "Phasmatodea",
+        "parent": 50557,
+        "rank": "order"
+      },
+      "7147": {
+        "name": "Diptera",
+        "parent": 50557,
+        "rank": "order"
+      },
+      "7214": {
+        "name": "Drosophilidae",
+        "parent": 7147,
+        "rank": "family"
+      },
+      "7215": {
+        "name": "Drosophila",
+        "parent": 7214,
+        "rank": "genus"
+      },
+      "7524": {
+        "name": "Hemiptera",
+        "parent": 50557,
+        "rank": "order"
+      },
+      "10239": {
+        "name": "Viruses",
+        "parent": null,
+        "rank": "superkingdom"
+      },
+      "10566": {
+        "name": "Human papillomavirus",
+        "parent": "151340_-200",
+        "rank": "species"
+      },
+      "11118": {
+        "name": "Coronaviridae",
+        "parent": 76804,
+        "rank": "family"
+      },
+      "11617": {
+        "name": "Arenaviridae",
+        "parent": 1980410,
+        "rank": "family"
+      },
+      "27065": {
+        "name": "Theaceae",
+        "parent": 41945,
+        "rank": "family"
+      },
+      "27387": {
+        "name": "Haemadipsidae",
+        "parent": 2218736,
+        "rank": "family"
+      },
+      "28211": {
+        "name": "Alphaproteobacteria",
+        "parent": 1224,
+        "rank": "class"
+      },
+      "28216": {
+        "name": "Betaproteobacteria",
+        "parent": 1224,
+        "rank": "class"
+      },
+      "28256": {
+        "name": "Halomonadaceae",
+        "parent": 135619,
+        "rank": "family"
+      },
+      "28843": {
+        "name": "Diphyllobothriidae",
+        "parent": 1224679,
+        "rank": "family"
+      },
+      "29487": {
+        "name": "Photorhabdus",
+        "parent": 1903414,
+        "rank": "genus"
+      },
+      "30078": {
+        "name": "Cimicidae",
+        "parent": 7524,
+        "rank": "family"
+      },
+      "30079": {
+        "name": "Cimex",
+        "parent": 30078,
+        "rank": "genus"
+      },
+      "30083": {
+        "name": "Miridae",
+        "parent": 7524,
+        "rank": "family"
+      },
+      "31212": {
+        "name": "Littorinidae",
+        "parent": 216294,
+        "rank": "family"
+      },
+      "31291": {
+        "name": "Haplosporida",
+        "parent": 1871466,
+        "rank": "order"
+      },
+      "31294": {
+        "name": "Haplosporidiidae",
+        "parent": 31291,
+        "rank": "family"
+      },
+      "31295": {
+        "name": "Haplosporidium",
+        "parent": 31294,
+        "rank": "genus"
+      },
+      "33090": {
+        "name": "Viridiplantae",
+        "parent": 2759,
+        "rank": "kingdom"
+      },
+      "33208": {
+        "name": "Metazoa",
+        "parent": 2759,
+        "rank": "kingdom"
+      },
+      "35493": {
+        "name": "Streptophyta",
+        "parent": 33090,
+        "rank": "phylum"
+      },
+      "38820": {
+        "name": "Poales",
+        "parent": 3398,
+        "rank": "order"
+      },
+      "41945": {
+        "name": "Ericales",
+        "parent": 3398,
+        "rank": "order"
+      },
+      "42113": {
+        "name": "Clitellata",
+        "parent": 6340,
+        "rank": "class"
+      },
+      "43835": {
+        "name": "Pipunculidae",
+        "parent": 7147,
+        "rank": "family"
+      },
+      "46580": {
+        "name": "Spirometra",
+        "parent": 28843,
+        "rank": "genus"
+      },
+      "50557": {
+        "name": "Insecta",
+        "parent": 6656,
+        "rank": "class"
+      },
+      "50676": {
+        "name": "Therevidae",
+        "parent": 7147,
+        "rank": "family"
+      },
+      "53335": {
+        "name": "Pantoea",
+        "parent": 1903409,
+        "rank": "genus"
+      },
+      "55818": {
+        "name": "Branchiobdellida",
+        "parent": 42113,
+        "rank": "order"
+      },
+      "55819": {
+        "name": "Branchiobdellidae",
+        "parent": 55818,
+        "rank": "family"
+      },
+      "55822": {
+        "name": "Xironogiton",
+        "parent": 55819,
+        "rank": "genus"
+      },
+      "60942": {
+        "name": "Chtonobdella",
+        "parent": 27387,
+        "rank": "genus"
+      },
+      "61471": {
+        "name": "Timema",
+        "parent": 213546,
+        "rank": "genus"
+      },
+      "69595": {
+        "name": "Eulimidae",
+        "parent": 216294,
+        "rank": "family"
+      },
+      "71953": {
+        "name": "Inocybe",
+        "parent": 665596,
+        "rank": "genus"
+      },
+      "72274": {
+        "name": "Pseudomonadales",
+        "parent": 1236,
+        "rank": "order"
+      },
+      "72275": {
+        "name": "Alteromonadaceae",
+        "parent": 135622,
+        "rank": "family"
+      },
+      "76804": {
+        "name": "Nidovirales",
+        "parent": 2732506,
+        "rank": "order"
+      },
+      "77133": {
+        "name": "uncultured bacterium",
+        "parent": "2_-650_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "81850": {
+        "name": "Leuconostocaceae",
+        "parent": 186826,
+        "rank": "family"
+      },
+      "82115": {
+        "name": "Rhizobiaceae",
+        "parent": 356,
+        "rank": "family"
+      },
+      "85006": {
+        "name": "Micrococcales",
+        "parent": 1760,
+        "rank": "order"
+      },
+      "91061": {
+        "name": "Bacilli",
+        "parent": 1239,
+        "rank": "class"
+      },
+      "91347": {
+        "name": "Enterobacterales",
+        "parent": 1236,
+        "rank": "order"
+      },
+      "95102": {
+        "name": "Ruppellia",
+        "parent": 50676,
+        "rank": "genus"
+      },
+      "100272": {
+        "name": "uncultured eukaryote",
+        "parent": "2759_-650_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "106218": {
+        "name": "Pectinida",
+        "parent": 6544,
+        "rank": "order"
+      },
+      "115250": {
+        "name": "Chalarus",
+        "parent": 43835,
+        "rank": "genus"
+      },
+      "119088": {
+        "name": "Enoplea",
+        "parent": 6231,
+        "rank": "class"
+      },
+      "119089": {
+        "name": "Chromadorea",
+        "parent": 6231,
+        "rank": "class"
+      },
+      "129337": {
+        "name": "Geobacillus",
+        "parent": 186817,
+        "rank": "genus"
+      },
+      "135619": {
+        "name": "Oceanospirillales",
+        "parent": 1236,
+        "rank": "order"
+      },
+      "135621": {
+        "name": "Pseudomonadaceae",
+        "parent": 72274,
+        "rank": "family"
+      },
+      "135622": {
+        "name": "Alteromonadales",
+        "parent": 1236,
+        "rank": "order"
+      },
+      "135623": {
+        "name": "Vibrionales",
+        "parent": 1236,
+        "rank": "order"
+      },
+      "135625": {
+        "name": "Pasteurellales",
+        "parent": 1236,
+        "rank": "order"
+      },
+      "151340": {
+        "name": "Papillomaviridae",
+        "parent": 2732533,
+        "rank": "family"
+      },
+      "155619": {
+        "name": "Agaricomycetes",
+        "parent": 5204,
+        "rank": "class"
+      },
+      "156132": {
+        "name": "Prasinoderma",
+        "parent": 2201465,
+        "rank": "genus"
+      },
+      "168751": {
+        "name": "Moerisiidae",
+        "parent": 406427,
+        "rank": "family"
+      },
+      "168752": {
+        "name": "Moerisia",
+        "parent": 168751,
+        "rank": "genus"
+      },
+      "175245": {
+        "name": "uncultured fungus",
+        "parent": "4751_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "186817": {
+        "name": "Bacillaceae",
+        "parent": 1385,
+        "rank": "family"
+      },
+      "186826": {
+        "name": "Lactobacillales",
+        "parent": 91061,
+        "rank": "order"
+      },
+      "196951": {
+        "name": "Echinolittorina",
+        "parent": 31212,
+        "rank": "genus"
+      },
+      "201174": {
+        "name": "Actinobacteria",
+        "parent": "2_-650",
+        "rank": "phylum"
+      },
+      "203449": {
+        "name": "uncultured marine eukaryote",
+        "parent": "2759_-650_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "213546": {
+        "name": "Timematidae",
+        "parent": 7020,
+        "rank": "family"
+      },
+      "216294": {
+        "name": "Littorinimorpha",
+        "parent": 6448,
+        "rank": "order"
+      },
+      "236439": {
+        "name": "Semium",
+        "parent": 30083,
+        "rank": "genus"
+      },
+      "333750": {
+        "name": "Alphapapillomavirus",
+        "parent": 151340,
+        "rank": "genus"
+      },
+      "406427": {
+        "name": "Anthoathecata",
+        "parent": 6074,
+        "rank": "order"
+      },
+      "422676": {
+        "name": "Aconoidasida",
+        "parent": 5794,
+        "rank": "class"
+      },
+      "485343": {
+        "name": "Prasinococcales",
+        "parent": 2201463,
+        "rank": "order"
+      },
+      "665596": {
+        "name": "Inocybaceae",
+        "parent": 5338,
+        "rank": "family"
+      },
+      "693996": {
+        "name": "Alphacoronavirus",
+        "parent": 11118,
+        "rank": "genus"
+      },
+      "694002": {
+        "name": "Betacoronavirus",
+        "parent": 11118,
+        "rank": "genus"
+      },
+      "694448": {
+        "name": "unidentified human coronavirus",
+        "parent": "11118_-200",
+        "rank": "species"
+      },
+      "1224679": {
+        "name": "Diphyllobothriidea",
+        "parent": 6199,
+        "rank": "order"
+      },
+      "1639119": {
+        "name": "Plasmodiidae",
+        "parent": 5819,
+        "rank": "family"
+      },
+      "1653394": {
+        "name": "Mammarenavirus",
+        "parent": 11617,
+        "rank": "genus"
+      },
+      "1742990": {
+        "name": "Paeniglutamicibacter",
+        "parent": 1268,
+        "rank": "genus"
+      },
+      "1857014": {
+        "name": "Tamilnaduibacter",
+        "parent": 72275,
+        "rank": "genus"
+      },
+      "1871466": {
+        "name": "Ascetosporea",
+        "parent": 2604748,
+        "rank": "class"
+      },
+      "1903409": {
+        "name": "Erwiniaceae",
+        "parent": 91347,
+        "rank": "family"
+      },
+      "1903411": {
+        "name": "Yersiniaceae",
+        "parent": 91347,
+        "rank": "family"
+      },
+      "1903414": {
+        "name": "Morganellaceae",
+        "parent": 91347,
+        "rank": "family"
+      },
+      "1980410": {
+        "name": "Bunyavirales",
+        "parent": 2497576,
+        "rank": "order"
+      },
+      "1986198": {
+        "name": "Coronaviridae sp.",
+        "parent": "11118_-200",
+        "rank": "species"
+      },
+      "2013702": {
+        "name": "Betaproteobacteria bacterium HGW-Betaproteobacteria-11",
+        "parent": "28216_-400_-300_-200",
+        "rank": "species"
+      },
+      "2050018": {
+        "name": "Rodent coronavirus",
+        "parent": "11118_-200",
+        "rank": "species"
+      },
+      "2201463": {
+        "name": "Palmophyllophyceae",
+        "parent": 3041,
+        "rank": "class"
+      },
+      "2201465": {
+        "name": "Prasinococcaceae",
+        "parent": 485343,
+        "rank": "family"
+      },
+      "2218736": {
+        "name": "Hirudinida",
+        "parent": 42113,
+        "rank": "order"
+      },
+      "2497569": {
+        "name": "Negarnaviricota",
+        "parent": 2732396,
+        "rank": "phylum"
+      },
+      "2497576": {
+        "name": "Ellioviricetes",
+        "parent": 2497569,
+        "rank": "class"
+      },
+      "2602897": {
+        "name": "Asterophila",
+        "parent": 69595,
+        "rank": "genus"
+      },
+      "2604748": {
+        "name": "Endomyxa",
+        "parent": "2759_-650",
+        "rank": "phylum"
+      },
+      "2609793": {
+        "name": "Expression vector pUC57-Kan-mcr-1",
+        "parent": "-700_-650_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "2732092": {
+        "name": "Shotokuvirae",
+        "parent": 10239,
+        "rank": "kingdom"
+      },
+      "2732396": {
+        "name": "Orthornavirae",
+        "parent": 10239,
+        "rank": "kingdom"
+      },
+      "2732408": {
+        "name": "Pisuviricota",
+        "parent": 2732396,
+        "rank": "phylum"
+      },
+      "2732415": {
+        "name": "Cossaviricota",
+        "parent": 2732092,
+        "rank": "phylum"
+      },
+      "2732421": {
+        "name": "Papovaviricetes",
+        "parent": 2732415,
+        "rank": "class"
+      },
+      "2732506": {
+        "name": "Pisoniviricetes",
+        "parent": 2732408,
+        "rank": "class"
+      },
+      "2732533": {
+        "name": "Zurhausenvirales",
+        "parent": 2732421,
+        "rank": "order"
+      },
+      "2743758": {
+        "name": "Expression vector pUC57-Kan-blaKPC-2",
+        "parent": "-700_-650_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "2746750": {
+        "name": "Cloning vector pAAV-EF1A-Gephyrin.FingR-GFP-CCR5TC",
+        "parent": "-700_-650_-600_-500_-400_-300_-200",
+        "rank": "species"
+      },
+      "2803884": {
+        "name": "Crassiclitellata",
+        "parent": 42113,
+        "rank": "order"
+      },
+      "2_-650": {
+        "name": "",
+        "parent": 2,
+        "rank": "kingdom"
+      },
+      "2759_-650": {
+        "name": "",
+        "parent": 2759,
+        "rank": "kingdom"
+      },
+      "151340_-200": {
+        "name": "",
+        "parent": 151340,
+        "rank": "genus"
+      },
+      "2_-650_-600": {
+        "name": "",
+        "parent": "2_-650",
+        "rank": "phylum"
+      },
+      "2_-650_-600_-500": {
+        "name": "",
+        "parent": "2_-650_-600",
+        "rank": "class"
+      },
+      "2_-650_-600_-500_-400": {
+        "name": "",
+        "parent": "2_-650_-600_-500",
+        "rank": "order"
+      },
+      "2_-650_-600_-500_-400_-300": {
+        "name": "",
+        "parent": "2_-650_-600_-500_-400",
+        "rank": "family"
+      },
+      "2_-650_-600_-500_-400_-300_-200": {
+        "name": "",
+        "parent": "2_-650_-600_-500_-400_-300",
+        "rank": "genus"
+      },
+      "2759_-650_-600": {
+        "name": "",
+        "parent": "2759_-650",
+        "rank": "phylum"
+      },
+      "2759_-650_-600_-500": {
+        "name": "",
+        "parent": "2759_-650_-600",
+        "rank": "class"
+      },
+      "2759_-650_-600_-500_-400": {
+        "name": "",
+        "parent": "2759_-650_-600_-500",
+        "rank": "order"
+      },
+      "2759_-650_-600_-500_-400_-300": {
+        "name": "",
+        "parent": "2759_-650_-600_-500_-400",
+        "rank": "family"
+      },
+      "2759_-650_-600_-500_-400_-300_-200": {
+        "name": "",
+        "parent": "2759_-650_-600_-500_-400_-300",
+        "rank": "genus"
+      },
+      "4751_-600": {
+        "name": "",
+        "parent": 4751,
+        "rank": "phylum"
+      },
+      "4751_-600_-500": {
+        "name": "",
+        "parent": "4751_-600",
+        "rank": "class"
+      },
+      "4751_-600_-500_-400": {
+        "name": "",
+        "parent": "4751_-600_-500",
+        "rank": "order"
+      },
+      "4751_-600_-500_-400_-300": {
+        "name": "",
+        "parent": "4751_-600_-500_-400",
+        "rank": "family"
+      },
+      "4751_-600_-500_-400_-300_-200": {
+        "name": "",
+        "parent": "4751_-600_-500_-400_-300",
+        "rank": "genus"
+      },
+      "11118_-200": {
+        "name": "",
+        "parent": 11118,
+        "rank": "genus"
+      },
+      "28216_-400": {
+        "name": "",
+        "parent": 28216,
+        "rank": "order"
+      },
+      "28216_-400_-300": {
+        "name": "",
+        "parent": "28216_-400",
+        "rank": "family"
+      },
+      "28216_-400_-300_-200": {
+        "name": "",
+        "parent": "28216_-400_-300",
+        "rank": "genus"
+      },
+      "-700": {
+        "name": "",
+        "parent": null,
+        "rank": "superkingdom"
+      },
+      "-700_-650": {
+        "name": "",
+        "parent": "-700",
+        "rank": "kingdom"
+      },
+      "-700_-650_-600": {
+        "name": "",
+        "parent": "-700_-650",
+        "rank": "phylum"
+      },
+      "-700_-650_-600_-500": {
+        "name": "",
+        "parent": "-700_-650_-600",
+        "rank": "class"
+      },
+      "-700_-650_-600_-500_-400": {
+        "name": "",
+        "parent": "-700_-650_-600_-500",
+        "rank": "order"
+      },
+      "-700_-650_-600_-500_-400_-300": {
+        "name": "",
+        "parent": "-700_-650_-600_-500_-400",
+        "rank": "family"
+      },
+      "-700_-650_-600_-500_-400_-300_-200": {
+        "name": "",
+        "parent": "-700_-650_-600_-500_-400_-300",
+        "rank": "genus"
+      }
+    },
+    "sortedGenus": [
+      2602897,
+      1857014,
+      1742990,
+      1653394,
+      694002,
+      693996,
+      333750,
+      236439,
+      196951,
+      168752,
+      156132,
+      129337,
+      115250,
+      95102,
+      71953,
+      61471,
+      60942,
+      55822,
+      53335,
+      46580,
+      31295,
+      30079,
+      29487,
+      7215,
+      6578,
+      6484,
+      6397,
+      6333,
+      6292,
+      6209,
+      5820,
+      4557,
+      4512,
+      4441,
+      3705,
+      2745,
+      1386,
+      1301,
+      1243,
+      724,
+      662,
+      629,
+      626,
+      620,
+      590,
+      583,
+      570,
+      561,
+      357,
+      286,
+      -200,
+      -200011118,
+      -200151340
+    ],
+    "highlightedTaxIds": [
+      
+    ]
+  }

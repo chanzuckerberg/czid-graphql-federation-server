@@ -26,6 +26,12 @@ sources:
             responseSchema: ./json-schemas/amrWorkflowResults.json
             responseTypeName: AmrWorkflowResults
           - type: Query
+            field: Background
+            path: /pub/{args.snapshotShareId}/backgrounds.json
+            method: GET
+            responseSchema: ./json-schemas/snapshotBackground.json
+            responseTypeName: Background
+          - type: Query
             field: BulkDownload
             path: /bulk_downloads/{args.bulkDownloadId}
             method: GET
@@ -45,6 +51,18 @@ sources:
             method: GET
             responseSchema: ./json-schemas/mngsWorkflowResults.json
             responseTypeName: MngsWorkflowResults
+          - type: Query
+            field: MngsWorkflowResults
+            path: samples/{args.sampleId}/report_v2
+            method: GET
+            responseSchema: ./json-schemas/mngsWorkflowResults.json
+            responseTypeName: MngsWorkflowResults
+          - type: Query
+            field: Pathogens
+            path: samples/{args.sampleId}/report_v2
+            method: GET
+            responseSchema: ./json-schemas/pathogens.json
+            responseTypeName: Pathogens
           - type: Query
             field: PersistedBackground
             path: /persisted_backgrounds/{args.projectId}
@@ -74,6 +92,12 @@ sources:
             responseSchema: ./json-schemas/samples.json
             responseTypeName: Samples
           - type: Query
+            field: Taxons
+            path: samples/{args.sampleId}/report_v2
+            method: GET
+            responseSchema: ./json-schemas/taxons.json
+            responseTypeName: Taxons
+          - type: Query
             field: TaxonDist
             path: /backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}
             method: GET
@@ -82,11 +106,11 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
-            field: Background
-            path: /pub/{args.snapshotShareId}/backgrounds.json
+            field: UserBlastAnnotations
+            path: /samples/{args.sampleId}/report_v2
             method: GET
-            responseSchema: ./json-schemas/snapshotBackground.json
-            responseTypeName: Background
+            responseSchema: ./json-schemas/userBlastAnnotations.json
+            responseTypeName: UserBlastAnnotations
           - type: Mutation
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata

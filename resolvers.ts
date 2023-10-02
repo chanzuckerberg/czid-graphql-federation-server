@@ -1,7 +1,8 @@
 // resolvers.ts
 import { Resolvers } from "./.mesh";
-import { get, notFound } from "./httpUtils";
-import { formatSample, formatSamples } from "./samplesQueryUtils";
+import { get, notFound } from "./utils/httpUtils";
+import { formatTaxonHits, formatTaxonLineage } from "./utils/mngsWorkflowResultsUtils";
+import { formatSample, formatSamples } from "./utils/samplesUtils";
 
 export const resolvers: Resolvers = {
   Query: {
@@ -22,16 +23,66 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
+    ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
+      const { coverage_viz, quality_metrics, taxon_info } = await get(`/workflow_runs/${args.workflowRunId}/results`, context);
+      return {
+        metric_consensus_genome: {
+          ...quality_metrics,
+        coverage_viz,
+        },
+        reference_genome: {
+          accession_id: taxon_info.accession_id,
+          accession_name: taxon_info.accession_name,
+          taxon: {
+            id: taxon_info.taxon_id,
+            name: taxon_info.taxon_name,
+          },
+        }
+      };
+    },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get(`/samples/${args.sampleId}.json`, context);
-      const pipelineRun = data.pipeline_runs[0] || {}
+      const pipelineRun = data?.pipeline_runs?.[0] || {};
+
+      const { _all_tax_ids, metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
+      const taxonHits = formatTaxonHits(counts);
+      const taxonLineage = formatTaxonLineage(lineage);
       return {
         metric_mngs: {
           assembled: pipelineRun?.assembled,
           adjusted_remaining_reads: pipelineRun?.adjusted_remaining_reads,
           total_ercc_reads: pipelineRun?.total_ercc_reads,
-        }
+          num_reads: metadata?.preSubsamplingCount,
+          num_reads_after_subsampling: metadata?.postSubsamplingCount,
+          temp: {
+            has_byteranges: metadata?.hasByteRanges,
+          },
+        },
+        taxon_hit_results: {
+          taxon_hits: taxonHits,
+        },
+        temp: {
+          // Computed by PipelineReportService
+          lineage: taxonLineage,
+        },
       };
+    },
+    Pathogens: async (root, args, context, info) => {
+      const { _all_tax_ids, _metadata, counts, _lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
+      const speciesCounts = counts["1"] || {};
+      const genusCounts = counts["2"] || {};
+      const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
+  
+      const pathogens : any[] = []
+      taxonCounts.forEach(([taxId, taxInfo] : [string, any]) => {
+        const isPathogen = !!taxInfo?.pathogenFlag;
+        if (isPathogen) {
+          pathogens.push({
+            tax_id: parseInt(taxId),
+          });
+        }
+      });
+      return pathogens;
     },
     Samples: async (root, args, context, info) => {
       if (args.sampleId) {
@@ -45,22 +96,46 @@ export const resolvers: Resolvers = {
         return formatSamples(samples);
       }
     },
-    ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
-      const { coverage_viz, quality_metrics, taxon_info } = await get(`/workflow_runs/${args.workflowRunId}/results`, context);
-      return {
-        metric_consensus_genome: {
-          ...quality_metrics,
-          coverage_viz: coverage_viz,
-        },
-        reference_genome: {
-          accession_id: taxon_info.accession_id,
-          accession_name: taxon_info.accession_name,
-          taxon: {
-            id: taxon_info.taxon_id,
-            name: taxon_info.taxon_name,
-          },
+    Taxons: async (root, args, context, info) => {
+      const { all_tax_ids, _metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
+      const speciesCounts = counts["1"] || {};
+      const genusCounts = counts["2"] || {};
+      const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
+
+      const taxons : any[] = []
+      taxonCounts.forEach(([taxId, taxInfo] : [string, any]) => {
+        taxons.push({
+          tax_id: parseInt(taxId),
+          tax_id_genus: taxInfo?.genus_tax_id,
+          common_name: taxInfo?.common_name,
+          name: taxInfo?.name,
+          is_phage: taxInfo?.is_phage,
+          level: speciesCounts.hasOwnProperty(taxId) ? "species" : "genus",
+          temp: {
+            // Computed from TaxonLineage::CATEGORIES
+            category: taxInfo?.category,
+          }
+        });
+      });
+      return taxons;
+    },
+    UserBlastAnnotations: async (root, args, context, info) => {
+      const { _all_tax_ids, _metadata, counts, _lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
+      const speciesCounts = counts["1"] || {};
+      const genusCounts = counts["2"] || {};
+      const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
+  
+      const annotations : any[] = []
+      taxonCounts.forEach(([taxId, taxInfo] : [string, any]) => {
+        const annotation = taxInfo?.annotation;
+        if (annotation) {
+          annotations.push({
+            tax_id: parseInt(taxId),
+            annotation: annotation,
+          });
         }
-      };
-    }, 
+      });
+      return annotations;
+    }
   },
 };

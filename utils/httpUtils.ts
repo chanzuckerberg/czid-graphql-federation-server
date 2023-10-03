@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 
 export const get = async (url: string, context: any) => {
     try {
-        const response = await fetch(`http://web:3001${url}`, {
+        const response = await fetch(process.env.API_URL + url, {
             method: 'GET',
             headers: {
               'Cookie': context.request.headers.get("cookie"),

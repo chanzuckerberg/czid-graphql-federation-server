@@ -1,5 +1,15 @@
 import fetch from "node-fetch";
 
+export const formatUrlParams = (params: any) => {
+    const paramList = Object.entries(params)
+        .filter(([_, value]) => value !== undefined)
+        .map(([key, value]) => `${key}=${value}`);
+    if (paramList.length === 0) {
+        return "";
+    }
+    return "?&" + paramList.join("&");
+}
+
 export const get = async (url: string, context: any) => {
     try {
         const response = await fetch(process.env.API_URL + url, {

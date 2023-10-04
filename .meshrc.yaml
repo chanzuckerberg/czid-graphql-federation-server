@@ -53,13 +53,13 @@ sources:
             responseTypeName: MngsWorkflowResults
           - type: Query
             field: MngsWorkflowResults
-            path: samples/{args.sampleId}/report_v2
+            path: /samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&background={args._backgroundId}&merge_nt_nr=false
             method: GET
             responseSchema: ./json-schemas/mngsWorkflowResults.json
             responseTypeName: MngsWorkflowResults
           - type: Query
             field: Pathogens
-            path: samples/{args.sampleId}/report_v2
+            path: /samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET
             responseSchema: ./json-schemas/pathogens.json
             responseTypeName: Pathogens
@@ -93,7 +93,7 @@ sources:
             responseTypeName: Samples
           - type: Query
             field: Taxons
-            path: samples/{args.sampleId}/report_v2
+            path: /samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET
             responseSchema: ./json-schemas/taxons.json
             responseTypeName: Taxons
@@ -107,7 +107,7 @@ sources:
               Cookie: "{context.headers['cookie']}"
           - type: Query
             field: UserBlastAnnotations
-            path: /samples/{args.sampleId}/report_v2
+            path: /samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET
             responseSchema: ./json-schemas/userBlastAnnotations.json
             responseTypeName: UserBlastAnnotations

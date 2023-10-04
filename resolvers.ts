@@ -1,6 +1,6 @@
 // resolvers.ts
 import { Resolvers } from "./.mesh";
-import { get, notFound } from "./utils/httpUtils";
+import { get, notFound, formatUrlParams } from "./utils/httpUtils";
 import { formatTaxonHits, formatTaxonLineage } from "./utils/mngsWorkflowResultsUtils";
 import { formatSample, formatSamples } from "./utils/samplesUtils";
 
@@ -28,7 +28,7 @@ export const resolvers: Resolvers = {
       return {
         metric_consensus_genome: {
           ...quality_metrics,
-        coverage_viz,
+          coverage_viz,
         },
         reference_genome: {
           accession_id: taxon_info.accession_id,
@@ -44,7 +44,8 @@ export const resolvers: Resolvers = {
       const data = await get(`/samples/${args.sampleId}.json`, context);
       const pipelineRun = data?.pipeline_runs?.[0] || {};
 
-      const { _all_tax_ids, metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
+      const urlParams = formatUrlParams({ id: args.sampleId, pipelineVersion: args.workflowVersionId, background: args._backgroundId, merge_nt_nr: false});
+      const { _all_tax_ids, metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2` + urlParams, context) || {};
       const taxonHits = formatTaxonHits(counts);
       const taxonLineage = formatTaxonLineage(lineage);
       return {
@@ -54,23 +55,24 @@ export const resolvers: Resolvers = {
           total_ercc_reads: pipelineRun?.total_ercc_reads,
           num_reads: metadata?.preSubsamplingCount,
           num_reads_after_subsampling: metadata?.postSubsamplingCount,
-          temp: {
+          _: {
             has_byteranges: metadata?.hasByteRanges,
           },
         },
         taxon_hit_results: {
           taxon_hits: taxonHits,
         },
-        temp: {
+        _: {
           // Computed by PipelineReportService
           lineage: taxonLineage,
         },
       };
     },
     Pathogens: async (root, args, context, info) => {
-      const { _all_tax_ids, _metadata, counts, _lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
-      const speciesCounts = counts["1"] || {};
-      const genusCounts = counts["2"] || {};
+      const urlParams = formatUrlParams({ id: args.sampleId, pipelineVersion: args.workflowVersionId, merge_nt_nr: false});
+      const { _all_tax_ids, _metadata, counts, _lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2` + urlParams, context) || {};
+      const speciesCounts = counts?.["1"] || {};
+      const genusCounts = counts?.["2"] || {};
       const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
   
       const pathogens : any[] = []
@@ -97,9 +99,10 @@ export const resolvers: Resolvers = {
       }
     },
     Taxons: async (root, args, context, info) => {
-      const { all_tax_ids, _metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
-      const speciesCounts = counts["1"] || {};
-      const genusCounts = counts["2"] || {};
+      const urlParams = formatUrlParams({ id: args.sampleId, pipelineVersion: args.workflowVersionId, merge_nt_nr: false});
+      const { all_tax_ids, _metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2` + urlParams, context) || {};
+      const speciesCounts = counts?.["1"] || {};
+      const genusCounts = counts?.["2"] || {};
       const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
 
       const taxons : any[] = []
@@ -111,7 +114,7 @@ export const resolvers: Resolvers = {
           name: taxInfo?.name,
           is_phage: taxInfo?.is_phage,
           level: speciesCounts.hasOwnProperty(taxId) ? "species" : "genus",
-          temp: {
+          _: {
             // Computed from TaxonLineage::CATEGORIES
             category: taxInfo?.category,
           }
@@ -120,9 +123,10 @@ export const resolvers: Resolvers = {
       return taxons;
     },
     UserBlastAnnotations: async (root, args, context, info) => {
-      const { _all_tax_ids, _metadata, counts, _lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2?&id=${args.sampleId}&merge_nt_nr=false`, context) || {};
-      const speciesCounts = counts["1"] || {};
-      const genusCounts = counts["2"] || {};
+      const urlParams = formatUrlParams({ id: args.sampleId, pipelineVersion: args.workflowVersionId, merge_nt_nr: false});
+      const { _all_tax_ids, _metadata, counts, _lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2` + urlParams, context) || {};
+      const speciesCounts = counts?.["1"] || {};
+      const genusCounts = counts?.["2"] || {};
       const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
   
       const annotations : any[] = []

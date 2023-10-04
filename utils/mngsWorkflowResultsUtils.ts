@@ -11,7 +11,7 @@ const formatNtNrCounts = (taxId: string, taxInfo: any, countType: string) => {
         aligment_length: hit.alignment_length,
         percent_identity: hit.percent_identity,
         e_value: hit.e_value,
-        temp: {
+        _: {
           bg_mean: hit.bg_mean,
           bg_stdev: hit.bg_stdev,
           bg_mean_mass_normalized: hit.bg_mean_mass_normalized,
@@ -24,8 +24,8 @@ const formatNtNrCounts = (taxId: string, taxInfo: any, countType: string) => {
 }
 
 export const formatTaxonHits = (counts: any) => {
-    const speciesCounts = counts["1"] || {};
-    const genusCounts = counts["2"] || {};
+    const speciesCounts = counts?.["1"] || {};
+    const genusCounts = counts?.["2"] || {};
 
     const taxonHits : any[] = []
     const taxonCounts = Object.entries({...speciesCounts,...genusCounts});

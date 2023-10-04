@@ -19,7 +19,7 @@
                 "num_reads_after_subsampling": {
                     "type": "int"
                 },
-                "temp": {
+                "_": {
                     "type": "object",
                     "properties": {
                         "has_byteranges": {
@@ -64,7 +64,7 @@
                             "tax_id": {
                                 "type": "int"
                             },
-                            "temp": {
+                            "_": {
                                 "type": "object",
                                 "properties": {
                                     "bg_mean": {
@@ -95,7 +95,7 @@
                 }
             }
         },
-        "temp": {
+        "_": {
             "type": "object",
             "properties": {
                 "lineage": {

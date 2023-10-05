@@ -1,3 +1,8 @@
+variable "app" {
+  type        = string
+  description = "Application name"
+}
+
 variable "aws_account_id" {
   type        = string
   description = "AWS account ID to apply changes to"
@@ -6,6 +11,16 @@ variable "aws_account_id" {
 variable "aws_role" {
   type        = string
   description = "Name of the AWS role to assume to apply changes"
+}
+
+variable "env" {
+  type        = string
+  description = "Environment name"
+}
+
+variable "happymeta_" {
+  type        = string
+  description = "Happy Path metadata. Ignored by actual terraform."
 }
 
 variable "image_tag" {
@@ -19,16 +34,6 @@ variable "image_tags" {
   default     = "{}"
 }
 
-variable "happymeta_" {
-  type        = string
-  description = "Happy Path metadata. Ignored by actual terraform."
-}
-
-variable "stack_name" {
-  type        = string
-  description = "Happy Path stack name"
-}
-
 variable "k8s_cluster_id" {
   type        = string
   description = "EKS K8S Cluster ID"
@@ -37,4 +42,9 @@ variable "k8s_cluster_id" {
 variable "k8s_namespace" {
   type        = string
   description = "K8S namespace for this stack"
+}
+
+variable "stack_name" {
+  type        = string
+  description = "Happy Path stack name"
 }

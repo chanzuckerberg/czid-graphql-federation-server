@@ -69,7 +69,9 @@ When there is a push to the `main` branch, the [`deploy-staging` workflow](https
 
 ### Production deployment
 
-When there is a push to the `main` branch (generally via PR merge), a release PR is created by the Release Please action.  When this PR is merged, Release Please will publish a Github release, which triggers a prod deployment.
+When there is a push to the `main` branch (generally via PR merge), a release PR is created by the Release Please action.  The `release-please` bot keeps the release up to date as long as new commits comply with conventional commits (which is a required PR check).  So the release is always up to date with staging.
+
+When the PR is merged, Release Please will publish a Github release, which triggers a prod deployment.  During prod deployment, the image built in staging is promoted to the prod environment, with env vars updated.
 
 ## TODO
 

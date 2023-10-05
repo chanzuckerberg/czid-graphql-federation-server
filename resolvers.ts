@@ -74,7 +74,7 @@ export const resolvers: Resolvers = {
       const speciesCounts = counts?.["1"] || {};
       const genusCounts = counts?.["2"] || {};
       const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
-  
+
       const pathogens : any[] = []
       taxonCounts.forEach(([taxId, taxInfo] : [string, any]) => {
         const isPathogen = !!taxInfo?.pathogenFlag;
@@ -128,7 +128,7 @@ export const resolvers: Resolvers = {
       const speciesCounts = counts?.["1"] || {};
       const genusCounts = counts?.["2"] || {};
       const taxonCounts = Object.entries({...speciesCounts,...genusCounts});
-  
+
       const annotations : any[] = []
       taxonCounts.forEach(([taxId, taxInfo] : [string, any]) => {
         const annotation = taxInfo?.annotation;
@@ -140,6 +140,10 @@ export const resolvers: Resolvers = {
         }
       });
       return annotations;
-    }
+    },
+    GraphQLFederationVersion: () => ({
+      version: process.env.CZID_GQL_FED_GIT_VERSION,
+      gitCommit: process.env.CZID_GQL_FED_GIT_SHA,
+    }),
   },
 };

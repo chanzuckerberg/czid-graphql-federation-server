@@ -1,14 +1,13 @@
 locals {
-  magic_stack_name  = "staging-stack"
-  alb_name          = "czid-staging-web"
-  deployment_stage  = "staging"
-  service_type      = var.stack_name == local.magic_stack_name ? "TARGET_GROUP_ONLY" : "INTERNAL"
-  routing_config    = {
+  magic_stack_name = "staging-stack"
+  alb_name         = "czid-staging-web"
+  service_type     = var.stack_name == local.magic_stack_name ? "TARGET_GROUP_ONLY" : "INTERNAL"
+  routing_config   = {
     "INTERNAL" = {},
     "TARGET_GROUP_ONLY" = {
       path = "/graphqlfed*",
       alb = {
-        name = local.alb_name,
+        name          = local.alb_name,
         listener_port = 443,
       }
     }
@@ -20,16 +19,13 @@ module "stack" {
   image_tag        = var.image_tag
   image_tags       = jsondecode(var.image_tags)
   stack_name       = var.stack_name
-  deployment_stage = local.deployment_stage
+  deployment_stage = var.env
   stack_prefix     = "/${var.stack_name}"
+  app_name         = var.app
   k8s_namespace    = var.k8s_namespace
-  additional_env_vars = {
-    API_URL = "https://staging.czid.org"
-  }
   services = {
     gql = merge(local.routing_config[local.service_type], {
       name              = "gql-federation"
-      desired_count     = 1
       port              = "4444"
       memory            = "1500Mi"
       cpu               = "1500m"
@@ -41,7 +37,5 @@ module "stack" {
       service_type      = local.service_type
       platform_architecture = "arm64"
     })
-  }
-  tasks = {
   }
 }

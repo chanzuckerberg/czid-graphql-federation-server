@@ -124,6 +124,14 @@ sources:
         - namingConvention:
             typeNames: camelCase
             fieldNames: camelCase
+additionalTypeDefs: |
+  type GraphQLFederationVersion {
+    version: String
+    gitCommit: String
+  }
+  extend type Query {
+    GraphQLFederationVersion: GraphQLFederationVersion
+  }
 additionalResolvers:
   - ./resolvers.ts
 serve:

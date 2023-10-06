@@ -42,7 +42,6 @@ jobs:
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: prod
-          image-source-env: staging
-          image-source-stack: staging-stack
+          create-tag: true
           stack-name: prod-stack
           version-lock-file: .happy/version.lock

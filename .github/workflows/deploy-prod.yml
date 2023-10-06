@@ -36,7 +36,7 @@ jobs:
           HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set CZID_GQL_FED_GIT_VERSION ${{ github.event.release.tag_name }} --env prod --aws-profile ""
       - name: Set CZ ID Rails API URL
         run: |
-          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set API_URL ${{ vars.API_URL }} --env sandbox --aws-profile ""
+          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set API_URL ${{ vars.API_URL }} --env prod --aws-profile ""
       - name: Deploy to production env
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@main
         with:

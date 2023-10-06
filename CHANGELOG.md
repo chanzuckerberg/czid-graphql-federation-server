@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.1.1...v1.2.0) (2023-10-06)
+
+
+### Features
+
+* **api:** federate GET '/samples/{sampleId}/report_v2' endpt  ([#58](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/58)) ([d4421f9](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/d4421f92ace8eb42970d078957969c608b726440))
+* **ci:** improve release flow for graphql federation ([#68](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/68)) ([343e36a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/343e36a9f17dbd93fe9f107991f5e561d027031d))
+* support /samples/[sampleId]/report_v2 url params ([#71](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/71)) ([967f441](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/967f441bb96ffd0f8cb86643e34a190406b17bf7))
+
+
+### Bug Fixes
+
+* api url for local and deployed environments ([#62](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/62)) ([5f9aded](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5f9aded1b864261825d057e81e2de114845483ab))
+* **ci:** use correct env for happy config in deploy staging and prod workflows ([#76](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/76)) ([e4ab58a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/e4ab58a5abba24ef2efc5db76a9276dee20ae5a4))
+* release fix taxon schema ([#77](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/77)) ([09108ac](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/09108ac5717cca3094eb12652a3a84788835a5a4))
+
 ## [1.1.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.1.0...v1.1.1) (2023-09-29)
 
 

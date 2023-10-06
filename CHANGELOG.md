@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.2.0...v1.2.1) (2023-10-06)
+
+
+### Bug Fixes
+
+* **ci:** remove staging image promotion in prod deploy  ([#78](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/78)) ([898acd8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/898acd80daa7b14252aa4e04d2d601b91e989528))
+
 ## [1.2.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.1.1...v1.2.0) (2023-10-06)
 
 

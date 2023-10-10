@@ -41,7 +41,7 @@ jobs:
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@main
         with:
           tfe-token: ${{ secrets.TFE_TOKEN }}
-          env: staging
+          env: ${{ vars.HAPPY_ENV }}
           create-tag: true
-          stack-name: staging-stack
+          stack-name: ${{ secrets.HAPPY_STACK_NAME }}
           version-lock-file: .happy/version.lock

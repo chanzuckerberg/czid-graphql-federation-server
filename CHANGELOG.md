@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.2.1...v1.3.0) (2023-10-10)
+
+
+### Features
+
+* **ci:** Update stack names and parameterize sensitive infrastructure info ([#60](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/60)) ([0f9b18a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/0f9b18a77596a9ac23ba81db8d11e01435b7a791))
+
 ## [1.2.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.2.0...v1.2.1) (2023-10-06)
 
 

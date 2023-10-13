@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.3.0...v1.4.0) (2023-10-13)
+
+
+### Features
+
+* **cd:** promote staging images to prod ([#85](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/85)) ([5333f02](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5333f02ba9f5658c520736d358a719f6fa4ba7d9))
+
 ## [1.3.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v1.2.1...v1.3.0) (2023-10-10)
 
 

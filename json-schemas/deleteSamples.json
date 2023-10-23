@@ -1,0 +1,14 @@
+{
+    "type": "object",
+    "properties": {
+        "deleted_workflow_ids": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            }
+        },
+        "error": {
+            "type": "string"
+        }
+    }
+}

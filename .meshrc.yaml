@@ -1,0 +1,147 @@
+sources:
+  - name: CZIDGQL
+    handler:
+      graphql:
+        endpoint: ${API_URL}/graphql
+        source: ./sources/czid-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['cookie']}"
+  - name: CZIDREST
+    handler:
+      jsonSchema:
+        endpoint: ${API_URL}/
+        operations:
+          - type: Query
+            field: AmrDeprecatedResults
+            path: /samples/{args.sampleId}/amr.json
+            method: GET
+            responseSchema: ./json-schemas/amrDeprecatedResults.json
+            responseTypeName: AmrDeprecatedResults
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: AmrWorkflowResults
+            path: /workflow_runs/{args.workflowRunId}/results
+            method: GET
+            responseSchema: ./json-schemas/amrWorkflowResults.json
+            responseTypeName: AmrWorkflowResults
+          - type: Query
+            field: Background
+            path: /pub/{args.snapshotLinkId}/backgrounds.json
+            method: GET
+            responseSchema: ./json-schemas/snapshotBackground.json
+            responseTypeName: Background
+          - type: Query
+            field: BulkDownload
+            path: /bulk_downloads/{args.bulkDownloadId}
+            method: GET
+            responseSchema: ./json-schemas/bulkDownloads.json
+            responseTypeName: BulkDownload
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: ConsensusGenomeWorkflowResults
+            path: /workflow_runs/{args.workflowRunId}/results
+            method: GET
+            responseSchema: ./json-schemas/consensusGenomeWorkflowResults.json
+            responseTypeName: ConsensusGenomeWorkflowResults
+          - type: Query
+            field: MngsWorkflowResults
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json
+            method: GET
+            responseSchema: ./json-schemas/mngsWorkflowResults.json
+            responseTypeName: MngsWorkflowResults
+          - type: Query
+            field: MngsWorkflowResults
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&background={args._backgroundId}&merge_nt_nr=false
+            method: GET
+            responseSchema: ./json-schemas/mngsWorkflowResults.json
+            responseTypeName: MngsWorkflowResults
+          - type: Query
+            field: Pathogens
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
+            method: GET
+            responseSchema: ./json-schemas/pathogens.json
+            responseTypeName: Pathogens
+          - type: Query
+            field: PersistedBackground
+            path: /persisted_backgrounds/{args.projectId}
+            method: GET
+            responseSchema: ./json-schemas/persistedBackground.json
+            responseTypeName: PersistedBackground
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: PipelineData
+            path: /samples/{args.sampleId}/pipeline_viz/7.0.json
+            method: GET
+            responseSchema: ./json-schemas/pipelineData.json
+            responseTypeName: PipelineData
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: Samples
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json
+            method: GET
+            responseSchema: ./json-schemas/samples.json
+            responseTypeName: Samples
+          - type: Query
+            field: Samples
+            path: /pub/{args.snapshotLinkId}/samples/index_v2.json?projectId={args.projectId}
+            method: GET
+            responseSchema: ./json-schemas/samples.json
+            responseTypeName: Samples
+          - type: Query
+            field: Taxons
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
+            method: GET
+            responseSchema: ./json-schemas/taxons.json
+            responseTypeName: Taxons
+          - type: Query
+            field: TaxonDist
+            path: /backgrounds/{args.backgroundId}/show_taxon_dist.json?taxid={args.taxonId}
+            method: GET
+            responseSchema: ./json-schemas/taxonDist.json
+            responseTypeName: TaxonDist
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: UserBlastAnnotations
+            path: /samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
+            method: GET
+            responseSchema: ./json-schemas/userBlastAnnotations.json
+            responseTypeName: UserBlastAnnotations
+          - type: Mutation
+            field: DeleteSamples
+            path: /samples/bulk_delete
+            method: POST
+            requestSample: { "ids": [1], "_workflow": "short-read-mngs", "authenticityToken": "token"}
+            responseSchema: ./json-schemas/deleteSamples.json
+            responseTypeName: DeleteSamples
+          - type: Mutation
+            field: UpdateSampleNotes
+            path: /samples/{args.sampleId}/save_metadata
+            method: POST
+            requestSample: {"value": "test", "field": "notes", "authenticityToken": "token"}
+            responseSchema: ./json-schemas/updateSampleNotes.json
+            responseTypeName: UpdateSampleNotes
+            headers:
+              Cookie: "{context.headers['cookie']}"
+      transforms:
+        - namingConvention:
+            typeNames: camelCase
+            fieldNames: camelCase
+additionalTypeDefs: |
+  type GraphQLFederationVersion {
+    version: String
+    gitCommit: String
+  }
+  extend type Query {
+    GraphQLFederationVersion: GraphQLFederationVersion
+  }
+additionalResolvers:
+  - ./resolvers.ts
+serve:
+  port: 4444
+  endpoint: "/graphqlfed"
+  playground: true

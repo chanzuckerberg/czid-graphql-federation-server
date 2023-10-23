@@ -1,0 +1,121 @@
+{
+    "type": "object",
+    "properties": {
+        "metric_mngs": {
+            "type": "object",
+            "properties": {
+                "assembled": {
+                    "type": "int"
+                },
+                "adjusted_remaining_reads": {
+                    "type": "int"
+                },
+                "total_ercc_reads": {
+                    "type": "int"
+                },
+                "num_reads": {
+                    "type": "int"
+                },
+                "num_reads_after_subsampling": {
+                    "type": "int"
+                },
+                "_": {
+                    "type": "object",
+                    "properties": {
+                        "has_byteranges": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "taxon_hit_results": {
+            "type": "object",
+            "properties": {
+                "taxon_hits": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "count_type": {
+                                "type": "str"
+                            },
+                            "count": {
+                                "type": "int"
+                            },
+                            "base_count": {
+                                "type": "int"
+                            },
+                            "rpm": {
+                                "type": "float"
+                            },
+                            "bpm": {
+                                "type": "float"
+                            },
+                            "alignment_length": {
+                                "type": "float"
+                            },
+                            "percent_identity": {
+                                "type": "int"
+                            },
+                            "e_value": {
+                                "type": "float"
+                            },
+                            "tax_id": {
+                                "type": "int"
+                            },
+                            "_": {
+                                "type": "object",
+                                "properties": {
+                                    "bg_mean": {
+                                        "type": "float"
+                                    },
+                                    "bg_stdev": {
+                                        "type": "float"
+                                    },
+                                    "bg_mean_mass_normalized": {
+                                        "type": "float"
+                                    },
+                                    "bg_stdev_mass_normalized": {
+                                        "type": "float"
+                                    },
+                                    "z_score": {
+                                        "type": "float"
+                                    },
+                                    "max_z_score": {
+                                        "type": "float"
+                                    },
+                                    "agg_score": {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "_": {
+            "type": "object",
+            "properties": {
+                "lineage": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "tax_id": {
+                                "type": "int"
+                            },
+                            "name": {
+                                "type": "str"
+                            },
+                            "rank": {
+                                "type": "str"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

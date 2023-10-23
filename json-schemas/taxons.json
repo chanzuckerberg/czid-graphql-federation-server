@@ -1,0 +1,34 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "tax_id": {
+                "type": "int"
+            },
+            "tax_id_genus": {
+                "type": "int"
+            },
+            "common_name": {
+                "type": "str"
+            },
+            "name": {
+                "type": "str"
+            },
+            "is_phage": {
+                "type": "bool"
+            },
+            "level": {
+                "type": "str"
+            },
+            "_": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "str"
+                    }
+                }
+            }
+        }
+    }
+}

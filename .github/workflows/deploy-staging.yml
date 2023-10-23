@@ -1,0 +1,47 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Deploy main to staging
+jobs:
+  deploy-to-staging-env:
+    runs-on: [ARM64, self-hosted, Linux]
+    environment: staging
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Assume happy-api deployment role
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: us-west-2
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-duration-seconds: 1200
+          role-session-name: CzidGraphQLFederationUpdateStaging
+      - name: Install happy
+        uses: chanzuckerberg/github-actions/.github/actions/install-happy@main
+      - name: Get Id Token
+        uses: actions/github-script@v6
+        id: idtoken
+        with:
+          script: |
+            const id_token = await core.getIDToken()
+            core.setOutput('id_token', id_token)
+            core.exportVariable('id_token', id_token);
+      - name: Set version info
+        run: |
+          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set CZID_GQL_FED_GIT_SHA ${{ github.sha }} --env staging --aws-profile ""
+      - name: Set CZ ID Rails API URL
+        run: |
+          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set API_URL ${{ vars.API_URL }} --env staging --aws-profile ""
+      - name: Deploy to staging env
+        uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@main
+        with:
+          tfe-token: ${{ secrets.TFE_TOKEN }}
+          env: ${{ vars.HAPPY_ENV }}
+          create-tag: true
+          stack-name: ${{ secrets.HAPPY_STACK_NAME }}
+          version-lock-file: .happy/version.lock

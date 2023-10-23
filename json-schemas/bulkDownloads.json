@@ -1,0 +1,116 @@
+{
+    "type": "object",
+    "title": "GeneratedMeshSchema",
+    "description": "Generated mesh schema from JSON object",
+    "properties": {
+        "bulk_download": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "int"
+                },
+                "params_json": {
+                    "type": "str"
+                },
+                "download_type": {
+                    "type": "str"
+                },
+                "status": {
+                    "type": "str"
+                },
+                "error_message": {
+                    "type": "NoneType"
+                },
+                "user_id": {
+                    "type": "int"
+                },
+                "created_at": {
+                    "type": "str"
+                },
+                "updated_at": {
+                    "type": "str"
+                },
+                "progress": {
+                    "type": "float"
+                },
+                "ecs_task_arn": {
+                    "type": "NoneType"
+                },
+                "output_file_size": {
+                    "type": "int"
+                },
+                "description": {
+                    "type": "NoneType"
+                },
+                "deleted_at": {
+                    "type": "NoneType"
+                },
+                "analysis_type": {
+                    "type": "str"
+                },
+                "analysis_count": {
+                    "type": "int"
+                },
+                "num_samples": {
+                    "type": "int"
+                },
+                "download_name": {
+                    "type": "str"
+                },
+                "file_size": {
+                    "type": "str"
+                },
+                "user_name": {
+                    "type": "str"
+                },
+                "execution_type": {
+                    "type": "str"
+                },
+                "log_url": {
+                    "type": "NoneType"
+                },
+                "params": {
+                    "type": "dict"
+                },
+                "pipeline_runs": {
+                    "type": "list"
+                },
+                "workflow_runs": {
+                    "type": "list"
+                },
+                "presigned_output_url": {
+                    "type": "str"
+                }
+            }
+        },
+        "download_type": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "str"
+                },
+                "display_name": {
+                    "type": "str"
+                },
+                "description": {
+                    "type": "str"
+                },
+                "category": {
+                    "type": "str"
+                },
+                "execution_type": {
+                    "type": "str"
+                },
+                "fields": {
+                    "type": "list"
+                },
+                "file_type_display": {
+                    "type": "str"
+                },
+                "workflows": {
+                    "type": "list"
+                }
+            }
+        }
+    }
+}

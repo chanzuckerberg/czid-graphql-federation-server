@@ -38,7 +38,7 @@
 
 * **ci:** remove staging image promotion in prod deploy
 
-## 1.2.0](2023-10-06)
+## 1.2.0 (2023-10-06)
 
 
 ### Features

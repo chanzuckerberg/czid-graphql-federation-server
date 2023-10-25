@@ -149,7 +149,6 @@ export const resolvers: Resolvers = {
           `/samples/${args.sampleId}/coverage_viz_summary`,
           context
         );
-        console.log(coverage_viz_summary);
         const return_obj: any[] = [];
         for (const key in coverage_viz_summary) {
           for (const accension of coverage_viz_summary[key][

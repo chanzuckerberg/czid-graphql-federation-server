@@ -27,6 +27,23 @@ export const get = async (url: string, args: any, context: any) => {
     }
 };
 
+export const simpleGet = async (url: string, context: any) => {
+    try {
+        const baseURL = process.env.API_URL;
+        const response = await fetch(baseURL + url, {
+            method: 'GET',
+            headers: {
+              'Cookie': context.request.headers.get("cookie"),
+              'Content-Type': 'application/json',
+            },
+          });
+        return await response.json();
+    } catch (e) {
+        console.log(e);
+        return Promise.reject(e.response);
+    }
+};
+
 export const postWithCSRF = async (url: string, body: any, args: any, context: any) => {
     try {
         const response = await fetch(process.env.API_URL + url, {

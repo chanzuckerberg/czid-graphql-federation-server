@@ -1,6 +1,6 @@
 // resolvers.ts
 import { Resolvers } from "./.mesh";
-import { get, notFound, formatUrlParams, postWithCSRF } from "./utils/httpUtils";
+import { get, notFound, formatUrlParams, postWithCSRF, simpleGet } from "./utils/httpUtils";
 import { formatTaxonHits, formatTaxonLineage } from "./utils/mngsWorkflowResultsUtils";
 import { formatSample, formatSamples } from "./utils/samplesUtils";
 
@@ -140,6 +140,32 @@ export const resolvers: Resolvers = {
         }
       });
       return annotations;
+    },
+    CoverageVizSummary: async (root, args, context, info) => {
+      // should be fetched using pipeline run id instead of sample id
+      // from the new backend
+      try {
+        const coverage_viz_summary = await simpleGet(
+          `/samples/${args.sampleId}/coverage_viz_summary`,
+          context
+        );
+        console.log(coverage_viz_summary);
+        const return_obj: any[] = [];
+        for (const key in coverage_viz_summary) {
+          for (const accension of coverage_viz_summary[key][
+            "best_accessions"
+          ]) {
+            return_obj.push({
+              pipeline_id: key,
+              ...accension,
+            });
+          }
+        }
+        return return_obj;
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
     },
     GraphQLFederationVersion: () => ({
       version: process.env.CZID_GQL_FED_GIT_VERSION,

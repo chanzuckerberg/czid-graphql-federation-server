@@ -1,6 +1,6 @@
 // resolvers.ts
 import { Resolvers } from "./.mesh";
-import { get, notFound, formatUrlParams, postWithCSRF, simpleGet } from "./utils/httpUtils";
+import { get, notFound, formatUrlParams, postWithCSRF } from "./utils/httpUtils";
 import { formatTaxonHits, formatTaxonLineage } from "./utils/mngsWorkflowResultsUtils";
 import { formatSample, formatSamples } from "./utils/samplesUtils";
 
@@ -145,8 +145,9 @@ export const resolvers: Resolvers = {
       // should be fetched using pipeline run id instead of sample id
       // from the new backend
       try {
-        const coverage_viz_summary = await simpleGet(
+        const coverage_viz_summary = await get(
           `/samples/${args.sampleId}/coverage_viz_summary`,
+          args,
           context
         );
         const return_obj: any[] = [];

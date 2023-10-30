@@ -127,6 +127,15 @@ sources:
             responseTypeName: UpdateSampleNotes
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: KickoffWorkflow
+            path: /samples/{args.sampleId}/kickoff_workflow
+            method: POST
+            requestSample: {"inputs_json[start_from_mngs]": "true", "workflow": "amr", "authenticityToken": "token"}
+            responseSchema: ./json-schemas/kickoffWorkflow.json
+            responseTypeName: UpdateSampleNotes
+            headers:
+              Cookie: "{context.headers['cookie']}"
       transforms:
         - namingConvention:
             typeNames: camelCase

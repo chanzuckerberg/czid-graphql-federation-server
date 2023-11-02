@@ -1,6 +1,5 @@
 # Changelog
 
-## Note: release tags and commits not available for version 1.5.0 and below
 
 ## 1.6.0 (2023-11-02)
 
@@ -16,6 +15,7 @@
 
 ## 1.5.0 (2023-10-23)
 
+### **Release tags and commits not available for version 1.5.0 and below**
 
 ### Features
 

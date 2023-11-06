@@ -10,10 +10,11 @@ export const formatUrlParams = (params: any) => {
     return "?&" + paramList.join("&");
 }
 
-export const simpleGet = async (url: string, context: any) => {
+export const get = async (url: string, args: any, context: any) => {
     try {
         const baseURL = process.env.API_URL;
-        const response = await fetch(baseURL + url, {
+        const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+        const response = await fetch(baseURL + urlPrefix + url, {
             method: 'GET',
             headers: {
               'Cookie': context.request.headers.get("cookie"),
@@ -22,7 +23,6 @@ export const simpleGet = async (url: string, context: any) => {
           });
         return await response.json();
     } catch (e) {
-        console.log(e);
         return Promise.reject(e.response);
     }
 };

@@ -98,6 +98,14 @@ export const resolvers: Resolvers = {
         return formatSamples(samples);
       }
     },
+    ValidateUserCanDeleteObjects: async (root, args, context, info) => {
+      const body = {
+        selectedIds: args?.input?.selectedIds,
+        workflow: args?.input?.workflow,
+      }
+      const res = await postWithCSRF(`/samples/validate_user_can_delete_objects.json`, body, args, context)
+      return res;
+    },
     Taxons: async (root, args, context, info) => {
       const urlParams = formatUrlParams({ id: args.sampleId, pipelineVersion: args.workflowVersionId, merge_nt_nr: false});
       const { all_tax_ids, _metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } = await get(`/samples/${args.sampleId}/report_v2` + urlParams, args, context) || {};

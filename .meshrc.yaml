@@ -142,6 +142,9 @@ additionalTypeDefs: |
   }
 additionalResolvers:
   - ./resolvers.ts
+plugins:
+  - csrfPrevention:
+      requestHeaders: ['x-graphql-yoga-csrf']
 serve:
   port: 4444
   endpoint: "/graphqlfed"

@@ -258,7 +258,6 @@ export const resolvers: Resolvers = {
         }
         return return_obj;
       } catch (error) {
-        console.log(error);
         return [];
       }
     },

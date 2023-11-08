@@ -131,7 +131,7 @@ sources:
             field: KickoffWorkflow
             path: /samples/{args.sampleId}/kickoff_workflow
             method: POST
-            requestSample: {"inputs_json[start_from_mngs]": "true", "workflow": "amr", "authenticityToken": "token"}
+            requestSample: {"inputs_json": {}, "workflow": "amr", "authenticityToken": "token"}
             responseSchema: ./json-schemas/kickoffWorkflow.json
             responseTypeName: UpdateSampleNotes
             headers:

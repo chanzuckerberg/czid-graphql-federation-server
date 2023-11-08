@@ -157,6 +157,14 @@ export const resolvers: Resolvers = {
         deleted_workflow_ids: deletedIds,
         error: error,
       };
+    },
+    KickoffWorkflow: async (root, args, context, info) => {
+      const body = {
+        workflow: args?.input?.workflow,
+        inputs_json: args?.input?.inputs_json,
+      };
+      const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
+      return res;
     }
   }
 };

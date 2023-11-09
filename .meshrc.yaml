@@ -6,6 +6,7 @@ sources:
         source: ./sources/czid-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
+          "X-CSRF-Token": "{context.headers['x-csrf-token']}"
   - name: CZIDREST
     handler:
       jsonSchema:
@@ -57,6 +58,12 @@ sources:
             method: GET
             responseSchema: ./json-schemas/mngsWorkflowResults.json
             responseTypeName: MngsWorkflowResults
+          - type: Query
+            field: CoverageVizSummary
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary
+            method: GET
+            responseSchema: ./json-schemas/coverageVizSummary.json
+            responseTypeName: CoverageVizSummary
           - type: Query
             field: Pathogens
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
@@ -111,6 +118,13 @@ sources:
             method: GET
             responseSchema: ./json-schemas/userBlastAnnotations.json
             responseTypeName: UserBlastAnnotations
+          - type: Query
+            field: ValidateUserCanDeleteObjects
+            path: /samples/validate_user_can_delete_objects.json
+            method: POST
+            requestSample: {"selectedIds":[28114,28151],"workflow":"short-read-mngs","authenticityToken":"token"}
+            responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
+            responseTypeName: ValidateUserCanDeleteObjects
           - type: Mutation
             field: DeleteSamples
             path: /samples/bulk_delete

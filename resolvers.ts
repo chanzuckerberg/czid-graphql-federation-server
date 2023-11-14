@@ -158,7 +158,15 @@ export const resolvers: Resolvers = {
         error: error,
       };
     },
-    KickoffWorkflow: async (root, args, context, info) => {
+    KickoffWGSWorkflow: async (root, args, context, info) => {
+      const body = {
+        workflow: args?.input?.workflow,
+        inputs_json: args?.input?.inputs_json,
+      };
+      const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
+      return res;
+    },
+    KickoffAMRWorkflow: async (root, args, context, info) => {
       const body = {
         workflow: args?.input?.workflow,
         inputs_json: args?.input?.inputs_json,

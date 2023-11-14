@@ -1,6 +1,17 @@
 import json
 import sys
 
+types_map = {
+    "int": "integer",
+    "float": "number",
+    "str": "string",
+    "bool": "boolean",
+    "list": "array",
+    "dict": "object",
+    "object": "object",
+    None: "null"
+}
+
 def generate_property_schema(value):
     if isinstance(value, dict):
         return generate_mesh_schema(value)
@@ -10,7 +21,9 @@ def generate_property_schema(value):
             "items": generate_property_schema(value[0]) if value else { "type": "object" }
         }
     else:
-        return { "type": type(value).__name__ }
+        value_type = type(value).__name__
+        return { "type": types_map.get(value_type, value_type)}
+        # return { "type": "integer" if type(value).__name__ == "int" else type(value).__name__}
 
 def generate_mesh_schema(json_object):
     mesh_schema = {

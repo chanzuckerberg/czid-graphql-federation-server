@@ -52,6 +52,11 @@ def main():
     json_file_path = sys.argv[1]
     output_file_path = sys.argv[2]
     json_object = load_json_from_file(json_file_path)
+
+    # Check if the json_object is a list and take the first element
+    if isinstance(json_object, list) and json_object:
+        json_object = json_object[0]
+
     mesh_schema = generate_mesh_schema(json_object)
 
     if mesh_schema is not None:

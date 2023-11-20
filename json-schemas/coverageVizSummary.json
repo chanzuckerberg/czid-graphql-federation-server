@@ -1,0 +1,31 @@
+{
+  "type": "array",
+  "items": {
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "pipeline_id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "num_contigs": {
+        "type": "integer"
+      },
+      "num_reads": {
+        "type": "integer"
+      },
+      "score": {
+        "type": "integer"
+      },
+      "coverage_breadth": {
+        "type": "float"
+      },
+      "coverage_depth": {
+        "type": "float"
+      }
+    }
+  }
+}

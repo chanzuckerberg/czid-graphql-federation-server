@@ -21,7 +21,8 @@ export const get = async (url: string, args: any, context: any) => {
               'Content-Type': 'application/json',
             },
           });
-        return await response.json();
+        return response;
+        // return await response.json();
     } catch (e) {
         return Promise.reject(e.response);
     }

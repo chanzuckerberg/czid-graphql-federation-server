@@ -263,6 +263,19 @@ export const resolvers: Resolvers = {
       }
       return return_obj;
     },
+    ZipLink: async (root, args, context, info) => {
+      const res = await get(`/workflow_runs/${args.workflowRunId}/zip_link.json`, args, context)
+      if (res.status !== 302) {
+        return {
+          url: null,
+          error: res.statusText,
+        };
+      }
+      const url = res.headers.get("location");
+      return {
+        url: url,
+      };
+    },
     GraphQLFederationVersion: () => ({
       version: process.env.CZID_GQL_FED_GIT_VERSION,
       gitCommit: process.env.CZID_GQL_FED_GIT_SHA,
@@ -301,5 +314,5 @@ export const resolvers: Resolvers = {
       const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
       return res;
     }
-  }
+  },
 };

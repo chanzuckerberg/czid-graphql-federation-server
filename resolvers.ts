@@ -5,6 +5,7 @@ import {
   notFound,
   formatUrlParams,
   postWithCSRF,
+  getFullResponse,
 } from "./utils/httpUtils";
 import {
   formatTaxonHits,
@@ -264,7 +265,7 @@ export const resolvers: Resolvers = {
       return return_obj;
     },
     ZipLink: async (root, args, context, info) => {
-      const res = await get(`/workflow_runs/${args.workflowRunId}/zip_link.json`, args, context)
+      const res = await getFullResponse(`/workflow_runs/${args.workflowRunId}/zip_link.json`, args, context)
       if (res.status !== 302) {
         return {
           url: null,

@@ -21,8 +21,24 @@ export const get = async (url: string, args: any, context: any) => {
               'Content-Type': 'application/json',
             },
           });
+        return await response.json();
+    } catch (e) {
+        return Promise.reject(e.response);
+    }
+};
+
+export const getFullResponse = async (url: string, args: any, context: any) => {
+    try {
+        const baseURL = process.env.API_URL;
+        const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+        const response = await fetch(baseURL + urlPrefix + url, {
+            method: 'GET',
+            headers: {
+              'Cookie': context.request.headers.get("cookie"),
+              'Content-Type': 'application/json',
+            },
+          });
         return response;
-        // return await response.json();
     } catch (e) {
         return Promise.reject(e.response);
     }

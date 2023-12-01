@@ -58,6 +58,12 @@ sources:
             responseSchema: ./json-schemas/mngsWorkflowResults.json
             responseTypeName: MngsWorkflowResults
           - type: Query
+            field: CoverageVizSummary
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary
+            method: GET
+            responseSchema: ./json-schemas/coverageVizSummary.json
+            responseTypeName: CoverageVizSummary
+          - type: Query
             field: Pathogens
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET
@@ -73,7 +79,7 @@ sources:
               Cookie: "{context.headers['cookie']}"
           - type: Query
             field: PipelineData
-            path: /samples/{args.sampleId}/pipeline_viz/7.0.json
+            path: /samples/{args.sampleId}/pipeline_viz/{args.workflowVersionId}.json
             method: GET
             responseSchema: ./json-schemas/pipelineData.json
             responseTypeName: PipelineData
@@ -111,20 +117,73 @@ sources:
             method: GET
             responseSchema: ./json-schemas/userBlastAnnotations.json
             responseTypeName: UserBlastAnnotations
+          - type: Query
+            field: ValidateUserCanDeleteObjects
+            path: /samples/validate_user_can_delete_objects.json
+            method: POST
+            requestSample: {"selectedIds":[28114,28151],"workflow":"short-read-mngs","authenticityToken":"token"}
+            responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
+            responseTypeName: ValidateUserCanDeleteObjects
           - type: Mutation
             field: DeleteSamples
             path: /samples/bulk_delete
             method: POST
-            requestSample: { "ids": [1], "_workflow": "short-read-mngs", "authenticityToken": "token"}
+            requestSample:
+              {
+                "ids": [1],
+                "_workflow": "short-read-mngs",
+                "authenticityToken": "token",
+              }
             responseSchema: ./json-schemas/deleteSamples.json
             responseTypeName: DeleteSamples
           - type: Mutation
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata
             method: POST
-            requestSample: {"value": "test", "field": "notes", "authenticityToken": "token"}
+            requestSample:
+              {
+                "value": "test",
+                "field": "notes",
+                "authenticityToken": "token",
+              }
             responseSchema: ./json-schemas/updateSampleNotes.json
             responseTypeName: UpdateSampleNotes
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: KickoffWGSWorkflow
+            path: /samples/{args.sampleId}/kickoff_workflow
+            method: POST
+            requestSample:
+              {
+                "inputs_json":
+                  {
+                    "accession_id": "KX882832.1",
+                    "accession_name": "Hubei mosquito virus 2 strain mosZJ35453 segment 1 hypothetical protein 1 and hypothetical protein 2 genes, complete cds",
+                    "taxon_id": "1922926",
+                    "taxon_name": "Menispermaceae",
+                    "alignment_config_name": "2020-02-03",
+                    "technology": "Illumina",
+                  },
+                "workflow": "amr",
+                "authenticityToken": "token",
+              }
+            responseSchema: ./json-schemas/kickoffWorkflow.json
+            responseTypeName: KickoffWGSWorkflow
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: KickoffAMRWorkflow
+            path: /samples/{args.sampleId}/kickoff_workflow
+            method: POST
+            requestSample:
+              {
+                "inputs_json": { "start_from_mngs": true },
+                "workflow": "amr",
+                "authenticityToken": "token",
+              }
+            responseSchema: ./json-schemas/kickoffWorkflow.json
+            responseTypeName: KickoffAMRWorkflow
             headers:
               Cookie: "{context.headers['cookie']}"
       transforms:

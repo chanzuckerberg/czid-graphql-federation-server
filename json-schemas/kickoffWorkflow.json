@@ -1,0 +1,46 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "status": {
+            "type": "string"
+        },
+        "workflow": {
+            "type": "string"
+        },
+        "wdl_version": {
+            "type": "string"
+        },
+        "executed_at": {
+            "type": "string"
+        },
+        "deprecated": {
+            "type": "boolean"
+        },
+        "input_error": {
+            "type": "NoneType"
+        },
+        "inputs": {
+            "type": "object",
+            "properties": {
+                "start_from_mngs": {
+                    "type": "string"
+                },
+                "card_version": {
+                    "type": "string"
+                },
+                "wildcard_version": {
+                    "type": "string"
+                }
+            }
+        },
+        "parsed_cached_results": {
+            "type": "NoneType"
+        },
+        "run_finalized": {
+            "type": "boolean"
+        }
+    }
+}

@@ -20,7 +20,7 @@
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
     "@graphql-mesh/cli": "^0.87.15",
-    "@graphql-mesh/graphql": "^0.95.7",
+    "@graphql-mesh/graphql": "^0.96.1",
     "@graphql-mesh/json-schema": "^0.95.10",
     "graphql": "^16.8.1"
   },

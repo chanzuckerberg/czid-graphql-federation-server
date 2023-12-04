@@ -54,7 +54,7 @@ export const resolvers: Resolvers = {
           accession_id: taxon_info.accession_id,
           accession_name: taxon_info.accession_name,
           taxon: {
-            id: taxon_info.taxon_id,
+            id: taxon_info.taxon_id.toString(),
             name: taxon_info.taxon_name,
           },
         },

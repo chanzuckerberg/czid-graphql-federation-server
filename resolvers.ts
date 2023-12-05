@@ -166,8 +166,13 @@ export const resolvers: Resolvers = {
       const body = {
         selectedIds: args?.input?.selectedIds,
         workflow: args?.input?.workflow,
-      }
-      const res = await postWithCSRF(`/samples/validate_user_can_delete_objects.json`, body, args, context)
+      };
+      const res = await postWithCSRF(
+        `/samples/validate_user_can_delete_objects.json`,
+        body,
+        args,
+        context
+      );
       return res;
     },
     Taxons: async (root, args, context, info) => {
@@ -265,16 +270,20 @@ export const resolvers: Resolvers = {
       return return_obj;
     },
     ZipLink: async (root, args, context, info) => {
-      const res = await getFullResponse(`/workflow_runs/${args.workflowRunId}/zip_link.json`, args, context)
-      if (res.status !== 302) {
+      const res = await getFullResponse(
+        `/workflow_runs/${args.workflowRunId}/zip_link.json`,
+        args,
+        context
+      );
+      if (res.status !== 200) {
         return {
           url: null,
           error: res.statusText,
         };
       }
-      const url = res.headers.get("location");
+      const url = res.url;
       return {
-        url: url,
+        url
       };
     },
     GraphQLFederationVersion: () => ({
@@ -304,7 +313,12 @@ export const resolvers: Resolvers = {
         workflow: args?.input?.workflow,
         inputs_json: args?.input?.inputs_json,
       };
-      const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/kickoff_workflow`,
+        body,
+        args,
+        context
+      );
       return res;
     },
     KickoffAMRWorkflow: async (root, args, context, info) => {
@@ -312,8 +326,13 @@ export const resolvers: Resolvers = {
         workflow: args?.input?.workflow,
         inputs_json: args?.input?.inputs_json,
       };
-      const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/kickoff_workflow`,
+        body,
+        args,
+        context
+      );
       return res;
-    }
+    },
   },
 };

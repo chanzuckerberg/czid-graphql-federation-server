@@ -214,4 +214,4 @@ serve:
   endpoint: "/graphqlfed"
   playground: true
   cors:
-    origin: "${API_URL},${ADDITIONAL_CORS_ORIGINS}"
+    origin: "${ALLOWED_CORS_ORIGINS}"

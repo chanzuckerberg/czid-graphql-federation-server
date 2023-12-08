@@ -10,6 +10,7 @@ services:
     restart: always
     environment:
       API_URL: http://web:3001
+      ADDITIONAL_CORS_ORIGINS: http://localhost:3000
     ports:
       - "4444:4444"
     volumes:

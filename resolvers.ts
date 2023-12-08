@@ -320,7 +320,12 @@ export const resolvers: Resolvers = {
         args,
         context
       );
-      return res;
+      // need to check if the status is 200
+      const formattedRes = res.map((item: any) => {
+        item.id = item.id.toString()
+        return item
+      });
+      return formattedRes;
     },
     KickoffAMRWorkflow: async (root, args, context, info) => {
       const body = {

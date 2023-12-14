@@ -6,7 +6,6 @@ sources:
         source: ./sources/czid-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
-          "X-CSRF-Token": "{context.headers['x-csrf-token']}"
   - name: CZIDREST
     handler:
       jsonSchema:
@@ -125,6 +124,12 @@ sources:
             requestSample: {"selectedIds":[28114,28151],"workflow":"short-read-mngs","authenticityToken":"token"}
             responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
             responseTypeName: ValidateUserCanDeleteObjects
+          - type: Query
+            field: ZipLink
+            path: /workflow_runs/{args.workflowRunId}/zip_link.json
+            method: GET
+            responseSchema: ./json-schemas/zipLink.json
+            responseTypeName: ZipLink
           - type: Mutation
             field: DeleteSamples
             path: /samples/bulk_delete
@@ -163,7 +168,7 @@ sources:
                     "accession_name": "Hubei mosquito virus 2 strain mosZJ35453 segment 1 hypothetical protein 1 and hypothetical protein 2 genes, complete cds",
                     "taxon_id": "1922926",
                     "taxon_name": "Menispermaceae",
-                    "alignment_config_name": "2020-02-03",
+                    "alignment_config_name": "config_name",
                     "technology": "Illumina",
                   },
                 "workflow": "amr",
@@ -201,6 +206,9 @@ additionalTypeDefs: |
   }
 additionalResolvers:
   - ./resolvers.ts
+plugins:
+  - csrfPrevention:
+      requestHeaders: ['x-graphql-yoga-csrf']
 serve:
   port: 4444
   endpoint: "/graphqlfed"

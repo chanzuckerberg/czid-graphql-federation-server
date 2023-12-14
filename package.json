@@ -1,6 +1,6 @@
 {
   "name": "czi-graphql-federation",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "scripts": {
     "start": "mesh start",
@@ -22,6 +22,7 @@
     "@graphql-mesh/cli": "^0.87.15",
     "@graphql-mesh/graphql": "^0.95.7",
     "@graphql-mesh/json-schema": "^0.95.10",
+    "@graphql-yoga/plugin-csrf-prevention": "^3.0.0",
     "graphql": "^16.8.1"
   },
   "overrides": {}

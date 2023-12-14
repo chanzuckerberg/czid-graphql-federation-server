@@ -5,6 +5,7 @@ import {
   notFound,
   formatUrlParams,
   postWithCSRF,
+  getFullResponse,
 } from "./utils/httpUtils";
 import {
   formatTaxonHits,
@@ -45,17 +46,18 @@ export const resolvers: Resolvers = {
         args,
         context
       );
+      const {accession_id, accession_name, taxon_id, taxon_name} = taxon_info || {};
       return {
         metric_consensus_genome: {
           ...quality_metrics,
           coverage_viz,
         },
         reference_genome: {
-          accession_id: taxon_info.accession_id,
-          accession_name: taxon_info.accession_name,
+          accession_id: accession_id,
+          accession_name: accession_name,
           taxon: {
-            id: taxon_info.taxon_id,
-            name: taxon_info.taxon_name,
+            id: taxon_id?.toString(),
+            name: taxon_name,
           },
         },
       };
@@ -165,8 +167,13 @@ export const resolvers: Resolvers = {
       const body = {
         selectedIds: args?.input?.selectedIds,
         workflow: args?.input?.workflow,
-      }
-      const res = await postWithCSRF(`/samples/validate_user_can_delete_objects.json`, body, args, context)
+      };
+      const res = await postWithCSRF(
+        `/samples/validate_user_can_delete_objects.json`,
+        body,
+        args,
+        context
+      );
       return res;
     },
     Taxons: async (root, args, context, info) => {
@@ -263,6 +270,23 @@ export const resolvers: Resolvers = {
       }
       return return_obj;
     },
+    ZipLink: async (root, args, context, info) => {
+      const res = await getFullResponse(
+        `/workflow_runs/${args.workflowRunId}/zip_link.json`,
+        args,
+        context
+      );
+      if (res.status !== 200) {
+        return {
+          url: null,
+          error: res.statusText,
+        };
+      }
+      const url = res.url;
+      return {
+        url
+      };
+    },
     GraphQLFederationVersion: () => ({
       version: process.env.CZID_GQL_FED_GIT_VERSION,
       gitCommit: process.env.CZID_GQL_FED_GIT_SHA,
@@ -290,16 +314,34 @@ export const resolvers: Resolvers = {
         workflow: args?.input?.workflow,
         inputs_json: args?.input?.inputs_json,
       };
-      const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
-      return res;
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/kickoff_workflow`,
+        body,
+        args,
+        context
+      );
+      try {
+        const formattedRes = res.map((item) => {
+          item.id = item.id.toString()
+          return item
+        });
+        return formattedRes;
+      } catch {
+        return res;
+      }
     },
     KickoffAMRWorkflow: async (root, args, context, info) => {
       const body = {
         workflow: args?.input?.workflow,
         inputs_json: args?.input?.inputs_json,
       };
-      const res = await postWithCSRF(`/samples/${args.sampleId}/kickoff_workflow`, body, args, context);
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/kickoff_workflow`,
+        body,
+        args,
+        context
+      );
       return res;
-    }
-  }
+    },
+  },
 };

@@ -192,6 +192,20 @@ sources:
             responseTypeName: KickoffAMRWorkflow
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: SaveMetadataV2
+            path: /samples/{args.sampleId}/save_metadata_v2
+            method: POST
+            requestSample:
+              {
+                "field": "nucleotide_type",
+                "value": "RNA",
+                "authenticityToken": "token",
+              }
+            responseSchema: ./json-schemas/saveMetadataV2.json
+            responseTypeName: SaveMetadataV2
+            headers:
+              Cookie: "{context.headers['cookie']}"
       transforms:
         - namingConvention:
             typeNames: camelCase

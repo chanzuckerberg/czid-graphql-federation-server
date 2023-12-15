@@ -193,17 +193,12 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Mutation
-            field: SaveMetadataV2
+            field: UpdateMetadata
             path: /samples/{args.sampleId}/save_metadata_v2
             method: POST
-            requestSample:
-              {
-                "field": "nucleotide_type",
-                "value": "RNA",
-                "authenticityToken": "token",
-              }
-            responseSchema: ./json-schemas/saveMetadataV2.json
-            responseTypeName: SaveMetadataV2
+            requestSchema: ./json-schemas/updateMetadata.json
+            responseSchema: ./json-schemas/updateMetadataResponse.json
+            responseTypeName: UpdateMetadataReponse
             headers:
               Cookie: "{context.headers['cookie']}"
       transforms:

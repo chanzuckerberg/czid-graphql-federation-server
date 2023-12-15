@@ -343,7 +343,7 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
-    SaveMetadataV2: async (root, args, context, info) => {
+    UpdateMetadata: async (root, args, context, info) => {
       const body = {
         field: args?.input?.field,
         value: args?.input?.value,

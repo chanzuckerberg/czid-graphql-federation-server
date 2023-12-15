@@ -343,5 +343,32 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
+    UpdateSampleNotes: async (root, args, context, info) => {
+      const body = {
+        field: "sample_notes",
+        value: args?.input?.value,
+      };
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/save_metadata`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
+    UpdateSampleName: async (root, args, context, info) => {
+      const body = {
+        field: "name",
+        value: args?.input?.value,
+      };
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/save_metadata`,
+        body,
+        args,
+        context
+      );
+      return res;
+    }
   },
 };
+

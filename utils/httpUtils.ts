@@ -44,6 +44,12 @@ export const getFullResponse = async (url: string, args: any, context: any) => {
     }
 };
 
+const checkForLogin = (responseUrl: string | null) => {
+    if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
+        throw new Error("You must be logged in to perform this action.");
+    }
+}
+
 export const postWithCSRF = async (url: string, body: any, args: any, context: any) => {
     try {
         const response = await fetch(process.env.API_URL + url, {
@@ -55,9 +61,10 @@ export const postWithCSRF = async (url: string, body: any, args: any, context: a
             },
             body: JSON.stringify(body),
           });
+        checkForLogin(response?.url);
         return await response.json();
     } catch (e) {
-        return Promise.reject(e.response);
+        return Promise.reject(e.response ? e.response : e);
     }
 }
 

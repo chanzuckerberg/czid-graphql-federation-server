@@ -343,6 +343,18 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
+    MetadataFields: async (root, args, context, info) => {
+      const body = {
+        sampleIds: args?.input?.sampleIds
+      };
+      const res = await postWithCSRF(
+        `/samples/metadata_fields`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
     UpdateMetadata: async (root, args, context, info) => {
       const body = {
         field: args?.input?.field,

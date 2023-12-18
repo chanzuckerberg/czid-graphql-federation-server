@@ -14,7 +14,7 @@
             }
         },
         "error": {
-            "type": "NoneType"
+            "type": "string"
         }
     }
 }

@@ -1,0 +1,33 @@
+name: Set env var with happy config
+
+on:
+  workflow_call:
+    inputs:
+      env-var-name:
+        required: true
+        type: string
+      env-var-value:
+        required: true
+        type: string
+      happy-env:
+        required: true
+        type: string
+
+jobs:
+  happy-config-set:
+    runs-on: [ARM64, self-hosted, Linux]
+    environment: ${{ inputs.happy-env }}
+    permissions:
+      id-token: write
+    steps:
+      - name: Get Id Token
+        uses: actions/github-script@v6
+        id: idtoken
+        with:
+          script: |
+            const id_token = await core.getIDToken()
+            core.setOutput('id_token', id_token)
+            core.exportVariable('id_token', id_token);
+      - name: Set env var
+        run: |
+          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set ${{ inputs.env-var-name }} ${{ inputs.env-var-value }} --env ${{ inputs.happy-env }} --aws-profile ""

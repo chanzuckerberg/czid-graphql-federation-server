@@ -34,11 +34,23 @@ jobs:
             core.setOutput('id_token', id_token)
             core.exportVariable('id_token', id_token);
       - name: Set version info
-        run: |
-          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set CZID_GQL_FED_GIT_SHA ${{ github.sha }} --env sandbox --aws-profile ""
+        uses: chanzuckerberg/czid-graphql-federation/.github/workflows/happy-config-set@sandbox
+        with:
+          env-var-name: CZID_GQL_FED_GIT_SHA
+          env-var-value: ${{ github.sha }}
+          happy-env: sandbox
       - name: Set CZ ID Rails API URL
-        run: |
-          HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set API_URL ${{ vars.API_URL }} --env sandbox --aws-profile ""
+        uses: chanzuckerberg/czid-graphql-federation/.github/workflows/happy-config-set@sandbox
+        with:
+          env-var-name: API_URL
+          env-var-value: ${{ vars.API_URL}}
+          happy-env: sandbox
+      - name: Set allowed CORS origins
+        uses: chanzuckerberg/czid-graphql-federation/.github/workflows/happy-config-set@sandbox
+        with:
+          env-var-name: ALLOWED_CORS_ORIGINS
+          env-var-value: ${{ vars.ALLOWED_CORS_ORIGINS}}
+          happy-env: sandbox
       - name: Update sandbox
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.26.0
         with:

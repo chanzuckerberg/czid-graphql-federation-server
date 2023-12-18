@@ -137,7 +137,7 @@ sources:
             requestSample:
               {
                 "ids": [1],
-                "_workflow": "short-read-mngs",
+                "workflow": "short-read-mngs",
                 "authenticityToken": "token",
               }
             responseSchema: ./json-schemas/deleteSamples.json

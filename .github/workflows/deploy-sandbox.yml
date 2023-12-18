@@ -36,21 +36,21 @@ jobs:
       - name: Set version info
         uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
         with:
-          env-var-name: CZID_GQL_FED_GIT_SHA
-          env-var-value: ${{ github.sha }}
-          happy-env: sandbox
+          env_var_name: CZID_GQL_FED_GIT_SHA
+          env_var_value: ${{ github.sha }}
+          happy_env: sandbox
       - name: Set CZ ID Rails API URL
         uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
         with:
-          env-var-name: API_URL
-          env-var-value: ${{ vars.API_URL}}
-          happy-env: sandbox
+          env_var_name: API_URL
+          env_var_value: ${{ vars.API_URL}}
+          happy_env: sandbox
       - name: Set allowed CORS origins
         uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
         with:
-          env-var-name: ALLOWED_CORS_ORIGINS
-          env-var-value: ${{ vars.ALLOWED_CORS_ORIGINS}}
-          happy-env: sandbox
+          env_var_name: ALLOWED_CORS_ORIGINS
+          env_var_value: ${{ vars.ALLOWED_CORS_ORIGINS}}
+          happy_env: sandbox
       - name: Update sandbox
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.26.0
         with:

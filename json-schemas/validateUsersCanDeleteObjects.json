@@ -16,5 +16,9 @@
         "error": {
             "type": "string"
         }
-    }
+    },
+    "required": [
+        "validIds",
+        "invalidSampleNames"
+    ]
 }

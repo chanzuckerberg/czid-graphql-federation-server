@@ -1,10 +1,10 @@
 name: Set app configs with happy config
 description: This workflow will set an app config in a given environment using happy config
 inputs:
-  env_var_name:
+  app_config_name:
     required: true
     type: string
-  env_var_value:
+  app_config_value:
     required: true
     type: string
   happy_env:
@@ -23,4 +23,4 @@ runs:
     - name: Set env var
       shell: bash
       run: |
-        HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set ${{ inputs.env_var_name }} ${{ inputs.env_var_value }} --env ${{ inputs.happy_env }} --aws-profile ""
+        HAPPY_OIDC_ID_TOKEN=${{env.id_token}} happy config set ${{ inputs.app_config_name }} ${{ inputs.app_config_value }} --env ${{ inputs.happy_env }} --aws-profile ""

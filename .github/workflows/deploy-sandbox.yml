@@ -26,19 +26,19 @@ jobs:
       - name: Install happy
         uses: chanzuckerberg/github-actions/.github/actions/install-happy@main
       - name: Set version info
-        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
+        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
         with:
           env_var_name: CZID_GQL_FED_GIT_SHA
           env_var_value: ${{ github.sha }}
           happy_env: sandbox
       - name: Set CZ ID Rails API URL
-        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
+        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
         with:
           env_var_name: API_URL
           env_var_value: ${{ vars.API_URL}}
           happy_env: sandbox
       - name: Set allowed CORS origins
-        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
+        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
         with:
           env_var_name: ALLOWED_CORS_ORIGINS
           env_var_value: ${{ vars.ALLOWED_CORS_ORIGINS}}

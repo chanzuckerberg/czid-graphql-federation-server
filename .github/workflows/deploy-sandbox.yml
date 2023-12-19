@@ -25,14 +25,6 @@ jobs:
           role-session-name: CzidGraphQLFederationUpdateSandbox
       - name: Install happy
         uses: chanzuckerberg/github-actions/.github/actions/install-happy@main
-      - name: Get Id Token
-        uses: actions/github-script@v6
-        id: idtoken
-        with:
-          script: |
-            const id_token = await core.getIDToken()
-            core.setOutput('id_token', id_token)
-            core.exportVariable('id_token', id_token);
       - name: Set version info
         uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@sandbox
         with:

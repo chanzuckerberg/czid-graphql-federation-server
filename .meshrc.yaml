@@ -52,6 +52,15 @@ sources:
             responseSchema: ./json-schemas/coverageVizSummary.json
             responseTypeName: CoverageVizSummary
           - type: Query
+            field: MetadataFields
+            path: /pub/{args.snapshotLinkId}/samples/metadata_fields
+            method: POST
+            requestSchema: ./json-schemas/sampleArray.json
+            responseSchema: ./json-schemas/metadataFields.json
+            responseTypeName: MetadataFields
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
             field: MngsWorkflowResults
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json
             method: GET
@@ -199,15 +208,6 @@ sources:
             requestSchema: ./json-schemas/updateMetadata.json
             responseSchema: ./json-schemas/updateMetadataResponse.json
             responseTypeName: UpdateMetadataReponse
-            headers:
-              Cookie: "{context.headers['cookie']}"
-          - type: Mutation
-            field: MetadataFields
-            path: /pub/{args.snapshotLinkId}/samples/metadata_fields
-            method: POST
-            requestSchema: ./json-schemas/sampleArray.json
-            responseSchema: ./json-schemas/metadataFields.json
-            responseTypeName: MetadataFields
             headers:
               Cookie: "{context.headers['cookie']}"
       transforms:

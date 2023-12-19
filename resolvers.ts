@@ -62,6 +62,18 @@ export const resolvers: Resolvers = {
         },
       };
     },
+    MetadataFields: async (root, args, context, info) => {
+      const body = {
+        sampleIds: args?.input?.sampleIds
+      };
+      const res = await postWithCSRF(
+        `/samples/metadata_fields`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get(`/samples/${args.sampleId}.json`, args, context);
       const pipelineRun = data?.pipeline_runs?.[0] || {};
@@ -337,18 +349,6 @@ export const resolvers: Resolvers = {
       };
       const res = await postWithCSRF(
         `/samples/${args.sampleId}/kickoff_workflow`,
-        body,
-        args,
-        context
-      );
-      return res;
-    },
-    MetadataFields: async (root, args, context, info) => {
-      const body = {
-        sampleIds: args?.input?.sampleIds
-      };
-      const res = await postWithCSRF(
-        `/samples/metadata_fields`,
         body,
         args,
         context

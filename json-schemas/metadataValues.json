@@ -7,7 +7,7 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "integer"
+                        "type": "string"
                     },
                     "key": {
                         "type": "string"
@@ -93,7 +93,7 @@
                     "type": "object",
                     "properties": {
                         "id": {
-                            "type": "integer"
+                            "type": "string"
                         },
                         "sample_id": {
                             "type": "integer"

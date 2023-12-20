@@ -62,8 +62,11 @@ sources:
               Cookie: "{context.headers['cookie']}"
           - type: Query
             field: MetadataValues
-            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/metadata?pipeline_version=${args.pipelineVersion}
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/metadata
             method: GET
+            requestSample: {
+                pipelineVersion: "8.0"
+              }
             responseSchema: ./json-schemas/metadataValues.json
             responseTypeName: MetadataValues
           - type: Query

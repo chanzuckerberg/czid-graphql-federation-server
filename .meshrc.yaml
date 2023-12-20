@@ -62,7 +62,7 @@ sources:
               Cookie: "{context.headers['cookie']}"
           - type: Query
             field: MetadataValues
-            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/metadata?pipeline_version=${args.pipelineVersion}
+            path: /samples/{args.sampleId}/metadata?pipeline_version=${args.pipelineVersion}
             method: GET
             responseSchema: ./json-schemas/metadataValues.json
             responseTypeName: MetadataValues
@@ -174,7 +174,7 @@ sources:
             responseSchema: ./json-schemas/updateSampleName.json
             responseTypeName: UpdateSampleName
             headers:
-              Cookie: "{context.headers['cookie']}"  
+              Cookie: "{context.headers['cookie']}"
           - type: Mutation
             field: KickoffWGSWorkflow
             path: /samples/{args.sampleId}/kickoff_workflow

@@ -83,7 +83,19 @@ export const resolvers: Resolvers = {
         args,
         context
       );
-      return res;
+      try {
+        const metadata = res.metadata.map((item) => {
+          item.id = item.id.toString();
+          return item;
+        });
+        if (res?.additional_info?.pipeline_run?.id){
+          res.additional_info.pipeline_run.id = res.additional_info.pipeline_run.id.toString();
+        }
+        res.metadata = metadata;
+        return res;
+      } catch {
+        return res;
+      } 
     },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get(`/samples/${args.sampleId}.json`, args, context);

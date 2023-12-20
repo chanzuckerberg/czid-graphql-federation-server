@@ -75,6 +75,16 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
+    MetadataValues: async (root, args, context, info) => {
+      const url = `/samples/${args.sampleId}/metadata`;
+      const urlWithParams = args?.pipelineVersion ? url + `?pipeline_version=${args.pipelineVersion}` : url;
+      const res = await get(
+        urlWithParams,
+        args,
+        context
+      );
+      return res;
+    },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get(`/samples/${args.sampleId}.json`, args, context);
       const pipelineRun = data?.pipeline_runs?.[0] || {};

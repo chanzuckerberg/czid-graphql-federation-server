@@ -61,14 +61,14 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
-            field: MetadataValues
+            field: SampleMetadata
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/metadata
             method: GET
             requestSample: {
                 pipelineVersion: "8.0"
               }
-            responseSchema: ./json-schemas/metadataValues.json
-            responseTypeName: MetadataValues
+            responseSchema: ./json-schemas/sampleMetadata.json
+            responseTypeName: SampleMetadata
           - type: Query
             field: MngsWorkflowResults
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json

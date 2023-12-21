@@ -75,7 +75,7 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
-    MetadataValues: async (root, args, context, info) => {
+    SampleMetadata: async (root, args, context, info) => {
       const url = `/samples/${args.sampleId}/metadata`;
       const urlWithParams = args?.input?.pipelineVersion ? url + `?pipeline_version=${args?.input?.pipelineVersion}` : url;
       const res = await get(

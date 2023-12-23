@@ -383,13 +383,32 @@ export const resolvers: Resolvers = {
         field: args?.input?.field,
         value: args?.input?.value,
       };
-      const res = await postWithCSRF(
+      const res1 = await postWithCSRF(
         `/samples/${args.sampleId}/save_metadata_v2`,
         body,
         args,
         context
       );
-      return res;
+      console.log(res1.status);
+      if (res1.status === "success") {
+        const res2 = await get(
+          `/samples/${args.sampleId}/metadata`,
+          args,
+          context
+        );
+      // in res2, the metadata is an array of objects
+      // find the object with the field that matches the field in the input
+      // then return the value of that object
+        const metadata = res2.metadata.filter((item) => {
+          return item.key === body.field;
+        });
+        console.log(metadata)
+      return {
+        status: res1.status,
+        message: res1.message,
+        metadata: metadata,
+      };
+    }
     },
     UpdateSampleNotes: async (root, args, context, info) => {
       const body = {

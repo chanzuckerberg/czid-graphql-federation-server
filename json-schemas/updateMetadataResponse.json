@@ -6,6 +6,51 @@
         },
         "message": {
             "type": "string"
+        },
+        "metadata": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties":{
+                "id": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "raw_value": {
+                    "type": "string"
+                },
+                "string_validated_value": {
+                    "type": "string"
+                },
+                "number_validated_value": {
+                    "type": "integer"
+                },
+                "sample_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "date_validated_value": {
+                    "type": "string"
+                },
+                "metadata_field_id": {
+                    "type": "integer"
+                },
+                "location_id": {
+                    "type": "integer"
+                },
+                "base_type": {
+                    "type": "string"
+                }
+            
+            }
         }
     }
+}
 }

@@ -401,6 +401,9 @@ export const resolvers: Resolvers = {
       // then return the value of that object
         const metadata = res2.metadata.filter((item) => {
           return item.key === body.field;
+        }).map((item) => {
+          item.id = item.id.toString() + item.key;
+          return item;
         });
         console.log(metadata)
       return {

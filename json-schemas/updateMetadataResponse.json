@@ -6,6 +6,10 @@
         },
         "message": {
             "type": "string"
-        }
+        },
+        "metadata": {
+            "type": "array",
+            "items": { "$ref": "./metadataItems.json" }
     }
+}
 }

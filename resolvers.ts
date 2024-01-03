@@ -402,7 +402,7 @@ export const resolvers: Resolvers = {
         const metadata = res2.metadata.filter((item) => {
           return item.key === body.field;
         }).map((item) => {
-          item.id = item.id.toString() + item.key;
+          item.id = item.id.toString();
           return item;
         });
         console.log(metadata)

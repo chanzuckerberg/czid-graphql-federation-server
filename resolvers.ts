@@ -83,6 +83,7 @@ export const resolvers: Resolvers = {
         args,
         context
       );
+      console.log(res);
       try {
         const metadata = res.metadata.map((item) => {
           item.id = item.id.toString();
@@ -92,6 +93,7 @@ export const resolvers: Resolvers = {
           res.additional_info.pipeline_run.id = res.additional_info.pipeline_run.id.toString();
         }
         res.metadata = metadata;
+        console.log(res);
         return res;
       } catch {
         return res;

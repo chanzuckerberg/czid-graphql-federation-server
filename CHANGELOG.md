@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [2.5.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.4.0...v2.5.0) (2024-01-04)
+
+
+### Features
+
+* add MetadataValues query ([#54](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/54)) ([721f8b0](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/721f8b00dddf30bf4c04d81b50c627b9fe8c8229))
+
+
+### Bug Fixes
+
+* Change ercc_comparison type from integer to float ([#59](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/59)) ([108e0ad](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/108e0ad2cebbd8c3ba80bf7860b6602a68dbb197))
+
 ## [2.4.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.3.0...v2.4.0) (2023-12-19)
 
 

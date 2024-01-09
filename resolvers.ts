@@ -101,8 +101,8 @@ export const resolvers: Resolvers = {
           };
         } else if ( typeof field.location_validated_value === "string" ){
           field.location_validated_value = {
-            __typename: "String_container", 
-            String: field.location_validated_value
+            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_0", 
+            name: field.location_validated_value
           };
         } else {
           field.location_validated_value = null;

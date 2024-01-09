@@ -36,7 +36,12 @@
                     "location_validated_value": {
                          "oneOf": [
                             {
-                                "type": "string"
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
                             },
                             {
                                 "$ref": "./locationV2.json"

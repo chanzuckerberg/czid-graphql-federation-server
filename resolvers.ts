@@ -83,7 +83,6 @@ export const resolvers: Resolvers = {
         args,
         context
       );
-      console.log(res);
       try {
         const metadata = res.metadata.map((item) => {
           item.id = item.id.toString();
@@ -92,8 +91,24 @@ export const resolvers: Resolvers = {
         if (res?.additional_info?.pipeline_run?.id){
           res.additional_info.pipeline_run.id = res.additional_info.pipeline_run.id.toString();
         }
+        // location_validated_value is a union type, so we need to add __typename to the object
+        metadata.map((field) => {
+          if( typeof field.location_validated_value === "object" ) {
+          field.location_validated_value = {
+            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_1", 
+            ...field.location_validated_value,
+            id: field.location_validated_value.id.toString(),
+          };
+        } else if ( typeof field.location_validated_value === "string" ){
+          field.location_validated_value = {
+            __typename: "String_container", 
+            String: field.location_validated_value
+          };
+        } else {
+          field.location_validated_value = null;
+        }
+      });
         res.metadata = metadata;
-        console.log(res);
         return res;
       } catch {
         return res;

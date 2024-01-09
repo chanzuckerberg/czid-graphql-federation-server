@@ -36,60 +36,10 @@
                     "location_validated_value": {
                          "oneOf": [
                             {
-                             "type": "string"
+                                "type": "string"
                             },
                             {
-                              "type": "object",
-                              "properties": {
-                                "lat": {
-                                  "type": "number"
-                                },
-                                "lng": {
-                                  "type": "number"
-                                },
-                                "city_name": {
-                                  "type": "string"
-                                },
-                                "state_name": {
-                                  "type": "string"
-                                },
-                                "country_name": {
-                                  "type": "string"
-                                },
-                                "country_code": {
-                                  "type": "string"
-                                },
-                                "description": {
-                                  "type": "string"
-                                },
-                                "geo_level": {
-                                  "type": "string"
-                                },
-                                "key": {
-                                  "type": "string"
-                                },
-                                "locationiq_id": {
-                                  "type": "integer"
-                                },
-                                "name": {
-                                  "type": "string"
-                                },
-                                "osm_id": {
-                                  "type": "integer"
-                                },
-                                "osm_type": {
-                                  "type": "string"
-                                },
-                                "refetch_adjusted_location": {
-                                  "type": "boolean"
-                                },
-                                "subdivision_name": {
-                                  "type": "string"
-                                },
-                                "title": {
-                                  "type": "string"
-                                }
-                              }
+                                "$ref": "./locationV2.json"
                             }
                           ]
                     },

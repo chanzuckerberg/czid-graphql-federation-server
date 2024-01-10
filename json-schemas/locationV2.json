@@ -29,13 +29,13 @@
             "type": "integer"
         },
         "locationiq_id": {
-            "type": "integer"
+            "type": "float"
         },
         "lat": {
-            "type": "string"
+            "type": "float"
         },
         "lng": {
-            "type": "string"
+            "type": "float"
         },
         "created_at": {
             "type": "string"
@@ -56,6 +56,18 @@
             "type": "integer"
         },
         "city_id": {
+            "type": "string"
+        },
+        "raw_value": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "key": {
             "type": "string"
         }
     }

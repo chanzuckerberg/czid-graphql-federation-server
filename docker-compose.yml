@@ -10,6 +10,7 @@ services:
     restart: always
     environment:
       API_URL: http://web:3001
+      NEXTGEN_API_URL: http://web:8008
     ports:
       - "4444:4444"
     volumes:

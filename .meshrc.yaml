@@ -6,6 +6,20 @@ sources:
         source: ./sources/czid-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
+  - name: NextGenEntities
+    handler:
+      graphql:
+        endpoint: ${NEXTGEN_API_URL}/graphql
+        source: ./sources/nextgen-entities-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['cookie']}"
+  - name: NextGenWorkflows
+    handler:
+      graphql:
+        endpoint: ${NEXTGEN_API_URL}/graphql
+        source: ./sources/nextgen-entities-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['cookie']}"
   - name: CZIDREST
     handler:
       jsonSchema:
@@ -206,9 +220,9 @@ additionalTypeDefs: |
   }
 additionalResolvers:
   - ./resolvers.ts
-plugins:
-  - csrfPrevention:
-      requestHeaders: ['x-graphql-yoga-csrf']
+# plugins:
+#   - csrfPrevention:
+#       requestHeaders: ['x-graphql-yoga-csrf']
 serve:
   port: 4444
   endpoint: "/graphqlfed"

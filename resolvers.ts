@@ -46,7 +46,8 @@ export const resolvers: Resolvers = {
         args,
         context
       );
-      const {accession_id, accession_name, taxon_id, taxon_name} = taxon_info || {};
+      const { accession_id, accession_name, taxon_id, taxon_name } =
+        taxon_info || {};
       return {
         metric_consensus_genome: {
           ...quality_metrics,
@@ -61,6 +62,57 @@ export const resolvers: Resolvers = {
           },
         },
       };
+    },
+    MetadataFields: async (root, args, context, info) => {
+      const body = {
+        sampleIds: args?.input?.sampleIds
+      };
+      const res = await postWithCSRF(
+        `/samples/metadata_fields`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
+    SampleMetadata: async (root, args, context, info) => {
+      const url = `/samples/${args.sampleId}/metadata`;
+      const urlWithParams = args?.input?.pipelineVersion ? url + `?pipeline_version=${args?.input?.pipelineVersion}` : url;
+      const res = await get(
+        urlWithParams,
+        args,
+        context
+      );
+      try {
+        const metadata = res.metadata.map((item) => {
+          item.id = item.id.toString();
+          return item;
+        });
+        if (res?.additional_info?.pipeline_run?.id){
+          res.additional_info.pipeline_run.id = res.additional_info.pipeline_run.id.toString();
+        }
+        // location_validated_value is a union type, so we need to add __typename to the object
+        metadata.map((field) => {
+          if( typeof field.location_validated_value === "object" ) {
+          field.location_validated_value = {
+            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_1", 
+            ...field.location_validated_value,
+            id: field.location_validated_value.id.toString(),
+          };
+        } else if ( typeof field.location_validated_value === "string" ){
+          field.location_validated_value = {
+            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_0", 
+            name: field.location_validated_value
+          };
+        } else {
+          field.location_validated_value = null;
+        }
+      });
+        res.metadata = metadata;
+        return res;
+      } catch {
+        return res;
+      } 
     },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get(`/samples/${args.sampleId}.json`, args, context);
@@ -284,7 +336,7 @@ export const resolvers: Resolvers = {
       }
       const url = res.url;
       return {
-        url
+        url,
       };
     },
     GraphQLFederationVersion: () => ({
@@ -296,7 +348,7 @@ export const resolvers: Resolvers = {
     DeleteSamples: async (root, args, context, info) => {
       const body = {
         selectedIds: args?.input?.ids,
-        workflow: args?.input?._workflow,
+        workflow: args?.input?.workflow,
       };
       const { deletedIds, error } = await postWithCSRF(
         `/samples/bulk_delete`,
@@ -322,8 +374,8 @@ export const resolvers: Resolvers = {
       );
       try {
         const formattedRes = res.map((item) => {
-          item.id = item.id.toString()
-          return item
+          item.id = item.id.toString();
+          return item;
         });
         return formattedRes;
       } catch {
@@ -343,5 +395,45 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
+    UpdateMetadata: async (root, args, context, info) => {
+      const body = {
+        field: args?.input?.field,
+        value: args?.input?.value.String ? args.input.value.String : args?.input?.value.query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input,
+      };
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/save_metadata_v2`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
+    UpdateSampleNotes: async (root, args, context, info) => {
+      const body = {
+        field: "sample_notes",
+        value: args?.input?.value,
+      };
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/save_metadata`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
+    UpdateSampleName: async (root, args, context, info) => {
+      const body = {
+        field: "name",
+        value: args?.input?.value,
+      };
+      const res = await postWithCSRF(
+        `/samples/${args.sampleId}/save_metadata`,
+        body,
+        args,
+        context
+      );
+      return res;
+    }
   },
 };
+

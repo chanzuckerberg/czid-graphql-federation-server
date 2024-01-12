@@ -46,6 +46,30 @@ sources:
             responseSchema: ./json-schemas/consensusGenomeWorkflowResults.json
             responseTypeName: ConsensusGenomeWorkflowResults
           - type: Query
+            field: CoverageVizSummary
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary
+            method: GET
+            responseSchema: ./json-schemas/coverageVizSummary.json
+            responseTypeName: CoverageVizSummary
+          - type: Query
+            field: MetadataFields
+            path: /pub/{args.snapshotLinkId}/samples/metadata_fields
+            method: POST
+            requestSchema: ./json-schemas/sampleArray.json
+            responseSchema: ./json-schemas/metadataFields.json
+            responseTypeName: MetadataFields
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Query
+            field: SampleMetadata
+            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/metadata
+            method: GET
+            requestSample: {
+                pipelineVersion: "8.0"
+              }
+            responseSchema: ./json-schemas/sampleMetadata.json
+            responseTypeName: SampleMetadata
+          - type: Query
             field: MngsWorkflowResults
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json
             method: GET
@@ -57,12 +81,6 @@ sources:
             method: GET
             responseSchema: ./json-schemas/mngsWorkflowResults.json
             responseTypeName: MngsWorkflowResults
-          - type: Query
-            field: CoverageVizSummary
-            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary
-            method: GET
-            responseSchema: ./json-schemas/coverageVizSummary.json
-            responseTypeName: CoverageVizSummary
           - type: Query
             field: Pathogens
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
@@ -137,7 +155,7 @@ sources:
             requestSample:
               {
                 "ids": [1],
-                "_workflow": "short-read-mngs",
+                "workflow": "short-read-mngs",
                 "authenticityToken": "token",
               }
             responseSchema: ./json-schemas/deleteSamples.json
@@ -146,14 +164,18 @@ sources:
             field: UpdateSampleNotes
             path: /samples/{args.sampleId}/save_metadata
             method: POST
-            requestSample:
-              {
-                "value": "test",
-                "field": "notes",
-                "authenticityToken": "token",
-              }
+            requestSchema: ./json-schemas/updateMetadataSimple.json
             responseSchema: ./json-schemas/updateSampleNotes.json
             responseTypeName: UpdateSampleNotes
+            headers:
+              Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: UpdateSampleName
+            path: /samples/{args.sampleId}/save_metadata
+            method: POST
+            requestSchema: ./json-schemas/updateMetadataSimple.json
+            responseSchema: ./json-schemas/updateSampleName.json
+            responseTypeName: UpdateSampleName
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Mutation
@@ -192,6 +214,15 @@ sources:
             responseTypeName: KickoffAMRWorkflow
             headers:
               Cookie: "{context.headers['cookie']}"
+          - type: Mutation
+            field: UpdateMetadata
+            path: /samples/{args.sampleId}/save_metadata_v2
+            method: POST
+            requestSchema: ./json-schemas/updateMetadata.json
+            responseSchema: ./json-schemas/updateMetadataResponse.json
+            responseTypeName: UpdateMetadataReponse
+            headers:
+              Cookie: "{context.headers['cookie']}"
       transforms:
         - namingConvention:
             typeNames: camelCase
@@ -213,3 +244,5 @@ serve:
   port: 4444
   endpoint: "/graphqlfed"
   playground: true
+  cors:
+    origin: "${ALLOWED_CORS_ORIGINS}"

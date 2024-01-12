@@ -1,0 +1,22 @@
+{
+  "id": 12345,
+  "name": "no_host_1",
+  "status": "checked",
+  "created_at": "2024-01-10T11:04:29.000-08:00",
+  "updated_at": "2024-01-10T11:04:41.000-08:00",
+  "url": "https://staging.czid.org/samples/12345.json",
+  "input_files": [
+    {
+      "name": "no_host_1.fq.gz",
+      "presigned_url": null,
+      "source": "no_host_1.fq.gz",
+      "parts": "no_host_1.fq.gz"
+    },
+    {
+      "name": "consensus_TEST_SC2.fa",
+      "presigned_url": null,
+      "source": "consensus_TEST_SC2.fa",
+      "parts": "consensus_TEST_SC2.fa"
+    }
+  ]
+}

@@ -1,0 +1,3101 @@
+{
+    "projects": [
+        {
+            "id": 1160,
+            "name": "ovillasenor_automation_project_ONT",
+            "description": "created by automation",
+            "created_at": "2024-01-09T09:06:04.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Orange Clownfish",
+                "Rat",
+                "SELGECS"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Gaster",
+                "Thyroid",
+                "Whole Blood"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1159,
+            "name": "ovillasenor_automation_project_mngs",
+            "description": "created by automation",
+            "created_at": "2024-01-09T09:03:09.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Chicken",
+                "Mosquito",
+                "Tick"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Salivary Gland",
+                "Simulation",
+                "Sputum"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 3,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1158,
+            "name": "ovillasenor_automation_project_covid-consensus-genome",
+            "description": "created by automation",
+            "created_at": "2024-01-09T08:35:05.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Monkey",
+                "Test new host",
+                "Tick"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Mini Bronchoalveolar Lavage",
+                "Placenta",
+                "Thyroid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 3,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1157,
+            "name": "ovillasenor_automation_project_viral-consensus-genome",
+            "description": "created by automation",
+            "created_at": "2024-01-09T08:33:27.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Biting Midge",
+                "Mosquito Non-Sharded Experimental Large",
+                "poop"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Brain",
+                "Tracheal Aspirate",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 3,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1155,
+            "name": "floo sp96",
+            "description": "floo sp96",
+            "created_at": "2024-01-08T10:59:31.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "Nasopharyngeal Swab",
+                "Oralpharyngeal Swab"
+            ],
+            "sample_counts": {
+                "number_of_samples": 8,
+                "mngs_runs_count": 5,
+                "cg_runs_count": 2,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1154,
+            "name": "ovillasenor_automation_project_amr",
+            "description": "created by automation",
+            "created_at": "2024-01-08T09:20:05.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Ferret",
+                "fert",
+                "Gorilla"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Cerebrospinal Fluid",
+                "Skin",
+                "Urine"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 3
+            }
+        },
+        {
+            "id": 1151,
+            "name": "czid-e2e_automation_project_mngs",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:53:19.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adlien",
+                "adsfadsf",
+                "Ascomycetes",
+                "asdasd",
+                "Bank Vole",
+                "Barred Hamlet",
+                "Bat",
+                "Batfish",
+                "Bear",
+                "Bee",
+                "Biting Midge",
+                "Boechera Stricta",
+                "Bubalus bubalis - water buffalo",
+                "Buteo jamaicensis - red-tailed hawk",
+                "C.elegans",
+                "Carp",
+                "Chelonia Mydas",
+                "Columba livia - Rock pigeon",
+                "Common Bottlenose Dolphin",
+                "Cow",
+                "doesnexist4",
+                "Dog",
+                "ERCC only",
+                "European Woodmouse",
+                "Ferret",
+                "fert",
+                "Field Vole",
+                "Fox",
+                "gcarsenic",
+                "GCHOSTGC",
+                "GCSTESTREG",
+                "GCTESTING",
+                "gdingle_test",
+                "gdingle_test2",
+                "gecs",
+                "GECSTEST",
+                "gectest22",
+                "ger",
+                "Giraffe",
+                "Goat",
+                "Gorilla",
+                "Gorilla gorilla",
+                "Gray Whale",
+                "Guinea Pig",
+                "Hadsdassduman",
+                "Harbor Seal",
+                "Hedgehog",
+                "Huasdman",
+                "HUGECS",
+                "hum",
+                "Huma",
+                "Human T2T",
+                "Humantest2",
+                "Kestrel",
+                "Koala",
+                "Large Japanese Fieldmouse",
+                "Leopard",
+                "Lion",
+                "Little Brown Bat",
+                "Madagascan Flying Fox",
+                "Mallard",
+                "Milu",
+                "Monk Seal",
+                "Monkey",
+                "Mosquito Non-Sharded Experimental Large",
+                "Mosquito Non-Sharded Experimental Small",
+                "Mouse",
+                "noexist",
+                "Onchocerca volvulus",
+                "Orange Clownfish",
+                "Ovis aries - sheep",
+                "Pan troglodytes - chimpanzee",
+                "Pea Aphid",
+                "Penguin",
+                "Pig",
+                "pig latin",
+                "Porpoise",
+                "Pteropus vampyrus - large flying fox",
+                "Rabbit",
+                "Raccoon",
+                "Rat",
+                "rege",
+                "Salpingoeca rosetta",
+                "Sea Lion",
+                "Seagull",
+                "Seal",
+                "Seastar",
+                "Sloth",
+                "Snake",
+                "Songbird",
+                "Soybean",
+                "Striped Dolphin",
+                "Sus scrofa - pig",
+                "Synthetic",
+                "test free text",
+                "test gc freecsv",
+                "testgccopper",
+                "Tick",
+                "Tiger",
+                "tik tik",
+                "tiko tiko",
+                "TRTEST",
+                "Turkey Vulture",
+                "Vicugna pacos - Alpaca",
+                "wastewater",
+                "White Shrimp",
+                "Zebra Fish",
+                "Zebra Fish."
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 167,
+                "mngs_runs_count": 167,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1150,
+            "name": "czid-e2e_automation_project_2_ONT",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:50:05.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Milu"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Tracheal Aspirate"
+            ],
+            "sample_counts": {
+                "number_of_samples": 1,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1149,
+            "name": "czid-e2e_automation_project_1_ONT",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:47:54.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Chimpanzee"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Unknown"
+            ],
+            "sample_counts": {
+                "number_of_samples": 1,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1148,
+            "name": "czid-e2e_automation_project_covid-consensus-genome",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:43:52.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adlien",
+                "Arabidopsis thaliana - Thale cress",
+                "Ascomycetes",
+                "asdasd",
+                "asdf",
+                "Bank Vole",
+                "Bee",
+                "ber",
+                "Biting Midge",
+                "Boechera Stricta",
+                "Bubalus bubalis - water buffalo",
+                "Buteo jamaicensis - red-tailed hawk",
+                "C.elegans",
+                "Cat",
+                "Chimpanzee",
+                "Cicada",
+                "Common Bottlenose Dolphin",
+                "Cow",
+                "doesntexist",
+                "Dog",
+                "Donkey",
+                "Drosophila Melanogaster",
+                "Environment4",
+                "Ferret",
+                "Field Vole",
+                "Fish",
+                "gcarsenic",
+                "gdingle_test",
+                "GECSTEST",
+                "ger3",
+                "Giraffe",
+                "Goat",
+                "Gorilla",
+                "GorillaHost will not be subtracted",
+                "Gray Whale",
+                "Harbor Seal",
+                "Hedgehog",
+                "Huasdman",
+                "hum",
+                "Human",
+                "Humangecs",
+                "Humantest2",
+                "Little Brown Bat",
+                "Llama",
+                "Macaca fascicularis - crab-eating macaque",
+                "Madagascan Fruit Bat",
+                "Monk Seal",
+                "Monkey",
+                "Mosquito",
+                "Mosquito Non-Sharded Experimental Large",
+                "Mosquito Non-Sharded Experimental Small",
+                "noexist",
+                "Onchocerca volvulus",
+                "Orange Clownfish",
+                "Ovis aries - sheep",
+                "Pan troglodytes - chimpanzee",
+                "Pig",
+                "Porpoise",
+                "Pteropus vampyrus - large flying fox",
+                "Rabbit",
+                "Raccoon",
+                "Rat",
+                "Salpingoeca rosetta",
+                "Sea Lion",
+                "SELGECS",
+                "Snake",
+                "Stork",
+                "Striped Dolphin",
+                "Synthetic",
+                "tertre",
+                "tiko tiko",
+                "Torafugu",
+                "TRTEST",
+                "Turkey",
+                "Unknown",
+                "Vicugna pacos - Alpaca",
+                "wastewater",
+                "Water Buffalo",
+                "White Shrimp",
+                "Zebra Fish",
+                "Zebra Fish."
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 116,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 116,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1147,
+            "name": "czid-e2e_automation_project_viral-consensus-genome",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:42:09.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Arabidopsis thaliana - Thale cress",
+                "asdasd",
+                "Badger",
+                "Bank Vole",
+                "Barred Hamlet",
+                "Bat",
+                "Batfish",
+                "Bee",
+                "ber",
+                "Boechera Stricta",
+                "C.elegans",
+                "Camel",
+                "Carp",
+                "Chelonia Mydas",
+                "Cicada",
+                "Common Bottlenose Dolphin",
+                "Cow",
+                "Dik Dik",
+                "Donkey",
+                "Drosophila Melanogaster",
+                "Ferret",
+                "fert",
+                "Fox",
+                "gcarsenic",
+                "GCHOSTGC",
+                "GCSTESTREG",
+                "GCTESTING",
+                "Giraffe",
+                "Gorilla",
+                "Gorilla gorilla",
+                "GorillaHost will not be subtracted",
+                "Gray Whale",
+                "Guinea Pig",
+                "Harbor Seal",
+                "Horse",
+                "HUGECS",
+                "hum",
+                "Human",
+                "Humangecs",
+                "Koala",
+                "Leopard",
+                "Lion",
+                "Little Brown Bat",
+                "Llama",
+                "Macaca fascicularis - crab-eating macaque",
+                "Macaca mulatta - Rhesus monkey",
+                "Madagascan Fruit Bat",
+                "Mallard",
+                "Milu",
+                "Monk Seal",
+                "Mosquito",
+                "Mosquito Non-Sharded Experimental Small",
+                "Mouse",
+                "Onchocerca volvulus",
+                "Owl",
+                "Pea Aphid",
+                "Penguin",
+                "Porpoise",
+                "Raccoon",
+                "reg",
+                "rege",
+                "Sea Lion",
+                "Seal",
+                "Seastar",
+                "Snake",
+                "Songbird",
+                "Soybean",
+                "Sus scrofa - pig",
+                "TCGECS",
+                "tertre",
+                "test free text",
+                "Test new host",
+                "testgccopper",
+                "Tiger",
+                "tik tik",
+                "tiko tiko",
+                "TRTEST",
+                "Turkey",
+                "Vicugna pacos - Alpaca",
+                "Zebra Fish"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Intestines",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 115,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 115,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1146,
+            "name": "czid-e2e_automation_project_amr",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:35:36.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adsfadsf",
+                "Arabidopsis thaliana - Thale cress",
+                "Ascomycetes",
+                "Bear",
+                "Bee",
+                "ber",
+                "Biting Midge",
+                "Boechera Stricta",
+                "Bubalus bubalis - water buffalo",
+                "Buteo jamaicensis - red-tailed hawk",
+                "C.elegans",
+                "Chelonia Mydas",
+                "Chicken",
+                "Chimpanzee",
+                "Columba livia - Rock pigeon",
+                "Cow",
+                "Dik Dik",
+                "Dog",
+                "Drosophila Melanogaster",
+                "European Woodmouse",
+                "fert",
+                "Field Vole",
+                "GCHOSTGC",
+                "GCTESTING",
+                "gdingle_test",
+                "gdingle_test3",
+                "gecs",
+                "ger",
+                "GorillaHost will not be subtracted",
+                "Guinea Pig",
+                "Hadsdassduman",
+                "Harbor Seal",
+                "Horse",
+                "Huasdman",
+                "HUGECS",
+                "Human",
+                "Humangecs",
+                "Koala",
+                "Large Japanese Fieldmouse",
+                "Leopard",
+                "Lion",
+                "Llama",
+                "Macaca fascicularis - crab-eating macaque",
+                "Macaca mulatta - Rhesus monkey",
+                "Madagascan Flying Fox",
+                "Madagascan Fruit Bat",
+                "Madagascan Rousettes",
+                "Monk Seal",
+                "Mosquito Non-Sharded Experimental Small",
+                "noexist",
+                "Onchocerca volvulus",
+                "Orange Clownfish",
+                "Ovis aries - sheep",
+                "Owl",
+                "Pan troglodytes - chimpanzee",
+                "parangi",
+                "Pea Aphid",
+                "Penguin",
+                "pig latin",
+                "poop",
+                "Raccoon",
+                "Rat",
+                "reg",
+                "Salpingoeca rosetta",
+                "Sea Lion",
+                "Seagull",
+                "Sloth",
+                "Snake",
+                "Songbird",
+                "Stork",
+                "Striped Dolphin",
+                "Taurine Cattle",
+                "tertre",
+                "test free text",
+                "test gc freecsv",
+                "Test new host",
+                "Tick",
+                "Torafugu",
+                "TRTEST",
+                "wastewater",
+                "Water Buffalo",
+                "White Shrimp",
+                "Zebra Fish",
+                "Zebra Fish."
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Abdomen",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 116,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 116
+            }
+        },
+        {
+            "id": 1145,
+            "name": "czid-e2e_automation_project_ONT",
+            "description": "created by automation",
+            "created_at": "2024-01-03T14:30:59.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adsfadsf",
+                "Arabidopsis thaliana - Thale cress",
+                "asdasd",
+                "asdf",
+                "Badger",
+                "Bank Vole",
+                "Bat",
+                "Biting Midge",
+                "car",
+                "Carp",
+                "Chicken",
+                "Chimpanzee",
+                "Cicada",
+                "Columba livia - Rock pigeon",
+                "Common Bottlenose Dolphin",
+                "Cow",
+                "Dik Dik",
+                "doesnexist4",
+                "doesntexist",
+                "Dog",
+                "Donkey",
+                "ERCC only",
+                "European Woodmouse",
+                "fert",
+                "Field Vole",
+                "gcarsenic",
+                "GCHOSTGC",
+                "GCTESTING",
+                "gdingle_test",
+                "gdingle_test2",
+                "Giraffe",
+                "Goat",
+                "Gorilla gorilla",
+                "Guinea Pig",
+                "Hadsdassduman",
+                "Hedgehog",
+                "HUGECS",
+                "hum",
+                "Huma",
+                "Human",
+                "Human T2T",
+                "jellyfish",
+                "Large Japanese Fieldmouse",
+                "Little Brown Bat",
+                "Macaca fascicularis - crab-eating macaque",
+                "Macaca mulatta - Rhesus monkey",
+                "Madagascan Fruit Bat",
+                "Madagascan Rousettes",
+                "Mosquito Non-Sharded Experimental Large",
+                "Mosquito Non-Sharded Experimental Small",
+                "Mouse",
+                "noexist",
+                "None",
+                "Onchocerca volvulus",
+                "Ovis aries - sheep",
+                "Pan troglodytes - chimpanzee",
+                "parangi",
+                "Penguin",
+                "Pig",
+                "pig latin",
+                "poop",
+                "Pteropus vampyrus - large flying fox",
+                "Rabbit",
+                "Rat",
+                "Salpingoeca rosetta",
+                "Seagull",
+                "Seastar",
+                "Sloth",
+                "Snake",
+                "Songbird",
+                "Soybean",
+                "Striped Dolphin",
+                "tertre",
+                "test free text",
+                "Test new host",
+                "Tick",
+                "Tiger",
+                "Tiger Tail Seahorse",
+                "Turkey",
+                "Unknown",
+                "Water Buffalo",
+                "White Shrimp",
+                "Zebra Fish."
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "CZ ID Test Account",
+                    "email": "czid-e2e@chanzuckerberg.com"
+                }
+            ],
+            "creator": "CZ ID Test Account",
+            "creator_id": 406,
+            "owner": "CZ ID Test Account",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Liver",
+                "Lung",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 120,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1142,
+            "name": "AMR test project",
+            "description": "AMR test project",
+            "created_at": "2024-01-01T08:56:11.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Unknown"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Juan Caballero",
+                    "email": "jcaballeroperez@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Juan Caballero",
+            "creator_id": 518,
+            "owner": "Juan Caballero",
+            "tissues": [
+                "Stool"
+            ],
+            "sample_counts": {
+                "number_of_samples": 2,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 2
+            }
+        },
+        {
+            "id": 1141,
+            "name": "T2T With and withouth flag uploads from basespace",
+            "description": "Base Space Uploads.",
+            "created_at": "2023-12-27T16:04:22.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "David Ruiz",
+                    "email": "david.ruiz@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "David Ruiz Alemán",
+                    "email": "david.ruiz+regular2@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "Sara Simmonds",
+                    "email": "ssimmonds@chanzuckerberg.com"
+                }
+            ],
+            "creator": "David Ruiz Alemán",
+            "creator_id": 510,
+            "owner": "David Ruiz Alemán",
+            "tissues": [
+                "Lung"
+            ],
+            "sample_counts": {
+                "number_of_samples": 18,
+                "mngs_runs_count": 8,
+                "cg_runs_count": 2,
+                "amr_runs_count": 8
+            }
+        },
+        {
+            "id": 1140,
+            "name": "T2T Project with new pipeline After flag",
+            "description": "T2T Project with new pipeline after flag has been toggled.\n",
+            "created_at": "2023-12-20T13:48:45.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human",
+                "Human T2T"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "David Ruiz",
+                    "email": "david.ruiz@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "David Ruiz Alemán",
+                    "email": "david.ruiz+regular2@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "Sara Simmonds",
+                    "email": "ssimmonds@chanzuckerberg.com"
+                }
+            ],
+            "creator": "David Ruiz",
+            "creator_id": 307,
+            "owner": "David Ruiz",
+            "tissues": [
+                "Lung"
+            ],
+            "sample_counts": {
+                "number_of_samples": 6,
+                "mngs_runs_count": 2,
+                "cg_runs_count": 1,
+                "amr_runs_count": 3
+            }
+        },
+        {
+            "id": 1138,
+            "name": "HG38 - T2T BaseLine",
+            "description": "Base Line Project for T2T Upgrade",
+            "created_at": "2023-12-15T16:08:37.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human",
+                "Human T2T"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "David Ruiz",
+                    "email": "david.ruiz@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "David Ruiz Alemán",
+                    "email": "david.ruiz+regular2@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "Sara Simmonds",
+                    "email": "ssimmonds@chanzuckerberg.com"
+                }
+            ],
+            "creator": "David Ruiz",
+            "creator_id": 307,
+            "owner": "David Ruiz",
+            "tissues": [
+                "Lung"
+            ],
+            "sample_counts": {
+                "number_of_samples": 10,
+                "mngs_runs_count": 2,
+                "cg_runs_count": 5,
+                "amr_runs_count": 2
+            }
+        },
+        {
+            "id": 1137,
+            "name": "nb pin index project",
+            "description": "test pinning indexes",
+            "created_at": "2023-12-14T08:34:13.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Nina Bernick",
+                    "email": "nbernick@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Nina Bernick",
+            "creator_id": 401,
+            "owner": "Nina Bernick",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 2,
+                "mngs_runs_count": 1,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1135,
+            "name": "automation_project_covid-consensus-genome",
+            "description": "created by automation",
+            "created_at": "2023-12-07T13:07:02.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Arabidopsis thaliana - Thale cress",
+                "Ascomycetes",
+                "asdf",
+                "Badger",
+                "Barred Hamlet",
+                "Batfish",
+                "Bear",
+                "Biting Midge",
+                "Boechera Stricta",
+                "Cat",
+                "Chicken",
+                "doesntexist",
+                "Donkey",
+                "Drosophila Melanogaster",
+                "Ferret",
+                "Fox",
+                "GCHOSTGC",
+                "GCSTESTREG",
+                "gecs",
+                "gectest22",
+                "Giraffe",
+                "Gorilla gorilla",
+                "GorillaHost will not be subtracted",
+                "Gray Whale",
+                "Hadsdassduman",
+                "Horse",
+                "Huasdman",
+                "Human T2T",
+                "Humangecs",
+                "jellyfish",
+                "Kestrel",
+                "Large Japanese Fieldmouse",
+                "Lion",
+                "Macaca fascicularis - crab-eating macaque",
+                "Monk Seal",
+                "Mouse",
+                "None",
+                "Onchocerca volvulus",
+                "Orange Clownfish",
+                "Owl",
+                "Pan troglodytes - chimpanzee",
+                "parangi",
+                "Pig",
+                "pig latin",
+                "Rat",
+                "Salpingoeca rosetta",
+                "Seagull",
+                "Seal",
+                "Seastar",
+                "Songbird",
+                "Stork",
+                "tertre",
+                "test free text",
+                "test gc freecsv",
+                "testgccopper",
+                "Tick",
+                "TRTEST",
+                "Turkey Vulture",
+                "wastewater",
+                "Zebra Fish"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 73,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 73,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1134,
+            "name": "automation_project_viral-consensus-genome",
+            "description": "created by automation",
+            "created_at": "2023-12-07T13:06:54.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Arabidopsis thaliana - Thale cress",
+                "asdasd",
+                "asdf",
+                "Bank Vole",
+                "Biting Midge",
+                "Boechera Stricta",
+                "C.elegans",
+                "car",
+                "Chicken",
+                "Common Bottlenose Dolphin",
+                "Cow",
+                "Dik Dik",
+                "doesnexist4",
+                "Donkey",
+                "Environment4",
+                "ERCC only",
+                "fert",
+                "Fox",
+                "GCHOSTGC",
+                "GCTESTING",
+                "gecs3",
+                "Giraffe",
+                "Goat",
+                "Gorilla gorilla",
+                "Hadsdassduman",
+                "Horse",
+                "Huma",
+                "Human",
+                "jellyfish",
+                "Llama",
+                "Madagascan Fruit Bat",
+                "Mosquito Non-Sharded Experimental Large",
+                "Mosquito Non-Sharded Experimental Small",
+                "noexist",
+                "None",
+                "Onchocerca volvulus",
+                "Orange Clownfish",
+                "Ovis aries - sheep",
+                "Owl",
+                "parangi",
+                "Pea Aphid",
+                "Penguin",
+                "Pig",
+                "pig latin",
+                "Prairie Dog",
+                "Rabbit",
+                "rege",
+                "Sea Lion",
+                "SELGECS",
+                "Sloth",
+                "Soybean",
+                "Stork",
+                "Striped Dolphin",
+                "Taurine Cattle",
+                "TCGECS",
+                "tertre",
+                "Test new host",
+                "testgccopper",
+                "TRTEST",
+                "Turkey Vulture",
+                "wastewarer",
+                "Zebra Fish"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Abdomen",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Tracheal Aspirate",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 74,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 74,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1133,
+            "name": "automation_project_mngs",
+            "description": "created by automation",
+            "created_at": "2023-12-07T13:06:49.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Arabidopsis thaliana - Thale cress",
+                "Ascomycetes",
+                "asdf",
+                "Badger",
+                "Barred Hamlet",
+                "Bat",
+                "Batfish",
+                "ber",
+                "Biting Midge",
+                "Bubalus bubalis - water buffalo",
+                "C.elegans",
+                "Camel",
+                "Carp",
+                "Cat",
+                "Chelonia Mydas",
+                "Chicken",
+                "Chimpanzee",
+                "Cicada",
+                "doesntexist",
+                "Dog",
+                "Donkey",
+                "ERCC only",
+                "European Woodmouse",
+                "Ferret",
+                "Fox",
+                "GCHOSTGC",
+                "GCSTESTREG",
+                "GCTESTING",
+                "gecs",
+                "gectest22",
+                "ger",
+                "ger3",
+                "Gray Whale",
+                "Hadsdassduman",
+                "Hedgehog",
+                "Kestrel",
+                "Koala",
+                "Lion",
+                "Macaca mulatta - Rhesus monkey",
+                "Madagascan Fruit Bat",
+                "Madagascan Rousettes",
+                "Mallard",
+                "Milu",
+                "Mosquito Non-Sharded Experimental Large",
+                "noexist",
+                "None",
+                "Owl",
+                "Pan troglodytes - chimpanzee",
+                "parangi",
+                "Pea Aphid",
+                "Penguin",
+                "pig latin",
+                "Porpoise",
+                "Raccoon",
+                "reg",
+                "Salpingoeca rosetta",
+                "Sea Lion",
+                "Seagull",
+                "Seal",
+                "Sloth",
+                "Songbird",
+                "Soybean",
+                "Stork",
+                "Striped Dolphin",
+                "Sus scrofa - pig",
+                "TCGECS",
+                "tertre",
+                "test gc freecsv",
+                "Test new host",
+                "Tiger Tail Seahorse",
+                "tik tik",
+                "Turkey",
+                "Turkey Vulture",
+                "Unknown",
+                "Vicugna pacos - Alpaca",
+                "wastewarer",
+                "Water Buffalo",
+                "White Shrimp"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 110,
+                "mngs_runs_count": 110,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1132,
+            "name": "automation_project_ONT",
+            "description": "created by automation",
+            "created_at": "2023-12-07T13:06:48.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adsfadsf",
+                "Arabidopsis thaliana - Thale cress",
+                "Ascomycetes",
+                "Bat",
+                "Bear",
+                "Bee",
+                "Biting Midge",
+                "Buteo jamaicensis - red-tailed hawk",
+                "car",
+                "Chelonia Mydas",
+                "Cicada",
+                "Cow",
+                "Dog",
+                "Donkey",
+                "Drosophila Melanogaster",
+                "Environment4",
+                "Ferret",
+                "Field Vole",
+                "GCHOSTGC",
+                "GCSTESTREG",
+                "gdingle_test2",
+                "gdingle_test3",
+                "gecs3",
+                "gectest22",
+                "ger3",
+                "Giraffe",
+                "Gorilla gorilla",
+                "GorillaHost will not be subtracted",
+                "Gray Whale",
+                "Harbor Seal",
+                "Horse",
+                "HUGECS",
+                "Huma",
+                "Human",
+                "Humantest2",
+                "jellyfish",
+                "Koala",
+                "Macaca fascicularis - crab-eating macaque",
+                "Madagascan Flying Fox",
+                "Madagascan Fruit Bat",
+                "Mosquito Non-Sharded Experimental Large",
+                "noexist",
+                "Orange Clownfish",
+                "parangi",
+                "Pea Aphid",
+                "poop",
+                "Porpoise",
+                "Rabbit",
+                "Rat",
+                "Salpingoeca rosetta",
+                "Seal",
+                "SELGECS",
+                "Taurine Cattle",
+                "TCGECS",
+                "tertre",
+                "test gc freecsv",
+                "Test new host",
+                "testgccopper",
+                "tik tik",
+                "Torafugu",
+                "TRTEST",
+                "Turkey",
+                "Turkey Vulture",
+                "wastewarer",
+                "wastewater",
+                "White Shrimp"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 81,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1130,
+            "name": "T2T Project with old pipeline- Will Migrate after implementation-",
+            "description": "T2T Project with old pipeline. Will Migrate Pipeline after the implamentation",
+            "created_at": "2023-12-02T13:45:16.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "David Ruiz",
+                    "email": "david.ruiz@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "David Ruiz",
+            "creator_id": 307,
+            "owner": "David Ruiz",
+            "tissues": [
+                "Lung"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 1,
+                "cg_runs_count": 0,
+                "amr_runs_count": 1
+            }
+        },
+        {
+            "id": 1129,
+            "name": "T2T Project with old pipeline- No Migration",
+            "description": "T2T Project with old pipeline. No Migration",
+            "created_at": "2023-12-02T13:44:45.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human",
+                "Human T2T"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "David Ruiz",
+                    "email": "david.ruiz@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "David Ruiz Alemán",
+                    "email": "david.ruiz+regular2@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "David Ruiz",
+            "creator_id": 307,
+            "owner": "David Ruiz",
+            "tissues": [
+                "Head",
+                "Lung"
+            ],
+            "sample_counts": {
+                "number_of_samples": 11,
+                "mngs_runs_count": 6,
+                "cg_runs_count": 3,
+                "amr_runs_count": 2
+            }
+        },
+        {
+            "id": 1127,
+            "name": "automation_project_amr",
+            "description": "created by automation",
+            "created_at": "2023-11-30T15:15:13.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adlien",
+                "adsfadsf",
+                "Ascomycetes",
+                "Badger",
+                "Batfish",
+                "Boechera Stricta",
+                "Bubalus bubalis - water buffalo",
+                "car",
+                "Carp",
+                "Cat",
+                "Chicken",
+                "Columba livia - Rock pigeon",
+                "Common Bottlenose Dolphin",
+                "Drosophila Melanogaster",
+                "Environment4",
+                "ERCC only",
+                "Ferret",
+                "fert",
+                "Field Vole",
+                "GCHOSTGC",
+                "GCTESTING",
+                "gecs",
+                "gectest22",
+                "Giraffe",
+                "Goat",
+                "Gorilla",
+                "Gorilla gorilla",
+                "Harbor Seal",
+                "Horse",
+                "Huasdman",
+                "HUGECS",
+                "hum",
+                "Human",
+                "Human T2T",
+                "Large Japanese Fieldmouse",
+                "Leopard",
+                "Madagascan Flying Fox",
+                "Monk Seal",
+                "Mouse",
+                "None",
+                "Onchocerca volvulus",
+                "Orange Clownfish",
+                "Owl",
+                "Pan troglodytes - chimpanzee",
+                "parangi",
+                "Pea Aphid",
+                "Penguin",
+                "Pig",
+                "Prairie Dog",
+                "Pteropus vampyrus - large flying fox",
+                "Rabbit",
+                "Rat",
+                "rege",
+                "Salpingoeca rosetta",
+                "Seal",
+                "Sloth",
+                "Stork",
+                "Taurine Cattle",
+                "tertre",
+                "Tick",
+                "Tiger",
+                "Tiger Tail Seahorse",
+                "tik tik",
+                "Torafugu",
+                "TRTEST",
+                "Turkey",
+                "Turkey Vulture",
+                "wastewarer",
+                "White Shrimp"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Amniotic Fluid",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Gaster",
+                "Guts",
+                "Heart",
+                "Intestines",
+                "Kidney",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Salivary Gland",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 92,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 92
+            }
+        },
+        {
+            "id": 1126,
+            "name": "floo sp95a",
+            "description": "floo sp95a",
+            "created_at": "2023-11-29T13:53:01.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Cow",
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "Kidney",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab"
+            ],
+            "sample_counts": {
+                "number_of_samples": 37,
+                "mngs_runs_count": 9,
+                "cg_runs_count": 28,
+                "amr_runs_count": 7
+            }
+        },
+        {
+            "id": 1122,
+            "name": "automation_project",
+            "description": "created by automation",
+            "created_at": "2023-11-27T14:36:42.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "adsfadsf",
+                "Arabidopsis thaliana - Thale cress",
+                "asdasd",
+                "Bat",
+                "Batfish",
+                "Bear",
+                "Bee",
+                "ber",
+                "Bubalus bubalis - water buffalo",
+                "Buteo jamaicensis - red-tailed hawk",
+                "C.elegans",
+                "Carp",
+                "Cat",
+                "Chelonia Mydas",
+                "Cicada",
+                "Columba livia - Rock pigeon",
+                "Common Bottlenose Dolphin",
+                "Dog",
+                "Donkey",
+                "Drosophila Melanogaster",
+                "Environment4",
+                "European Woodmouse",
+                "Ferret",
+                "fert",
+                "Fox",
+                "gcarsenic",
+                "GCHOSTGC",
+                "GCSTESTREG",
+                "GCTESTING",
+                "gdingle_test",
+                "gecs",
+                "ger",
+                "ger3",
+                "Gorilla gorilla",
+                "GorillaHost will not be subtracted",
+                "Gray Whale",
+                "Harbor Seal",
+                "Hedgehog",
+                "Horse",
+                "Huasdman",
+                "HUGECS",
+                "Human",
+                "Human T2T",
+                "Humangecs",
+                "Humantest2",
+                "Kestrel",
+                "Large Japanese Fieldmouse",
+                "Little Brown Bat",
+                "Madagascan Flying Fox",
+                "Madagascan Fruit Bat",
+                "Madagascan Rousettes",
+                "Milu",
+                "Mosquito",
+                "Mosquito Non-Sharded Experimental Large",
+                "Mosquito Non-Sharded Experimental Small",
+                "Mouse",
+                "noexist",
+                "Ovis aries - sheep",
+                "Pig",
+                "pig latin",
+                "poop",
+                "Pteropus vampyrus - large flying fox",
+                "Raccoon",
+                "Rat",
+                "rege",
+                "Salpingoeca rosetta",
+                "Seagull",
+                "Seal",
+                "SELGECS",
+                "Sloth",
+                "Songbird",
+                "Striped Dolphin",
+                "Sus scrofa - pig",
+                "Taurine Cattle",
+                "TCGECS",
+                "test free text",
+                "test gc freecsv",
+                "testgccopper",
+                "Tick",
+                "Tiger Tail Seahorse",
+                "Turkey Vulture",
+                "Vicugna pacos - Alpaca",
+                "White Shrimp"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Abdomen",
+                "Amniotic Fluid",
+                "Bladder",
+                "Brain",
+                "Bronchoalveolar Lavage",
+                "Cell Line",
+                "Cerebrospinal Fluid",
+                "Cervicovaginal Swab",
+                "CNS Tissue",
+                "Cultured Isolate",
+                "Gaster",
+                "Guts",
+                "Head",
+                "Heart",
+                "Intestines",
+                "Liver",
+                "Lung",
+                "Mini Bronchoalveolar Lavage",
+                "Mixed Tissue",
+                "Muscle",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Placenta",
+                "Plasma",
+                "Saliva",
+                "Salivary Gland",
+                "Serum",
+                "Simulation",
+                "Skin",
+                "Sputum",
+                "Stomach",
+                "Stool",
+                "Thyroid",
+                "Tracheal Aspirate",
+                "Tumo",
+                "Unknown",
+                "Urine",
+                "Uterus",
+                "Whole Blood",
+                "Whole Body"
+            ],
+            "sample_counts": {
+                "number_of_samples": 124,
+                "mngs_runs_count": 21,
+                "cg_runs_count": 49,
+                "amr_runs_count": 25
+            }
+        },
+        {
+            "id": 1120,
+            "name": "auto_project_12345",
+            "description": "created by automation",
+            "created_at": "2023-11-27T14:18:01.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Oscar Villasenor",
+                    "email": "ovillasenor@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Oscar Villasenor",
+            "creator_id": 523,
+            "owner": "Oscar Villasenor",
+            "tissues": [
+                "Bronchoalveolar lavage"
+            ],
+            "sample_counts": {
+                "number_of_samples": 1,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 1,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1117,
+            "name": "AMR-test-data-1-3-2-T2T",
+            "description": "test T2T",
+            "created_at": "2023-11-27T08:20:40.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human",
+                "Human T2T"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Dan Lu",
+                    "email": "dlu@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Dan Lu",
+            "creator_id": 477,
+            "owner": "Dan Lu",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 16,
+                "mngs_runs_count": 14,
+                "cg_runs_count": 0,
+                "amr_runs_count": 16
+            }
+        },
+        {
+            "id": 1114,
+            "name": "AMR test 1-3-2",
+            "description": "testing new workflow version",
+            "created_at": "2023-11-21T14:43:14.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Lucia Reynoso",
+                    "email": "lreynoso@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Lucia Reynoso",
+            "creator_id": 246,
+            "owner": "Lucia Reynoso",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 6,
+                "mngs_runs_count": 0,
+                "cg_runs_count": 0,
+                "amr_runs_count": 6
+            }
+        },
+        {
+            "id": 1106,
+            "name": "floo sp94a",
+            "description": "floo sp94a",
+            "created_at": "2023-11-16T07:42:09.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "Oralpharyngeal Swab"
+            ],
+            "sample_counts": {
+                "number_of_samples": 9,
+                "mngs_runs_count": 5,
+                "cg_runs_count": 5,
+                "amr_runs_count": 7
+            }
+        },
+        {
+            "id": 1105,
+            "name": "2021_01_22_no_compressed_nt_compressed_nr_k_31_thresh_0-9_scaled_100",
+            "description": "2021_01_22_no_compressed_nt_compressed_nr_k_31_thresh_0.9_scaled_100",
+            "created_at": "2023-11-15T11:16:23.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 11,
+                "mngs_runs_count": 11,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1104,
+            "name": "2023_01_22_11_11_no_compressed_nt_compressed_nr_k_31_thresh_0-8_scaled_1000",
+            "description": "2023_01_22_11_11_no_compressed_nt_compressed_nr_k_31_thresh_0.8_scaled_1000",
+            "created_at": "2023-11-15T11:15:17.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 11,
+                "mngs_runs_count": 11,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1103,
+            "name": "2023_01_22_11_11_no_compressed_nt_compressed_nr_k_31_thresh_0-9_scaled_1000",
+            "description": "2023_01_22_11_11_no_compressed_nt_compressed_nr_k_31_thresh_0.9_scaled_1000",
+            "created_at": "2023-11-15T11:13:35.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 11,
+                "mngs_runs_count": 11,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1102,
+            "name": "2023_01_22_no_compressed_nt_compressed_nr_k_21_thresh_0-9_scaled_1000",
+            "description": "2023_01_22_no_compressed_nt_compressed_nr_k_21_thresh_0.9_scaled_1000",
+            "created_at": "2023-11-15T11:12:15.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 11,
+                "mngs_runs_count": 11,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1101,
+            "name": "2023_11_11_no_compressed_nt_compressed_nr_k_21_thresh_0-8_scaled_1000 ",
+            "description": "2023_11_11_no_compressed_nt_compressed_nr_k_21_thresh_0.8_scaled_1000 ",
+            "created_at": "2023-11-15T11:07:19.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 11,
+                "mngs_runs_count": 11,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1098,
+            "name": "floo sp93a",
+            "description": "floo sp93a",
+            "created_at": "2023-11-08T07:50:56.000-08:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "CSF",
+                "Nasopharyngeal Swab",
+                "Ocular Fluid",
+                "Oralpharyngeal Swab",
+                "Saliva"
+            ],
+            "sample_counts": {
+                "number_of_samples": 19,
+                "mngs_runs_count": 13,
+                "cg_runs_count": 5,
+                "amr_runs_count": 7
+            }
+        },
+        {
+            "id": 1097,
+            "name": "AMR Test Set- Workflow 1-3-1",
+            "description": "testing",
+            "created_at": "2023-11-01T14:33:52.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human",
+                "Unknown"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Juan Caballero",
+                    "email": "jcaballeroperez@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "Lucia Reynoso",
+                    "email": "lreynoso@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Lucia Reynoso",
+            "creator_id": 246,
+            "owner": "Lucia Reynoso",
+            "tissues": [
+                "CSF",
+                "Saliva",
+                "Simulation"
+            ],
+            "sample_counts": {
+                "number_of_samples": 13,
+                "mngs_runs_count": 3,
+                "cg_runs_count": 0,
+                "amr_runs_count": 13
+            }
+        },
+        {
+            "id": 1093,
+            "name": "heatmap_scroll_test",
+            "description": "test",
+            "created_at": "2023-10-24T11:28:36.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Dan Lu",
+                    "email": "dlu@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Dan Lu",
+            "creator_id": 477,
+            "owner": "Dan Lu",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 42,
+                "mngs_runs_count": 42,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1090,
+            "name": "floo sp92a",
+            "description": "floo sp92a",
+            "created_at": "2023-10-17T06:54:43.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "David Ruiz",
+                    "email": "david.ruiz@contractor.chanzuckerberg.com"
+                },
+                {
+                    "name": "FLT",
+                    "email": "floo@testco.com"
+                },
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "Nasopharyngeal Swab",
+                "Oralpharyngeal Swab"
+            ],
+            "sample_counts": {
+                "number_of_samples": 34,
+                "mngs_runs_count": 21,
+                "cg_runs_count": 2,
+                "amr_runs_count": 25
+            }
+        },
+        {
+            "id": 1086,
+            "name": "floo sp91a",
+            "description": "floo sp91a",
+            "created_at": "2023-10-11T13:29:51.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "Nasopharyngeal Swab"
+            ],
+            "sample_counts": {
+                "number_of_samples": 2,
+                "mngs_runs_count": 1,
+                "cg_runs_count": 0,
+                "amr_runs_count": 1
+            }
+        },
+        {
+            "id": 1083,
+            "name": "SuzetteOct5",
+            "description": "Testing uploads and messages",
+            "created_at": "2023-10-05T06:39:43.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Suzette McCanny",
+                    "email": "smccanny@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Suzette McCanny",
+            "creator_id": 412,
+            "owner": "Suzette McCanny",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 5,
+                "mngs_runs_count": 2,
+                "cg_runs_count": 9,
+                "amr_runs_count": 3
+            }
+        },
+        {
+            "id": 1077,
+            "name": "nb test 3",
+            "description": "test 2",
+            "created_at": "2023-10-02T12:47:07.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Nina non-admin",
+                    "email": "nbernick+1@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Nina non-admin",
+            "creator_id": 417,
+            "owner": "Nina non-admin",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 3,
+                "mngs_runs_count": 3,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1071,
+            "name": "PL 2023-09-15-nt-0-6-nr-0-6-scaled-100-testing",
+            "description": "2023-09-15-nt-0.6-nr-0.6-scaled-100-testing",
+            "created_at": "2023-09-29T16:39:09.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 12,
+                "mngs_runs_count": 12,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1063,
+            "name": "tes nt_2021_01_22_compressed_0-5_protein_scaled_1000",
+            "description": "tests nt_2021_01_22_compressed_0.5_protein_scaled_1000 alignment config",
+            "created_at": "2023-09-25T13:23:49.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 12,
+                "mngs_runs_count": 12,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1062,
+            "name": "2023-09-15-nt-0-6-nr-0-6-scaled-100",
+            "description": "testing for 2023-09-15-nt-0.6-nr-0.6-scaled-100",
+            "created_at": "2023-09-25T12:09:24.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 12,
+                "mngs_runs_count": 12,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1061,
+            "name": "2023-09-15-nt-0-7-nr-0-7-scaled-100",
+            "description": "testing for 2023-09-15-nt-0.7-nr-0.7-scaled-100 alignment config",
+            "created_at": "2023-09-25T12:05:39.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Phoenix Logan",
+                    "email": "plogan@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Phoenix Logan",
+            "creator_id": 357,
+            "owner": "Phoenix Logan",
+            "tissues": [
+                "Cerebrospinal Fluid"
+            ],
+            "sample_counts": {
+                "number_of_samples": 12,
+                "mngs_runs_count": 12,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1057,
+            "name": "Verify Kallisto Transcript Change",
+            "description": "Verification work around CZID-8315 for converting gene to transcript counts.",
+            "created_at": "2023-09-07T17:05:22.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Vincent Selhorst-Jones",
+                    "email": "vselhorst-jones@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Vincent Selhorst-Jones",
+            "creator_id": 356,
+            "owner": "Vincent Selhorst-Jones",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 1,
+                "mngs_runs_count": 1,
+                "cg_runs_count": 0,
+                "amr_runs_count": 0
+            }
+        },
+        {
+            "id": 1056,
+            "name": "nb taxon lineage test",
+            "description": "taxon lineage test",
+            "created_at": "2023-09-07T15:25:51.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Arabidopsis thaliana - Thale cress",
+                "Buteo jamaicensis - red-tailed hawk",
+                "Columba livia - Rock pigeon",
+                "Gorilla gorilla",
+                "Human",
+                "Pan troglodytes - chimpanzee",
+                "Pteropus vampyrus - large flying fox"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Nina Bernick",
+                    "email": "nbernick@chanzuckerberg.com"
+                }
+            ],
+            "creator": "Nina Bernick",
+            "creator_id": 401,
+            "owner": "Nina Bernick",
+            "tissues": [
+                "CSF"
+            ],
+            "sample_counts": {
+                "number_of_samples": 32,
+                "mngs_runs_count": 28,
+                "cg_runs_count": 0,
+                "amr_runs_count": 3
+            }
+        },
+        {
+            "id": 1055,
+            "name": "floo sp89a",
+            "description": "floo sp89a",
+            "created_at": "2023-09-06T11:46:59.000-07:00",
+            "public_access": 1,
+            "hosts": [
+                "Human"
+            ],
+            "locations": [],
+            "editable": true,
+            "users": [
+                {
+                    "name": "Francisco Loo",
+                    "email": "floo@contractor.chanzuckerberg.com"
+                }
+            ],
+            "creator": "Francisco Loo",
+            "creator_id": 263,
+            "owner": "Francisco Loo",
+            "tissues": [
+                "Cerebrospinal Fluid",
+                "Oralpharyngeal Swab"
+            ],
+            "sample_counts": {
+                "number_of_samples": 10,
+                "mngs_runs_count": 10,
+                "cg_runs_count": 0,
+                "amr_runs_count": 9
+            }
+        }
+    ],
+    "all_projects_ids": [
+        1160,
+        1159,
+        1158,
+        1157,
+        1155,
+        1154,
+        1151,
+        1150,
+        1149,
+        1148,
+        1147,
+        1146,
+        1145,
+        1142,
+        1141,
+        1140,
+        1138,
+        1137,
+        1135,
+        1134,
+        1133,
+        1132,
+        1130,
+        1129,
+        1127,
+        1126,
+        1122,
+        1120,
+        1117,
+        1114,
+        1106,
+        1105,
+        1104,
+        1103,
+        1102,
+        1101,
+        1098,
+        1097,
+        1093,
+        1090,
+        1086,
+        1083,
+        1077,
+        1071,
+        1063,
+        1062,
+        1061,
+        1057,
+        1056,
+        1055,
+        1053,
+        1050,
+        1049,
+        1048,
+        1047,
+        1046,
+        1041,
+        1038,
+        1037,
+        1034,
+        1033,
+        1032,
+        1030,
+        1028,
+        1026,
+        1025,
+        1022,
+        1020,
+        1018,
+        1017,
+        1016,
+        1015,
+        1014,
+        1006,
+        1004,
+        1002,
+        993,
+        992,
+        990,
+        988,
+        987,
+        983,
+        982,
+        976,
+        973,
+        971,
+        968,
+        967,
+        965,
+        963,
+        962,
+        959,
+        956,
+        954,
+        950,
+        949,
+        948,
+        946,
+        945,
+        944,
+        943,
+        942,
+        938,
+        937,
+        935,
+        934,
+        933,
+        932,
+        931,
+        930,
+        929,
+        928,
+        927,
+        925,
+        924,
+        923,
+        921,
+        919,
+        918,
+        917,
+        915,
+        912,
+        910,
+        909,
+        906,
+        901,
+        900,
+        899,
+        898,
+        897,
+        896,
+        892,
+        888,
+        887,
+        885,
+        883,
+        875,
+        872,
+        871,
+        870,
+        865,
+        864,
+        863,
+        862,
+        861,
+        860,
+        858,
+        856,
+        851,
+        850,
+        849,
+        848,
+        847,
+        846,
+        845,
+        844,
+        843,
+        841,
+        840,
+        838,
+        834,
+        833,
+        832,
+        831,
+        829,
+        828,
+        827,
+        821,
+        820,
+        819,
+        818,
+        815,
+        813,
+        811,
+        810,
+        809,
+        807,
+        806,
+        805,
+        804,
+        803,
+        801,
+        799,
+        793,
+        786,
+        783,
+        773,
+        772,
+        768,
+        767,
+        763,
+        762,
+        760,
+        758,
+        756,
+        755,
+        754,
+        753,
+        752,
+        751,
+        749,
+        747,
+        745,
+        743,
+        742,
+        738,
+        736,
+        735,
+        734,
+        733,
+        732,
+        730,
+        724,
+        723,
+        717,
+        716,
+        709,
+        708,
+        705,
+        703,
+        702,
+        700,
+        699,
+        697,
+        696,
+        694,
+        691,
+        685,
+        684,
+        683,
+        681,
+        679,
+        678,
+        677,
+        674,
+        673,
+        672,
+        671,
+        670,
+        669,
+        667,
+        663,
+        652,
+        648,
+        642,
+        641,
+        640,
+        638,
+        636,
+        628,
+        610,
+        70
+    ]
+}

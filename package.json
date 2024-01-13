@@ -5,7 +5,8 @@
   "scripts": {
     "start": "mesh start",
     "build": "mesh build",
-    "dev": "mesh dev"
+    "dev": "mesh dev",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,10 @@
     "@graphql-mesh/json-schema": "^0.95.10",
     "@graphql-yoga/plugin-csrf-prevention": "^3.0.0",
     "graphql": "^16.8.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "ts-jest": "^29.1.1"
   },
   "overrides": {}
 }

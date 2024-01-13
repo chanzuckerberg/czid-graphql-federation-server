@@ -11,13 +11,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev
-      - name: Install modules
+      - name: Install package dependencies
         run: |
           npm ci --verbose --no-optional
+      - name: Build Mesh
+        run: |
+          npm run build
       - name: Run tests
         run: |
           npm test

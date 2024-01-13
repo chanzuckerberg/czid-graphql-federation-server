@@ -13,7 +13,7 @@ jobs:
           node-version-file: '.node-version'
       - name: Install dependencies
         run: |
-          lsb_release -a
+          sudo apt-get update
           apt-cache search libcurl
           sudo apt-get install -y libcurl4-openssl-dev
       - name: Install modules

@@ -1,8 +1,8 @@
-name: Jest tests
+name: Jest unit tests
 on: push
 
 jobs:
-  test:
+  jest-unit-tests:
     runs-on: [ARM64, self-hosted, Linux]
     steps:
       - name: Check out code

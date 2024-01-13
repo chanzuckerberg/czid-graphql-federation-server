@@ -639,6 +639,7 @@ type query_SampleMetadata_metadata_items_location_validated_value_oneOf_1 {
   title: String
   description: String
   key: String
+  refetch_adjusted_location: Boolean
 }
 
 type query_SampleMetadata_additional_info {
@@ -1139,6 +1140,7 @@ input query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input
   title: String
   description: String
   key: String
+  refetch_adjusted_location: Boolean
 }
 
 scalar ObjMap

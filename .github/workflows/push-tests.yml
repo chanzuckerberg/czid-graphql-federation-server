@@ -11,6 +11,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libcurl4-openssl-dev
       - name: Install modules
         run: |
           npm ci --verbose --no-optional

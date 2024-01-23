@@ -116,6 +116,11 @@ sources:
             responseSchema: ./json-schemas/samples.json
             responseTypeName: Samples
           - type: Query
+            field: samplesAggregate
+            method: GET
+            requestSchema:  ./json-schemas/samplesAggregate.json
+            responseSchema: ./json-schemas/samplesAggregateResponse.json
+          - type: Query
             field: Taxons
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET

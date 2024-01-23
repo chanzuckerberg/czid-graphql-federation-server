@@ -1,0 +1,32 @@
+{
+    "type": "object",
+    "properties": {
+        "where": {
+            "type": "object",
+            "properties": {
+                "collectionId": {
+                    "_in": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "snapshotShareId": {
+                    "_eq": {
+                        "type": "integer"
+                    }
+                },
+                "name": {
+                    "_like": {
+                        "type": "string"
+                    }
+                },
+            }
+        }
+    },
+    "required": [
+        "validIds",
+        "invalidSampleNames"
+    ]
+}

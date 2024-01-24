@@ -219,7 +219,7 @@ export const resolvers: Resolvers = {
     },
     samplesAggregate: async (root, args, context, info) => {
       // TODO: Merge data between Rails and NextGen.
-      return await get(
+      const response = await get(
         "/samples/stats.json" +
           formatUrlParams({
             domain: args.input?.notNextGen?.domain,
@@ -235,6 +235,8 @@ export const resolvers: Resolvers = {
         args,
         context
       );
+
+      return { aggregate: { count: response.count } };
     },
     ValidateUserCanDeleteObjects: async (root, args, context, info) => {
       const body = {

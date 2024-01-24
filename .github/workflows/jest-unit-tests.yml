@@ -18,9 +18,9 @@ jobs:
       - name: Install package dependencies
         run: |
           npm ci --verbose --no-optional
-      - name: Build Mesh
+      - name: Build Docker container for graphql mesh
         run: |
-          npm run build
-      - name: Run tests
+          make build
+      - name: Run tests in Docker container
         run: |
-          npm test
+          make test

@@ -1,6 +1,12 @@
 import fetch from "node-fetch";
 
-export const formatUrlParams = (params: any) => {
+/**
+ * Converts an object into a query param string.
+ *
+ * Array values are spread out into separate params with "[]" appended to the key, e.g.
+ *  { items: [1, 2] } would become "items[]=1&items[]=2".
+ */
+export const formatUrlParams = (params: { [s: string]: unknown }) => {
   const paramList = Object.entries(params)
     .filter(([_, value]) => value !== undefined)
     .flatMap(([key, value]) =>

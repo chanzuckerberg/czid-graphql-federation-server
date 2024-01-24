@@ -243,11 +243,7 @@ plugins:
   - mock:
       if: "process.env.MOCKING_ENABLED != null"
       initializeStore: ./tests/mocks/CZIDMockStore#initializeStore
-      mocks:
-        - apply: Query.ZipLink
-          store:
-            type: ZipLink
-            key: "{args.workflowRunId}"
+      mocks: !includes meshrc-mocks
 serve:
   port: 4444
   endpoint: "/graphqlfed"

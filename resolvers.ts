@@ -1,6 +1,5 @@
 // resolvers.ts
-import { GraphQLResolveInfo } from "graphql";
-import { MeshContext, Resolvers } from "./.mesh";
+import { Resolvers } from "./.mesh";
 import {
   get,
   notFound,
@@ -27,7 +26,7 @@ export const resolvers: Resolvers = {
         amr_hit: report_table_data,
       };
     },
-    Background: async (root, args, context: MeshContext, info) => {
+    Background: async (root, args, context, info) => {
       const { other_backgrounds, owned_backgrounds } = await get(
         `/backgrounds.json`,
         args,
@@ -251,7 +250,7 @@ export const resolvers: Resolvers = {
       );
       return res;
     },
-    Taxons: async (root, args, context, info: GraphQLResolveInfo) => {
+    Taxons: async (root, args, context, info) => {
       const urlParams = formatUrlParams({
         id: args.sampleId,
         pipelineVersion: args.workflowVersionId,

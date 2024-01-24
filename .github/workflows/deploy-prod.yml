@@ -1,6 +1,10 @@
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag version to deploy to production'
+        required: false
+        type: string
 
 name: Deploy release to prod
 jobs:

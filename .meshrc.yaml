@@ -118,7 +118,7 @@ sources:
           - type: Query
             field: samplesAggregate
             method: GET
-            requestSchema:  ./json-schemas/samplesAggregate.json
+            requestSchema:  ./json-schemas/samplesAggregateRequest.json
             responseSchema: ./json-schemas/samplesAggregateResponse.json
           - type: Query
             field: Taxons

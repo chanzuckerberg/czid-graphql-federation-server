@@ -240,6 +240,14 @@ additionalResolvers:
 plugins:
   - csrfPrevention:
       requestHeaders: ['x-graphql-yoga-csrf']
+  - mock:
+      if: "process.env.MOCKING_ENABLED != null"
+      initializeStore: ./tests/mocks/CZIDMockStore#initializeStore
+      mocks:
+        - apply: Query.ZipLink
+          store:
+            type: ZipLink
+            key: "{args.workflowRunId}"
 serve:
   port: 4444
   endpoint: "/graphqlfed"

@@ -6,7 +6,7 @@
     "start": "mesh start",
     "build": "mesh build",
     "dev": "mesh dev",
-    "test": "jest"
+    "test": "MOCKING_ENABLED=1 jest"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "@graphql-mesh/cli": "^0.87.15",
     "@graphql-mesh/graphql": "^0.95.7",
     "@graphql-mesh/json-schema": "^0.95.10",
+    "@graphql-mesh/plugin-mock": "^0.96.3",
     "@graphql-yoga/plugin-csrf-prevention": "^3.0.0",
     "graphql": "^16.8.1"
   },

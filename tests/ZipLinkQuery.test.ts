@@ -3,6 +3,13 @@ import { errorZipLinkWorkflowRunId, zipLinkError, zipLinkUrl, zipLinkWorkflowRun
 import { getZipLinkExampleQuery } from "./utils/ExampleQueryFiles";
 import { getMeshInstance } from "./utils/MeshInstance";
 
+import * as httpUtils from "../utils/httpUtils";
+jest.mock("../utils/httpUtils");
+
+beforeEach(() => {
+  (httpUtils.getFullResponse as jest.Mock).mockClear();
+});
+
 describe("ZipLink Query", () => {
   let execute: ExecuteMeshFn;
   let query: string;
@@ -14,8 +21,15 @@ describe("ZipLink Query", () => {
     query = getZipLinkExampleQuery();
   });
 
-  describe("ZipLink with url", () => {
+  // no mock plugin
+  describe.only("ZipLink with url", () => {
     it("should give correct response", async () => {
+      (httpUtils.getFullResponse as jest.Mock).mockImplementation(() => (
+        {
+          status: 200,
+          url: zipLinkUrl,
+        }
+      ));
       const result = await execute(query, { workflowRunId: zipLinkWorkflowRunId });
       expect(result.data.ZipLink.url).toBe(zipLinkUrl);
     });
@@ -23,6 +37,14 @@ describe("ZipLink Query", () => {
 
   describe("ZipLink with error", () => {
     it("should give correct response", async () => {
+      (httpUtils.getFullResponse as jest.Mock).mockImplementation(() => (
+        {
+          status: 500,
+          url: null,
+          error: zipLinkError
+        }
+      ));
+
       const result = await execute(query, { workflowRunId: errorZipLinkWorkflowRunId });
       expect(result.data.ZipLink.error).toBe(zipLinkError);
     });

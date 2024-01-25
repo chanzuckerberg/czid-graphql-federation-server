@@ -240,10 +240,6 @@ additionalResolvers:
 plugins:
   - csrfPrevention:
       requestHeaders: ['x-graphql-yoga-csrf']
-  - mock:
-      if: "process.env.MOCKING_ENABLED != null"
-      initializeStore: ./tests/mocks/CZIDMockStore#initializeStore
-      mocks: !includes meshrc-mocks
 serve:
   port: 4444
   endpoint: "/graphqlfed"

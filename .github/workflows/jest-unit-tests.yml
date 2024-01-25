@@ -20,6 +20,7 @@ jobs:
           npm ci --verbose --no-optional
       - name: Create Docker network
         run: |
+          docker swarm init
           docker network create czidnet --attachable --driver overlay
       - name: Build Docker container for graphql mesh
         run: |

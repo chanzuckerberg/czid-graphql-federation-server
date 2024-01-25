@@ -16,7 +16,7 @@ directive @globalOptions(sourceName: String, endpoint: String, operationHeaders:
 
 directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
 
-type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") {
+type Query @globalOptions(sourceName: "CZIDREST", endpoint: "/") {
   appConfig(id: ID!): AppConfig
   pathogenList(version: String): PathogenList!
   project(id: Int!): Project!

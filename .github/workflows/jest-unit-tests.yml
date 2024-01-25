@@ -18,13 +18,6 @@ jobs:
       - name: Install package dependencies
         run: |
           npm ci --verbose --no-optional
-      - name: Create Docker network
+      - name: Run tests
         run: |
-          docker swarm init
-          docker network create czidnet --attachable --driver overlay
-      - name: Build Docker container for graphql mesh
-        run: |
-          make build
-      - name: Run tests in Docker container
-        run: |
-          make test
+          npm test

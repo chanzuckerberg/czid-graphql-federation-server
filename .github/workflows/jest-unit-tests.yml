@@ -15,9 +15,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev
-      - name: Install package dependencies
+      - name: Build Docker image
         run: |
-          npm ci --verbose --no-optional
+          make build
       - name: Create Docker network
         run: |
           docker swarm init

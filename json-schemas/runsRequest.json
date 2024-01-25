@@ -1,0 +1,50 @@
+{
+    "type": "object",
+    "properties": {
+        "where": {
+            "type": "object",
+            "properties": {
+                "collectionId": {
+                    "type": "object",
+                    "properties": {
+                        "_in": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "ownerUserId": {
+                    "type": "object",
+                    "properties": {
+                        "_eq": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "startedAt": {
+                    "type": "object",
+                    "properties": {
+                        "_gte": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "workflowVersion": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "object",
+                            "properties": {
+                                "_eq": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

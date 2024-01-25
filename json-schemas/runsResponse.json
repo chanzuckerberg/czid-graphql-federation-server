@@ -1,0 +1,18 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "startedAt": {
+                "type": "string"
+            },
+            "status": {
+                "type": "string"
+            }
+        },
+        "required": ["id"]
+    }
+}

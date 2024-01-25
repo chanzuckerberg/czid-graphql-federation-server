@@ -1,4 +1,0 @@
-apply: Query.ZipLink
-store:
-  type: ZipLink
-  key: "{args.workflowRunId}"

@@ -1,5 +1,4 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { errorZipLinkWorkflowRunId, zipLinkError, zipLinkUrl, zipLinkWorkflowRunId } from "./mocks/MockZipLink";
 import { getZipLinkExampleQuery } from "./utils/ExampleQueryFiles";
 import { getMeshInstance } from "./utils/MeshInstance";
 
@@ -17,12 +16,14 @@ describe("ZipLink Query", () => {
   beforeEach(async () => {
     const mesh$ = await getMeshInstance();
     // Load ZipLink example query
-    ({ execute } = await mesh$);
+    ({ execute } = mesh$);
     query = getZipLinkExampleQuery();
   });
 
-  // no mock plugin
   describe.only("ZipLink with url", () => {
+    const zipLinkWorkflowRunId = "mockZipLinkId";
+    const zipLinkUrl = "zip_link_url"
+
     it("should give correct response", async () => {
       (httpUtils.getFullResponse as jest.Mock).mockImplementation(() => (
         {
@@ -36,6 +37,9 @@ describe("ZipLink Query", () => {
   });
 
   describe("ZipLink with error", () => {
+    const errorZipLinkWorkflowRunId = "mockErrorZipLinkId";
+    const zipLinkError = "zip_link_error"
+
     it("should give correct response", async () => {
       (httpUtils.getFullResponse as jest.Mock).mockImplementation(() => (
         {

@@ -65,7 +65,7 @@ export const resolvers: Resolvers = {
     },
     MetadataFields: async (root, args, context, info) => {
       const body = {
-        sampleIds: args?.input?.sampleIds
+        sampleIds: args?.input?.sampleIds,
       };
       const res = await postWithCSRF(
         `/samples/metadata_fields`,
@@ -77,42 +77,43 @@ export const resolvers: Resolvers = {
     },
     SampleMetadata: async (root, args, context, info) => {
       const url = `/samples/${args.sampleId}/metadata`;
-      const urlWithParams = args?.input?.pipelineVersion ? url + `?pipeline_version=${args?.input?.pipelineVersion}` : url;
-      const res = await get(
-        urlWithParams,
-        args,
-        context
-      );
+      const urlWithParams = args?.input?.pipelineVersion
+        ? url + `?pipeline_version=${args?.input?.pipelineVersion}`
+        : url;
+      const res = await get(urlWithParams, args, context);
       try {
         const metadata = res.metadata.map((item) => {
           item.id = item.id.toString();
           return item;
         });
-        if (res?.additional_info?.pipeline_run?.id){
-          res.additional_info.pipeline_run.id = res.additional_info.pipeline_run.id.toString();
+        if (res?.additional_info?.pipeline_run?.id) {
+          res.additional_info.pipeline_run.id =
+            res.additional_info.pipeline_run.id.toString();
         }
         // location_validated_value is a union type, so we need to add __typename to the object
         metadata.map((field) => {
-          if( typeof field.location_validated_value === "object" ) {
-          field.location_validated_value = {
-            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_1", 
-            ...field.location_validated_value,
-            id: field.location_validated_value.id.toString(),
-          };
-        } else if ( typeof field.location_validated_value === "string" ){
-          field.location_validated_value = {
-            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_0", 
-            name: field.location_validated_value
-          };
-        } else {
-          field.location_validated_value = null;
-        }
-      });
+          if (typeof field.location_validated_value === "object") {
+            field.location_validated_value = {
+              __typename:
+                "query_SampleMetadata_metadata_items_location_validated_value_oneOf_1",
+              ...field.location_validated_value,
+              id: field.location_validated_value.id.toString(),
+            };
+          } else if (typeof field.location_validated_value === "string") {
+            field.location_validated_value = {
+              __typename:
+                "query_SampleMetadata_metadata_items_location_validated_value_oneOf_0",
+              name: field.location_validated_value,
+            };
+          } else {
+            field.location_validated_value = null;
+          }
+        });
         res.metadata = metadata;
         return res;
       } catch {
         return res;
-      } 
+      }
     },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get(`/samples/${args.sampleId}.json`, args, context);
@@ -214,6 +215,27 @@ export const resolvers: Resolvers = {
         );
         return formatSamples(samples);
       }
+    },
+    samplesAggregate: async (root, args, context, info) => {
+      // TODO: Merge data between Rails and NextGen.
+      const response = await get(
+        "/samples/stats.json" +
+          formatUrlParams({
+            domain: args.input?.notNextGen?.domain,
+            host: args.input?.where?.hostTaxon?.upstreamDatabaseIdentifier?._in,
+            locationV2: args.input?.where?.collectionLocation?._in,
+            taxonThresholds: args.input?.notNextGen?.taxonThresholds,
+            annotations: args.input?.notNextGen?.annotations,
+            tissue: args.input?.where?.sampleType?._in,
+            visibility: args.input?.notNextGen.visibility,
+            taxaLevels: args.input?.notNextGen?.taxaLevels,
+            taxon: args.input?.notNextGen?.taxons,
+          }),
+        args,
+        context
+      );
+
+      return { aggregate: { count: response.count } };
     },
     ValidateUserCanDeleteObjects: async (root, args, context, info) => {
       const body = {
@@ -398,7 +420,10 @@ export const resolvers: Resolvers = {
     UpdateMetadata: async (root, args, context, info) => {
       const body = {
         field: args?.input?.field,
-        value: args?.input?.value.String ? args.input.value.String : args?.input?.value.query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input,
+        value: args?.input?.value.String
+          ? args.input.value.String
+          : args?.input?.value
+              .query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input,
       };
       const res = await postWithCSRF(
         `/samples/${args.sampleId}/save_metadata_v2`,
@@ -433,7 +458,6 @@ export const resolvers: Resolvers = {
         context
       );
       return res;
-    }
+    },
   },
 };
-

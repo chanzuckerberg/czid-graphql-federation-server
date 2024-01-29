@@ -72,8 +72,6 @@ jobs:
           tfe-token: ${{ secrets.TFE_TOKEN }}
           env: ${{ vars.HAPPY_ENV }}
           github-repo-branch: ${{ needs.get-release-tag.outputs.release_tag }}
-          image-source-env: ${{ vars.IMAGE_SOURCE_ENV }}
-          image-source-stack: ${{ secrets.IMAGE_SOURCE_STACK }}
-          image-source-role-arn: ${{ secrets.IMAGE_SOURCE_ROLE_ARN }}
+          create-tag: true
           stack-name: ${{ secrets.HAPPY_STACK_NAME }}
           version-lock-file: .happy/version.lock

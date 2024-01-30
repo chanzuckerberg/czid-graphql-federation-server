@@ -40,6 +40,11 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
+            field: consensusGenomes
+            method: GET
+            requestSchema: ./json-schemas/consensusGenomesRequest.json
+            responseSchema: ./json-schemas/consensusGenomesResponse.json
+          - type: Query
             field: ConsensusGenomeWorkflowResults
             path: /workflow_runs/{args.workflowRunId}/results
             method: GET

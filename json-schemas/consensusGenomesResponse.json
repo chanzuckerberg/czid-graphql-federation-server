@@ -1,0 +1,181 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "producingRunId": {
+                "type": "integer"
+            },
+            "referenceGenome": {
+                "type": "object",
+                "properties": {
+                    "accessionId": {
+                        "type": "string"
+                    },
+                    "accessionName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "metric": {
+                "type": "object",
+                "properties": {
+                    "coverageDepth": {
+                        "type": "number"
+                    },
+                    "totalReads": {
+                        "type": "integer"
+                    },
+                    "gcPercent": {
+                        "type": "number"
+                    },
+                    "refSnps": {
+                        "type": "integer"
+                    },
+                    "percentIdentity": {
+                        "type": "number"
+                    },
+                    "nActg": {
+                        "type": "integer"
+                    },
+                    "percentGenomeCalled": {
+                        "type": "number"
+                    },
+                    "nMissing": {
+                        "type": "integer"
+                    },
+                    "nAmbiguous": {
+                        "type": "integer"
+                    },
+                    "referenceGenomeLength": {
+                        "type": "number"
+                    }
+                }
+            },
+            "sequenceRead": {
+                "type": "object",
+                "properties": {
+                    "nucleicAcid": {
+                        "type": "string"
+                    },
+                    "wetlabProtocol": {
+                        "type": "string"
+                    },
+                    "medakaModel": {
+                        "type": "string"
+                    },
+                    "taxon": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name"]
+                    },
+                    "sample": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "notes": {
+                                "type": "string"
+                            },
+                            "collectionLocation": {
+                                "type": "string"
+                            },
+                            "sampleType": {
+                                "type": "string"
+                            },
+                            "waterControl": {
+                                "type": "boolean"
+                            },
+                            "hostTaxon": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "collection": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "public": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            },
+                            "ownerUser": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "metadatas": {
+                                "type": "object",
+                                "properties": {
+                                    "edges": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "node": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "fieldName": {
+                                                            "type": "string"
+                                                        },
+                                                        "value": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": ["fieldName", "value"]
+                                                }
+                                            },
+                                            "required": ["node"]
+                                        }
+                                    }
+                                },
+                                "required": ["edges"]
+                            }
+                        },
+                        "required": ["name", "collectionLocation", "sampleType", "metadatas"]
+                    },
+                    "required": ["nucleicAcid", "taxon"]
+                }
+            },
+            "todoRemove": {
+                "type": "object",
+                "properties": {
+                    "startedAt": {
+                        "type": "string"
+                    },
+                    "workflowVersion": {
+                        "type": "object",
+                        "properties": {
+                            "version": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "technology": {
+                        "type": "string"
+                    },
+                    "creationSource": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

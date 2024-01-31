@@ -42,6 +42,7 @@ sources:
           - type: Query
             field: consensusGenomes
             method: GET
+            path: /workflow_runs.json
             requestSchema: ./json-schemas/consensusGenomesRequest.json
             responseSchema: ./json-schemas/consensusGenomesResponse.json
           - type: Query

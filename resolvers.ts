@@ -345,6 +345,31 @@ export const resolvers: Resolvers = {
     }),
   },
   Mutation: {
+    CreateBulkDownload: async (root, args, context, info) => {
+      const body = {
+        download_type: args?.input?.downloadType,
+        workflow: args?.input?.workflow,
+        params: {
+          download_format: {
+            value: args?.input?.downloadFormat
+          },
+          sample_ids: {
+            value: args?.input?.workflowRunIds
+          }, 
+          workflow: {
+            value: args?.input?.workflow,
+          }
+        },
+        workflow_run_ids: args?.input?.workflowRunIds,
+      };
+      const res = await postWithCSRF(
+        `/bulk_downloads`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
     DeleteSamples: async (root, args, context, info) => {
       const body = {
         selectedIds: args?.input?.ids,

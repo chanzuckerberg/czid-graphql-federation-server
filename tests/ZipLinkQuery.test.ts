@@ -20,7 +20,7 @@ describe("ZipLink Query", () => {
     query = getZipLinkExampleQuery();
   });
 
-  describe.only("ZipLink with url", () => {
+  describe("ZipLink with url", () => {
     const zipLinkWorkflowRunId = "mockZipLinkId";
     const zipLinkUrl = "zip_link_url"
 

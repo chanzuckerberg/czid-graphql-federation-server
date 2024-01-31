@@ -45,7 +45,7 @@ describe("ZipLink Query", () => {
         {
           status: 500,
           url: null,
-          error: zipLinkError
+          statusText: zipLinkError
         }
       ));
 

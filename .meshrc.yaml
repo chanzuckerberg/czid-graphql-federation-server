@@ -1,4 +1,11 @@
 sources:
+  - name: CZIDENTITIES
+    handler:
+      graphql:
+        endpoint: ${NEXTGEN_ENTITIES_URL}/graphql
+        source: ./sources/entities-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['cookie']}"
   - name: CZIDGQL
     handler:
       graphql:

@@ -40,6 +40,13 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
+            field: BulkDownloadCSV
+            path: /bulk_downloads
+            method: POST
+            requestSchema: ./json-schemas/createBulkDownloadCSV.json
+            responseSchema: ./json-schemas/zipLink.json
+            responseTypeName: FileUrl
+          - type: Query
             field: ConsensusGenomeWorkflowResults
             path: /workflow_runs/{args.workflowRunId}/results
             method: GET
@@ -141,7 +148,7 @@ sources:
             method: POST
             requestSample: {"selectedIds":[28114,28151],"workflow":"short-read-mngs","authenticityToken":"token"}
             responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
-            responseTypeName: ValidateUserCanDeleteObjects
+            responseTypeName: ValidateUserCanDeleteObjects  
           - type: Query
             field: ZipLink
             path: /workflow_runs/{args.workflowRunId}/zip_link.json

@@ -28,6 +28,7 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
   BulkDownload(bulkDownloadId: String): BulkDownload @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
+  consensusGenomes(input: queryInput_consensusGenomes_input_Input): [query_consensusGenomes_items] @httpOperation(path: "/workflow_runs.json", httpMethod: GET)
   ConsensusGenomeWorkflowResults(workflowRunId: String): ConsensusGenomeWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   CoverageVizSummary(snapshotLinkId: String, sampleId: String): [query_CoverageVizSummary_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary", httpMethod: GET)
   MetadataFields(snapshotLinkId: String, input: queryInput_MetadataFields_input_Input): [query_MetadataFields_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/metadata_fields", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
@@ -519,6 +520,167 @@ type query_BulkDownload_download_type {
 type query_BulkDownload_download_type_fields_items {
   display_name: String
   type: String
+}
+
+type query_consensusGenomes_items {
+  producingRunId: Int
+  referenceGenome: query_consensusGenomes_items_referenceGenome
+  metric: query_consensusGenomes_items_metric
+  sequenceRead: query_consensusGenomes_items_sequenceRead
+  todoRemove: query_consensusGenomes_items_todoRemove
+}
+
+type query_consensusGenomes_items_referenceGenome {
+  accessionId: String
+  accessionName: String
+}
+
+type query_consensusGenomes_items_metric {
+  coverageDepth: Float
+  totalReads: Int
+  gcPercent: Float
+  refSnps: Int
+  percentIdentity: Float
+  nActg: Int
+  percentGenomeCalled: Float
+  nMissing: Int
+  nAmbiguous: Int
+  referenceGenomeLength: Float
+}
+
+type query_consensusGenomes_items_sequenceRead {
+  nucleicAcid: String
+  wetlabProtocol: String
+  medakaModel: String
+  taxon: query_consensusGenomes_items_sequenceRead_taxon
+  sample: query_consensusGenomes_items_sequenceRead_sample
+  required: JSON
+}
+
+type query_consensusGenomes_items_sequenceRead_taxon {
+  name: String!
+}
+
+type query_consensusGenomes_items_sequenceRead_sample {
+  name: String!
+  notes: String
+  collectionLocation: String!
+  sampleType: String!
+  waterControl: Boolean
+  hostTaxon: query_consensusGenomes_items_sequenceRead_sample_hostTaxon
+  collection: query_consensusGenomes_items_sequenceRead_sample_collection
+  ownerUser: query_consensusGenomes_items_sequenceRead_sample_ownerUser
+  metadatas: query_consensusGenomes_items_sequenceRead_sample_metadatas!
+}
+
+type query_consensusGenomes_items_sequenceRead_sample_hostTaxon {
+  name: String
+}
+
+type query_consensusGenomes_items_sequenceRead_sample_collection {
+  name: String
+  public: Boolean
+}
+
+type query_consensusGenomes_items_sequenceRead_sample_ownerUser {
+  name: String
+}
+
+type query_consensusGenomes_items_sequenceRead_sample_metadatas {
+  edges: [query_consensusGenomes_items_sequenceRead_sample_metadatas_edges_items]!
+}
+
+type query_consensusGenomes_items_sequenceRead_sample_metadatas_edges_items {
+  node: query_consensusGenomes_items_sequenceRead_sample_metadatas_edges_items_node!
+}
+
+type query_consensusGenomes_items_sequenceRead_sample_metadatas_edges_items_node {
+  fieldName: String!
+  value: String!
+}
+
+type query_consensusGenomes_items_todoRemove {
+  startedAt: String
+  workflowVersion: query_consensusGenomes_items_todoRemove_workflowVersion
+  technology: String
+  creationSource: String
+  status: String
+}
+
+type query_consensusGenomes_items_todoRemove_workflowVersion {
+  version: String
+}
+
+input queryInput_consensusGenomes_input_Input {
+  where: queryInput_consensusGenomes_input_where_Input
+  orderBy: queryInput_consensusGenomes_input_orderBy_Input
+  todoRemove: queryInput_consensusGenomes_input_todoRemove_Input
+}
+
+input queryInput_consensusGenomes_input_where_Input {
+  producingRunId: queryInput_consensusGenomes_input_where_producingRunId_Input
+  taxon: queryInput_consensusGenomes_input_where_taxon_Input
+  sequenceRead: queryInput_consensusGenomes_input_where_sequenceRead_Input
+}
+
+input queryInput_consensusGenomes_input_where_producingRunId_Input {
+  _in: [Int]
+}
+
+input queryInput_consensusGenomes_input_where_taxon_Input {
+  name: queryInput_consensusGenomes_input_where_taxon_name_Input
+}
+
+input queryInput_consensusGenomes_input_where_taxon_name_Input {
+  _in: String
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_Input {
+  sample: queryInput_consensusGenomes_input_where_sequenceRead_sample_Input
+  hostTaxon: queryInput_consensusGenomes_input_where_sequenceRead_hostTaxon_Input
+  collectionLocation: queryInput_consensusGenomes_input_where_sequenceRead_collectionLocation_Input
+  sampleType: queryInput_consensusGenomes_input_where_sequenceRead_sampleType_Input
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_sample_Input {
+  name: queryInput_consensusGenomes_input_where_sequenceRead_sample_name_Input
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_sample_name_Input {
+  _like: String
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_hostTaxon_Input {
+  upstreamDatabaseIdentifier: queryInput_consensusGenomes_input_where_sequenceRead_hostTaxon_upstreamDatabaseIdentifier_Input
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_hostTaxon_upstreamDatabaseIdentifier_Input {
+  _in: [String]
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_collectionLocation_Input {
+  _in: [String]
+}
+
+input queryInput_consensusGenomes_input_where_sequenceRead_sampleType_Input {
+  _in: [String]
+}
+
+input queryInput_consensusGenomes_input_orderBy_Input {
+  key: String
+  dir: String
+}
+
+input queryInput_consensusGenomes_input_todoRemove_Input {
+  domain: String
+  visibility: String
+  time: [String]
+  taxaLevels: [String]
+  taxons: [Int]
+  offset: Int
+  limit: Int
+  workflow: String
+  projectId: String
 }
 
 type ConsensusGenomeWorkflowResults {

@@ -1,6 +1,5 @@
 // resolvers.ts
 import { Resolvers, query_consensusGenomes_items } from "./.mesh";
-import { getConsensusGenomesNotNextGenParams } from "./utils/consensusGenomesUtils";
 import {
   get,
   notFound,
@@ -52,7 +51,7 @@ export const resolvers: Resolvers = {
             // const getWorkflowRuns = ({
             mode: "with_sample_info",
             //  - await this._collection.fetchDataCallback({
-            domain: input.todoRemove.domain,
+            domain: input?.todoRemove?.domain,
             //  -- ...this.getConditions(workflow)
             projectId: input?.todoRemove?.projectId,
             search: input?.where?.sequenceRead?.sample?.name,
@@ -128,20 +127,23 @@ export const resolvers: Resolvers = {
                 public: Boolean(sampleInfo?.public),
               },
               metadatas: {
-                edges: Object.entries(sampleMetadata)
-                  .filter(
-                    ([fieldName]) =>
-                      fieldName !== "nucleotide_type" &&
-                      fieldName !== "collection_location_v2" &&
-                      fieldName !== "sample_type" &&
-                      fieldName !== "water_control"
-                  )
-                  .map(([fieldName, value]) => ({
-                    node: {
-                      fieldName,
-                      value: String(value),
-                    },
-                  })),
+                edges:
+                  sampleMetadata != null
+                    ? Object.entries(sampleMetadata)
+                        .filter(
+                          ([fieldName]) =>
+                            fieldName !== "nucleotide_type" &&
+                            fieldName !== "collection_location_v2" &&
+                            fieldName !== "sample_type" &&
+                            fieldName !== "water_control"
+                        )
+                        .map(([fieldName, value]) => ({
+                          node: {
+                            fieldName,
+                            value: String(value),
+                          },
+                        }))
+                    : [],
               },
             },
           },

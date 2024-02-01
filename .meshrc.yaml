@@ -5,7 +5,7 @@ sources:
         endpoint: ${NEXTGEN_ENTITIES_URL}/graphql
         source: ./sources/entities-schema.graphql
         operationHeaders:
-          Cookie: "{context.headers['cookie']}"
+          Authorization: "{context.headers['authorization']}"
   - name: CZIDGQL
     handler:
       graphql:

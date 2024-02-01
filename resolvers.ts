@@ -48,16 +48,20 @@ export const resolvers: Resolvers = {
       const { workflow_runs } = await get(
         "/workflow_runs.json" +
           formatUrlParams({
+            // index.ts
             // const getWorkflowRuns = ({
             mode: "with_sample_info",
-            //  - await this._collection.fetchDataCallback({
+            //  - DiscoveryDataLayer.ts
+            //    await this._collection.fetchDataCallback({
             domain: input?.todoRemove?.domain,
-            //  -- ...this.getConditions(workflow)
+            //  -- DiscoveryView.tsx
+            //     ...this.getConditions(workflow)
             projectId: input?.todoRemove?.projectId,
             search: input?.where?.sequenceRead?.sample?.name,
             orderBy: input?.orderBy?.key,
             orderDir: input?.orderBy?.dir,
-            //  --- filters
+            //  --- DiscoveryView.tsx
+            //      filters: {
             host: input?.where?.sequenceRead?.hostTaxon
               ?.upstreamDatabaseIdentifier?._in,
             locationV2: input?.where?.sequenceRead?.collectionLocation?._in,
@@ -67,7 +71,8 @@ export const resolvers: Resolvers = {
             tissue: input?.where?.sequenceRead?.sampleType?._in,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
-            //  - await this._collection.fetchDataCallback({
+            //  - DiscoveryDataLayer.ts
+            //    await this._collection.fetchDataCallback({
             limit: input?.todoRemove?.limit,
             offset: input?.todoRemove?.offset,
             listAllIds: false,

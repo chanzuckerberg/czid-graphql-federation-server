@@ -1,6 +1,67 @@
 {
     "type": "object",
     "properties": {
+        "todoRemove": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string"
+                },
+                "projectId": {
+                    "type": "string"
+                },
+                "search": {
+                    "type": "string"
+                },
+                "host": {
+                    "type": "integer"
+                },
+                "locationV2": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taxon": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taxonLevels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "time": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "tissue": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "visibility": {
+                    "type": "string"
+                },
+                "workflow": {
+                    "type": "string"
+                }
+            }
+        },
+        "orderBy": {
+            "type": "object",
+            "properties": {
+                "startedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "where": {
             "type": "object",
             "properties": {
@@ -47,6 +108,24 @@
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "entityInputsInput": {
+            "type": "object",
+            "properties": {
+                "where": {
+                    "type": "object",
+                    "properties": {
+                        "fieldName": {
+                            "type": "object",
+                            "properties": {
+                                "_eq": {
+                                    "type": "string"
                                 }
                             }
                         }

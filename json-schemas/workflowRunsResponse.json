@@ -17,6 +17,14 @@
                 "properties": {
                     "version": {
                         "type": "string"
+                    },
+                    "workflow": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
                     }
                 }
             },

@@ -19,8 +19,34 @@
                         "type": "string"
                     }
                 }
+            },
+            "entityInputs": {
+                "type": "object",
+                "properties": {
+                    "edges": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "node": {
+                                    "type": "object",
+                                    "properties": {
+                                        "inputEntityId": {
+                                            "type": "string"
+                                        },
+                                        "fieldName": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": ["node"]
+                        }
+                    }
+                },
+                "required": ["edges"]
             }
         },
-        "required": ["id"]
+        "required": ["id", "entityInputs"]
     }
 }

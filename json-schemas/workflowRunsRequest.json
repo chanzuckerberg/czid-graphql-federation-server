@@ -40,8 +40,11 @@
                                 "name": {
                                     "type": "object",
                                     "properties": {
-                                        "_eq": {
-                                            "type": "string"
+                                        "_in": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
                                         }
                                     }
                                 }

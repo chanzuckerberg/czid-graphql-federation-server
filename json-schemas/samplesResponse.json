@@ -17,9 +17,6 @@
                             }
                         }
                     },
-                    "technology": {
-                        "type": "string"
-                    },
                     "creationSource": {
                         "type": "string"
                     },
@@ -121,6 +118,9 @@
                                             "type": "string"
                                         },
                                         "medakaModel": {
+                                            "type": "string"
+                                        },
+                                        "technology": {
                                             "type": "string"
                                         },
                                         "consensusGenomes": {

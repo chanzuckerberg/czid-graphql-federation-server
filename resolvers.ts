@@ -247,7 +247,6 @@ export const resolvers: Resolvers = {
           todoRemove: {
             status: run.status,
             startedAt: run.created_at,
-            technology: inputs?.technology,
             creationSource: inputs?.creation_source,
             workflowVersion: {
               version: run.wdl_version,
@@ -295,6 +294,7 @@ export const resolvers: Resolvers = {
                   nucleicAcid: sampleMetadata?.nucleotide_type,
                   protocol: inputs?.wetlab_protocol,
                   medakaModel: inputs?.medaka_model,
+                  technology: inputs?.technology,
                   consensusGenomes: {
                     edges: [
                       {

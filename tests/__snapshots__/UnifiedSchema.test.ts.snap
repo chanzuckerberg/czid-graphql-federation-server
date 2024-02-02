@@ -878,7 +878,6 @@ type query_samples_items {
 type query_samples_items_todoRemove {
   startedAt: String
   workflowVersion: query_samples_items_todoRemove_workflowVersion
-  technology: String
   creationSource: String
   status: String
 }
@@ -925,6 +924,7 @@ type query_samples_items_sequencingReads_edges_items_node {
   nucleicAcid: String
   protocol: String
   medakaModel: String
+  technology: String
   consensusGenomes: query_samples_items_sequencingReads_edges_items_node_consensusGenomes
   required: JSON
 }

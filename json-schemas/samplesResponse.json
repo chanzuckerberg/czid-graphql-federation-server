@@ -198,7 +198,7 @@
                                                 "required": ["edges"]
                                             }
                                         },
-                                        "required": ["nucleicAcid", "taxon", "consensusGenomes"]
+                                        "required": ["nucleicAcid", "technology", "taxon", "consensusGenomes"]
                                     }
                                 }
                             },

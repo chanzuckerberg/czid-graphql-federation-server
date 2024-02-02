@@ -40,12 +40,12 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
-            field: BulkDownloadCSV
+            field: BulkDownloadCGOverview
             path: /bulk_downloads
             method: POST
             requestSchema: ./json-schemas/createBulkDownloadCSV.json
-            responseSchema: ./json-schemas/zipLink.json
-            responseTypeName: FileUrl
+            responseSchema: ./json-schemas/cgOverview.json
+            responseTypeName: ConsensusGenomeOverviewRows
           - type: Query
             field: ConsensusGenomeWorkflowResults
             path: /workflow_runs/{args.workflowRunId}/results

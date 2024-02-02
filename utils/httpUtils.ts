@@ -50,7 +50,7 @@ const checkForLogin = (responseUrl: string | null) => {
     }
 }
 
-export const postWithCSRF = async (url: string, body: any, args: any, context: any, fullResponse?: boolean) => {
+export const postWithCSRF = async (url: string, body: any, args: any, context: any, fullResponse?: "fullResponse") => {
     
     try {
         const baseURL = process.env.API_URL;

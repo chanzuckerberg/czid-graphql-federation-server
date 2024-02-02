@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "properties": {
+        "cgOverviewRows": [
+            ["Hello", "Table", "Rowa"],
+            ["Hello", "Table", "Rowb"],
+            ["Hello", "Table", "Rowc"]
+        ]   
+    }
+}

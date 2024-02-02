@@ -40,12 +40,12 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
-    BulkDownloadCSV: async (root, args, context, info) => {
+    BulkDownloadCGOverview: async (root, args, context, info) => {
       const body = {
         download_type: args?.input?.downloadType,
         workflow: args?.input?.workflow,
         params: {
-          include_metadata: { value: true }, 
+          include_metadata: { value: args?.input?.includeMetadata }, 
         sample_ids: {
           value: args?.input?.workflowRunIds
         }, 
@@ -56,20 +56,13 @@ export const resolvers: Resolvers = {
         workflow_run_ids: args?.input?.workflowRunIds,
       };
       const res = await postWithCSRF(
-        `/bulk_downloads`,
+        `/bulk_downloads/consensus_genome_overview_data`,
         body,
         args,
         context,
-        true
       );
-      if (res.status !== 200){
-        return {
-          url: null,
-          error: res.statusText,
-        }
-      }
       return {
-        url: res.csvUrl ? res.csvUrl : "success",
+        cgOverviewRows: res.cg_overview_rows,
       }
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {

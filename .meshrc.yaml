@@ -148,6 +148,12 @@ sources:
             method: GET
             responseSchema: ./json-schemas/zipLink.json
             responseTypeName: ZipLink
+          - type: Query
+            field: Run
+            path: /workflow_runs/{args.workflowRunId}
+            method: GET
+            responseSchema: ./json-schemas/workflowRun.json
+            responseTypeName: Run
           - type: Mutation
             field: DeleteSamples
             path: /samples/bulk_delete
@@ -237,9 +243,9 @@ additionalTypeDefs: |
   }
 additionalResolvers:
   - ./resolvers.ts
-plugins:
-  - csrfPrevention:
-      requestHeaders: ['x-graphql-yoga-csrf']
+# plugins:
+#   - csrfPrevention:
+#       requestHeaders: ['x-graphql-yoga-csrf']
 serve:
   port: 4444
   endpoint: "/graphqlfed"

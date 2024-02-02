@@ -1,0 +1,59 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "sample_id": {
+            "type": "integer"
+        },
+        "status": {
+            "type": "string"
+        },
+        "workflow": {
+            "type": "string"
+        },
+        "wdl_version": {
+            "type": "string"
+        },
+        "sfn_execution_arn": {
+            "type": "string"
+        },
+        "executed_at": {
+            "type": "string"
+        },
+        "deprecated": {
+            "type": "boolean"
+        },
+        "created_at": {
+            "type": "string"
+        },
+        "updated_at": {
+            "type": "string"
+        },
+        "rerun_from": {
+            "type": "NoneType"
+        },
+        "cached_results": {
+            "type": "NoneType"
+        },
+        "inputs_json": {
+            "type": "string"
+        },
+        "s3_output_prefix": {
+            "type": "string"
+        },
+        "time_to_finalized": {
+            "type": "integer"
+        },
+        "error_message": {
+            "type": "string"
+        },
+        "deleted_at": {
+            "type": "NoneType"
+        },
+        "user_id": {
+            "type": "integer"
+        }
+    }
+}

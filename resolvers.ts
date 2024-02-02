@@ -339,6 +339,27 @@ export const resolvers: Resolvers = {
         url,
       };
     },
+    WorkflowRun: async (root, args, context, info) => {
+      const res = await get(`/workflow_runs/${args.workflowRunId}`, args, context);
+      const {
+        sample_id: entity_id,
+        status,
+        started_at: executed_at,
+        user_id: owner_user_id,
+        created_at,
+        updated_at,
+        deleted_at
+      } = res;
+      return {
+        entity_id,
+        status,
+        executed_at,
+        owner_user_id,
+        created_at,
+        updated_at,
+        deleted_at
+      };
+    },
     GraphQLFederationVersion: () => ({
       version: process.env.CZID_GQL_FED_GIT_VERSION,
       gitCommit: process.env.CZID_GQL_FED_GIT_SHA,
@@ -435,4 +456,5 @@ export const resolvers: Resolvers = {
       return res;
     }
   },
+
 };

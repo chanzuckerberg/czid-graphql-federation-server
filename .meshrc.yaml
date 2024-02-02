@@ -104,17 +104,7 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
-<<<<<<< HEAD
             field: samples
-=======
-            field: runs
-            method: GET
-            requestSchema: ./json-schemas/runsRequest.json
-            responseSchema: ./json-schemas/runsResponse.json
-          - type: Query
-            field: Samples
-            path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json
->>>>>>> c81baa4 (json no resolver)
             method: GET
             path: /workflow_runs.json
             requestSchema: ./json-schemas/samplesRequest.json
@@ -147,6 +137,10 @@ sources:
             requestSample: {"selectedIds":[28114,28151],"workflow":"short-read-mngs","authenticityToken":"token"}
             responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
             responseTypeName: ValidateUserCanDeleteObjects
+          - type: Query
+            field: workflowRuns
+            path: /workflow_runs.json
+            method: POST
           - type: Query
             field: ZipLink
             path: /workflow_runs/{args.workflowRunId}/zip_link.json

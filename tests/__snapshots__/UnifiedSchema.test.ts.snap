@@ -16,7 +16,7 @@ directive @globalOptions(sourceName: String, endpoint: String, operationHeaders:
 
 directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
 
-type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") {
+type Query @globalOptions(sourceName: "CZIDREST", endpoint: "/") {
   appConfig(id: ID!): AppConfig
   pathogenList(version: String): PathogenList!
   project(id: Int!): Project!
@@ -28,6 +28,7 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
   BulkDownloadDetails(bulkDownloadId: String): BulkDownloadDetails @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
+  BulkDownloadCGOverview(input: queryInput_BulkDownloadCGOverview_input_Input): ConsensusGenomeOverviewRows @httpOperation(path: "/bulk_downloads", httpMethod: POST)
   ConsensusGenomeWorkflowResults(workflowRunId: String): ConsensusGenomeWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   CoverageVizSummary(snapshotLinkId: String, sampleId: String): [query_CoverageVizSummary_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary", httpMethod: GET)
   MetadataFields(snapshotLinkId: String, input: queryInput_MetadataFields_input_Input): [query_MetadataFields_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/metadata_fields", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
@@ -520,6 +521,18 @@ type query_BulkDownloadDetails_download_type {
 type query_BulkDownloadDetails_download_type_fields_items {
   display_name: String
   type: String
+}
+
+type ConsensusGenomeOverviewRows {
+  cgOverviewRows: [[String]]
+}
+
+input queryInput_BulkDownloadCGOverview_input_Input {
+  downloadType: String
+  workflowRunIds: [Int]
+  workflow: String
+  includeMetadata: Boolean
+  authenticityToken: String
 }
 
 type ConsensusGenomeWorkflowResults {

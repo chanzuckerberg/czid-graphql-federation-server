@@ -4,17 +4,6 @@
         "where": {
             "type": "object",
             "properties": {
-                "collectionId": {
-                    "type": "object",
-                    "properties": {
-                        "_in": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                },
                 "ownerUserId": {
                     "type": "object",
                     "properties": {
@@ -28,6 +17,17 @@
                     "properties": {
                         "_gte": {
                             "type": "string"
+                        }
+                    }
+                },
+                "collectionId": {
+                    "type": "object",
+                    "properties": {
+                        "_in": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
                         }
                     }
                 },

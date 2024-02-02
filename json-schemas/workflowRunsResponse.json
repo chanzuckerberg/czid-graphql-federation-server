@@ -11,6 +11,14 @@
             },
             "status": {
                 "type": "string"
+            },
+            "workflowVersion": {
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "string"
+                    }
+                }
             }
         },
         "required": ["id"]

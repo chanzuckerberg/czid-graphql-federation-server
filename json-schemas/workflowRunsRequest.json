@@ -34,11 +34,16 @@
                 "workflowVersion": {
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "workflow": {
                             "type": "object",
                             "properties": {
-                                "_eq": {
-                                    "type": "string"
+                                "name": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_eq": {
+                                            "type": "string"
+                                        }
+                                    }
                                 }
                             }
                         }

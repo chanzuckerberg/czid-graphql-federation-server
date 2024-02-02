@@ -60,8 +60,24 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        "orderBy": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string"
                 },
-                "sequencingReads": {
+                "dir": {
+                    "type": "string"
+                }
+            }
+        },
+        "sequencingReadsInput": {
+            "type": "object",
+            "properties": {
+                "where": {
                     "type": "object",
                     "properties": {
                         "consensusGenomes": {
@@ -88,17 +104,6 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "orderBy": {
-            "type": "object",
-            "properties": {
-                "key": {
-                    "type": "string"
-                },
-                "dir": {
-                    "type": "string"
                 }
             }
         },

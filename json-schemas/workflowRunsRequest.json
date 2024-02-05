@@ -28,7 +28,7 @@
                 "taxon": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "type": "integer"
                     }
                 },
                 "taxonLevels": {

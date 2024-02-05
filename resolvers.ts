@@ -61,8 +61,9 @@ export const resolvers: Resolvers = {
         args,
         context,
       );
+      console.log(res.cg_overview_rows);
       return {
-        cgOverviewRows: res.cg_overview_rows,
+        cgOverviewRows: res?.cg_overview_rows,
       }
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {

@@ -339,7 +339,7 @@ export const resolvers: Resolvers = {
         url,
       };
     },
-    WorkflowRun: async (root, args, context, info) => {
+    Run: async (root, args, context, info) => {
       const res = await get(`/workflow_runs/${args.workflowRunId}`, args, context);
       const {
         sample_id: entity_id,

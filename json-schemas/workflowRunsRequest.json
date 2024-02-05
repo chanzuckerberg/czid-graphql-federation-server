@@ -14,7 +14,10 @@
                     "type": "string"
                 },
                 "host": {
-                    "type": "integer"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "locationV2": {
                     "type": "array",

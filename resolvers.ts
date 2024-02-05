@@ -61,7 +61,6 @@ export const resolvers: Resolvers = {
         args,
         context,
       );
-      console.log(res.cg_overview_rows);
       return {
         cgOverviewRows: res?.cg_overview_rows,
       }

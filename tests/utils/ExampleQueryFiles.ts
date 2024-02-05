@@ -27,3 +27,19 @@ const getBulkDownloadCGOverviewResponsePath = () : string => {
 export const getBulkDownloadCGOverviewResponse = () : string => {
   return readFileSync(getBulkDownloadCGOverviewResponsePath(), { encoding: "utf8" });
 } 
+
+const getCreateBulkDownloadExampleMutationPath = () : string => {
+  return join(__dirname, `${exampleQueriesDir}/create-bulk-download-query.graphql`);
+}
+
+export const getCreateBulkDownloadExampleMutation = () : string => {
+  return readFileSync(getCreateBulkDownloadExampleMutationPath(), { encoding: "utf8" });
+}
+
+const getCreateBulkDownloadResponsePath = () : string => {
+  return join(__dirname, "../../sample-responses/bulkDownload.json");
+}
+
+export const getCreateBulkDownloadResponse = () : string => {
+  return readFileSync(getCreateBulkDownloadResponsePath(), { encoding: "utf8" });
+} 

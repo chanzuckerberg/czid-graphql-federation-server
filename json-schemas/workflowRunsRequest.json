@@ -40,7 +40,7 @@
                 "time": {
                     "type": "array",
                     "items": {
-                        "type": "integer"
+                        "type": "string"
                     }
                 },
                 "tissue": {

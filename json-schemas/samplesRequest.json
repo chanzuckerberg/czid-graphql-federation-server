@@ -80,6 +80,17 @@
                                                     }
                                                 }
                                             }
+                                        },
+                                        "producingRunId": {
+                                            "type": "object",
+                                            "properties": {
+                                                "_in": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -114,7 +125,10 @@
                                         "type": "object",
                                         "properties": {
                                             "_in": {
-                                                "type": "integer"
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "integer"
+                                                }
                                             }
                                         }
                                     }

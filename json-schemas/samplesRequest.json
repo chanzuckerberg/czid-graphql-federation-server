@@ -60,6 +60,32 @@
                             }
                         }
                     }
+                },
+                "sequencingReads": {
+                    "type": "object",
+                    "properties": {
+                        "consensusGenomes": {
+                            "type": "object",
+                            "properties": {
+                                "taxon": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "object",
+                                            "properties": {
+                                                "_in": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -89,14 +115,6 @@
                                         "properties": {
                                             "_in": {
                                                 "type": "integer"
-                                            }
-                                        }
-                                    },
-                                    "name": {
-                                        "type": "object",
-                                        "properties": {
-                                            "_in": {
-                                                "type": "string"
                                             }
                                         }
                                     }

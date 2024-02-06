@@ -1,5 +1,9 @@
 // resolvers.ts
-import { Resolvers, query_samples_items, query_workflowRuns_items } from "./.mesh";
+import {
+  Resolvers,
+  query_samples_items,
+  query_workflowRuns_items,
+} from "./.mesh";
 import {
   get,
   notFound,
@@ -448,8 +452,8 @@ export const resolvers: Resolvers = {
     workflowRuns: async (root, args, context) => {
       const input = args.input;
 
-      // During the Rails read phase, this endpoint will be returning the complete list of all
-      // workflow runs objects., hence why all these fields that in NextGen would not be sent.
+      // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the
+      // Entities call.
       // These only have to be ordered by time, if sorting by time.
       const { workflow_runs } = await get(
         "/workflow_runs.json" +

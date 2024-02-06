@@ -979,6 +979,7 @@ input queryInput_samples_input_where_Input {
   collectionLocation: queryInput_samples_input_where_collectionLocation_Input
   sampleType: queryInput_samples_input_where_sampleType_Input
   hostTaxon: queryInput_samples_input_where_hostTaxon_Input
+  sequencingReads: queryInput_samples_input_where_sequencingReads_Input
 }
 
 input queryInput_samples_input_where_id_Input {
@@ -1003,6 +1004,27 @@ input queryInput_samples_input_where_hostTaxon_Input {
 
 input queryInput_samples_input_where_hostTaxon_upstreamDatabaseIdentifier_Input {
   _in: [String]
+}
+
+input queryInput_samples_input_where_sequencingReads_Input {
+  consensusGenomes: queryInput_samples_input_where_sequencingReads_consensusGenomes_Input
+}
+
+input queryInput_samples_input_where_sequencingReads_consensusGenomes_Input {
+  taxon: queryInput_samples_input_where_sequencingReads_consensusGenomes_taxon_Input
+}
+
+input queryInput_samples_input_where_sequencingReads_consensusGenomes_taxon_Input {
+  name: queryInput_samples_input_where_sequencingReads_consensusGenomes_taxon_name_Input
+  producingRunId: queryInput_samples_input_where_sequencingReads_consensusGenomes_taxon_producingRunId_Input
+}
+
+input queryInput_samples_input_where_sequencingReads_consensusGenomes_taxon_name_Input {
+  _in: [String]
+}
+
+input queryInput_samples_input_where_sequencingReads_consensusGenomes_taxon_producingRunId_Input {
+  _in: [Int]
 }
 
 input queryInput_samples_input_orderBy_Input {

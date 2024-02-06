@@ -1,9 +1,5 @@
 // resolvers.ts
-import {
-  Resolvers,
-  query_samples_items,
-  query_workflowRuns_items,
-} from "./.mesh";
+import { Resolvers, query_samples_items, query_workflowRuns_items } from "./.mesh";
 import {
   get,
   notFound,

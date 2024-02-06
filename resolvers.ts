@@ -61,8 +61,12 @@ export const resolvers: Resolvers = {
         args,
         context,
       );
-      return {
-        cgOverviewRows: res?.cg_overview_rows,
+      if (res?.cg_overview_rows){
+        return {
+          cgOverviewRows: res?.cg_overview_rows,
+        }
+      } else {
+        throw new Error(res.error);
       }
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {

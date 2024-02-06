@@ -462,9 +462,8 @@ export const resolvers: Resolvers = {
             domain: input?.todoRemove?.domain,
             projectId: input?.todoRemove?.projectId,
             search: input?.todoRemove?.search,
-            orderBy:
-              input?.orderBy?.startedAt != null ? "createdAt" : undefined,
-            orderDir: input?.orderBy?.startedAt,
+            orderBy: input?.todoRemove?.orderBy,
+            orderDir: input?.todoRemove?.orderDir,
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxon,

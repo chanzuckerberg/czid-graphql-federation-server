@@ -6,6 +6,9 @@
             "id": {
                 "type": "string"
             },
+            "ownerUserId": {
+                "type": "integer"
+            },
             "startedAt": {
                 "type": "string"
             },
@@ -55,6 +58,6 @@
                 "required": ["edges"]
             }
         },
-        "required": ["id", "entityInputs"]
+        "required": ["id", "onwerUserId", "entityInputs"]
     }
 }

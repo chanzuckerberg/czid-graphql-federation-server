@@ -487,6 +487,7 @@ export const resolvers: Resolvers = {
       return workflow_runs.map(
         (run): query_workflowRuns_items => ({
           id: run.id,
+          ownerUserId: run.runner?.id,
           startedAt: run.created_at,
           status: run.status,
           workflowVersion: {

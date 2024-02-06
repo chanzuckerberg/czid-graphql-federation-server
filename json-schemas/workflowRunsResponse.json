@@ -58,6 +58,6 @@
                 "required": ["edges"]
             }
         },
-        "required": ["id", "onwerUserId", "entityInputs"]
+        "required": ["id", "ownerUserId", "entityInputs"]
     }
 }

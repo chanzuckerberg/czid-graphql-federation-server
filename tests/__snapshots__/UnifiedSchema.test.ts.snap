@@ -1114,6 +1114,7 @@ input queryInput_ValidateUserCanDeleteObjects_input_Input @example(value: "{\\"s
 
 type query_workflowRuns_items {
   id: String!
+  ownerUserId: Int!
   startedAt: String
   status: String
   workflowVersion: query_workflowRuns_items_workflowVersion
@@ -1153,11 +1154,11 @@ input queryInput_workflowRuns_input_todoRemove_Input {
   domain: String
   projectId: String
   search: String
-  host: Int
+  host: [Int]
   locationV2: [String]
-  taxon: [String]
+  taxon: [Int]
   taxonLevels: [String]
-  time: [Int]
+  time: [String]
   tissue: [String]
   visibility: String
   workflow: String
@@ -1168,10 +1169,15 @@ input queryInput_workflowRuns_input_orderBy_Input {
 }
 
 input queryInput_workflowRuns_input_where_Input {
+  id: queryInput_workflowRuns_input_where_id_Input
   ownerUserId: queryInput_workflowRuns_input_where_ownerUserId_Input
   startedAt: queryInput_workflowRuns_input_where_startedAt_Input
   collectionId: queryInput_workflowRuns_input_where_collectionId_Input
   workflowVersion: queryInput_workflowRuns_input_where_workflowVersion_Input
+}
+
+input queryInput_workflowRuns_input_where_id_Input {
+  _in: [String]
 }
 
 input queryInput_workflowRuns_input_where_ownerUserId_Input {

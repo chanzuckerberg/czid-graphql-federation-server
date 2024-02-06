@@ -41,19 +41,28 @@ export const resolvers: Resolvers = {
       }, []);
     },
     BulkDownloadCGOverview: async (root, args, context, info) => {
+      if (!args?.input){
+        throw new Error("No input provided");
+      }
+      const {
+        downloadType,
+        workflow,
+        includeMetadata,
+        workflowRunIds,
+      } = args?.input;
       const body = {
-        download_type: args?.input?.downloadType,
-        workflow: args?.input?.workflow,
+        download_type: downloadType,
+        workflow: workflow,
         params: {
-          include_metadata: { value: args?.input?.includeMetadata }, 
+          include_metadata: { value: includeMetadata }, 
         sample_ids: {
-          value: args?.input?.workflowRunIds
+          value: workflowRunIds
         }, 
         workflow: {
-          value: "consensus_genome"
+          value: workflow
         }
         },
-        workflow_run_ids: args?.input?.workflowRunIds,
+        workflow_run_ids: workflowRunIds,
       };
       const res = await postWithCSRF(
         `/bulk_downloads/consensus_genome_overview_data`,

@@ -19,5 +19,6 @@
         "authenticityToken": {
             "type": "string"
         }
-    }
+    },
+    "required": ["downloadType", "workflowRunIds", "workflow", "includeMetadata", "authenticityToken"]
 }

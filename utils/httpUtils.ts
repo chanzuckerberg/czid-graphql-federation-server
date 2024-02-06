@@ -50,7 +50,7 @@ const checkForLogin = (responseUrl: string | null) => {
     }
 }
 
-export const postWithCSRF = async (url: string, body: any, args: any, context: any, fullResponse?: "fullResponse") => {
+export const postWithCSRF = async (url: string, body: any, args: any, context: any) => {
     
     try {
         const baseURL = process.env.API_URL;
@@ -65,9 +65,6 @@ export const postWithCSRF = async (url: string, body: any, args: any, context: a
             body: JSON.stringify(body),
           });
         checkForLogin(response?.url);
-        if (fullResponse) {
-            return response;
-        }
         return await response.json();
     } catch (e) {
         return Promise.reject(e.response ? e.response : e);

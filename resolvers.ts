@@ -454,7 +454,7 @@ export const resolvers: Resolvers = {
 
       // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the
       // Entities call.
-      // These only have to be ordered by time, if sorting by time.
+      // TODO(bchu): Only sort by time (if sorting by time).
       const { workflow_runs } = await get(
         "/workflow_runs.json" +
           formatUrlParams({

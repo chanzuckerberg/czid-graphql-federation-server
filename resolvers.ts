@@ -501,21 +501,25 @@ export const resolvers: Resolvers = {
   },
   Mutation: {
     CreateBulkDownload: async (root, args, context, info) => {
+      if(!args?.input){
+        throw new Error("No input provided");
+      }
+      const { downloadType, workflow, downloadFormat, workflowRunIds } = args?.input;
       const body = {
-        download_type: args?.input?.downloadType,
-        workflow: args?.input?.workflow,
+        download_type: downloadType,
+        workflow: workflow,
         params: {
           download_format: {
-            value: args?.input?.downloadFormat
+            value: downloadFormat,
           },
           sample_ids: {
-            value: args?.input?.workflowRunIds
+            value: workflowRunIds,
           }, 
           workflow: {
-            value: args?.input?.workflow,
+            value: workflow,
           }
         },
-        workflow_run_ids: args?.input?.workflowRunIds,
+        workflow_run_ids: workflowRunIds,
       };
       const res = await postWithCSRF(
         `/bulk_downloads`,

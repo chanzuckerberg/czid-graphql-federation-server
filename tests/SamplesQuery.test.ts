@@ -62,7 +62,7 @@ describe("samples query:", () => {
     const response = await execute(query, {});
 
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&search=abc",
+      "/workflow_runs.json?&mode=basic&search=abc",
       expect.anything(),
       expect.anything()
     );

@@ -53,7 +53,7 @@ describe("workflowRuns query:", () => {
     const result = await execute(query, {});
 
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&limit=10000000&offset=0&listAllIds=false",
+      "/workflow_runs.json?&mode=basic&limit=10000000&offset=0&listAllIds=false",
       expect.anything(),
       expect.anything()
     );
@@ -117,7 +117,7 @@ describe("workflowRuns query:", () => {
     const result = await execute(query, {});
 
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&orderBy=createdAt&orderDir=ASC&limit=10000000&offset=0&listAllIds=false",
+      "/workflow_runs.json?&mode=basic&orderBy=createdAt&orderDir=ASC&limit=10000000&offset=0&listAllIds=false",
       expect.anything(),
       expect.anything()
     );

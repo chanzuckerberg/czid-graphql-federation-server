@@ -125,6 +125,10 @@ sources:
             responseSchema: ./json-schemas/samplesResponse.json
             responseTypeName: samples
           - type: Query
+            field: sequencingReads
+            method: GET
+            path: /workflow_runs.json
+          - type: Query
             field: Taxons
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET

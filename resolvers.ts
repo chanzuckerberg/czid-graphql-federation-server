@@ -232,7 +232,7 @@ export const resolvers: Resolvers = {
           formatUrlParams({
             // index.ts
             // const getWorkflowRuns = ({
-            mode: "with_sample_info",
+            mode: "basic",
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
             domain: input?.todoRemove?.domain,
@@ -455,10 +455,11 @@ export const resolvers: Resolvers = {
       // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the
       // Entities call.
       // These only have to be ordered by time, if sorting by time.
+      console.log(new Date(Date.now()));
       const { workflow_runs } = await get(
         "/workflow_runs.json" +
           formatUrlParams({
-            mode: "with_sample_info",
+            mode: "basic",
             domain: input?.todoRemove?.domain,
             projectId: input?.todoRemove?.projectId,
             search: input?.todoRemove?.search,
@@ -480,6 +481,7 @@ export const resolvers: Resolvers = {
         args,
         context
       );
+      console.log(new Date(Date.now()));
       if (!workflow_runs?.length) {
         return [];
       }

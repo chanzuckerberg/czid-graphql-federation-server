@@ -455,7 +455,7 @@ export const resolvers: Resolvers = {
       // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the
       // Entities call.
       // These only have to be ordered by time, if sorting by time.
-      const { workflow_runs } = await get(
+      const data = await get(
         "/workflow_runs.json" +
           formatUrlParams({
             mode: "with_sample_info",
@@ -480,11 +480,36 @@ export const resolvers: Resolvers = {
         args,
         context
       );
-      if (!workflow_runs?.length) {
+      console.log(
+        JSON.stringify(
+          "/workflow_runs.json" +
+            formatUrlParams({
+              mode: "with_sample_info",
+              domain: input?.todoRemove?.domain,
+              projectId: input?.todoRemove?.projectId,
+              search: input?.todoRemove?.search,
+              orderBy:
+                input?.orderBy?.startedAt != null ? "createdAt" : undefined,
+              orderDir: input?.orderBy?.startedAt,
+              host: input?.todoRemove?.host,
+              locationV2: input?.todoRemove?.locationV2,
+              taxon: input?.todoRemove?.taxon,
+              taxaLevels: input?.todoRemove?.taxonLevels,
+              time: input?.todoRemove?.time,
+              tissue: input?.todoRemove?.tissue,
+              visibility: input?.todoRemove?.visibility,
+              workflow: input?.todoRemove?.workflow,
+              limit: TEN_MILLION,
+              offset: 0,
+              listAllIds: false,
+            })
+        )
+      );
+      if (!data.workflow_runs?.length) {
         return [];
       }
 
-      return workflow_runs.map(
+      return data.workflow_runs.map(
         (run): query_workflowRuns_items => ({
           id: run.id,
           ownerUserId: run.runner?.id,

@@ -60,13 +60,13 @@ describe("workflowRuns query:", () => {
     expect(result.data.workflowRuns).toHaveLength(2);
     expect(result.data.workflowRuns[0]).toEqual(
       expect.objectContaining({
-        id: 1,
+        id: "1",
         entityInputs: {
           edges: [
             {
               node: {
                 fieldName: "Sample",
-                inputEntityId: 2,
+                inputEntityId: "2",
               },
             },
           ],
@@ -75,13 +75,13 @@ describe("workflowRuns query:", () => {
     );
     expect(result.data.workflowRuns[1]).toEqual(
       expect.objectContaining({
-        id: 3,
+        id: "3",
         entityInputs: {
           edges: [
             {
               node: {
                 fieldName: "Sample",
-                inputEntityId: 4,
+                inputEntityId: "4",
               },
             },
           ],

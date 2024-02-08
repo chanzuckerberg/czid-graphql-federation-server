@@ -222,6 +222,7 @@ export const resolvers: Resolvers = {
       });
       return pathogens;
     },
+    /** Returns just the sample IDs (and old Rails IDs) to determine which IDs pass the filters. */
     samples: async (root, args, context) => {
       const input = args.input;
 
@@ -266,98 +267,9 @@ export const resolvers: Resolvers = {
       }
 
       return workflow_runs.map((run): query_samples_items => {
-        const inputs = run.inputs;
-        const qualityMetrics = run.cached_results?.quality_metrics;
-        const sample = run.sample;
-        const sampleInfo = sample?.info;
-        const sampleMetadata = sample?.metadata;
         return {
-          todoRemove: {
-            status: run.status,
-            startedAt: run.created_at,
-            creationSource: inputs?.creation_source,
-            workflowVersion: {
-              version: run.wdl_version,
-            },
-          },
-          id: sample?.id,
-          railsSampleId: sample?.id,
-          name: sampleInfo?.name,
-          notes: sampleInfo?.sample_notes,
-          collectionLocation: sampleMetadata?.collection_location_v2,
-          sampleType: sampleMetadata?.sample_type,
-          waterControl: sampleMetadata?.water_control,
-          hostTaxon: {
-            name: sampleInfo?.host_genome_name,
-          },
-          collection: {
-            name: sample?.project_name,
-            public: Boolean(sampleInfo?.public),
-          },
-          ownerUser: {
-            name: sample?.uploader?.name,
-          },
-          metadatas: {
-            edges:
-              sampleMetadata != null
-                ? Object.entries(sampleMetadata)
-                    .filter(
-                      ([fieldName]) =>
-                        fieldName !== "nucleotide_type" &&
-                        fieldName !== "collection_location_v2" &&
-                        fieldName !== "sample_type" &&
-                        fieldName !== "water_control"
-                    )
-                    .map(([fieldName, value]) => ({
-                      node: {
-                        fieldName,
-                        value: String(value),
-                      },
-                    }))
-                : [],
-          },
-          sequencingReads: {
-            edges: [
-              {
-                node: {
-                  nucleicAcid: sampleMetadata?.nucleotide_type,
-                  protocol: inputs?.wetlab_protocol,
-                  medakaModel: inputs?.medaka_model,
-                  technology: inputs?.technology,
-                  consensusGenomes: {
-                    edges: [
-                      {
-                        node: {
-                          taxon: {
-                            name: inputs?.taxon_name,
-                          },
-                          referenceGenome: {
-                            accessionId: inputs?.accession_id,
-                            accessionName: inputs?.accession_name,
-                          },
-                          metric: {
-                            coverageDepth:
-                              run.cached_results?.coverage_viz?.coverage_depth,
-                            totalReads: qualityMetrics?.total_reads,
-                            gcPercent: qualityMetrics?.gc_percent,
-                            refSnps: qualityMetrics?.ref_snps,
-                            percentIdentity: qualityMetrics?.percent_identity,
-                            nActg: qualityMetrics?.n_actg,
-                            percentGenomeCalled:
-                              qualityMetrics?.percent_genome_called,
-                            nMissing: qualityMetrics?.n_missing,
-                            nAmbiguous: qualityMetrics?.n_ambiguous,
-                            referenceGenomeLength:
-                              qualityMetrics?.reference_genome_length,
-                          },
-                        },
-                      },
-                    ],
-                  },
-                },
-              },
-            ],
-          },
+          id: run.sample?.id?.toString(),
+          railsSampleId: run.sample?.id?.toString(),
         };
       });
     },
@@ -455,7 +367,6 @@ export const resolvers: Resolvers = {
       // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the
       // Entities call.
       // These only have to be ordered by time, if sorting by time.
-      console.log(new Date(Date.now()));
       const { workflow_runs } = await get(
         "/workflow_runs.json" +
           formatUrlParams({
@@ -481,15 +392,14 @@ export const resolvers: Resolvers = {
         args,
         context
       );
-      console.log(new Date(Date.now()));
       if (!workflow_runs?.length) {
         return [];
       }
 
       return workflow_runs.map(
         (run): query_workflowRuns_items => ({
-          id: run.id,
-          ownerUserId: run.runner?.id,
+          id: run.id?.toString(),
+          ownerUserId: run.runner?.id?.toString(),
           startedAt: run.created_at,
           status: run.status,
           workflowVersion: {
@@ -503,7 +413,7 @@ export const resolvers: Resolvers = {
               {
                 node: {
                   fieldName: "Sample",
-                  inputEntityId: run.sample?.id,
+                  inputEntityId: run.sample?.id?.toString(),
                 },
               },
             ],

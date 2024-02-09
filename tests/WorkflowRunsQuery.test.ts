@@ -38,13 +38,17 @@ describe("workflowRuns query:", () => {
         {
           id: 1,
           sample: {
-            id: 2,
+            info: {
+              id: 2,
+            },
           },
         },
         {
           id: 3,
           sample: {
-            id: 4,
+            info: {
+              id: 4,
+            },
           },
         },
       ],

@@ -395,7 +395,6 @@ export const resolvers: Resolvers = {
       if (!workflow_runs?.length) {
         return [];
       }
-      console.log(JSON.stringify(workflow_runs));
 
       return workflow_runs.map(
         (run): query_workflowRuns_items => ({

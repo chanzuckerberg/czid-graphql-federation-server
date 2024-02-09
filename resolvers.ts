@@ -395,6 +395,7 @@ export const resolvers: Resolvers = {
       if (!workflow_runs?.length) {
         return [];
       }
+      console.log(JSON.stringify(workflow_runs));
 
       return workflow_runs.map(
         (run): query_workflowRuns_items => ({
@@ -413,7 +414,7 @@ export const resolvers: Resolvers = {
               {
                 node: {
                   entityType: "Sample",
-                  inputEntityId: run.sample?.id?.toString(),
+                  inputEntityId: run.sample?.info?.id?.toString(),
                 },
               },
             ],

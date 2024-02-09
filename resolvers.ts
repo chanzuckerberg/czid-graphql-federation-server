@@ -412,7 +412,7 @@ export const resolvers: Resolvers = {
             edges: [
               {
                 node: {
-                  fieldName: "Sample",
+                  entityType: "Sample",
                   inputEntityId: run.sample?.id?.toString(),
                 },
               },

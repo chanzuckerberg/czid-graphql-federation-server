@@ -25,7 +25,7 @@ describe("workflowRuns query:", () => {
                 entityInputs {
                     edges {
                         node {
-                            fieldName
+                            entityType
                             inputEntityId
                         }
                     }
@@ -65,7 +65,7 @@ describe("workflowRuns query:", () => {
           edges: [
             {
               node: {
-                fieldName: "Sample",
+                entityType: "Sample",
                 inputEntityId: "2",
               },
             },
@@ -80,7 +80,7 @@ describe("workflowRuns query:", () => {
           edges: [
             {
               node: {
-                fieldName: "Sample",
+                entityType: "Sample",
                 inputEntityId: "4",
               },
             },

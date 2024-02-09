@@ -1038,7 +1038,7 @@ type query_workflowRuns_items_entityInputs_edges_items {
 
 type query_workflowRuns_items_entityInputs_edges_items_node {
   inputEntityId: String
-  fieldName: String
+  entityType: String
 }
 
 input queryInput_workflowRuns_input_Input {

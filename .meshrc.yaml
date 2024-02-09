@@ -254,6 +254,7 @@ additionalResolvers:
 plugins:
   - csrfPrevention:
       requestHeaders: ['x-graphql-yoga-csrf']
+additionalEnvelopPlugins: "./plugins/envelopPlugins"
 serve:
   port: 4444
   endpoint: "/graphqlfed"

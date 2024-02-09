@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
+    "@envelop/generic-auth": "^7.0.0",
     "@graphql-mesh/cli": "^0.88.5",
     "@graphql-mesh/graphql": "^0.96.3",
     "@graphql-mesh/json-schema": "^0.97.4",

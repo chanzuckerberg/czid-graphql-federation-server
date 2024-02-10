@@ -22,7 +22,7 @@ export const formatUrlParams = (params: { [s: string]: unknown }) => {
 
 export const get = async (url: string, args: any, context: any) => {
   try {
-    const baseURL = process.env.API_URL;
+    const baseURL = process.env.LEGACY_API_URL;
     const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
     const response = await fetch(baseURL + urlPrefix + url, {
       method: "GET",

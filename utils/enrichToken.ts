@@ -29,7 +29,7 @@ export const getEnrichedToken = async (context: ResolverContext) => {
   }
 
   try {
-    const enrichTokenURL = `${process.env.LEGACY_API_URL}/enrich_token`;
+    const enrichTokenURL = `${process.env.API_URL}/enrich_token`;
     const enrichedTokenResp = await fetch(enrichTokenURL, {
       method: "GET",
       headers: {

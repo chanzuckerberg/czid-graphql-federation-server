@@ -52,16 +52,26 @@ describe("getEnrichedToken", () => {
   });
 
   it("should return the enriched token", async () => {
-    const context = getContext("czid_services_token=abc123; key2=val2");
+    const mockCzidServicesToken = "abc123";
+    const context = getContext(`czid_services_token=${mockCzidServicesToken}; key2=val2`);
 
     const mockEnrichedToken = "enrichedToken";
-    global.fetch = jest.fn().mockResolvedValue({
+    const mockFetch = jest.fn().mockResolvedValue({
       status: 200,
       json: jest.fn().mockResolvedValue({ token: mockEnrichedToken }),
     });
+    global.fetch = mockFetch
 
     const result = await getEnrichedToken(context);
 
+    expect(mockFetch).toHaveBeenCalledWith(`${process.env.API_URL}/enrich_token`, {
+      method: "GET",
+      headers: {
+        Cookie: context.request.headers.get("cookie"),
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${mockCzidServicesToken}`,
+      },
+    });
     expect(result).toBe(mockEnrichedToken);
   });
 });

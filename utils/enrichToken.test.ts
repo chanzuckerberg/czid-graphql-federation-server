@@ -18,7 +18,8 @@ describe("getEnrichedToken", () => {
   };
 
   it("should log an error if czid_services_token is not found in cookie", async () => {
-    const context = getContext("key1=val1; key2=val2");
+    const httpCookieStr = "key1=val1; key2=val2";
+    const context = getContext(httpCookieStr);
     const consoleErrorMock = jest.spyOn(console, "error").mockImplementation();
 
     await getEnrichedToken(context);
@@ -26,7 +27,8 @@ describe("getEnrichedToken", () => {
   });
 
   it("should log an error if failed to validate token", async () => {
-    const context = getContext("czid_services_token=abc123; key1=val1");
+    const httpCookieStr = "czid_services_token=abc123; key1=val1";
+    const context = getContext(httpCookieStr);
     const consoleErrorMock = jest.spyOn(console, "error").mockImplementation();
 
     const mockError = new Error("Failed to validate token");
@@ -37,7 +39,8 @@ describe("getEnrichedToken", () => {
   });
 
   it("should return null when the response status is not 200", async () => {
-    const context = getContext("czid_services_token=abc123; key2=val2");
+    const httpCookieStr = "czid_services_token=abc123; key2=val2";
+    const context = getContext(httpCookieStr);
     const consoleErrorMock = jest.spyOn(console, "error").mockImplementation();
     const mockErrorResp = { errors: ["some error"] };
 
@@ -53,7 +56,8 @@ describe("getEnrichedToken", () => {
 
   it("should return the enriched token", async () => {
     const mockCzidServicesToken = "abc123";
-    const context = getContext(`czid_services_token=${mockCzidServicesToken}; key2=val2`);
+    const httpCookieStr = `czid_services_token=${mockCzidServicesToken}; key2=val2`;
+    const context = getContext(httpCookieStr);
 
     const mockEnrichedToken = "enrichedToken";
     const mockFetch = jest.fn().mockResolvedValue({

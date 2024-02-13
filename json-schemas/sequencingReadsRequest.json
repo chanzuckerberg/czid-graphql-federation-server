@@ -1,0 +1,250 @@
+{
+    "type": "object",
+    "properties": {
+        "where": {
+            "type": "object",
+            "properties": {
+                "sample": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "object",
+                            "properties": {
+                                "_in": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "name": {
+                            "type": "object",
+                            "properties": {
+                                "_like": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "collectionLocation": {
+                            "type": "object",
+                            "properties": {
+                                "_in": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "sampleType": {
+                            "type": "object",
+                            "properties": {
+                                "_in": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "hostOrganism": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_in": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "consensusGenomes": {
+                    "type": "object",
+                    "properties": {
+                        "producingRunId": {
+                            "type": "object",
+                            "properties": {
+                                "_in": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "taxon": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_in": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "orderBy": {
+            "type": "object",
+            "properties": {
+                "protocol": {
+                    "type": "string"
+                },
+                "technology": {
+                    "type": "string"
+                },
+                "medakaModel": {
+                    "type": "string"
+                },
+                "nucleicAcid": {
+                    "type": "string"
+                },
+                "sample": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "notes": {
+                            "type": "string"
+                        },
+                        "sampleType": {
+                            "type": "string"
+                        },
+                        "waterControl": {
+                            "type": "string"
+                        },
+                        "collectionLocation": {
+                            "type": "string"
+                        },
+                        "hostOrganism": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "metadata": {
+                            "type": "object",
+                            "properties": {
+                                "fieldName": {
+                                    "type": "string"
+                                },
+                                "dir": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "consensusGenomesInput": {
+            "type": "object",
+            "properties": {
+                "where": {
+                    "type": "object",
+                    "properties": {
+                        "producingRunId": {
+                            "type": "object",
+                            "properties": {
+                                "_in": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "taxon": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_in": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "todoRemove": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "host": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "taxaLevels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taxons": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "workflow": {
+                    "type": "string"
+                },
+                "projectId": {
+                    "type": "string"
+                },
+                "orderBy": {
+                    "type": "string"
+                },
+                "orderDir": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
-const getCzidServicesTokenFromCookie = (cookieStr: string) => {
-  const tokenKeyVal = cookieStr
-    .split(';')
-    .map((keyValStr: string) => keyValStr.split('='))
+const getCzidServicesTokenFromCookie = (httpCookieStr: string) => {
+  const tokenKeyVal = httpCookieStr
+    .split(";")
+    .map((keyValStr: string) => keyValStr.split("="))
     .map((keyValArr: [string, string]) => ([
       decodeURIComponent(keyValArr[0].trim()),
       decodeURIComponent(keyValArr[1].trim()),
@@ -19,17 +19,17 @@ export interface ResolverContext {
 
 export const getEnrichedToken = async (context: ResolverContext) => {
   const headers = context.request.headers;
-  const cookieStr = headers.get('cookie');
+  const httpCookieStr = headers.get("cookie");
 
-  const czidServicesToken = getCzidServicesTokenFromCookie(cookieStr);
+  const czidServicesToken = getCzidServicesTokenFromCookie(httpCookieStr);
   if (!czidServicesToken) {
-    throw new Error('No czid_services_token found in cookie')
+    throw new Error("No czid_services_token found in cookie")
   }
 
   try {
     const enrichTokenURL = `${process.env.LEGACY_API_URL}/enrich_token`;
     const enrichedTokenResp = await fetch(enrichTokenURL, {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${czidServicesToken}`,
       },

@@ -22,8 +22,10 @@ export const getEnrichedToken = async (context: ResolverContext) => {
   const httpCookieStr = headers.get("cookie");
 
   const czidServicesToken = getCzidServicesTokenFromCookie(httpCookieStr);
+
   if (!czidServicesToken) {
-    throw new Error("No czid_services_token found in cookie")
+    console.error("No czid_services_token found in cookie");
+    return;
   }
 
   try {
@@ -31,17 +33,21 @@ export const getEnrichedToken = async (context: ResolverContext) => {
     const enrichedTokenResp = await fetch(enrichTokenURL, {
       method: "GET",
       headers: {
+        Cookie: context.request.headers.get("cookie"),
+        "Content-Type": "application/json",
         Authorization: `Bearer ${czidServicesToken}`,
       },
     });
 
     console.log("enrichedTokenResp", enrichedTokenResp);
     if (enrichedTokenResp.status !== 200) {
+      const respJson = await enrichedTokenResp.json();
+      console.error("Enrich token request failed", respJson);
       return null;
     } else {
       return (await enrichedTokenResp.json()).token;
     }
   } catch (e) {
-    throw new Error("Failed to validate token");
+    console.error("Error while retrieving enriched token", e);
   }
 }

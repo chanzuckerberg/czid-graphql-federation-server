@@ -1,12 +1,12 @@
 {
   "name": "czi-graphql-federation",
-  "version": "2.7.0",
+  "version": "2.10.0",
   "description": "",
   "scripts": {
     "start": "mesh start",
     "build": "mesh build",
     "dev": "mesh dev",
-    "test": "mesh build && MOCKING_ENABLED=1 jest"
+    "test": "mesh build && jest"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
+    "prettier": "^3.2.5",
     "ts-jest": "^29.1.1"
   },
   "overrides": {}

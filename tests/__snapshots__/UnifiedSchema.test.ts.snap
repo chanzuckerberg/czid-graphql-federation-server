@@ -60,7 +60,8 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
   AmrDeprecatedResults(sampleId: String): AmrDeprecatedResults @httpOperation(path: "/samples/{args.sampleId}/amr.json", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
-  BulkDownload(bulkDownloadId: String): BulkDownload @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
+  BulkDownloadDetails(bulkDownloadId: String): BulkDownloadDetails @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
+  BulkDownloadCGOverview(input: queryInput_BulkDownloadCGOverview_input_Input): ConsensusGenomeOverviewRows @httpOperation(path: "/bulk_downloads", httpMethod: POST)
   ConsensusGenomeWorkflowResults(workflowRunId: String): ConsensusGenomeWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   CoverageVizSummary(snapshotLinkId: String, sampleId: String): [query_CoverageVizSummary_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary", httpMethod: GET)
   MetadataFields(snapshotLinkId: String, input: queryInput_MetadataFields_input_Input): [query_MetadataFields_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/metadata_fields", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
@@ -120,6 +121,7 @@ type Mutation {
   updatePhylogeneticTree(input: PhylogeneticTreeUpdateInput!, where: PhylogeneticTreeWhereClauseMutations!): [PhylogeneticTree!]!
   deletePhylogeneticTree(where: PhylogeneticTreeWhereClauseMutations!): [PhylogeneticTree!]!
   createUser(archetypes: String, email: String!, institution: String, name: String, role: Int, segments: String, sendActivation: Boolean): CreateUserPayload!
+  CreateBulkDownload(input: mutationInput_CreateBulkDownload_input_Input): JSON @httpOperation(path: "/bulk_download", httpMethod: POST)
   DeleteSamples(input: mutationInput_DeleteSamples_input_Input): DeleteSamples @httpOperation(path: "/samples/bulk_delete", httpMethod: POST)
   UpdateSampleNotes(sampleId: String, input: mutationInput_UpdateSampleNotes_input_Input): UpdateSampleNotes @httpOperation(path: "/samples/{args.sampleId}/save_metadata", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
   UpdateSampleName(sampleId: String, input: mutationInput_UpdateSampleNotes_input_Input): UpdateSampleName @httpOperation(path: "/samples/{args.sampleId}/save_metadata", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
@@ -2329,12 +2331,17 @@ type query_Background_other_backgrounds_items {
   mass_normalized: Boolean
 }
 
-type BulkDownload {
-  bulk_download: query_BulkDownload_bulk_download
-  download_type: query_BulkDownload_download_type
+"""
+The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type BulkDownloadDetails {
+  bulk_download: query_BulkDownloadDetails_bulk_download
+  download_type: query_BulkDownloadDetails_download_type
 }
 
-type query_BulkDownload_bulk_download {
+type query_BulkDownloadDetails_bulk_download {
   id: Int
   params_json: String
   download_type: String
@@ -2356,35 +2363,47 @@ type query_BulkDownload_bulk_download {
   user_name: String
   execution_type: String
   log_url: JSON
-  params: query_BulkDownload_bulk_download_params
+  params: query_BulkDownloadDetails_bulk_download_params
   pipeline_runs: [JSON]
   workflow_runs: [JSON]
   presigned_output_url: String
 }
 
-type query_BulkDownload_bulk_download_params {
-  background: query_BulkDownload_bulk_download_params_background
+type query_BulkDownloadDetails_bulk_download_params {
+  background: query_BulkDownloadDetails_bulk_download_params_background
 }
 
-type query_BulkDownload_bulk_download_params_background {
+type query_BulkDownloadDetails_bulk_download_params_background {
   value: Int
   displayName: String
 }
 
-type query_BulkDownload_download_type {
+type query_BulkDownloadDetails_download_type {
   type: String
   display_name: String
   description: String
   category: String
   execution_type: String
-  fields: [query_BulkDownload_download_type_fields_items]
+  fields: [query_BulkDownloadDetails_download_type_fields_items]
   file_type_display: String
   workflows: [String]
 }
 
-type query_BulkDownload_download_type_fields_items {
+type query_BulkDownloadDetails_download_type_fields_items {
   display_name: String
   type: String
+}
+
+type ConsensusGenomeOverviewRows {
+  cgOverviewRows: [[String]]!
+}
+
+input queryInput_BulkDownloadCGOverview_input_Input {
+  downloadType: String!
+  workflowRunIds: [Int]!
+  workflow: String!
+  includeMetadata: Boolean!
+  authenticityToken: String!
 }
 
 type ConsensusGenomeWorkflowResults {
@@ -2725,111 +2744,9 @@ type query_PipelineData_edges_items_files_items {
 }
 
 type query_samples_items {
-  todoRemove: query_samples_items_todoRemove
   id: String
   railsSampleId: Int
-  name: String
-  notes: String
-  collectionLocation: String
-  sampleType: String
-  waterControl: Boolean
-  hostTaxon: query_samples_items_hostTaxon
-  collection: query_samples_items_collection
-  ownerUser: query_samples_items_ownerUser
-  metadatas: query_samples_items_metadatas
-  sequencingReads: query_samples_items_sequencingReads
   required: JSON
-}
-
-type query_samples_items_todoRemove {
-  startedAt: String
-  workflowVersion: query_samples_items_todoRemove_workflowVersion
-  creationSource: String
-  status: String
-}
-
-type query_samples_items_todoRemove_workflowVersion {
-  version: String
-}
-
-type query_samples_items_hostTaxon {
-  name: String
-}
-
-type query_samples_items_collection {
-  name: String
-  public: Boolean
-}
-
-type query_samples_items_ownerUser {
-  name: String
-}
-
-type query_samples_items_metadatas {
-  edges: [query_samples_items_metadatas_edges_items]!
-}
-
-type query_samples_items_metadatas_edges_items {
-  node: query_samples_items_metadatas_edges_items_node!
-}
-
-type query_samples_items_metadatas_edges_items_node {
-  fieldName: String!
-  value: String!
-}
-
-type query_samples_items_sequencingReads {
-  edges: [query_samples_items_sequencingReads_edges_items]!
-}
-
-type query_samples_items_sequencingReads_edges_items {
-  node: query_samples_items_sequencingReads_edges_items_node!
-}
-
-type query_samples_items_sequencingReads_edges_items_node {
-  nucleicAcid: String
-  protocol: String
-  medakaModel: String
-  technology: String
-  consensusGenomes: query_samples_items_sequencingReads_edges_items_node_consensusGenomes
-  required: JSON
-}
-
-type query_samples_items_sequencingReads_edges_items_node_consensusGenomes {
-  edges: [query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items]
-  required: JSON
-}
-
-type query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items {
-  node: query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node!
-}
-
-type query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node {
-  taxon: query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_taxon
-  referenceGenome: query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome
-  metric: query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_metric
-}
-
-type query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_taxon {
-  name: String!
-}
-
-type query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome {
-  accessionId: String
-  accessionName: String
-}
-
-type query_samples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_metric {
-  coverageDepth: Float
-  totalReads: Int
-  gcPercent: Float
-  refSnps: Int
-  percentIdentity: Float
-  nActg: Int
-  percentGenomeCalled: Float
-  nMissing: Int
-  nAmbiguous: Int
-  referenceGenomeLength: Float
 }
 
 input queryInput_samples_input_Input {
@@ -3005,7 +2922,7 @@ type query_workflowRuns_items_entityInputs_edges_items {
 
 type query_workflowRuns_items_entityInputs_edges_items_node {
   inputEntityId: String
-  fieldName: String
+  entityType: String
 }
 
 input queryInput_workflowRuns_input_Input {
@@ -3027,6 +2944,7 @@ input queryInput_workflowRuns_input_todoRemove_Input {
   tissue: [String]
   visibility: String
   workflow: String
+  authenticityToken: String
 }
 
 input queryInput_workflowRuns_input_orderBy_Input {
@@ -3084,6 +3002,14 @@ input queryInput_workflowRuns_input_entityInputsInput_where_fieldName_Input {
 type ZipLink {
   url: String
   error: String
+}
+
+input mutationInput_CreateBulkDownload_input_Input {
+  downloadType: String
+  workflowRunIds: [Int]
+  workflow: String
+  downloadFormat: String
+  authenticityToken: String
 }
 
 type DeleteSamples {

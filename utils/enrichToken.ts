@@ -39,7 +39,6 @@ export const getEnrichedToken = async (context: ResolverContext) => {
       },
     });
 
-    console.log("enrichedTokenResp", enrichedTokenResp);
     if (enrichedTokenResp.status !== 200) {
       const respJson = await enrichedTokenResp.json();
       console.error("Enrich token request failed", respJson);

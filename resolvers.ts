@@ -101,18 +101,17 @@ export const resolvers: Resolvers = {
             //  -- DiscoveryView.tsx
             //     ...this.getConditions(workflow)
             projectId: input?.todoRemove?.projectId,
-            search: input?.where?.sequencingRead?.sample?.name?._like,
+            search: input?.todoRemove?.search,
             orderBy: input?.todoRemove?.orderBy,
             orderDir: input?.todoRemove?.orderDir,
             //  --- DiscoveryView.tsx
             //      filters: {
             host: input?.todoRemove?.host,
-            locationV2:
-              input?.where?.sequencingRead?.sample?.collectionLocation?._in,
+            locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxons,
             taxaLevels: input?.todoRemove?.taxaLevels,
             time: input?.todoRemove?.time,
-            tissue: input?.where?.sequencingRead?.sample?.sampleType?._in,
+            tissue: input?.todoRemove?.tissue,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts
@@ -381,7 +380,7 @@ export const resolvers: Resolvers = {
             orderDir: input?.orderBy?.dir,
             //  --- DiscoveryView.tsx
             //      filters: {
-            host: input?.where?.hostTaxon?.upstreamDatabaseIdentifier?._in,
+            host: input?.where?.hostOrganism?.name?._in,
             locationV2: input?.where?.collectionLocation?._in,
             taxon: input?.todoRemove?.taxons,
             taxaLevels: input?.todoRemove?.taxaLevels,
@@ -426,17 +425,17 @@ export const resolvers: Resolvers = {
             //  -- DiscoveryView.tsx
             //     ...this.getConditions(workflow)
             projectId: input?.todoRemove?.projectId,
-            search: input?.where?.sample?.name?._like,
+            search: input?.todoRemove?.search,
             orderBy: input?.todoRemove?.orderBy,
             orderDir: input?.todoRemove?.orderDir,
             //  --- DiscoveryView.tsx
             //      filters: {
             host: input?.todoRemove?.host,
-            locationV2: input?.where?.sample?.collectionLocation?._in,
+            locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxons,
             taxaLevels: input?.todoRemove?.taxaLevels,
             time: input?.todoRemove?.time,
-            tissue: input?.where?.sample?.sampleType?._in,
+            tissue: input?.todoRemove?.tissue,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts

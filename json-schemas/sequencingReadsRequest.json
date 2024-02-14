@@ -4,96 +4,13 @@
         "where": {
             "type": "object",
             "properties": {
-                "sample": {
+                "id": {
                     "type": "object",
                     "properties": {
-                        "id": {
-                            "type": "object",
-                            "properties": {
-                                "_in": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        },
-                        "name": {
-                            "type": "object",
-                            "properties": {
-                                "_like": {
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "collectionLocation": {
-                            "type": "object",
-                            "properties": {
-                                "_in": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        },
-                        "sampleType": {
-                            "type": "object",
-                            "properties": {
-                                "_in": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        },
-                        "hostOrganism": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "object",
-                                    "properties": {
-                                        "_in": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "consensusGenomes": {
-                    "type": "object",
-                    "properties": {
-                        "producingRunId": {
-                            "type": "object",
-                            "properties": {
-                                "_in": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        },
-                        "taxon": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "object",
-                                    "properties": {
-                                        "_in": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
+                        "_in": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
                             }
                         }
                     }
@@ -172,22 +89,6 @@
                                     }
                                 }
                             }
-                        },
-                        "taxon": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "object",
-                                    "properties": {
-                                        "_in": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -199,7 +100,16 @@
                 "domain": {
                     "type": "string"
                 },
+                "workflow": {
+                    "type": "string"
+                },
+                "projectId": {
+                    "type": "string"
+                },
                 "visibility": {
+                    "type": "string"
+                },
+                "search": {
                     "type": "string"
                 },
                 "time": {
@@ -226,23 +136,29 @@
                         "type": "integer"
                     }
                 },
-                "offset": {
-                    "type": "integer"
+                "locationV2": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
-                "limit": {
-                    "type": "integer"
-                },
-                "workflow": {
-                    "type": "string"
-                },
-                "projectId": {
-                    "type": "string"
+                "tissue": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "orderBy": {
                     "type": "string"
                 },
                 "orderDir": {
                     "type": "string"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
                 }
             }
         }

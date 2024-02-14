@@ -168,11 +168,11 @@
                             },
                             "required": ["node"]
                         }
-                    },
-                    "required": ["edges"]
-                }
-            },
-            "required": ["nucleicAcid", "technology", "taxon", "consensusGenomes"]
-        }
+                    }
+                },
+                "required": ["edges"]
+            }
+        },
+        "required": ["nucleicAcid", "technology", "taxon", "consensusGenomes"]
     }
 }

@@ -2,7 +2,7 @@
 import {
   Resolvers,
   query_consensusGenomes_items,
-  query_WorkflowsAggregate_items,
+  query_WorkflowRunsAggregate_items,
   query_samples_items,
   query_sequencingReads_items,
   query_workflowRuns_items,
@@ -788,9 +788,9 @@ export const resolvers: Resolvers = {
         })
       );
     },
-    WorkflowsAggregate: async (root, args, context, info) => {
+    WorkflowRunsAggregate: async (root, args, context, info) => {
       const input = args.input;
-      console.log("hello")
+      
       const { projects } = await get("/projects.json" + 
         formatUrlParams({
           projectId: input?.todoRemove?.projectId,
@@ -811,17 +811,17 @@ export const resolvers: Resolvers = {
           taxaLevels: input?.todoRemove?.taxaLevels,
           taxon: input?.todoRemove?.taxon,
         }), args, context);
-      console.log(projects);
+      
       if (!projects?.length) {
         return [];
       }
-      return projects.map((project) => {
+      return projects.map((project): query_WorkflowRunsAggregate_items => {
         return {
-          id: project.id,
-          mngs_runs_count: project.sample_counts.mngs_runs_count,
-          cg_runs_count:
+          collectionId: project.id,
+          mngsRunsCount: project.sample_counts.mngs_runs_count,
+          cgRunsCount:
             project.sample_counts.cg_runs_count,
-          amr_runs_count: project.sample_counts.amr_runs_count,
+          amrRunsCount: project.sample_counts.amr_runs_count,
         };
       });
 

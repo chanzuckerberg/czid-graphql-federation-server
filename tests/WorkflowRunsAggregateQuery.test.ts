@@ -31,12 +31,12 @@ describe("workflows aggregate query:", () => {
     }));
 
     const query = `
-      query WorkflowsAggregateQuery(
+      query WorkflowRunsAggregateQuery(
         $cgWorkflowRunIds: [Int]
       ) {
-        WorkflowsAggregate(
+        WorkflowRunsAggregate(
           input: {
-            workflow_ids: { consensus_genome: $cgWorkflowRunIds }
+            workflowIds: { consensus_genome: $cgWorkflowRunIds }
             todoRemove: { domain: "my_data", offset: 0 }
           }
         ) {
@@ -55,7 +55,7 @@ describe("workflows aggregate query:", () => {
       expect.anything()
     );
 
-    expect(response.data.WorkflowsAggregate).toHaveLength(1);
+    expect(response.data.WorkflowRunsAggregate).toHaveLength(1);
 
   });
 });

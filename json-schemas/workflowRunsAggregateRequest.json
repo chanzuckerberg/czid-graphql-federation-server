@@ -1,7 +1,7 @@
 {
     "type": "object",
     "properties": {
-        "workflow_ids": {
+        "workflowRunIds": {
             "type": "object",
             "properties": {
                 "short-read-mngs": {

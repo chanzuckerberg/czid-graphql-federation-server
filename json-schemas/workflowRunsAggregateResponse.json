@@ -3,24 +3,24 @@
     "items": {
         "type": "object",
         "properties": {
-            "id": {
+            "collectionId": {
                 "type": "integer"
             },
-            "mngs_runs_count": {
+            "mngsRunsCount": {
                 "type": "integer"
             },
-            "cg_runs_count": {
+            "cgRunsCount": {
                 "type": "integer"
             },
-            "amr_runs_count": {
+            "amrRunsCount": {
                 "type": "integer"
             }
         },
         "required": [
-            "id",
-            "mngs_runs_count",
-            "cg_runs_count",
-            "amr_runs_count"
+            "collectionId",
+            "mngsRunsCount",
+            "cgRunsCount",
+            "amrRunsCount"
         ]
     }
 }

@@ -174,12 +174,12 @@ sources:
             requestSchema: ./json-schemas/workflowRunsRequest.json
             responseSchema: ./json-schemas/workflowRunsResponse.json
           - type: Query
-            field: WorkflowsAggregate
+            field: WorkflowRunsAggregate
             path: /projects.json
             method: GET
-            requestSchema: ./json-schemas/workflowsAggregateRequest.json
-            responseSchema: ./json-schemas/workflowsAggregateResponse.json
-            responseTypeName: WorkflowsAggregate
+            requestSchema: ./json-schemas/workflowRunsAggregateRequest.json
+            responseSchema: ./json-schemas/workflowRunsAggregateResponse.json
+            responseTypeName: WorkflowRunsAggregate
           - type: Query
             field: ZipLink
             path: /workflow_runs/{args.workflowRunId}/zip_link.json

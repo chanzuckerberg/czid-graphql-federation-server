@@ -1,0 +1,26 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "integer"
+            },
+            "mngs_runs_count": {
+                "type": "integer"
+            },
+            "cg_runs_count": {
+                "type": "integer"
+            },
+            "amr_runs_count": {
+                "type": "integer"
+            }
+        },
+        "required": [
+            "id",
+            "mngs_runs_count",
+            "cg_runs_count",
+            "amr_runs_count"
+        ]
+    }
+}

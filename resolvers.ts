@@ -2,6 +2,7 @@
 import {
   Resolvers,
   query_consensusGenomes_items,
+  query_WorkflowsAggregate_items,
   query_samples_items,
   query_sequencingReads_items,
   query_workflowRuns_items,
@@ -786,6 +787,45 @@ export const resolvers: Resolvers = {
           },
         })
       );
+    },
+    WorkflowsAggregate: async (root, args, context, info) => {
+      const input = args.input;
+      console.log("hello")
+      const { projects } = await get("/projects.json" + 
+        formatUrlParams({
+          projectId: input?.todoRemove?.projectId,
+          domain: input?.todoRemove?.domain,
+          limit: TEN_MILLION, // do we need pagination? or single request?
+          listAllIds: false,
+          offset: 0,
+          orderBy: input?.todoRemove?.orderBy,
+          orderDir: input?.todoRemove?.orderDir,
+          host: input?.todoRemove?.host,
+          locationV2: input?.todoRemove?.locationV2,
+          taxonThresholds: input?.todoRemove?.taxonThresholds,
+          annotations: input?.todoRemove?.annotations,
+          search: input?.todoRemove?.search,
+          tissue: input?.todoRemove?.tissue,
+          visibility: input?.todoRemove?.visibility,
+          time: input?.todoRemove?.time,
+          taxaLevels: input?.todoRemove?.taxaLevels,
+          taxon: input?.todoRemove?.taxon,
+        }), args, context);
+      console.log(projects);
+      if (!projects?.length) {
+        return [];
+      }
+      return projects.map((project) => {
+        return {
+          id: project.id,
+          mngs_runs_count: project.sample_counts.mngs_runs_count,
+          cg_runs_count:
+            project.sample_counts.cg_runs_count,
+          amr_runs_count: project.sample_counts.amr_runs_count,
+        };
+      });
+
+      // TODO (nina): call nextgen in addition to rails to get CG count
     },
     ZipLink: async (root, args, context, info) => {
       const res = await getFullResponse(

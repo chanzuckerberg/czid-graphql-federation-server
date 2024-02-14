@@ -1,0 +1,130 @@
+{
+    "type": "object",
+    "properties": {
+        "workflow_ids": {
+            "type": "object",
+            "properties": {
+                "short-read-mngs": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "consensus-genome": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "amr": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "long-read-mngs": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "todoRemove": {
+            "type": "object",
+            "properties": {
+                "projectId": {
+                    "type": "integer"
+                },
+                "domain": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "listAllIds": {
+                    "type": "boolean"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "host": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "locationV2": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taxonThresholds": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "metric": {
+                                "type": "string"
+                            },
+                            "count_type": {
+                                "type": "string"
+                            },
+                            "operator": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "annotations": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "tissue": {
+                    "type": "string"
+                },
+                "visibility": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "taxaLevels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "taxon": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "search": {
+                    "type": "string"
+                },
+                "orderBy": {
+                    "type": "string"
+                },
+                "orderDir": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

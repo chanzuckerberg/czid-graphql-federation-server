@@ -1,0 +1,52 @@
+{
+  "workflow_ids": {
+    "short-read-mngs": [],
+    "consensus-genome": [
+      1234
+    ],
+    "amr": [],
+    "long-read-mngs": []
+  },
+  "todoRemove": {
+    "projectId": 1056,
+    "domain": "my_data",
+    "limit": 50,
+    "listAllIds": true,
+    "offset": 0,
+    "host": [
+      1,
+      11
+    ],
+    "locationV2": [
+      "California, USA"
+    ],
+    "taxonThresholds": [
+      {
+        "metric": "rpm",
+        "count_type": "NT",
+        "operator": ">=",
+        "value": "1"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "Hit"
+      }
+    ],
+    "tissue": "CSF",
+    "visibility": "public",
+    "time": [
+      20240205,
+      20240213
+    ],
+    "taxaLevels": [
+      "species"
+    ],
+    "taxon": [
+      244366
+    ],
+    "search": "abc",
+    "orderBy": "created_at",
+    "orderDir": "DESC"
+  }
+}

@@ -158,6 +158,9 @@ export const resolvers: Resolvers = {
             protocol: inputs?.wetlab_protocol,
             medakaModel: inputs?.medaka_model,
             technology: inputs?.technology,
+            taxon: {
+              name: inputs?.taxon_name,
+            },
             sample: {
               id: sample?.id,
               railsSampleId: sample?.id,
@@ -462,6 +465,9 @@ export const resolvers: Resolvers = {
           protocol: inputs?.wetlab_protocol,
           medakaModel: inputs?.medaka_model,
           technology: inputs?.technology,
+          taxon: {
+            name: inputs?.taxon_name,
+          },
           sample: {
             id: sample?.id,
             railsSampleId: sample?.id,

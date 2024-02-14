@@ -73,6 +73,15 @@
                     "technology": {
                         "type": "string"
                     },
+                    "taxon": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name"]
+                    },
                     "sample": {
                         "type": "object",
                         "properties": {
@@ -155,7 +164,7 @@
                         "required": ["name", "collectionLocation", "sampleType", "metadatas"]
                     }
                 },
-                "required": ["nucleicAcid", "technology", "taxon", "consensusGenomes"]
+                "required": ["nucleicAcid", "technology"]
             }
         }
     }

@@ -1,0 +1,32 @@
+{
+  "id": "23234",
+  "executionId": "http:skdfsdj.com", 
+  "startedAt": "DATETIME",
+  "status": "SUCCEEDED",
+  "rawInputsJson": {
+    "downloadType": "download_type",
+    "downloadDisplayName": "download_name",
+    "description": "description"
+  },
+  "ownerUserId": 423,
+  "file": {
+    "size": 123123123123, 
+    "downloadLink": {
+      "url": "httpetcetc"
+    }
+  },
+  "nodes": [
+    {
+      "__typename": "Sample",
+      "id": "run.id",
+      "name": "run.sample_name"
+    }, 
+    {
+      "__typename": "ConsensusGenome",
+      "id": "run.id"
+    }
+  ],
+  "toDelete": {
+    "user_name": "Suzette McCanny"
+  }
+}

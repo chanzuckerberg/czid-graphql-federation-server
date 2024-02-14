@@ -7,12 +7,18 @@ import fetch from "node-fetch";
  *  { items: [1, 2] } would become "items[]=1&items[]=2".
  */
 export const formatUrlParams = (params: { [s: string]: unknown }) => {
+  const replaceSpaces = (value: string) => {
+    const safeString = value.split(' ').join('+');
+    return safeString;
+  }
   const paramList = Object.entries(params)
     .filter(([_, value]) => value != null)
     .flatMap(([key, value]) =>
       Array.isArray(value)
         ? value.map((arrayElement) => `${key}[]=${arrayElement}`)
-        : [`${key}=${value}`]
+        : typeof value === "string"
+          ? [`${key}=${replaceSpaces(value)}`]
+          : [`${key}=${value}`]
     );
   if (paramList.length === 0) {
     return "";
@@ -24,6 +30,7 @@ export const get = async (url: string, args: any, context: any) => {
   try {
     const baseURL = process.env.API_URL;
     const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+    console.log(baseURL + urlPrefix + url)
     const response = await fetch(baseURL + urlPrefix + url, {
       method: "GET",
       headers: {
@@ -31,7 +38,7 @@ export const get = async (url: string, args: any, context: any) => {
         "Content-Type": "application/json",
       },
     });
-    return await response.json();
+    return response.json();
   } catch (e) {
     return Promise.reject(e.response);
   }

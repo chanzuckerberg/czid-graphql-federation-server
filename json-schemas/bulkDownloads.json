@@ -1,0 +1,78 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "executionId": {
+                "type": "string"
+            },
+            "status": {
+                "type": "string"
+            },
+            "startedAt": {
+                "type": "string"
+            },
+            "rawInputsJson": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "downloadType": {
+                        "type": "string"
+                    },
+                    "downloadDisplayName": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ownerUserId": {
+                "type": "string"
+            },
+            "file": {
+                "type": "object",
+                "properties": {
+                    "size": {
+                        "type": "integer"
+                    },
+                    "downloadLink": {
+                        "type": "object",
+                        "properties": {
+                            "url": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "nodes": {
+                "type":"array",
+                "items":{
+                    "type": "object",
+                    "properties": {
+                        "__typename": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "toDelete": {
+                "type": "object",
+                "properties": {
+                    "user_name": {
+                        "type": "string"
+                    }
+                }
+            }
+}
+    }
+}

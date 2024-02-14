@@ -49,6 +49,100 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
+    bulkDownloads: async (root, args, context, info) => {
+      // TO DO - make sure this works for admin and non admin users
+      const urlParams = formatUrlParams({
+        searchBy: args?.input?.searchBy,
+        n:args?.input?.limit
+      })
+
+      const getEntityInputInfo = (entities) => {
+        return entities.map((entity) => {
+          return {
+            id: entity.id,
+            name: entity?.sample_name,
+            typeName: File
+          }
+        })
+      };
+
+      const getSampleInputInfo = (sampleIds) => {
+        return sampleIds.map((sampleId) => {
+          return {
+            id: sampleId,
+            typeName: "Sample"
+          }
+        });
+      }
+
+      const res = await get(`/bulk_downloads.json`  + urlParams, args, context);
+      let url: string;
+      let nodes: {id: string, name: string}[];
+      const mappedRes = res.map(async (bulkDownload) => {
+        if (bulkDownload.status === "success"){
+          const details = await get(`/bulk_downloads/${bulkDownload?.id}.json`, args, context);
+          console.log("workflow_runs", details?.bulk_download?.workflow_runs);
+          console.log("pipeline_runs", details?.bulk_download?.pipeline_runs)
+          console.log("samples", details?.bulk_download?.params?.sample_ids)
+          url = details?.bulk_download?.presigned_output_url;
+          const formattedWorkflowRuns = getEntityInputInfo(details?.bulk_download?.workflow_runs);
+          const formattedPipelineRuns = getEntityInputInfo(details?.bulk_download?.pipeline_runs);
+          const formattedSamples = getSampleInputInfo(details?.bulk_download?.params?.sample_ids.value);
+          console.log({formattedWorkflowRuns, formattedPipelineRuns, formattedSamples})
+          nodes = [...formattedSamples, ...formattedPipelineRuns, ...formattedWorkflowRuns];
+          console.log("nodes", nodes)
+        }
+
+        const { 
+          id, 
+          download_type, 
+          status, 
+          user_id, 
+          created_at, 
+          description, 
+          download_name, 
+          output_file_size,
+          user_name, 
+          log_url,
+          // progress --> we wont have percentage
+          } = bulkDownload;
+          
+        return {
+          id, // this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+          executionId: log_url, // admin only
+          startedAt: created_at,
+          status: status, // TODO change this to the statuses coming from Workflows
+          rawInputsJson: {
+            downloadType: download_type,
+            downloadDisplayName: download_name,
+            description: description,
+          },
+          ownerUserId: user_id,
+          file: {
+            status,
+            size: output_file_size, 
+            downloadLink: {
+              url: url
+            }, 
+          },
+          nodes: [
+            {
+              __typename: "Sample",
+              id: "run.id",
+              name: "run.sample_name"
+            }, 
+            {
+              __typename: "ConsensusGenome",
+              id: "run.id",
+            }, 
+          ],
+          toDelete: {
+            user_name
+          }
+        }
+      });
+      return mappedRes;
+    },
     BulkDownloadCGOverview: async (root, args, context, info) => {
       if (!args?.input){
         throw new Error("No input provided");

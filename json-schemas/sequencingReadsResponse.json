@@ -3,6 +3,9 @@
     "items": {
         "type": "object",
         "properties": {
+            "id": {
+                "type": "string"
+            },
             "nucleicAcid": {
                 "type": "string"
             },
@@ -27,9 +30,6 @@
             "sample": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string"
-                    },
                     "railsSampleId": {
                         "type": "integer"
                     },
@@ -117,6 +117,9 @@
                                 "node": {
                                     "type": "object",
                                     "properties": {
+                                        "producingRunId": {
+                                            "type": "string"
+                                        },
                                         "taxon": {
                                             "type": "object",
                                             "properties": {
@@ -182,6 +185,6 @@
                 "required": ["edges"]
             }
         },
-        "required": ["nucleicAcid", "technology", "consensusGenomes"]
+        "required": ["id", "nucleicAcid", "technology", "consensusGenomes"]
     }
 }

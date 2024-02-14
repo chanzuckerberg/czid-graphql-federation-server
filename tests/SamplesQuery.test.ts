@@ -50,10 +50,10 @@ describe("samples query:", () => {
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [
         {
-          sample: { id: 123 },
+          sample: { info: { id: 123 } },
         },
         {
-          sample: { id: 456 },
+          sample: { info: { id: 456 } },
         },
       ],
     }));

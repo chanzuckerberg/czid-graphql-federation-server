@@ -1,31 +1,35 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getZipLinkExampleQuery } from "./utils/ExampleQueryFiles";
 import { getMeshInstance } from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
+
 jest.spyOn(httpUtils, "get");
+
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
 });
+
 const query = `
     query TestQuery($unused: String) {
       sequencingReads(input: {
         where: {
-          sample: {
-              name: {
-                _like: "abc",
-              }
+          id: {
+            _in: ["abc", "def"]
           }
-        },
+        }
+        todoRemove: {
+          search: "abc"
+        }
       }) {
+        id
         sample {
-            id
-            metadatas {
-              edges {
-                node {
-                    fieldName
-                    value
-                }
+          metadatas {
+            edges {
+              node {
+                fieldName
+                value
+              }
             }
+          }
         }
         consensusGenomes {
           edges {
@@ -55,7 +59,7 @@ describe("sequencingReads query:", () => {
     const response = await execute(query, {});
 
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&search=abc",
+      "/workflow_runs.json?&mode=with_sample_info&search=abc&listAllIds=false",
       expect.anything(),
       expect.anything()
     );
@@ -67,7 +71,9 @@ describe("sequencingReads query:", () => {
       workflow_runs: [
         {
           sample: {
-            id: 123,
+            info: {
+              id: 123,
+            },
           },
           inputs: {
             taxon_name: "Taxon1",
@@ -75,7 +81,9 @@ describe("sequencingReads query:", () => {
         },
         {
           sample: {
-            id: 456,
+            info: {
+              id: 456,
+            },
           },
           inputs: {
             taxon_name: "Taxon2",
@@ -86,12 +94,12 @@ describe("sequencingReads query:", () => {
 
     const result = await execute(query, {});
 
-    expect(result.data.seuqencingReads).toHaveLength(2);
+    console.log(JSON.stringify(result));
+
+    expect(result.data.sequencingReads).toHaveLength(2);
     expect(result.data.sequencingReads[0]).toEqual(
       expect.objectContaining({
-        sample: {
-          id: 123,
-        },
+        id: "123",
         consensusGenomes: {
           edges: [
             {
@@ -105,11 +113,9 @@ describe("sequencingReads query:", () => {
         },
       })
     );
-    expect(result.data.samples[1]).toEqual(
+    expect(result.data.sequencingReads[1]).toEqual(
       expect.objectContaining({
-        sample: {
-          id: 456,
-        },
+        id: "456",
         consensusGenomes: {
           edges: [
             {
@@ -130,12 +136,18 @@ describe("sequencingReads query:", () => {
       workflow_runs: [
         {
           sample: {
+            info: {
+              id: "123",
+            },
             metadata: {
               key1: "value1",
               nucleotide_type: "DNA",
               key2: "value2",
               key3: "value3",
             },
+          },
+          inputs: {
+            taxon_name: "Taxon1",
           },
         },
       ],
@@ -157,7 +169,11 @@ describe("sequencingReads query:", () => {
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [
         {
-          sample: {},
+          sample: {
+            info: {
+              id: "123",
+            },
+          },
         },
       ],
     }));

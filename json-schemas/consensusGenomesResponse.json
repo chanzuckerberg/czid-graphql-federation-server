@@ -3,6 +3,9 @@
     "items": {
         "type": "object",
         "properties": {
+            "producingRunId": {
+                "type": "string"
+            },
             "taxon": {
                 "type": "object",
                 "properties": {
@@ -85,9 +88,6 @@
                     "sample": {
                         "type": "object",
                         "properties": {
-                            "id": {
-                                "type": "string"
-                            },
                             "railsSampleId": {
                                 "type": "integer"
                             },

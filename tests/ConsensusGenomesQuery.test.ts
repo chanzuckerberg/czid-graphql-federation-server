@@ -1,41 +1,37 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getZipLinkExampleQuery } from "./utils/ExampleQueryFiles";
 import { getMeshInstance } from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
+
 jest.spyOn(httpUtils, "get");
+
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
 });
+
 const query = `
     query TestQuery($unused: String) {
       consensusGenomes(input: {
         where: {
-            sample: {
-                sequencingRead: {
-                    name: {
-                      _like: "abc",
-                    }
-                }
-            }
-        },
-      }) {
-        sequencingRead {
-            sample {
-                id
-                metadatas {
-                  edges {
-                    node {
-                        fieldName
-                        value
-                    }
-                }
-            }
+          producingRunId: {
+            _in: ["abc", "def"]
+          }
         }
-        consensusGenomes {
-          edges {
-            node {
-              taxon {
-                name
+        todoRemove: {
+          search: "abc"
+        }
+      }) {
+        producingRunId
+        taxon {
+          name
+        }
+        sequencingRead {
+          sample {
+            metadatas {
+              edges {
+                node {
+                  fieldName
+                  value
+                }
               }
             }
           }
@@ -59,28 +55,24 @@ describe("consensusGenomes query:", () => {
     const response = await execute(query, {});
 
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&search=abc",
+      "/workflow_runs.json?&mode=with_sample_info&search=abc&listAllIds=false",
       expect.anything(),
       expect.anything()
     );
-    expect(response.data.sequencingReads).toHaveLength(0);
+    expect(response.data.consensusGenomes).toHaveLength(0);
   });
 
   it("Returns nested fields", async () => {
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [
         {
-          sample: {
-            id: 123,
-          },
+          id: 123,
           inputs: {
             taxon_name: "Taxon1",
           },
         },
         {
-          sample: {
-            id: 456,
-          },
+          id: 456,
           inputs: {
             taxon_name: "Taxon2",
           },
@@ -90,40 +82,20 @@ describe("consensusGenomes query:", () => {
 
     const result = await execute(query, {});
 
-    expect(result.data.seuqencingReads).toHaveLength(2);
-    expect(result.data.sequencingReads[0]).toEqual(
+    expect(result.data.consensusGenomes).toHaveLength(2);
+    expect(result.data.consensusGenomes[0]).toEqual(
       expect.objectContaining({
-        sample: {
-          id: 123,
-        },
-        consensusGenomes: {
-          edges: [
-            {
-              node: {
-                taxon: {
-                  name: "Taxon1",
-                },
-              },
-            },
-          ],
+        producingRunId: "123",
+        taxon: {
+          name: "Taxon1",
         },
       })
     );
-    expect(result.data.samples[1]).toEqual(
+    expect(result.data.consensusGenomes[1]).toEqual(
       expect.objectContaining({
-        sample: {
-          id: 456,
-        },
-        consensusGenomes: {
-          edges: [
-            {
-              node: {
-                taxon: {
-                  name: "Taxon2",
-                },
-              },
-            },
-          ],
+        producingRunId: "456",
+        taxon: {
+          name: "Taxon2",
         },
       })
     );
@@ -148,7 +120,7 @@ describe("consensusGenomes query:", () => {
     const result = await execute(query, {});
 
     const metadataFields =
-      result.data.sequencingReads[0].sample.metadatas.edges.map(
+      result.data.consensusGenomes[0].sequencingRead.sample.metadatas.edges.map(
         (edge) => edge.node.fieldName
       );
     expect(metadataFields).toHaveLength(3);
@@ -168,8 +140,8 @@ describe("consensusGenomes query:", () => {
 
     const result = await execute(query, {});
 
-    expect(result.data.sequencingReads[0].sample.metadatas.edges).toHaveLength(
-      0
-    );
+    expect(
+      result.data.consensusGenomes[0].sequencingRead.sample.metadatas.edges
+    ).toHaveLength(0);
   });
 });

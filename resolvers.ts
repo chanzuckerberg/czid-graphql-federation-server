@@ -134,6 +134,7 @@ export const resolvers: Resolvers = {
         const sampleInfo = sample?.info;
         const sampleMetadata = sample?.metadata;
         return {
+          producingRunId: run.id?.toString(),
           taxon: {
             name: inputs?.taxon_name,
           },
@@ -162,7 +163,6 @@ export const resolvers: Resolvers = {
               name: inputs?.taxon_name,
             },
             sample: {
-              id: sample?.id,
               railsSampleId: sample?.id,
               name: sampleInfo?.name,
               notes: sampleInfo?.sample_notes,
@@ -406,8 +406,8 @@ export const resolvers: Resolvers = {
 
       return workflow_runs.map((run): query_samples_items => {
         return {
-          id: run.sample?.id?.toString(),
-          railsSampleId: run.sample?.id?.toString(),
+          id: run.sample?.info?.id?.toString(),
+          railsSampleId: run.sample?.info?.id?.toString(),
         };
       });
     },
@@ -461,6 +461,7 @@ export const resolvers: Resolvers = {
         const sampleInfo = sample?.info;
         const sampleMetadata = sample?.metadata;
         return {
+          id: sampleInfo?.id?.toString(),
           nucleicAcid: sampleMetadata?.nucleotide_type,
           protocol: inputs?.wetlab_protocol,
           medakaModel: inputs?.medaka_model,
@@ -469,8 +470,7 @@ export const resolvers: Resolvers = {
             name: inputs?.taxon_name,
           },
           sample: {
-            id: sample?.id,
-            railsSampleId: sample?.id,
+            railsSampleId: sampleInfo?.id?.toString(),
             name: sampleInfo?.name,
             notes: sampleInfo?.sample_notes,
             collectionLocation: sampleMetadata?.collection_location_v2,
@@ -494,6 +494,7 @@ export const resolvers: Resolvers = {
             edges: [
               {
                 node: {
+                  producingRunId: run.id?.toString(),
                   taxon: {
                     name: inputs?.taxon_name,
                   },

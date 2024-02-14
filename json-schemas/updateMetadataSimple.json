@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "properties": {
+        "value": {
+            "type": "string"
+        },
+        "authenticityToken": {
+            "type": "string"
+        }
+    },
+    "required" : ["value", "authenticityToken"]
+}

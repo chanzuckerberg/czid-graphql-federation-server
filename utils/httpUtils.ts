@@ -1,9 +1,19 @@
 import fetch from "node-fetch";
 
-export const formatUrlParams = (params: any) => {
+/**
+ * Converts an object into a query param string.
+ *
+ * Array values are spread out into separate params with "[]" appended to the key, e.g.
+ *  { items: [1, 2] } would become "items[]=1&items[]=2".
+ */
+export const formatUrlParams = (params: { [s: string]: unknown }) => {
   const paramList = Object.entries(params)
-    .filter(([_, value]) => value !== undefined)
-    .map(([key, value]) => `${key}=${value}`);
+    .filter(([_, value]) => value != null)
+    .flatMap(([key, value]) =>
+      Array.isArray(value)
+        ? value.map((arrayElement) => `${key}[]=${arrayElement}`)
+        : [`${key}=${value}`]
+    );
   if (paramList.length === 0) {
     return "";
   }
@@ -57,6 +67,12 @@ export const getFullResponse = async (url: string, args: any, context: any) => {
   }
 };
 
+const checkForLogin = (responseUrl: string | null) => {
+  if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
+    throw new Error("You must be logged in to perform this action.");
+  }
+};
+
 export const postWithCSRF = async (
   url: string,
   body: any,
@@ -77,10 +93,11 @@ export const postWithCSRF = async (
         },
         body: JSON.stringify(body),
       });
+      checkForLogin(response?.url);
       return await response.json();
     }
   } catch (e) {
-    return Promise.reject(e.response);
+    return Promise.reject(e.response ? e.response : e);
   }
 };
 

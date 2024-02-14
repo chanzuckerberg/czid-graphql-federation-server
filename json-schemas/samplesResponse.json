@@ -1,0 +1,15 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string"
+            },
+            "railsSampleId": {
+                "type": "integer"
+            },
+            "required": ["id"]
+        }
+    }
+}

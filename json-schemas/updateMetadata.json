@@ -1,0 +1,22 @@
+{
+    "type": "object",
+    "properties": {
+        "field": {
+            "type": "string"
+        },
+        "value": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "./location.json"
+                }
+            ]
+        },
+        "authenticityToken": {
+            "type": "string"
+        }
+    },
+    "required": ["field", "value", "authenticityToken"]
+}

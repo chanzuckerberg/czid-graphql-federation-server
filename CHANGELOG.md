@@ -1,6 +1,110 @@
 # Changelog
 
 
+## [2.10.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.9.0...v2.10.0) (2024-02-12)
+
+
+### Features
+
+* Switch mode to basic to improve performance of unpaginated Rails request ([#97](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/97)) ([ed41e0c](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/ed41e0cc516559342235092da8e4bed41feabba2))
+
+## [2.9.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.8.0...v2.9.0) (2024-02-08)
+
+
+### Features
+
+* Federate CreateBulkDownload Endpoint ([#91](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/91)) ([6f85f6a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/6f85f6ae58b532e4d199a0fb56428176023ae5c8))
+
+## [2.8.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.7.0...v2.8.0) (2024-02-08)
+
+
+### Features
+
+* Federate the samples NextGen field ([#85](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/85)) ([946d7dc](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/946d7dc259d1f7f8f22e716b6317fc5f7433408b))
+* Federate workflowRuns endpoint ([#89](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/89)) ([3e15fac](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/3e15fac558eda082a4e3bdb7489eac9ed0c71e5f))
+
+
+### Bug Fixes
+
+* Revert "feat: [CZID-9279] Add entities to graphql sources" ([#94](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/94)) ([214d344](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/214d344e80c078c72547c8bd774a14b1acad501c))
+* Update snapshot to fix tests ([#95](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/95)) ([db56d3d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/db56d3d3e1122ca7af49fb2718d7c60cb31d6b83))
+
+## [2.7.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.6.1...v2.7.0) (2024-02-02)
+
+
+### Features
+
+* [CZID-9279] Add entities to graphql sources ([#88](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/88)) ([8e38c3a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/8e38c3aa9dc62703f0850bac8be438ae71d821b4))
+
+## [2.6.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.6.0...v2.6.1) (2024-01-30)
+
+
+### Bug Fixes
+
+* **ci:** Pin happy stack eks to working version ([#83](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/83)) ([c172a25](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c172a250b11b7242fe00f1a431ed7c60d5f3b1b1))
+
+## [2.6.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.5.0...v2.6.0) (2024-01-29)
+
+
+### Features
+
+* allow manual staging deploy, re-enable prod deploy ([#82](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/82)) ([c1a07ce](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c1a07cefad79200c108d8055907c1ef8a51b5995))
+* **ci:** Align release process to CZ ID manual release cadence ([#72](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/72)) ([83c97c6](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/83c97c68f952e40bba7a7aeca0b576b762d88c66))
+* move get release tag into composite action ([#79](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/79)) ([ef26dcf](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/ef26dcfed522126a22afcb6018923083a8ce5f6e))
+
+
+### Bug Fixes
+
+* Access tag name path correctly ([#77](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/77)) ([60ba125](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/60ba125c7e4387a66dd40de195e3a32432c063ad))
+* Checkout repo with release tag from action ([#80](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/80)) ([232a351](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/232a3513e9997a6ab6a95e74fc072ed8893d4c45))
+* pass requested release tag to action ([#81](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/81)) ([f7c2bb3](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/f7c2bb393ea04ef4bf48d7f9b6537af6742ebc1a))
+* quote release tag ([#78](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/78)) ([929ebf5](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/929ebf5f08fffde192ab548b2ce5446de0bdcaef))
+
+## [2.5.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.4.0...v2.5.0) (2024-01-12)
+
+
+### Features
+
+* add MetadataValues query ([#54](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/54)) ([721f8b0](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/721f8b00dddf30bf4c04d81b50c627b9fe8c8229))
+* Add URL's for entities & workflows services in local dev ([#63](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/63)) ([26442d4](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/26442d4cf981f3c2550dba83d9047067f776e87e))
+
+
+### Bug Fixes
+
+* add missing property to location file ([#64](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/64)) ([c08a63d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c08a63dda5641cad5d16be386b7a0b0230946b34))
+* adding multiple location types and Update metadata values ([#60](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/60)) ([9af53fe](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/9af53fe5d9b8c0f88659014e054c430f708e1cfd))
+* Change ercc_comparison type from integer to float ([#59](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/59)) ([108e0ad](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/108e0ad2cebbd8c3ba80bf7860b6602a68dbb197))
+
+## [2.4.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.3.0...v2.4.0) (2023-12-19)
+
+
+### Features
+
+* add metadata-fields endpoint ([#50](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/50)) ([3c16bfc](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/3c16bfccb2bb2f1790172e0d6b7f6c893d7bf202))
+* Add two distinct endpoints for notes and name ([#47](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/47)) ([353bea2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/353bea20afba187d201803107005899e352a7065))
+* **ci:** Set ALLOWED_CORS_ORIGINS app config ([#52](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/52)) ([bc4e48b](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/bc4e48bdcf42dcf6a4b838e03afde8426fc3279d))
+
+## [2.3.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.2.0...v2.3.0) (2023-12-15)
+
+
+### Features
+
+* added save_metadata_v2 endpoint ([#43](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/43)) ([4d692c0](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/4d692c026a7820ff9c1aa88b1d0464f9c95c8ea2))
+
+## [2.2.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.1.1...v2.2.0) (2023-12-14)
+
+
+### Features
+
+* restrict CORS origin for graphQL mesh ([#38](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/38)) ([2aa22e6](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/2aa22e639e2cf943b380c1a044bb806687b128c6))
+
+## [2.1.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.1.0...v2.1.1) (2023-12-11)
+
+
+### Bug Fixes
+
+* update KickoffWGSWorkflow response id field  ([#39](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/39)) ([5f5e096](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5f5e09666763a4567af6e3b7189250504e136b9c))
+
 ## [2.1.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.0.0...v2.1.0) (2023-12-07)
 
 

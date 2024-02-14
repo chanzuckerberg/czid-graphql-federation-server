@@ -25,7 +25,7 @@ module "secrets" {
 }
 
 module "stack" {
-  source           = "git@github.com:chanzuckerberg/happy//terraform/modules/happy-stack-eks?ref=main"
+  source           = "git@github.com:chanzuckerberg/happy//terraform/modules/happy-stack-eks?ref=happy-stack-eks-v4.27.1"
   image_tag        = var.image_tag
   image_tags       = jsondecode(var.image_tags)
   stack_name       = var.stack_name
@@ -33,6 +33,10 @@ module "stack" {
   stack_prefix     = "/${var.stack_name}"
   app_name         = var.app
   k8s_namespace    = var.k8s_namespace
+  additional_env_vars = {
+    NEXTGEN_ENTITIES_URL = "http://entities-entities:8008"
+    NEXTGEN_WORKFLOWS_URL = "http://workflows-workflows:8042"
+  }
   services = {
     gql = merge(local.routing_config[local.service_type], {
       name              = "graphql-federation"

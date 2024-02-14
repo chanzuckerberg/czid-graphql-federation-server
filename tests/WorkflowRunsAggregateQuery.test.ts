@@ -40,10 +40,10 @@ describe("workflows aggregate query:", () => {
             todoRemove: { domain: "my_data", offset: 0 }
           }
         ) {
-          id
-          amr_runs_count
-          cg_runs_count
-          mngs_runs_count
+          collectionId
+          amrRunsCount
+          cgRunsCount
+          mngsRunsCount
         }
       }
     `
@@ -56,6 +56,9 @@ describe("workflows aggregate query:", () => {
     );
 
     expect(response.data.WorkflowRunsAggregate).toHaveLength(1);
-
+    expect(response.data.WorkflowRunsAggregate[0].collectionId).toBe(1);
+    expect(response.data.WorkflowRunsAggregate[0].amrRunsCount).toBe(2);
+    expect(response.data.WorkflowRunsAggregate[0].cgRunsCount).toBe(1);
+    expect(response.data.WorkflowRunsAggregate[0].mngsRunsCount).toBe(3);
   });
 });

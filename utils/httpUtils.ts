@@ -173,14 +173,16 @@ export const isNextGenEnabled = async (context) => {
     // if the header is set, return the value
     return readFromNextGen;
   }
-  try {
-    const featureFlags = await getFeatureFlags(context);
-    const combinedFeatureFlags = featureFlags["launched_feature_list"].concat(
-      featureFlags["allowed_feature_list"]
-    );
-    const nextGenEnabled = combinedFeatureFlags?.includes("next_gen");
-    return nextGenEnabled;
-  } catch (e) {
-    return Promise.reject(e.response);
-  }
-};
+  return false;
+}
+//   try {
+//     const featureFlags = await getFeatureFlags(context);
+//     const combinedFeatureFlags = featureFlags["launched_feature_list"].concat(
+//       featureFlags["allowed_feature_list"]
+//     );
+//     const nextGenEnabled = combinedFeatureFlags?.includes("next_gen");
+//     return nextGenEnabled;
+//   } catch (e) {
+//     return Promise.reject(e.response);
+//   }
+// };

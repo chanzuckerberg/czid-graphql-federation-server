@@ -1,0 +1,17 @@
+query TestQuery($unused: String) {
+    workflowRuns(input: {
+        orderBy: {
+            startedAt: "ASC"
+        }
+    }) {
+        id
+        entityInputs {
+            edges {
+                node {
+                    fieldName
+                    inputEntityId
+                }
+            }
+        }
+    }
+}

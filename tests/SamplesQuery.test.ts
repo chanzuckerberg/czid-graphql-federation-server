@@ -1,27 +1,15 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getZipLinkExampleQuery } from "./utils/ExampleQueryFiles";
 import { getMeshInstance } from "./utils/MeshInstance";
 
 import * as httpUtils from "../utils/httpUtils";
+import { getExampleQuery } from "./utils/ExampleQueryFiles";
 jest.spyOn(httpUtils, "get");
+
+const query = getExampleQuery("samples-query");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
 });
-
-const query = `
-    query TestQuery($unused: String) {
-      samples(input: {
-        where: {
-          name: {
-            _like: "abc",
-          }
-        },
-      }) {
-        id
-      }
-    }
-`;
 
 describe("samples query:", () => {
   let execute: ExecuteMeshFn;

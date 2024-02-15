@@ -1,0 +1,11 @@
+query TestQuery($unused: String) {
+    samples(input: {
+        where: {
+            name: {
+            _like: "abc",
+            }
+        },
+    }) {
+        id
+    }
+}

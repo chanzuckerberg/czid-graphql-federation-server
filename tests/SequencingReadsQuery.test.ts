@@ -1,6 +1,7 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
 import { getMeshInstance } from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
+import { getExampleQuery } from "./utils/ExampleQueryFiles";
 
 jest.spyOn(httpUtils, "get");
 
@@ -8,41 +9,7 @@ beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
 });
 
-const query = `
-    query TestQuery($unused: String) {
-      sequencingReads(input: {
-        where: {
-          id: {
-            _in: ["abc", "def"]
-          }
-        }
-        todoRemove: {
-          search: "abc"
-        }
-      }) {
-        id
-        sample {
-          metadatas {
-            edges {
-              node {
-                fieldName
-                value
-              }
-            }
-          }
-        }
-        consensusGenomes {
-          edges {
-            node {
-              taxon {
-                name
-              }
-            }
-          }
-        }
-      }
-    }
-`;
+const query = getExampleQuery("sequencing-reads-query");
 
 describe("sequencingReads query:", () => {
   let execute: ExecuteMeshFn;

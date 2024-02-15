@@ -1,0 +1,13 @@
+query WorkflowRunsQuery($unused: String) {
+    workflowRuns(input: {}) {
+        id
+        entityInputs {
+            edges {
+                node {
+                    entityType
+                    inputEntityId
+                }
+            }
+        }
+    }
+}

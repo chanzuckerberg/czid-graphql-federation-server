@@ -1,4 +1,4 @@
-query TestQuery($unused: String) {
+query TestQuery {
     consensusGenomes(input: {
         where: {
             producingRunId: {

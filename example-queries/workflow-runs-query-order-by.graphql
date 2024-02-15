@@ -1,4 +1,4 @@
-query TestQuery($unused: String) {
+query TestQuery {
     workflowRuns(input: {
         orderBy: {
             startedAt: "ASC"

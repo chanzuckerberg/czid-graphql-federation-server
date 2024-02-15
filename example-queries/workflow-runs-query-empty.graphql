@@ -1,4 +1,4 @@
-query WorkflowRunsQuery($unused: String) {
+query WorkflowRunsQuery {
     workflowRuns(input: {}) {
         id
         entityInputs {

@@ -1,32 +1,62 @@
-{
-  "id": "23234",
-  "executionId": "http:skdfsdj.com", 
-  "startedAt": "DATETIME",
-  "status": "SUCCEEDED",
-  "rawInputsJson": {
-    "downloadType": "download_type",
-    "downloadDisplayName": "download_name",
-    "description": "description"
-  },
-  "ownerUserId": 423,
-  "file": {
-    "size": 123123123123, 
-    "downloadLink": {
-      "url": "httpetcetc"
+{ 
+"bulkDownloads": [
+  {
+    "id": 12715,
+    "status": "SUCCEEDED",
+    "startedAt": "2024-02-15T11:52:57.000-08:00",
+    "ownerUserId": 412,
+    "analysisCount": 3,
+    "entityInputFileType": "short-read-mngs",
+    "sampleNames": [
+      "longnamebabe",
+      "How about this",
+      "n6_n27_v6_23e"
+    ],
+    "rawInputsJson": {
+      "description": "Computed metrics (e.g. total reads, rPM) and metadata for each taxon identified in the sample",
+      "downloadType": "sample_taxon_report",
+      "downloadDisplayName": "Sample Taxon Reports",
+      "fileFormat": ".csv"
+    },
+    "file": {
+      "downloadLink": {
+        "url": "https://czi-infectious-disease-development-samples.s3.us-west-2.amazonaws.com/downloads/12715/Sample%20Taxon%20Reports.tar.gz?response-content-disposition=attachment%3B%20filename%3D%22Sample%20Taxon%20Reports.tar.gz%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA2U4NV5TWN2L67EN2%2F20240215%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240215T195813Z&X-Amz-Expires=86400&X-Amz-Security-Token=FwoGZXIvYXdzEOH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDHRJUknRAvjLiy8uOSLzAu4S9%2BLhWgyAOC7dOoZKXhhQonsXChTUM2fHeIkkgt8C%2BeysUs6R3KAC5sUjahVFl%2FTwmxIRWlNy9uvK81vRAdmSKECMVisIA3zU3QkquSdAeyKKidHGkVFN1M0eWR4KzpKDjRzGRjEhDwjHohtgymkz6mnSfLj4ITP5mTgSXgixDmAFrI7ZEGZqUQh4dm5zjYifwyQsMEASKJChwSED9LSCsrZKUJ%2FzfLhi83XeRuNkeVQBcObHSlwbM7nNj81QP2YXtttJ7PsOrlPj9xKYtIOJtyRE5gQ4NKEJNp0KSeS%2FF79W5bY8ss06wpeESPO3gAL6jFVt6Z7A5RopgWXiLhSEE1FFFIWrs9yJY3n5FL67vWr5rfJjTKWkZIhK4BYOw%2B09LEpk3AiqRxgfh1x6DWvfbyO7TCkMCPaq0mpJOiHos3pB3Rm7uipb1W5aAnSO%2BtUZN%2BflFyHsvkwuSvE3tR2Z1t6Db3Nv%2BOkPqIhAxpQXYib5KILXuK4GMiNV43%2BCYSH8tyx%2BJHa0RG3O2WHKU6lRG5XlKWG9yELIHE1fpg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9ce0ec747ecff56342e828d0b9d71697606580c6b55b5c81c56dbbf50e326133"
+      },
+      "size": 57197
+    },
+    "toDelete": {
+      "user_name": "Suzette McCanny",
+      "log_url": null,
+      "totalSamples": 3,
+      "progress": 0.87
     }
   },
-  "nodes": [
-    {
-      "__typename": "Sample",
-      "id": "run.id",
-      "name": "run.sample_name"
-    }, 
-    {
-      "__typename": "ConsensusGenome",
-      "id": "run.id"
+  {
+    "id": 12714,
+    "status": "FAILED",
+    "startedAt": "2024-02-15T11:47:10.000-08:00",
+    "ownerUserId": 412,
+    "analysisCount": 0,
+    "entityInputFileType": "amr",
+    "sampleNames": null,
+    "rawInputsJson": {
+      "description": "Primary metrics (e.g. coverage, depth) for all AMR genes in all selected samples, combined into a single file.",
+      "downloadType": "amr_combined_results_bulk_download",
+      "downloadDisplayName": "Combined AMR Results",
+      "fileFormat": ".csv"
+    },
+    "file": {
+      "downloadLink": {
+        "url": null
+      },
+      "size": null
+    },
+    "toDelete": {
+      "user_name": "Suzette McCanny",
+      "log_url": null,
+      "totalSamples": null,
+      "progress": 1.0
     }
-  ],
-  "toDelete": {
-    "user_name": "Suzette McCanny"
   }
+]
 }

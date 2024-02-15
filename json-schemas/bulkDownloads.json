@@ -83,6 +83,9 @@
                     },
                     "totalSamples": {
                         "type": "integer"
+                    },
+                    "progress": {
+                        "type": "float"
                     }
                 }
             }

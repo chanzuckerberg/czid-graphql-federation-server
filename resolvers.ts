@@ -98,7 +98,7 @@ export const resolvers: Resolvers = {
           user_name, 
           log_url,
           analysis_type,
-          // progress --> we wont have percentage - to be discussed on Feb 16th, 2024
+          progress // --> to be discussed on Feb 16th, 2024
           } = bulkDownload;
 
           // In Next Gen we will have an array with all of the entity input 
@@ -129,6 +129,7 @@ export const resolvers: Resolvers = {
             entityInputFileType: analysis_type,
             entityInputs,
             toDelete: {
+              progress, // --> to be discussed on Feb 16th, 2024
               user_name, // will need to get from a new Rails endpoint from the FE
               log_url, // used in admin only, we will deprecate log_url and use something like executionId
               totalSamples 

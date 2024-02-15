@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { getEnrichedToken } from "./enrichToken";
 
 /**
  * Converts an object into a query param string.
@@ -37,6 +38,19 @@ export const get = async (url: string, args: any, context: any) => {
       return await response.json();
     } else {
       // next gen details
+      const czidServicesToken = await getEnrichedToken(context);
+      const query = context.params.query;
+      const response = await fetch(process.env.API_URL + url, {
+        method: "POST",
+        headers: {
+          Cookie: context.request.headers.get("cookie"),
+          "Content-Type": "application/json",
+          "X-CSRF-Token": args?.input?.authenticityToken,
+          Authorization: `Bearer ${czidServicesToken}`,
+        },
+        body: JSON.stringify(query),
+      });
+      return await response.json();
     }
   } catch (e) {
     return Promise.reject(e.response);
@@ -49,6 +63,19 @@ export const getFullResponse = async (url: string, args: any, context: any) => {
     const nextGenEnabled = await isNextGenEnabled(context);
     if (nextGenEnabled) {
       // next gen details
+      const czidServicesToken = await getEnrichedToken(context);
+      const query = context.params.query;
+      const response = await fetch(process.env.API_URL + url, {
+        method: "POST",
+        headers: {
+          Cookie: context.request.headers.get("cookie"),
+          "Content-Type": "application/json",
+          "X-CSRF-Token": args?.input?.authenticityToken,
+          Authorization: `Bearer ${czidServicesToken}`,
+        },
+        body: JSON.stringify(query),
+      });
+      return response;
     } else {
       const urlPrefix = args.snapshotLinkId
         ? `/pub/${args.snapshotLinkId}`
@@ -82,6 +109,19 @@ export const postWithCSRF = async (
   try {
     const nextGenEnabled = await isNextGenEnabled(context);
     if (nextGenEnabled) {
+      const czidServicesToken = await getEnrichedToken(context);
+      const query = context.params.query;
+      const response = await fetch(process.env.API_URL + url, {
+        method: "POST",
+        headers: {
+          Cookie: context.request.headers.get("cookie"),
+          "Content-Type": "application/json",
+          "X-CSRF-Token": args?.input?.authenticityToken,
+          Authorization: `Bearer ${czidServicesToken}`,
+        },
+        body: JSON.stringify(query),
+      });
+      return await response.json();
       // next gen details
     } else {
       const response = await fetch(process.env.API_URL + url, {

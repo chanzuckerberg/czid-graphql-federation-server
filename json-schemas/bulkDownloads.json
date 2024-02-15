@@ -6,9 +6,6 @@
             "id": {
                 "type": "string"
             },
-            "executionId": {
-                "type": "string"
-            },
             "status": {
                 "type": "string"
             },
@@ -25,6 +22,9 @@
                         "type": "string"
                     },
                     "downloadDisplayName": {
+                        "type": "string"
+                    },
+                    "fileFormat": {
                         "type": "string"
                     }
                 }
@@ -48,14 +48,21 @@
                     }
                 }
             },
-            "nodes": {
+            "sampleNames": {
+                "type": "array",
+                "items": "string"
+            },
+            "analysisCount": {
+                "type": "integer"
+            },
+            "entityInputFileType": {
+                "type": "string"
+            },
+            "entityInputs": {
                 "type":"array",
                 "items":{
                     "type": "object",
                     "properties": {
-                        "__typename": {
-                            "type": "string"
-                        },
                         "id": {
                             "type": "string"
                         },
@@ -70,6 +77,12 @@
                 "properties": {
                     "user_name": {
                         "type": "string"
+                    },
+                    "log_url": {
+                        "type": "string"
+                    },
+                    "totalSamples": {
+                        "type": "integer"
                     }
                 }
             }

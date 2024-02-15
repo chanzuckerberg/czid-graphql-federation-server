@@ -55,89 +55,82 @@ export const resolvers: Resolvers = {
         searchBy: args?.input?.searchBy,
         n:args?.input?.limit
       })
-
       const getEntityInputInfo = (entities) => {
         return entities.map((entity) => {
           return {
-            id: entity.id,
+            id: entity?.id,
             name: entity?.sample_name,
-            typeName: File
           }
         })
       };
-
-      const getSampleInputInfo = (sampleIds) => {
-        return sampleIds.map((sampleId) => {
-          return {
-            id: sampleId,
-            typeName: "Sample"
-          }
-        });
-      }
-
       const res = await get(`/bulk_downloads.json`  + urlParams, args, context);
-      let url: string;
-      let nodes: {id: string, name: string}[];
       const mappedRes = res.map(async (bulkDownload) => {
+        let url: string | null = null;
+        let entityInputs: {id: string, name: string}[] = [];
+        let sampleNames: Set<string> | null = null;
+        let totalSamples: number | null = null;
+        let description: string;
+        let file_type_display: string;
+        const details = await get(`/bulk_downloads/${bulkDownload?.id}.json`, args, context);
         if (bulkDownload.status === "success"){
-          const details = await get(`/bulk_downloads/${bulkDownload?.id}.json`, args, context);
-          console.log("workflow_runs", details?.bulk_download?.workflow_runs);
-          console.log("pipeline_runs", details?.bulk_download?.pipeline_runs)
-          console.log("samples", details?.bulk_download?.params?.sample_ids)
           url = details?.bulk_download?.presigned_output_url;
-          const formattedWorkflowRuns = getEntityInputInfo(details?.bulk_download?.workflow_runs);
-          const formattedPipelineRuns = getEntityInputInfo(details?.bulk_download?.pipeline_runs);
-          const formattedSamples = getSampleInputInfo(details?.bulk_download?.params?.sample_ids.value);
-          console.log({formattedWorkflowRuns, formattedPipelineRuns, formattedSamples})
-          nodes = [...formattedSamples, ...formattedPipelineRuns, ...formattedWorkflowRuns];
-          console.log("nodes", nodes)
+          entityInputs = [...getEntityInputInfo(details?.bulk_download?.workflow_runs), ...getEntityInputInfo(details?.bulk_download?.pipeline_runs)];
+          sampleNames = new Set(entityInputs.map((entityInput) => entityInput.name));
+          totalSamples = details?.bulk_download?.params?.sample_ids.value.length;
         }
+        console.log(details)
+        description = details?.download_type?.description;
+        file_type_display = details?.download_type?.file_type_display;
+        //In Next Gen we will return nodes array with all of the entity input filtered through the node query to get the relevant info
+        //If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
+        //We will find out how many counts by checking __typename for if the entity is a sample,
+        //The amount of other items left in the array should be a the count and the analysis type will come from the file.entity.type
+        //Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
+
+        //The current, inherited functionality of the sidebar Samples In This Download is also wrong as it shows a list of the Sample names associated with the pipeline or workflow runs. 
 
         const { 
           id, 
-          download_type, 
           status, 
           user_id, 
+          download_type,
           created_at, 
-          description, 
           download_name, 
           output_file_size,
           user_name, 
           log_url,
-          // progress --> we wont have percentage
+          analysis_type,
+          // progress --> we wont have percentage - to be discussed on Feb 16th, 2024
           } = bulkDownload;
           
         return {
           id, // this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
-          executionId: log_url, // admin only
           startedAt: created_at,
           status: status, // TODO change this to the statuses coming from Workflows
           rawInputsJson: {
-            downloadType: download_type,
+            downloadType:  download_type,
             downloadDisplayName: download_name,
             description: description,
+            fileFormat: file_type_display
           },
           ownerUserId: user_id,
           file: {
-            status,
             size: output_file_size, 
             downloadLink: {
-              url: url
+              url: url,
             }, 
           },
-          nodes: [
-            {
-              __typename: "Sample",
-              id: "run.id",
-              name: "run.sample_name"
-            }, 
-            {
-              __typename: "ConsensusGenome",
-              id: "run.id",
-            }, 
-          ],
+          sampleNames,
+          analysisCount: entityInputs.length,
+          entityInputFileType: analysis_type,
+          entityInputs,
           toDelete: {
-            user_name
+            user_name, // will need to get from a new Rails endpoint from the FE
+            log_url, // used in admin only, we will deprecate log_url and use something like executionId
+            totalSamples 
+            // dedupping by name isn't entirely reliable 
+            // we will use this as the accurate number of samples until we switch to NextGen 
+            // (then it can be the length of the Samples array in entityInputs on the workflowRun)
           }
         }
       });

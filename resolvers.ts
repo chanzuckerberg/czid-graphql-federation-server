@@ -50,7 +50,13 @@ export const resolvers: Resolvers = {
       }, []);
     },
     bulkDownloads: async (root, args, context, info) => {
-      // TO DO - make sure this works for admin and non admin users
+      const statusDictionary = {
+        "success":"SUCCEEDED",
+        "error": "FAILED",
+        "waiting": "PENDING",
+        "running": "INPROGRESS",
+        //fyi: in NextGen there is also a status of STARTED
+      }
       const urlParams = formatUrlParams({
         searchBy: args?.input?.searchBy,
         n:args?.input?.limit
@@ -78,16 +84,8 @@ export const resolvers: Resolvers = {
           sampleNames = new Set(entityInputs.map((entityInput) => entityInput.name));
           totalSamples = details?.bulk_download?.params?.sample_ids.value.length;
         }
-        console.log(details)
         description = details?.download_type?.description;
         file_type_display = details?.download_type?.file_type_display;
-        //In Next Gen we will return nodes array with all of the entity input filtered through the node query to get the relevant info
-        //If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
-        //We will find out how many counts by checking __typename for if the entity is a sample,
-        //The amount of other items left in the array should be a the count and the analysis type will come from the file.entity.type
-        //Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
-
-        //The current, inherited functionality of the sidebar Samples In This Download is also wrong as it shows a list of the Sample names associated with the pipeline or workflow runs. 
 
         const { 
           id, 
@@ -102,38 +100,44 @@ export const resolvers: Resolvers = {
           analysis_type,
           // progress --> we wont have percentage - to be discussed on Feb 16th, 2024
           } = bulkDownload;
-          
-        return {
-          id, // this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
-          startedAt: created_at,
-          status: status, // TODO change this to the statuses coming from Workflows
-          rawInputsJson: {
-            downloadType:  download_type,
-            downloadDisplayName: download_name,
-            description: description,
-            fileFormat: file_type_display
-          },
-          ownerUserId: user_id,
-          file: {
-            size: output_file_size, 
-            downloadLink: {
-              url: url,
-            }, 
-          },
-          sampleNames,
-          analysisCount: entityInputs.length,
-          entityInputFileType: analysis_type,
-          entityInputs,
-          toDelete: {
-            user_name, // will need to get from a new Rails endpoint from the FE
-            log_url, // used in admin only, we will deprecate log_url and use something like executionId
-            totalSamples 
-            // dedupping by name isn't entirely reliable 
-            // we will use this as the accurate number of samples until we switch to NextGen 
-            // (then it can be the length of the Samples array in entityInputs on the workflowRun)
+
+          // In Next Gen we will have an array with all of the entity input 
+          // filtered through the nodes entity query to get the relevant info
+          // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
+          // We will get `sampleNames` by checking __typename to see if the entity is a sample,
+          // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
+          // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
+          return {
+            id, // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+            startedAt: created_at,
+            status: statusDictionary[status],
+            rawInputsJson: {
+              downloadType:  download_type,
+              downloadDisplayName: download_name,
+              description: description,
+              fileFormat: file_type_display
+            },
+            ownerUserId: user_id,
+            file: {
+              size: output_file_size, 
+              downloadLink: {
+                url: url,
+              }, 
+            },
+            sampleNames,
+            analysisCount: entityInputs.length,
+            entityInputFileType: analysis_type,
+            entityInputs,
+            toDelete: {
+              user_name, // will need to get from a new Rails endpoint from the FE
+              log_url, // used in admin only, we will deprecate log_url and use something like executionId
+              totalSamples 
+              // dedupping by name isn't entirely reliable 
+              // we will use this as the accurate number of samples until we switch to NextGen 
+              // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
+            }
           }
-        }
-      });
+        });
       return mappedRes;
     },
     BulkDownloadCGOverview: async (root, args, context, info) => {

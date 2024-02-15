@@ -25,22 +25,11 @@ export const get = async (url: string, args: any, context: any) => {
   try {
     let baseURL, urlPrefix;
     const nextGenEnabled = await isNextGenEnabled(context);
-    if (!nextGenEnabled) {
-      baseURL = process.env.API_URL;
-      urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
-      const response = await fetch(baseURL + urlPrefix + url, {
-        method: "GET",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-        },
-      });
-      return await response.json();
-    } else {
+    if (nextGenEnabled) {
       // next gen details
       const czidServicesToken = await getEnrichedToken(context);
       const query = context.params.query;
-      const response = await fetch(process.env.API_URL + url, {
+      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL + '/graphql', {
         method: "POST",
         headers: {
           Cookie: context.request.headers.get("cookie"),
@@ -49,6 +38,17 @@ export const get = async (url: string, args: any, context: any) => {
           Authorization: `Bearer ${czidServicesToken}`,
         },
         body: JSON.stringify(query),
+      });
+      return await response.json();
+    } else {
+      baseURL = process.env.API_URL;
+      urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+      const response = await fetch(baseURL + urlPrefix + url, {
+        method: "GET",
+        headers: {
+          Cookie: context.request.headers.get("cookie"),
+          "Content-Type": "application/json",
+        },
       });
       return await response.json();
     }
@@ -65,7 +65,7 @@ export const getFullResponse = async (url: string, args: any, context: any) => {
       // next gen details
       const czidServicesToken = await getEnrichedToken(context);
       const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL + url, {
+      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL + '/graphql', {
         method: "POST",
         headers: {
           Cookie: context.request.headers.get("cookie"),
@@ -111,7 +111,7 @@ export const postWithCSRF = async (
     if (nextGenEnabled) {
       const czidServicesToken = await getEnrichedToken(context);
       const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL + url, {
+      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL + '/graphql', {
         method: "POST",
         headers: {
           Cookie: context.request.headers.get("cookie"),

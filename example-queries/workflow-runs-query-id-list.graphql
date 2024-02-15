@@ -6,10 +6,9 @@ query ValidConsensusGenomeWorkflowRunsQuery(
         input: {
         where: { id: { _in: $workflowRunIds } }
         todoRemove: { authenticityToken: $authenticityToken }
-        }
-    ) {
+    }) {
         id
         ownerUserId
         status
     }
-    }
+}

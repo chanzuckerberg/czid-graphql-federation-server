@@ -1,13 +1,13 @@
 query TestQuery($unused: String) {
     sequencingReads(input: {
-    where: {
-        id: {
-        _in: ["abc", "def"]
+        where: {
+            id: {
+            _in: ["abc", "def"]
+            }
         }
-    }
-    todoRemove: {
-        search: "abc"
-    }
+        todoRemove: {
+            search: "abc"
+        }
     }) {
     id
     sample {

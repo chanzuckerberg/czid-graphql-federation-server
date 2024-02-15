@@ -60,7 +60,7 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
   AmrDeprecatedResults(sampleId: String): AmrDeprecatedResults @httpOperation(path: "/samples/{args.sampleId}/amr.json", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
-  BulkDownloadDetails(bulkDownloadId: String): BulkDownloadDetails @httpOperation(path: "/bulk_downloads/{args.bulkDownloadId}", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
+  bulkDownloads(input: queryInput_bulkDownloads_input_Input): [query_bulkDownloads_items] @httpOperation(path: "/bulk_downloads?searchBy=&n=", httpMethod: GET)
   BulkDownloadCGOverview(input: queryInput_BulkDownloadCGOverview_input_Input): ConsensusGenomeOverviewRows @httpOperation(path: "/bulk_downloads", httpMethod: POST)
   ConsensusGenomeWorkflowResults(workflowRunId: String): ConsensusGenomeWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   CoverageVizSummary(snapshotLinkId: String, sampleId: String): [query_CoverageVizSummary_items] @httpOperation(path: "/pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary", httpMethod: GET)
@@ -2331,6 +2331,11 @@ type query_Background_other_backgrounds_items {
   mass_normalized: Boolean
 }
 
+"""
+The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
 type BulkDownloadDetails {
   bulk_download: query_BulkDownloadDetails_bulk_download
   download_type: query_BulkDownloadDetails_download_type
@@ -2364,29 +2369,29 @@ type query_BulkDownloadDetails_bulk_download {
   presigned_output_url: String
 }
 
-type query_BulkDownloadDetails_bulk_download_params {
-  background: query_BulkDownloadDetails_bulk_download_params_background
+type query_bulkDownloads_items_file {
+  size: Int
+  downloadLink: query_bulkDownloads_items_file_downloadLink
 }
 
-type query_BulkDownloadDetails_bulk_download_params_background {
-  value: Int
-  displayName: String
+type query_bulkDownloads_items_file_downloadLink {
+  url: String
 }
 
-type query_BulkDownloadDetails_download_type {
-  type: String
-  display_name: String
-  description: String
-  category: String
-  execution_type: String
-  fields: [query_BulkDownloadDetails_download_type_fields_items]
-  file_type_display: String
-  workflows: [String]
+type query_bulkDownloads_items_entityInputs_items {
+  id: String
+  name: String
 }
 
-type query_BulkDownloadDetails_download_type_fields_items {
-  display_name: String
-  type: String
+type query_bulkDownloads_items_toDelete {
+  user_name: String
+  log_url: String
+  totalSamples: Int
+}
+
+input queryInput_bulkDownloads_input_Input @example(value: "{\\"searchBy\\":\\"Suzette McCanny\\",\\"limit\\":10}") {
+  searchBy: String
+  limit: Int
 }
 
 type ConsensusGenomeOverviewRows {

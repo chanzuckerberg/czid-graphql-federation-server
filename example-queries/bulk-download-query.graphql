@@ -1,0 +1,29 @@
+query BulkDownloadsQuery{
+      bulkDownloads{
+          id
+          status
+          startedAt
+          ownerUserId
+          analysisCount
+          entityInputFileType
+          sampleNames
+          rawInputsJson {
+            description
+            downloadType
+            downloadDisplayName
+            fileFormat
+          }
+          file {
+            downloadLink {
+              url
+            }
+            size
+          }
+          toDelete{
+            user_name
+            log_url
+            totalSamples
+            progress
+          }
+        }
+    }`;

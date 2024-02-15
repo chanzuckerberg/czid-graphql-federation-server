@@ -30,5 +30,14 @@ describe("HttpUtils:", () => {
         })
       ).toBe("?&param1[]=123&param1[]=456");
     });
+
+    it("Handles Spaces in strings", () => {
+      expect(
+        formatUrlParams({
+          param1: 123,
+          param2: "456 789",
+        })
+      ).toBe("?&param1=123&param2=456+789");
+    });
   });
 });

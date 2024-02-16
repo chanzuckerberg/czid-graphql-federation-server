@@ -6,20 +6,20 @@ sources:
         source: ./sources/czid-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
-  - name: NextGenEntities
-    handler:
-      graphql:
-        endpoint: ${NEXTGEN_ENTITIES_API_URL}/graphql
-        source: ./sources/nextgen-entities-schema.graphql
-        operationHeaders:
-          Cookie: "{context.headers['authorization']}"
-  - name: NextGenWorkflows
-    handler:
-      graphql:
-        endpoint: ${NEXTGEN_WORKFLOW_API_URL}/graphql
-        source: ./sources/nextgen-workflows-schema.graphql
-        operationHeaders:
-          Cookie: "{context.headers['authorization']}"
+  # - name: NextGenEntities
+  #   handler:
+  #     graphql:
+  #       endpoint: ${NEXTGEN_ENTITIES_API_URL}/graphql
+  #       source: ./sources/nextgen-entities-schema.graphql
+  #       operationHeaders:
+  #         Cookie: "{context.headers['authorization']}"
+  # - name: NextGenWorkflows
+  #   handler:
+  #     graphql:
+  #       endpoint: ${NEXTGEN_WORKFLOW_API_URL}/graphql
+  #       source: ./sources/nextgen-workflows-schema.graphql
+  #       operationHeaders:
+  #         Cookie: "{context.headers['authorization']}"
   - name: CZIDREST
     handler:
       jsonSchema:

@@ -92,23 +92,64 @@ export const resolvers: Resolvers = {
         args,
         context
       );
+
       const { accession_id, accession_name, taxon_id, taxon_name } =
         taxon_info || {};
-      return {
-        metric_consensus_genome: {
-          ...quality_metrics,
-          coverage_viz,
+
+      const ret = {
+        metricsConsensusGenome: {
+          nMissing: quality_metrics?.n_missing,
+          nAmbiguous: quality_metrics?.n_ambiguous,
+          referenceGenomeLength: quality_metrics?.reference_genome_length,
+          percentGenomeCalled: quality_metrics?.percent_genome_called,
+          percentIdentity: quality_metrics?.percent_identity,
+          totalReads: quality_metrics?.total_reads,
+          refSnps: quality_metrics?.ref_snps,
+          mappedReads: quality_metrics?.mapped_reads,
+          nActg: quality_metrics?.n_actg,
+          gcPercent: quality_metrics?.gc_percent,
+          coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
+          coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
+          coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
+          coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
+          // coverageViz:
         },
-        reference_genome: {
-          accession_id: accession_id,
-          accession_name: accession_name,
+        taxa: {
+          id: taxon_id?.toString(),
+          name: taxon_name,
+        },
+        referenceGenomes: {
+          id: accession_id,
+        },
+        consensusGenomes: {
+          accession: {
+            accessionId: accession_id,
+            accessionName: accession_name,
+          },
           taxon: {
             id: taxon_id?.toString(),
-            name: taxon_name,
+            commonName: taxon_name,
           },
-        },
-      };
-    },
+          }
+        }
+      return ret;
+      },
+
+      // return {
+      //   metric_consensus_genome: {
+      //     ...quality_metrics,
+      //     coverage_viz,
+      //   },
+      //   reference_genome: {
+      //     accession_id: accession_id,
+      //     accession_name: accession_name,
+      //     taxon: {
+      //       id: taxon_id?.toString(),
+      //       name: taxon_name,
+      //     },
+      //   },
+      // };
+    // },
     CoverageVizSummary: async (root, args, context, info) => {
       // should be fetched using pipeline run id instead of sample id
       // from the new backend

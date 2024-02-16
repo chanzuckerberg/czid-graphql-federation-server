@@ -1,11 +1,12 @@
 {
-  "workflowRunIds": {
-    "short-read-mngs": [],
-    "consensus-genome": [
-      1234
-    ],
-    "amr": [],
-    "long-read-mngs": []
+  "where": {
+    "id": {
+      "_in": {
+        "items": [
+          "1234"
+        ]
+      }
+    }
   },
   "todoRemove": {
     "projectId": 1056,
@@ -45,8 +46,6 @@
     "taxon": [
       244366
     ],
-    "search": "abc",
-    "orderBy": "created_at",
-    "orderDir": "DESC"
+    "search": "abc"
   }
 }

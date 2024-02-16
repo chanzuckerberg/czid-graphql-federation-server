@@ -2,9 +2,9 @@
 import {
   Resolvers,
   query_consensusGenomes_items,
-  query_WorkflowRunsAggregate_items,
   query_samples_items,
   query_sequencingReads_items,
+  query_workflowRunsAggregate_items,
   query_workflowRuns_items,
 } from "./.mesh";
 import {
@@ -788,18 +788,16 @@ export const resolvers: Resolvers = {
         })
       );
     },
-    WorkflowRunsAggregate: async (root, args, context, info) => {
+    workflowRunsAggregate: async (root, args, context, info) => {
       const input = args.input;
       
       const { projects } = await get("/projects.json" + 
         formatUrlParams({
           projectId: input?.todoRemove?.projectId,
           domain: input?.todoRemove?.domain,
-          limit: TEN_MILLION, // do we need pagination? or single request?
+          limit: TEN_MILLION,
           listAllIds: false,
           offset: 0,
-          orderBy: input?.todoRemove?.orderBy,
-          orderDir: input?.todoRemove?.orderDir,
           host: input?.todoRemove?.host,
           locationV2: input?.todoRemove?.locationV2,
           taxonThresholds: input?.todoRemove?.taxonThresholds,
@@ -815,7 +813,7 @@ export const resolvers: Resolvers = {
       if (!projects?.length) {
         return [];
       }
-      return projects.map((project): query_WorkflowRunsAggregate_items => {
+      return projects.map((project): query_workflowRunsAggregate_items => {
         return {
           collectionId: project.id,
           mngsRunsCount: project.sample_counts.mngs_runs_count,

@@ -1,31 +1,18 @@
 {
     "type": "object",
     "properties": {
-        "workflowRunIds": {
+        "where": {
             "type": "object",
             "properties": {
-                "short-read-mngs": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "consensus-genome": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "amr": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "long-read-mngs": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
+                "id": {
+                    "type": "object",
+                    "properties": {
+                        "_in": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
                     }
                 }
             }
@@ -116,12 +103,6 @@
                     }
                 },
                 "search": {
-                    "type": "string"
-                },
-                "orderBy": {
-                    "type": "string"
-                },
-                "orderDir": {
                     "type": "string"
                 }
             }

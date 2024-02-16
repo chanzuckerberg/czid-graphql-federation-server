@@ -68,7 +68,7 @@ export const resolvers: Resolvers = {
           }
         })
       };
-      const res = await get(`/bulk_downloads.json`  + urlParams, args, context);
+      const res = await get(`/bulk_downloads.json${urlParams}`, args, context);
       const mappedRes = res.map(async (bulkDownload) => {
         let url: string | null = null;
         let entityInputs: {id: string, name: string}[] = [];
@@ -81,7 +81,7 @@ export const resolvers: Resolvers = {
           url = details?.bulk_download?.presigned_output_url;
           entityInputs = [...getEntityInputInfo(details?.bulk_download?.workflow_runs), ...getEntityInputInfo(details?.bulk_download?.pipeline_runs)];
           sampleNames = new Set(entityInputs.map((entityInput) => entityInput.name));
-          totalSamples = details?.bulk_download?.params?.sample_ids.value.length;
+          totalSamples = details?.bulk_download?.params?.sample_ids?.value?.length;
         }
         description = details?.download_type?.description;
         file_type_display = details?.download_type?.file_type_display;

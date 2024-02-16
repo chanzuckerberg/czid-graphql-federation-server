@@ -1,5 +1,4 @@
-{ 
-"bulkDownloads": [
+[
   {
     "id": 12715,
     "status": "SUCCEEDED",
@@ -59,4 +58,3 @@
     }
   }
 ]
-}

@@ -43,9 +43,9 @@ sources:
             path: /bulk_downloads?searchBy=${searchBy}&n=${limit}
             method: GET
             requestSample: {
-              searchBy: "Suzette McCanny",
-              limit: 10
-            }            
+                searchBy: "Suzette McCanny",
+                limit: 10
+              }            
             responseSchema: ./json-schemas/bulkDownloads.json
             responseTypeName: BulkDownloads
           - type: Query

@@ -40,10 +40,9 @@ sources:
             responseTypeName: Background
           - type: Query
             field: bulkDownloads
-            path: /bulk_downloads?searchBy=${searchBy}&n=${limit}
             method: GET
             requestSample: {
-                searchBy: "Suzette McCanny",
+                searchBy: "string to search",
                 limit: 10
               }            
             responseSchema: ./json-schemas/bulkDownloads.json

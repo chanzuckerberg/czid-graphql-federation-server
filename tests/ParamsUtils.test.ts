@@ -1,6 +1,6 @@
-import { formatUrlParams } from "../utils/httpUtils";
+import { formatUrlParams } from "../utils/paramsUtils";
 
-describe("HttpUtils:", () => {
+describe("ParamsUtils:", () => {
   describe("formatUrlParams:", () => {
     it("Returns empty string", () => {
       expect(

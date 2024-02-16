@@ -6,7 +6,6 @@ import {
 } from "./.mesh";
 import {
   get,
-  formatUrlParams,
   postWithCSRF,
   getFullResponse,
 } from "./utils/httpUtils";
@@ -14,6 +13,9 @@ import {
   formatTaxonHits,
   formatTaxonLineage,
 } from "./utils/mngsWorkflowResultsUtils";
+import {
+  formatUrlParams
+} from "./utils/paramsUtils";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -58,7 +60,7 @@ export const resolvers: Resolvers = {
       }
       const urlParams = formatUrlParams({
         searchBy: args?.input?.searchBy,
-        n:args?.input?.limit
+        n: args?.input?.limit
       })
       const getEntityInputInfo = (entities) => {
         return entities.map((entity) => {

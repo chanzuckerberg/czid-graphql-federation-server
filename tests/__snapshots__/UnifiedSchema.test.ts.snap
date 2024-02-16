@@ -1449,7 +1449,7 @@ type Project {
   updatedAt: ISO8601DateTime!
 }
 
-type Query @globalOptions(sourceName: "CZIDREST", endpoint: "/") {
+type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") {
   AmrDeprecatedResults(sampleId: String): AmrDeprecatedResults @httpOperation(path: "/samples/{args.sampleId}/amr.json", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)

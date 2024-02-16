@@ -1,8 +1,11 @@
 // resolvers.ts
-import { Resolvers } from "./.mesh";
+import {
+  Resolvers,
+  query_samples_items,
+  query_workflowRuns_items,
+} from "./.mesh";
 import {
   get,
-  notFound,
   formatUrlParams,
   postWithCSRF,
   getFullResponse,
@@ -11,7 +14,12 @@ import {
   formatTaxonHits,
   formatTaxonLineage,
 } from "./utils/mngsWorkflowResultsUtils";
-import { formatSample, formatSamples } from "./utils/samplesUtils";
+
+/**
+ * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
+ * paginate our fake "Workflows Service" call.
+ */
+const TEN_MILLION = 10_000_000;
 
 export const resolvers: Resolvers = {
   Query: {
@@ -40,32 +48,130 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
+    BulkDownloadCGOverview: async (root, args, context, info) => {
+      if (!args?.input){
+        throw new Error("No input provided");
+      }
+      const {
+        downloadType,
+        workflow,
+        includeMetadata,
+        workflowRunIds,
+      } = args?.input;
+      const body = {
+        download_type: downloadType,
+        workflow: workflow,
+        params: {
+          include_metadata: { value: includeMetadata },
+        sample_ids: {
+          value: workflowRunIds
+        },
+        workflow: {
+          value: workflow
+        }
+        },
+        workflow_run_ids: workflowRunIds,
+      };
+      const res = await postWithCSRF(
+        `/bulk_downloads/consensus_genome_overview_data`,
+        body,
+        args,
+        context,
+      );
+      if (res?.cg_overview_rows){
+        return {
+          cgOverviewRows: res?.cg_overview_rows,
+        }
+      } else {
+        throw new Error(res.error);
+      }
+    },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
       const { coverage_viz, quality_metrics, taxon_info } = await get(
         `/workflow_runs/${args.workflowRunId}/results`,
         args,
         context
       );
+
       const { accession_id, accession_name, taxon_id, taxon_name } =
         taxon_info || {};
-      return {
-        metric_consensus_genome: {
-          ...quality_metrics,
-          coverage_viz,
+
+      const ret = {
+        metricsConsensusGenome: {
+          nMissing: quality_metrics?.n_missing,
+          nAmbiguous: quality_metrics?.n_ambiguous,
+          referenceGenomeLength: quality_metrics?.reference_genome_length,
+          percentGenomeCalled: quality_metrics?.percent_genome_called,
+          percentIdentity: quality_metrics?.percent_identity,
+          totalReads: quality_metrics?.total_reads,
+          refSnps: quality_metrics?.ref_snps,
+          mappedReads: quality_metrics?.mapped_reads,
+          nActg: quality_metrics?.n_actg,
+          gcPercent: quality_metrics?.gc_percent,
+          coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
+          coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
+          coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
+          coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
+          // coverageViz:
         },
-        reference_genome: {
-          accession_id: accession_id,
-          accession_name: accession_name,
+        taxa: {
+          id: taxon_id?.toString(),
+          name: taxon_name,
+        },
+        referenceGenomes: {
+          id: accession_id,
+        },
+        consensusGenomes: {
+          accession: {
+            accessionId: accession_id,
+            accessionName: accession_name,
+          },
           taxon: {
             id: taxon_id?.toString(),
-            name: taxon_name,
+            commonName: taxon_name,
           },
-        },
-      };
+          }
+        }
+      return ret;
+      },
+
+      // return {
+      //   metric_consensus_genome: {
+      //     ...quality_metrics,
+      //     coverage_viz,
+      //   },
+      //   reference_genome: {
+      //     accession_id: accession_id,
+      //     accession_name: accession_name,
+      //     taxon: {
+      //       id: taxon_id?.toString(),
+      //       name: taxon_name,
+      //     },
+      //   },
+      // };
+    // },
+    CoverageVizSummary: async (root, args, context, info) => {
+      // should be fetched using pipeline run id instead of sample id
+      // from the new backend
+      const coverage_viz_summary = await get(
+        `/samples/${args.sampleId}/coverage_viz_summary`,
+        args,
+        context
+      );
+      const return_obj: any[] = [];
+      for (const key in coverage_viz_summary) {
+        for (const accension of coverage_viz_summary[key]["best_accessions"]) {
+          return_obj.push({
+            pipeline_id: key,
+            ...accension,
+          });
+        }
+      }
+      return return_obj;
     },
     MetadataFields: async (root, args, context, info) => {
       const body = {
-        sampleIds: args?.input?.sampleIds
+        sampleIds: args?.input?.sampleIds,
       };
       const res = await postWithCSRF(
         `/samples/metadata_fields`,
@@ -77,37 +183,38 @@ export const resolvers: Resolvers = {
     },
     SampleMetadata: async (root, args, context, info) => {
       const url = `/samples/${args.sampleId}/metadata`;
-      const urlWithParams = args?.input?.pipelineVersion ? url + `?pipeline_version=${args?.input?.pipelineVersion}` : url;
-      const res = await get(
-        urlWithParams,
-        args,
-        context
-      );
+      const urlWithParams = args?.input?.pipelineVersion
+        ? url + `?pipeline_version=${args?.input?.pipelineVersion}`
+        : url;
+      const res = await get(urlWithParams, args, context);
       try {
         const metadata = res.metadata.map((item) => {
           item.id = item.id.toString();
           return item;
         });
-        if (res?.additional_info?.pipeline_run?.id){
-          res.additional_info.pipeline_run.id = res.additional_info.pipeline_run.id.toString();
+        if (res?.additional_info?.pipeline_run?.id) {
+          res.additional_info.pipeline_run.id =
+            res.additional_info.pipeline_run.id.toString();
         }
         // location_validated_value is a union type, so we need to add __typename to the object
         metadata.map((field) => {
-          if( typeof field.location_validated_value === "object" ) {
-          field.location_validated_value = {
-            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_1",
-            ...field.location_validated_value,
-            id: field.location_validated_value.id.toString(),
-          };
-        } else if ( typeof field.location_validated_value === "string" ){
-          field.location_validated_value = {
-            __typename: "query_SampleMetadata_metadata_items_location_validated_value_oneOf_0",
-            name: field.location_validated_value
-          };
-        } else {
-          field.location_validated_value = null;
-        }
-      });
+          if (typeof field.location_validated_value === "object") {
+            field.location_validated_value = {
+              __typename:
+                "query_SampleMetadata_metadata_items_location_validated_value_oneOf_1",
+              ...field.location_validated_value,
+              id: field.location_validated_value.id.toString(),
+            };
+          } else if (typeof field.location_validated_value === "string") {
+            field.location_validated_value = {
+              __typename:
+                "query_SampleMetadata_metadata_items_location_validated_value_oneOf_0",
+              name: field.location_validated_value,
+            };
+          } else {
+            field.location_validated_value = null;
+          }
+        });
         res.metadata = metadata;
         return res;
       } catch {
@@ -193,27 +300,56 @@ export const resolvers: Resolvers = {
       });
       return pathogens;
     },
-    Samples: async (root, args, context, info) => {
-      if (args.sampleId) {
-        const sample = await get(
-          `/samples/${args.sampleId}.json`,
-          args,
-          context
-        );
-        if (args.projectId && sample.project.id !== parseInt(args.projectId)) {
-          return notFound(
-            `Sample ${args.sampleId} not found in project ${args.projectId}`
-          );
-        }
-        return formatSample(sample);
-      } else if (args.projectId) {
-        const { samples } = await get(
-          `/samples/index_v2.json?projectId=${args.projectId}&snapshotShareId=&basic=true`,
-          args,
-          context
-        );
-        return formatSamples(samples);
+    /** Returns just the sample IDs (and old Rails IDs) to determine which IDs pass the filters. */
+    samples: async (root, args, context) => {
+      const input = args.input;
+
+      // The comments in the formatUrlParams() call correspond to the line in the current
+      // codebase's callstack where the params are set, so help ensure we're not missing anything.
+      const { workflow_runs } = await get(
+        "/workflow_runs.json" +
+          formatUrlParams({
+            // index.ts
+            // const getWorkflowRuns = ({
+            mode: "basic",
+            //  - DiscoveryDataLayer.ts
+            //    await this._collection.fetchDataCallback({
+            domain: input?.todoRemove?.domain,
+            //  -- DiscoveryView.tsx
+            //     ...this.getConditions(workflow)
+            projectId: input?.todoRemove?.projectId,
+            search: input?.where?.name?._like,
+            orderBy: input?.orderBy?.key,
+            orderDir: input?.orderBy?.dir,
+            //  --- DiscoveryView.tsx
+            //      filters: {
+            host: input?.where?.hostTaxon?.upstreamDatabaseIdentifier?._in,
+            locationV2: input?.where?.collectionLocation?._in,
+            taxon: input?.todoRemove?.taxons,
+            taxaLevels: input?.todoRemove?.taxaLevels,
+            time: input?.todoRemove?.time,
+            tissue: input?.where?.sampleType?._in,
+            visibility: input?.todoRemove?.visibility,
+            workflow: input?.todoRemove?.workflow,
+            //  - DiscoveryDataLayer.ts
+            //    await this._collection.fetchDataCallback({
+            limit: input?.todoRemove?.limit,
+            offset: input?.todoRemove?.offset,
+            listAllIds: input?.todoRemove?.listAllIds,
+          }),
+        args,
+        context
+      );
+      if (!workflow_runs?.length) {
+        return [];
       }
+
+      return workflow_runs.map((run): query_samples_items => {
+        return {
+          id: run.sample?.id?.toString(),
+          railsSampleId: run.sample?.id?.toString(),
+        };
+      });
     },
     ValidateUserCanDeleteObjects: async (root, args, context, info) => {
       const body = {
@@ -303,24 +439,89 @@ export const resolvers: Resolvers = {
       });
       return annotations;
     },
-    CoverageVizSummary: async (root, args, context, info) => {
-      // should be fetched using pipeline run id instead of sample id
-      // from the new backend
-      const coverage_viz_summary = await get(
-        `/samples/${args.sampleId}/coverage_viz_summary`,
+    workflowRuns: async (root, args, context) => {
+      const input = args.input;
+
+      // If we provide a list of workflowRunIds, we assume that this is for getting valid consensus genome workflow runs.
+      // This endpoint only provides id, ownerUserId, and status.
+      if (input?.where?.id?._in && typeof input?.where?.id?._in === "object") {
+        const body = {
+          authenticity_token: input?.todoRemove?.authenticityToken,
+          workflowRunIds: input.where.id._in.map(id => id && parseInt(id)),
+        };
+
+        const { workflowRuns } = await postWithCSRF(
+          `/workflow_runs/valid_consensus_genome_workflow_runs`,
+          body,
+          args,
+          context,
+        );
+        return workflowRuns.map(
+          (run) => ({
+            id: run.id,
+            ownerUserId: run.owner_user_id,
+            status: run.status,
+          }),
+        );
+      }
+
+
+      // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the
+      // Entities call.
+      // These only have to be ordered by time, if sorting by time.
+      const { workflow_runs } = await get(
+        "/workflow_runs.json" +
+          formatUrlParams({
+            mode: "basic",
+            domain: input?.todoRemove?.domain,
+            projectId: input?.todoRemove?.projectId,
+            search: input?.todoRemove?.search,
+            orderBy:
+              input?.orderBy?.startedAt != null ? "createdAt" : undefined,
+            orderDir: input?.orderBy?.startedAt,
+            host: input?.todoRemove?.host,
+            locationV2: input?.todoRemove?.locationV2,
+            taxon: input?.todoRemove?.taxon,
+            taxaLevels: input?.todoRemove?.taxonLevels,
+            time: input?.todoRemove?.time,
+            tissue: input?.todoRemove?.tissue,
+            visibility: input?.todoRemove?.visibility,
+            workflow: input?.todoRemove?.workflow,
+            limit: TEN_MILLION,
+            offset: 0,
+            listAllIds: false,
+          }),
         args,
         context
       );
-      const return_obj: any[] = [];
-      for (const key in coverage_viz_summary) {
-        for (const accension of coverage_viz_summary[key]["best_accessions"]) {
-          return_obj.push({
-            pipeline_id: key,
-            ...accension,
-          });
-        }
+      if (!workflow_runs?.length) {
+        return [];
       }
-      return return_obj;
+
+      return workflow_runs.map(
+        (run): query_workflowRuns_items => ({
+          id: run.id?.toString(),
+          ownerUserId: run.runner?.id?.toString(),
+          startedAt: run.created_at,
+          status: run.status,
+          workflowVersion: {
+            version: run.wdl_version,
+            workflow: {
+              name: run.inputs?.creation_source,
+            },
+          },
+          entityInputs: {
+            edges: [
+              {
+                node: {
+                  entityType: "Sample",
+                  inputEntityId: run.sample?.info?.id?.toString(),
+                },
+              },
+            ],
+          },
+        })
+      );
     },
     ZipLink: async (root, args, context, info) => {
       const res = await getFullResponse(
@@ -345,6 +546,35 @@ export const resolvers: Resolvers = {
     }),
   },
   Mutation: {
+    CreateBulkDownload: async (root, args, context, info) => {
+      if(!args?.input){
+        throw new Error("No input provided");
+      }
+      const { downloadType, workflow, downloadFormat, workflowRunIds } = args?.input;
+      const body = {
+        download_type: downloadType,
+        workflow: workflow,
+        params: {
+          download_format: {
+            value: downloadFormat,
+          },
+          sample_ids: {
+            value: workflowRunIds,
+          },
+          workflow: {
+            value: workflow,
+          }
+        },
+        workflow_run_ids: workflowRunIds,
+      };
+      const res = await postWithCSRF(
+        `/bulk_downloads`,
+        body,
+        args,
+        context
+      );
+      return res;
+    },
     DeleteSamples: async (root, args, context, info) => {
       const body = {
         selectedIds: args?.input?.ids,
@@ -398,7 +628,10 @@ export const resolvers: Resolvers = {
     UpdateMetadata: async (root, args, context, info) => {
       const body = {
         field: args?.input?.field,
-        value: args?.input?.value.String ? args.input.value.String : args?.input?.value.query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input,
+        value: args?.input?.value.String
+          ? args.input.value.String
+          : args?.input?.value
+              .query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input,
       };
       const res = await postWithCSRF(
         `/samples/${args.sampleId}/save_metadata_v2`,
@@ -433,6 +666,6 @@ export const resolvers: Resolvers = {
         context
       );
       return res;
-    }
+    },
   },
 };

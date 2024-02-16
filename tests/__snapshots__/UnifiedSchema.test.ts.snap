@@ -16,7 +16,14 @@ directive @globalOptions(sourceName: String, endpoint: String, operationHeaders:
 
 directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
 
-type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") {
+type Query @globalOptions(sourceName: "CZIDREST", endpoint: "/") {
+  appConfig(id: ID!): AppConfig
+  pathogenList(version: String): PathogenList!
+  project(id: Int!): Project!
+  sample(sampleId: Int!): Sample!
+  sampleReadsStats(sampleIds: [String!]!): SampleReadsStatsList!
+  samplesList(annotations: [Annotation!], basic: Boolean, domain: String, hostIds: [Int!], limit: Int, listAllIds: Boolean, location: String, locationV2: [String!], offset: Int, orderBy: String, orderDir: String, projectId: Int, requestedSampleIds: [Int!], sampleIds: [Int!], searchString: String, taxIds: [Int!], taxLevels: [String!], thresholdFilterInfo: String, time: [String!], tissue: [String!], visibility: [String!], workflow: String): SampleList!
+  user(archetypes: String!, email: String!, institution: String!, name: String!, role: Int!, segments: String!): User!
   node(
     """The ID of the object."""
     id: GlobalID!
@@ -25,6 +32,11 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
     """The IDs of the objects."""
     ids: [GlobalID!]!
   ): [Node!]!
+  runs(where: RunWhereClause = null): [Run!]!
+  workflows(where: WorkflowWhereClause = null): [Workflow!]!
+  runSteps(where: RunStepWhereClause = null): [RunStep!]!
+  runEntityInputs(where: RunEntityInputWhereClause = null): [RunEntityInput!]!
+  workflowVersions(where: WorkflowVersionWhereClause = null): [WorkflowVersion!]!
   files(where: FileWhereClause = null): [File!]!
   samples(input: queryInput_samples_input_Input): [query_samples_items] @httpOperation(path: "/workflow_runs.json", httpMethod: GET)
   sequencingReads(where: SequencingReadWhereClause = null): [SequencingRead!]!
@@ -32,6 +44,8 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
   referenceGenomes(where: ReferenceGenomeWhereClause = null): [ReferenceGenome!]!
   sequenceAlignmentIndices(where: SequenceAlignmentIndexWhereClause = null): [SequenceAlignmentIndex!]!
   metadatas(where: MetadatumWhereClause = null): [Metadatum!]!
+  metadataFields(where: MetadataFieldWhereClause = null): [MetadataField!]!
+  metadataFieldProjects(where: MetadataFieldProjectWhereClause = null): [MetadataFieldProject!]!
   consensusGenomes(where: ConsensusGenomeWhereClause = null): [ConsensusGenome!]!
   metricsConsensusGenomes(where: MetricConsensusGenomeWhereClause = null): [MetricConsensusGenome!]!
   taxa(where: TaxonWhereClause = null): [Taxon!]!
@@ -44,19 +58,14 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
   referenceGenomesAggregate(where: ReferenceGenomeWhereClause = null): ReferenceGenomeAggregate!
   sequenceAlignmentIndicesAggregate(where: SequenceAlignmentIndexWhereClause = null): SequenceAlignmentIndexAggregate!
   metadatasAggregate(where: MetadatumWhereClause = null): MetadatumAggregate!
+  metadataFieldsAggregate(where: MetadataFieldWhereClause = null): MetadataFieldAggregate!
+  metadataFieldProjectsAggregate(where: MetadataFieldProjectWhereClause = null): MetadataFieldProjectAggregate!
   consensusGenomesAggregate(where: ConsensusGenomeWhereClause = null): ConsensusGenomeAggregate!
   metricsConsensusGenomesAggregate(where: MetricConsensusGenomeWhereClause = null): MetricConsensusGenomeAggregate!
   taxaAggregate(where: TaxonWhereClause = null): TaxonAggregate!
   upstreamDatabasesAggregate(where: UpstreamDatabaseWhereClause = null): UpstreamDatabaseAggregate!
   contigsAggregate(where: ContigWhereClause = null): ContigAggregate!
   phylogeneticTreesAggregate(where: PhylogeneticTreeWhereClause = null): PhylogeneticTreeAggregate!
-  appConfig(id: ID!): AppConfig
-  pathogenList(version: String): PathogenList!
-  project(id: Int!): Project!
-  sample(sampleId: Int!): Sample!
-  sampleReadsStats(sampleIds: [String!]!): SampleReadsStatsList!
-  samplesList(annotations: [Annotation!], basic: Boolean, domain: String, hostIds: [Int!], limit: Int, listAllIds: Boolean, location: String, locationV2: [String!], offset: Int, orderBy: String, orderDir: String, projectId: Int, requestedSampleIds: [Int!], sampleIds: [Int!], searchString: String, taxIds: [Int!], taxLevels: [String!], thresholdFilterInfo: String, time: [String!], tissue: [String!], visibility: [String!], workflow: String): SampleList!
-  user(archetypes: String!, email: String!, institution: String!, name: String!, role: Int!, segments: String!): User!
   AmrDeprecatedResults(sampleId: String): AmrDeprecatedResults @httpOperation(path: "/samples/{args.sampleId}/amr.json", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
@@ -80,6 +89,22 @@ type Query @globalOptions(sourceName: "CZIDREST", endpoint: "http://web:3001/") 
 }
 
 type Mutation {
+  createUser(archetypes: String, email: String!, institution: String, name: String, role: Int, segments: String, sendActivation: Boolean): CreateUserPayload!
+  createRun(input: RunCreateInput!): Run!
+  updateRun(input: RunUpdateInput!, where: RunWhereClauseMutations!): [Run!]!
+  deleteRun(where: RunWhereClauseMutations!): [Run!]!
+  createWorkflow(input: WorkflowCreateInput!): Workflow!
+  updateWorkflow(input: WorkflowUpdateInput!, where: WorkflowWhereClauseMutations!): [Workflow!]!
+  deleteWorkflow(where: WorkflowWhereClauseMutations!): [Workflow!]!
+  createRunStep(input: RunStepCreateInput!): RunStep!
+  updateRunStep(input: RunStepUpdateInput!, where: RunStepWhereClauseMutations!): [RunStep!]!
+  deleteRunStep(where: RunStepWhereClauseMutations!): [RunStep!]!
+  createRunEntityInput(input: RunEntityInputCreateInput!): RunEntityInput!
+  updateRunEntityInput(input: RunEntityInputUpdateInput!, where: RunEntityInputWhereClauseMutations!): [RunEntityInput!]!
+  deleteRunEntityInput(where: RunEntityInputWhereClauseMutations!): [RunEntityInput!]!
+  createWorkflowVersion(input: WorkflowVersionCreateInput!): WorkflowVersion!
+  updateWorkflowVersion(input: WorkflowVersionUpdateInput!, where: WorkflowVersionWhereClauseMutations!): [WorkflowVersion!]!
+  deleteWorkflowVersion(where: WorkflowVersionWhereClauseMutations!): [WorkflowVersion!]!
   createFile(entityId: ID!, entityFieldName: String!, file: FileCreate!): File!
   uploadFile(entityId: ID!, entityFieldName: String!, file: FileUpload!, expiration: Int! = 3600): MultipartUploadResponse!
   markUploadComplete(fileId: ID!): File!
@@ -102,6 +127,12 @@ type Mutation {
   createMetadatum(input: MetadatumCreateInput!): Metadatum!
   updateMetadatum(input: MetadatumUpdateInput!, where: MetadatumWhereClauseMutations!): [Metadatum!]!
   deleteMetadatum(where: MetadatumWhereClauseMutations!): [Metadatum!]!
+  createMetadataField(input: MetadataFieldCreateInput!): MetadataField!
+  updateMetadataField(input: MetadataFieldUpdateInput!, where: MetadataFieldWhereClauseMutations!): [MetadataField!]!
+  deleteMetadataField(where: MetadataFieldWhereClauseMutations!): [MetadataField!]!
+  createMetadataFieldProject(input: MetadataFieldProjectCreateInput!): MetadataFieldProject!
+  updateMetadataFieldProject(input: MetadataFieldProjectUpdateInput!, where: MetadataFieldProjectWhereClauseMutations!): [MetadataFieldProject!]!
+  deleteMetadataFieldProject(where: MetadataFieldProjectWhereClauseMutations!): [MetadataFieldProject!]!
   createConsensusGenome(input: ConsensusGenomeCreateInput!): ConsensusGenome!
   updateConsensusGenome(input: ConsensusGenomeUpdateInput!, where: ConsensusGenomeWhereClauseMutations!): [ConsensusGenome!]!
   deleteConsensusGenome(where: ConsensusGenomeWhereClauseMutations!): [ConsensusGenome!]!
@@ -120,7 +151,6 @@ type Mutation {
   createPhylogeneticTree(input: PhylogeneticTreeCreateInput!): PhylogeneticTree!
   updatePhylogeneticTree(input: PhylogeneticTreeUpdateInput!, where: PhylogeneticTreeWhereClauseMutations!): [PhylogeneticTree!]!
   deletePhylogeneticTree(where: PhylogeneticTreeWhereClauseMutations!): [PhylogeneticTree!]!
-  createUser(archetypes: String, email: String!, institution: String, name: String, role: Int, segments: String, sendActivation: Boolean): CreateUserPayload!
   CreateBulkDownload(input: mutationInput_CreateBulkDownload_input_Input): JSON @httpOperation(path: "/bulk_download", httpMethod: POST)
   DeleteSamples(input: mutationInput_DeleteSamples_input_Input): DeleteSamples @httpOperation(path: "/samples/bulk_delete", httpMethod: POST)
   UpdateSampleNotes(sampleId: String, input: mutationInput_UpdateSampleNotes_input_Input): UpdateSampleNotes @httpOperation(path: "/samples/{args.sampleId}/save_metadata", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
@@ -128,6 +158,811 @@ type Mutation {
   KickoffWGSWorkflow(sampleId: String, input: mutationInput_KickoffWGSWorkflow_input_Input): [mutation_KickoffWGSWorkflow_items] @httpOperation(path: "/samples/{args.sampleId}/kickoff_workflow", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
   KickoffAMRWorkflow(sampleId: String, input: mutationInput_KickoffAMRWorkflow_input_Input): [mutation_KickoffWGSWorkflow_items] @httpOperation(path: "/samples/{args.sampleId}/kickoff_workflow", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
   UpdateMetadata(sampleId: String, input: mutationInput_UpdateMetadata_input_Input): UpdateMetadataReponse @httpOperation(path: "/samples/{args.sampleId}/save_metadata_v2", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
+}
+
+type AlignmentConfig {
+  createdAt: ISO8601DateTime!
+  indexDirSuffix: String
+  lineageVersion: String!
+  lineageVersionOld: Int
+  name: String
+  s3Accession2taxidPath: String
+  s3DeuterostomeDbPath: String
+  s3LineagePath: String
+  s3NrDbPath: String
+  s3NrLocDbPath: String
+  s3NtDbPath: String
+  s3NtInfoDbPath: String
+  s3NtLocDbPath: String
+  s3TaxonBlacklistPath: String
+  updatedAt: ISO8601DateTime!
+}
+
+input Annotation {
+  name: String!
+}
+
+type AppConfig {
+  key: String!
+  value: String!
+}
+
+"""
+Represents non-fractional signed whole numeric values. Since the value may
+exceed the size of a 32-bit integer, it's encoded as a string.
+"""
+scalar BigInt
+
+"""Autogenerated return type of CreateUser."""
+type CreateUserPayload {
+  archetypes: String
+  email: String
+  institution: String
+  name: String
+  role: Int
+  segments: String
+  sendActivation: Boolean
+}
+
+type DbSample {
+  alignmentConfigName: String
+  basespaceAccessToken: String
+  clientUpdatedAt: ISO8601DateTime
+  createdAt: ISO8601DateTime!
+  dagVars: String
+  doNotProcess: Boolean!
+  hostGenomeId: Int
+  hostGenomeName: String
+  id: Int!
+  initialWorkflow: String!
+  inputFiles: [InputFile!]!
+  maxInputFragments: Int
+  name: String
+  pipelineBranch: String
+  pipelineCommit: String
+  pipelineExecutionStrategy: String
+  privateUntil: ISO8601DateTime
+  projectId: Int
+  s3Bowtie2IndexPath: String
+  s3PreloadResultPath: String
+  s3StarIndexPath: String
+  sampleNotes: String
+  status: String
+  subsample: Int
+  updatedAt: ISO8601DateTime!
+  uploadError: String
+  uploadedFromBasespace: Int!
+  useTaxonWhitelist: Boolean!
+  userId: Int!
+  webCommit: String
+}
+
+type DerivedSampleOutput {
+  hostGenomeName: String!
+  pipelineRun: PipelineRun
+  projectName: String!
+  summaryStats: SampleSummaryStats
+}
+
+type HostGenome {
+  createdAt: ISO8601DateTime!
+  defaultBackgroundId: Int
+  id: Int!
+  name: String!
+  s3Bowtie2IndexPath: String!
+  s3Minimap2IndexPath: String
+  s3StarIndexPath: String!
+  samplesCount: Int!
+  skipDeuteroFilter: Int!
+  taxaCategory: String!
+  updatedAt: ISO8601DateTime!
+  user: User
+  userId: Int
+}
+
+"""An ISO 8601-encoded datetime"""
+scalar ISO8601DateTime
+
+type InputFile {
+  createdAt: ISO8601DateTime!
+  id: Int!
+  name: String
+  parts: String
+  presignedUrl: String
+  sampleId: Int!
+  source: String
+  sourceType: String
+  updatedAt: ISO8601DateTime
+  uploadClient: String
+}
+
+type MngsRunInfo {
+  createdAt: ISO8601DateTime
+  finalized: Int
+  reportReady: Boolean
+  resultStatusDescription: String
+  totalRuntime: Int
+  withAssembly: Int
+}
+
+type Pathogen {
+  category: String
+  name: String
+  taxId: Int
+}
+
+type PathogenList {
+  citations: [String!]
+  createdAt: ISO8601DateTime
+  id: ID
+  name: String
+  pathogens: [Pathogen!]
+  updatedAt: ISO8601DateTime
+  version: String
+}
+
+type PipelineRun {
+  adjustedRemainingReads: Int
+  alertSent: Boolean!
+  alignmentConfig: AlignmentConfig
+  alignmentConfigId: Int
+  alignmentConfigName: String
+  assembled: Int
+  compressionRatio: Float
+  createdAt: ISO8601DateTime
+  dagVars: String
+  deprecated: Boolean
+  errorMessage: String
+  executedAt: ISO8601DateTime
+  finalized: Int
+  fractionSubsampled: Float
+  id: Int!
+  jobStatus: String
+  knownUserError: String
+  maxInputFragments: Int
+  pipelineBranch: String
+  pipelineCommit: String
+  pipelineExecutionStrategy: String
+  pipelineVersion: String
+  qcPercent: Float
+  resultsFinalized: Int
+  s3OutputPrefix: String
+  sampleId: Int
+  sfnExecutionArn: String
+  subsample: Int
+  timeToFinalized: Int
+  timeToResultsFinalized: Int
+  totalErccReads: Int
+  totalReads: Int
+  truncated: Int
+  unmappedReads: Int
+  updatedAt: ISO8601DateTime!
+  useTaxonWhitelist: Boolean!
+  wdlVersion: String
+}
+
+type Project {
+  backgroundFlag: Int
+  createdAt: ISO8601DateTime!
+  creator: User
+  daysToKeepSamplePrivate: Int!
+  description: String
+  id: Int!
+  maxInputFragmentsDefault: Int
+  name: String!
+  publicAccess: Int!
+  samples: [Sample!]
+  subsampleDefault: Int
+  totalSampleCount: Int!
+  updatedAt: ISO8601DateTime!
+}
+
+type Sample implements EntityInterface & Node {
+  alignmentConfigName: String
+  basespaceAccessToken: String
+  createdAt: ISO8601DateTime
+  dagVars: String
+  defaultBackgroundId: Int
+  defaultPipelineRunId: Int
+  details: SampleDetails!
+  doNotProcess: Boolean!
+  editable: Boolean
+  hostGenome: HostGenome
+  hostGenomeId: Int
+  id: ID!
+  initialWorkflow: String!
+  maxInputFragments: Int
+  name: String!
+  pipelineBranch: String
+  pipelineCommit: String
+  pipelineExecutionStrategy: String
+  pipelineRuns: [PipelineRun!]
+  privateUntil: ISO8601DateTime
+  project: Project
+  projectId: Int
+  public: Int!
+  s3Bowtie2IndexPath: String
+  s3PreloadResultPath: String
+  s3StarIndexPath: String
+  sampleDeletable: Boolean
+  sampleNotes: String
+  status: String
+  subsample: Int
+  updatedAt: ISO8601DateTime
+  uploadError: String
+  uploadedFromBasespace: Int
+  useTaxonWhitelist: Boolean!
+  user: User
+  userId: Int
+  webCommit: String
+  workflowRuns: [WorkflowRun!]
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  sampleType: String!
+  waterControl: Boolean!
+  collectionDate: DateTime
+  collectionLocation: String!
+  description: String
+  hostTaxon(where: TaxonWhereClause = null): Taxon
+  sequencingReads(
+    where: SequencingReadWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): SequencingReadConnection!
+  sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
+  metadatas(
+    where: MetadatumWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): MetadatumConnection!
+  metadatasAggregate(where: MetadatumWhereClause = null): MetadatumAggregate
+}
+
+type SampleDetails {
+  dbSample: DbSample
+  derivedSampleOutput: DerivedSampleOutput
+  metadata: SampleMetadata
+  mngsRunInfo: MngsRunInfo
+  uploader: SampleUploader!
+  workflowRunsCountByWorkflow: String
+}
+
+type SampleList {
+  sampleIds: [Int!]
+  samples: [Sample!]!
+}
+
+type SampleMetadata {
+  collectionDate: String
+  collectionLocationV2: String
+  nucleotideType: String
+  sampleType: String
+  waterControl: String
+  metadata: [query_SampleMetadata_metadata_items]
+  additional_info: query_SampleMetadata_additional_info
+}
+
+type SampleReadsStats {
+  initialReads: Int
+  name: String
+  pipelineVersion: String
+  sampleId: ID!
+  steps: [SampleSteps!]
+  wdlVersion: String
+}
+
+type SampleReadsStatsList {
+  sampleReadsStats: [SampleReadsStats!]!
+}
+
+type SampleSteps {
+  name: String
+  readsAfter: Int
+}
+
+type SampleSummaryStats {
+  adjustedRemainingReads: Int
+  compressionRatio: Float
+  insertSizeMean: Float
+  insertSizeStandardDeviation: Float
+  lastProcessedAt: ISO8601DateTime
+  percentRemaining: Float
+  qcPercent: Float
+  readsAfterCzidDedup: Int
+  readsAfterPriceseq: Int
+  readsAfterStar: Int
+  readsAfterTrimmomatic: Int
+  unmappedReads: Int
+}
+
+type SampleUploader {
+  id: Int!
+  name: String
+}
+
+type User {
+  archetypes: String!
+  createdByUserId: BigInt!
+  email: String!
+  id: ID!
+  institution: String!
+  name: String!
+  role: Int!
+  segments: String!
+}
+
+type WorkflowRun {
+  cachedResults: String
+  createdAt: ISO8601DateTime!
+  deprecated: Boolean!
+  errorMessage: String
+  executedAt: ISO8601DateTime
+  inputsJson: String
+  rerunFrom: Int
+  s3OutputPrefix: String
+  sample: Sample
+  sampleId: Int
+  sfnExecutionArn: String
+  status: String!
+  timeToFinalized: Int
+  updatedAt: ISO8601DateTime!
+  wdlVersion: String
+  workflow: String!
+}
+
+"""Date with time (isoformat)"""
+scalar DateTime
+
+input DatetimeComparators {
+  _eq: DateTime
+  _neq: DateTime
+  _in: [DateTime!]
+  _nin: [DateTime!]
+  _gt: DateTime
+  _gte: DateTime
+  _lt: DateTime
+  _lte: DateTime
+  _is_null: DateTime
+}
+
+interface EntityInterface implements Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+}
+
+"""
+The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`"4"\`) or integer (such as \`4\`) input value will be accepted as an ID.
+"""
+scalar GlobalID @specifiedBy(url: "https://relay.dev/graphql/objectidentification.htm")
+
+input IntComparators {
+  _eq: Int
+  _neq: Int
+  _in: [Int!]
+  _nin: [Int!]
+  _gt: Int
+  _gte: Int
+  _lt: Int
+  _lte: Int
+  _is_null: Int
+}
+
+"""An object with a Globally Unique ID"""
+interface Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+}
+
+"""Information to aid in pagination."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Run implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  startedAt: DateTime
+  endedAt: DateTime
+  executionId: String
+  outputsJson: String
+  inputsJson: String
+  status: RunStatus
+  workflowVersion(where: WorkflowVersionWhereClause = null): WorkflowVersion
+  runSteps(
+    where: RunStepWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): RunStepConnection!
+  runEntityInputs(
+    where: RunEntityInputWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): RunEntityInputConnection!
+}
+
+"""A connection to a list of items."""
+type RunConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+  """Contains the nodes in this connection"""
+  edges: [RunEdge!]!
+}
+
+input RunCreateInput {
+  collectionId: Int!
+  startedAt: DateTime = null
+  endedAt: DateTime = null
+  executionId: String = null
+  outputsJson: String = null
+  inputsJson: String = null
+  status: RunStatus = null
+  workflowVersionId: ID = null
+}
+
+"""An edge in a connection."""
+type RunEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+  """The item at the end of the edge"""
+  node: Run!
+}
+
+type RunEntityInput implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  newEntityId: Int
+  fieldName: String
+  run(where: RunWhereClause = null): Run
+}
+
+"""A connection to a list of items."""
+type RunEntityInputConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+  """Contains the nodes in this connection"""
+  edges: [RunEntityInputEdge!]!
+}
+
+input RunEntityInputCreateInput {
+  collectionId: Int!
+  newEntityId: Int = null
+  fieldName: String = null
+  runId: ID = null
+}
+
+"""An edge in a connection."""
+type RunEntityInputEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+  """The item at the end of the edge"""
+  node: RunEntityInput!
+}
+
+input RunEntityInputUpdateInput {
+  collectionId: Int = null
+  newEntityId: Int = null
+  fieldName: String = null
+  runId: ID = null
+}
+
+input RunEntityInputWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  newEntityId: IntComparators
+  fieldName: StrComparators
+  run: RunWhereClause
+}
+
+input RunEntityInputWhereClauseMutations {
+  id: UUIDComparators
+}
+
+enum RunStatus {
+  SUCCEEDED
+  FAILED
+  PENDING
+  STARTED
+  RUNNING
+}
+
+input RunStatusEnumComparators {
+  _eq: RunStatus
+  _neq: RunStatus
+  _in: [RunStatus!]
+  _nin: [RunStatus!]
+  _gt: RunStatus
+  _gte: RunStatus
+  _lt: RunStatus
+  _lte: RunStatus
+  _is_null: RunStatus
+}
+
+type RunStep implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  run(where: RunWhereClause = null): Run
+  startedAt: DateTime
+  endedAt: DateTime
+  status: RunStatus
+}
+
+"""A connection to a list of items."""
+type RunStepConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+  """Contains the nodes in this connection"""
+  edges: [RunStepEdge!]!
+}
+
+input RunStepCreateInput {
+  collectionId: Int!
+  runId: ID = null
+  startedAt: DateTime = null
+  endedAt: DateTime = null
+  status: RunStatus = null
+}
+
+"""An edge in a connection."""
+type RunStepEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+  """The item at the end of the edge"""
+  node: RunStep!
+}
+
+input RunStepUpdateInput {
+  collectionId: Int = null
+  runId: ID = null
+  startedAt: DateTime = null
+  endedAt: DateTime = null
+  status: RunStatus = null
+}
+
+input RunStepWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  run: RunWhereClause
+  startedAt: DatetimeComparators
+  endedAt: DatetimeComparators
+  status: RunStatusEnumComparators
+}
+
+input RunStepWhereClauseMutations {
+  id: UUIDComparators
+}
+
+input RunUpdateInput {
+  collectionId: Int = null
+  startedAt: DateTime = null
+  endedAt: DateTime = null
+  executionId: String = null
+  outputsJson: String = null
+  inputsJson: String = null
+  status: RunStatus = null
+  workflowVersionId: ID = null
+}
+
+input RunWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  startedAt: DatetimeComparators
+  endedAt: DatetimeComparators
+  executionId: StrComparators
+  outputsJson: StrComparators
+  inputsJson: StrComparators
+  status: RunStatusEnumComparators
+  workflowVersion: WorkflowVersionWhereClause
+  runSteps: RunStepWhereClause
+  runEntityInputs: RunEntityInputWhereClause
+}
+
+input RunWhereClauseMutations {
+  id: UUIDComparators
+}
+
+input StrComparators {
+  _eq: String
+  _neq: String
+  _in: [String!]
+  _nin: [String!]
+  _is_null: Int
+  _gt: String
+  _gte: String
+  _lt: String
+  _lte: String
+  _like: String
+  _nlike: String
+  _ilike: String
+  _nilike: String
+  _regex: String
+  _nregex: String
+  _iregex: String
+  _niregex: String
+}
+
+scalar UUID
+
+input UUIDComparators {
+  _eq: UUID
+  _neq: UUID
+  _in: [UUID!]
+  _nin: [UUID!]
+  _gt: UUID
+  _gte: UUID
+  _lt: UUID
+  _lte: UUID
+}
+
+type Workflow implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  name: String
+  defaultVersion: String
+  minimumSupportedVersion: String
+  versions(
+    where: WorkflowVersionWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): WorkflowVersionConnection!
+}
+
+input WorkflowCreateInput {
+  collectionId: Int!
+  name: String = null
+  defaultVersion: String = null
+  minimumSupportedVersion: String = null
+}
+
+input WorkflowUpdateInput {
+  collectionId: Int = null
+  name: String = null
+  defaultVersion: String = null
+  minimumSupportedVersion: String = null
+}
+
+type WorkflowVersion implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  graphJson: String
+  manifest: String
+  workflow(where: WorkflowWhereClause = null): Workflow
+  runs(
+    where: RunWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): RunConnection!
+}
+
+"""A connection to a list of items."""
+type WorkflowVersionConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+  """Contains the nodes in this connection"""
+  edges: [WorkflowVersionEdge!]!
+}
+
+input WorkflowVersionCreateInput {
+  collectionId: Int!
+  graphJson: String = null
+  manifest: String = null
+  workflowId: ID = null
+}
+
+"""An edge in a connection."""
+type WorkflowVersionEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+  """The item at the end of the edge"""
+  node: WorkflowVersion!
+}
+
+input WorkflowVersionUpdateInput {
+  collectionId: Int = null
+  graphJson: String = null
+  manifest: String = null
+  workflowId: ID = null
+}
+
+input WorkflowVersionWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  graphJson: StrComparators
+  manifest: StrComparators
+  workflow: WorkflowWhereClause
+  runs: RunWhereClause
+}
+
+input WorkflowVersionWhereClauseMutations {
+  id: UUIDComparators
+}
+
+input WorkflowWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  name: StrComparators
+  defaultVersion: StrComparators
+  minimumSupportedVersion: StrComparators
+  versions: WorkflowVersionWhereClause
+}
+
+input WorkflowWhereClauseMutations {
+  id: UUIDComparators
 }
 
 enum AlignmentTool {
@@ -366,32 +1201,12 @@ input ContigWhereClauseMutations {
   id: UUIDComparators
 }
 
-"""Date with time (isoformat)"""
-scalar DateTime
-
-input DatetimeComparators {
-  _eq: DateTime
-  _neq: DateTime
-  _in: [DateTime!]
-  _nin: [DateTime!]
-  _gt: DateTime
-  _gte: DateTime
-  _lt: DateTime
-  _lte: DateTime
-  _is_null: DateTime
-}
-
 type Entity {
   id: ID!
   type: String!
   producingRunId: ID!
   ownerUserId: Int!
   collectionId: Int!
-}
-
-interface EntityInterface implements Node {
-  """The Globally Unique ID of this object"""
-  _id: GlobalID!
 }
 
 input EntityWhereClause {
@@ -408,25 +1223,20 @@ type File {
   entityFieldName: String!
   entity(where: EntityWhereClause = null): Entity
   status: FileStatus!
-  protocol: FileAccessProtocol!
+  protocol: String!
   namespace: String!
   path: String!
   fileFormat: String!
   compressionType: Int
   size: Int
   downloadLink(expiration: Int! = 3600): SignedURL
-  contents: String
-}
-
-enum FileAccessProtocol {
-  s3
 }
 
 input FileCreate {
   name: String!
   fileFormat: String!
   compressionType: String = null
-  protocol: FileAccessProtocol!
+  protocol: String!
   namespace: String!
   path: String!
 }
@@ -583,26 +1393,224 @@ input GenomicRangeWhereClauseMutations {
 }
 
 """
-The \`ID\` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as \`"4"\`) or integer (such as \`4\`) input value will be accepted as an ID.
-"""
-scalar GlobalID @specifiedBy(url: "https://relay.dev/graphql/objectidentification.htm")
-
-input IntComparators {
-  _eq: Int
-  _neq: Int
-  _in: [Int!]
-  _nin: [Int!]
-  _gt: Int
-  _gte: Int
-  _lt: Int
-  _lte: Int
-  _is_null: Int
-}
-
-"""
 The \`JSON\` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type MetadataField implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  fieldGroup(
+    where: MetadataFieldProjectWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): MetadataFieldProjectConnection!
+  fieldGroupAggregate(where: MetadataFieldProjectWhereClause = null): MetadataFieldProjectAggregate
+  fieldName: String!
+  description: String!
+  fieldType: String!
+  isRequired: Boolean!
+  options: String
+  defaultValue: String
+  metadatas(
+    where: MetadatumWhereClause = null
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): MetadatumConnection!
+  metadatasAggregate(where: MetadatumWhereClause = null): MetadatumAggregate
+}
+
+type MetadataFieldAggregate {
+  aggregate: MetadataFieldAggregateFunctions
+}
+
+type MetadataFieldAggregateFunctions {
+  sum: MetadataFieldNumericalColumns
+  avg: MetadataFieldNumericalColumns
+  min: MetadataFieldMinMaxColumns
+  max: MetadataFieldMinMaxColumns
+  stddev: MetadataFieldNumericalColumns
+  variance: MetadataFieldNumericalColumns
+  count(distinct: Boolean = false, columns: MetadataFieldCountColumns = null): Int
+}
+
+enum MetadataFieldCountColumns {
+  field_group
+  field_name
+  description
+  field_type
+  is_required
+  options
+  default_value
+  metadatas
+  entity_id
+  id
+  producing_run_id
+  owner_user_id
+  collection_id
+}
+
+input MetadataFieldCreateInput {
+  collectionId: Int!
+  fieldName: String!
+  description: String!
+  fieldType: String!
+  isRequired: Boolean!
+  options: String = null
+  defaultValue: String = null
+}
+
+type MetadataFieldMinMaxColumns {
+  producingRunId: Int
+  ownerUserId: Int
+  collectionId: Int
+  fieldName: String
+  description: String
+  fieldType: String
+  options: String
+  defaultValue: String
+}
+
+type MetadataFieldNumericalColumns {
+  producingRunId: Int
+  ownerUserId: Int
+  collectionId: Int
+}
+
+type MetadataFieldProject implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  producingRunId: Int
+  ownerUserId: Int!
+  collectionId: Int!
+  projectId: Int!
+  metadataField(where: MetadataFieldWhereClause = null): MetadataField
+}
+
+type MetadataFieldProjectAggregate {
+  aggregate: MetadataFieldProjectAggregateFunctions
+}
+
+type MetadataFieldProjectAggregateFunctions {
+  sum: MetadataFieldProjectNumericalColumns
+  avg: MetadataFieldProjectNumericalColumns
+  min: MetadataFieldProjectMinMaxColumns
+  max: MetadataFieldProjectMinMaxColumns
+  stddev: MetadataFieldProjectNumericalColumns
+  variance: MetadataFieldProjectNumericalColumns
+  count(distinct: Boolean = false, columns: MetadataFieldProjectCountColumns = null): Int
+}
+
+"""A connection to a list of items."""
+type MetadataFieldProjectConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+  """Contains the nodes in this connection"""
+  edges: [MetadataFieldProjectEdge!]!
+}
+
+enum MetadataFieldProjectCountColumns {
+  project_id
+  metadata_field
+  entity_id
+  id
+  producing_run_id
+  owner_user_id
+  collection_id
+}
+
+input MetadataFieldProjectCreateInput {
+  collectionId: Int!
+  projectId: Int!
+  metadataFieldId: ID!
+}
+
+"""An edge in a connection."""
+type MetadataFieldProjectEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+  """The item at the end of the edge"""
+  node: MetadataFieldProject!
+}
+
+type MetadataFieldProjectMinMaxColumns {
+  producingRunId: Int
+  ownerUserId: Int
+  collectionId: Int
+  projectId: Int
+}
+
+type MetadataFieldProjectNumericalColumns {
+  producingRunId: Int
+  ownerUserId: Int
+  collectionId: Int
+  projectId: Int
+}
+
+input MetadataFieldProjectUpdateInput {
+  collectionId: Int = null
+  projectId: Int = null
+  metadataFieldId: ID = null
+}
+
+input MetadataFieldProjectWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  projectId: IntComparators
+  metadataField: MetadataFieldWhereClause
+}
+
+input MetadataFieldProjectWhereClauseMutations {
+  id: UUIDComparators
+}
+
+input MetadataFieldUpdateInput {
+  collectionId: Int = null
+  fieldName: String = null
+  description: String = null
+  fieldType: String = null
+  isRequired: Boolean = null
+  options: String = null
+  defaultValue: String = null
+}
+
+input MetadataFieldWhereClause {
+  id: UUIDComparators
+  producingRunId: IntComparators
+  ownerUserId: IntComparators
+  collectionId: IntComparators
+  fieldGroup: MetadataFieldProjectWhereClause
+  fieldName: StrComparators
+  description: StrComparators
+  fieldType: StrComparators
+  isRequired: BoolComparators
+  options: StrComparators
+  defaultValue: StrComparators
+  metadatas: MetadatumWhereClause
+}
+
+input MetadataFieldWhereClauseMutations {
+  id: UUIDComparators
+}
 
 type Metadatum implements EntityInterface & Node {
   """The Globally Unique ID of this object"""
@@ -612,7 +1620,7 @@ type Metadatum implements EntityInterface & Node {
   ownerUserId: Int!
   collectionId: Int!
   sample(where: SampleWhereClause = null): Sample
-  fieldName: String!
+  metadataField(where: MetadataFieldWhereClause = null): MetadataField
   value: String!
 }
 
@@ -640,7 +1648,7 @@ type MetadatumConnection {
 
 enum MetadatumCountColumns {
   sample
-  field_name
+  metadata_field
   value
   entity_id
   id
@@ -652,7 +1660,7 @@ enum MetadatumCountColumns {
 input MetadatumCreateInput {
   collectionId: Int!
   sampleId: ID!
-  fieldName: String!
+  metadataFieldId: ID!
   value: String!
 }
 
@@ -668,7 +1676,6 @@ type MetadatumMinMaxColumns {
   producingRunId: Int
   ownerUserId: Int
   collectionId: Int
-  fieldName: String
   value: String
 }
 
@@ -681,7 +1688,7 @@ type MetadatumNumericalColumns {
 input MetadatumUpdateInput {
   collectionId: Int = null
   sampleId: ID = null
-  fieldName: String = null
+  metadataFieldId: ID = null
   value: String = null
 }
 
@@ -691,7 +1698,7 @@ input MetadatumWhereClause {
   ownerUserId: IntComparators
   collectionId: IntComparators
   sample: SampleWhereClause
-  fieldName: StrComparators
+  metadataField: MetadataFieldWhereClause
   value: StrComparators
 }
 
@@ -879,12 +1886,6 @@ type MultipartUploadResponse {
   file: File!
 }
 
-"""An object with a Globally Unique ID"""
-interface Node {
-  """The Globally Unique ID of this object"""
-  _id: GlobalID!
-}
-
 enum NucleicAcid {
   RNA
   DNA
@@ -900,18 +1901,6 @@ input NucleicAcidEnumComparators {
   _lt: NucleicAcid
   _lte: NucleicAcid
   _is_null: NucleicAcid
-}
-
-"""Information to aid in pagination."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-  """When paginating backwards, the cursor to continue."""
-  startCursor: String
-  """When paginating forwards, the cursor to continue."""
-  endCursor: String
 }
 
 type PhylogeneticTree implements EntityInterface & Node {
@@ -1155,82 +2144,6 @@ input ReferenceGenomeWhereClause {
 
 input ReferenceGenomeWhereClauseMutations {
   id: UUIDComparators
-}
-
-type Sample implements EntityInterface & Node {
-  """The Globally Unique ID of this object"""
-  _id: GlobalID!
-  id: ID!
-  producingRunId: Int
-  ownerUserId: Int!
-  collectionId: Int!
-  name: String!
-  sampleType: String!
-  waterControl: Boolean!
-  collectionDate: DateTime
-  collectionLocation: String!
-  description: String
-  hostTaxon(where: TaxonWhereClause = null): Taxon
-  sequencingReads(
-    where: SequencingReadWhereClause = null
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-    """Returns the first n items from the list."""
-    first: Int = null
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): SequencingReadConnection!
-  sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
-  metadatas(
-    where: MetadatumWhereClause = null
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-    """Returns the first n items from the list."""
-    first: Int = null
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): MetadatumConnection!
-  metadatasAggregate(where: MetadatumWhereClause = null): MetadatumAggregate
-  alignmentConfigName: String
-  basespaceAccessToken: String
-  createdAt: ISO8601DateTime
-  dagVars: String
-  defaultBackgroundId: Int
-  defaultPipelineRunId: Int
-  details: SampleDetails!
-  doNotProcess: Boolean!
-  editable: Boolean
-  hostGenome: HostGenome
-  hostGenomeId: Int
-  initialWorkflow: String!
-  maxInputFragments: Int
-  pipelineBranch: String
-  pipelineCommit: String
-  pipelineExecutionStrategy: String
-  pipelineRuns: [PipelineRun!]
-  privateUntil: ISO8601DateTime
-  project: Project
-  projectId: Int
-  public: Int!
-  s3Bowtie2IndexPath: String
-  s3PreloadResultPath: String
-  s3StarIndexPath: String
-  sampleDeletable: Boolean
-  sampleNotes: String
-  status: String
-  subsample: Int
-  updatedAt: ISO8601DateTime
-  uploadError: String
-  uploadedFromBasespace: Int
-  useTaxonWhitelist: Boolean!
-  user: User
-  userId: Int
-  webCommit: String
-  workflowRuns: [WorkflowRun!]
 }
 
 type SampleAggregate {
@@ -1641,26 +2554,6 @@ type SignedURL {
   fields: JSON
 }
 
-input StrComparators {
-  _eq: String
-  _neq: String
-  _in: [String!]
-  _nin: [String!]
-  _is_null: Int
-  _gt: String
-  _gte: String
-  _lt: String
-  _lte: String
-  _like: String
-  _nlike: String
-  _ilike: String
-  _nilike: String
-  _regex: String
-  _nregex: String
-  _iregex: String
-  _niregex: String
-}
-
 type Taxon implements EntityInterface & Node {
   """The Globally Unique ID of this object"""
   _id: GlobalID!
@@ -1676,6 +2569,15 @@ type Taxon implements EntityInterface & Node {
   upstreamDatabase(where: UpstreamDatabaseWhereClause = null): UpstreamDatabase
   upstreamDatabaseIdentifier: String!
   level: TaxonLevel!
+  taxId: Int!
+  taxIdParent: Int!
+  taxIdSpecies: Int!
+  taxIdGenus: Int!
+  taxIdFamily: Int!
+  taxIdOrder: Int!
+  taxIdClass: Int!
+  taxIdPhylum: Int!
+  taxIdKingdom: Int!
   consensusGenomes(
     where: ConsensusGenomeWhereClause = null
     """Returns the items in the list that come before the specified cursor."""
@@ -1757,16 +2659,15 @@ enum TaxonCountColumns {
   upstream_database
   upstream_database_identifier
   level
-  tax_parent
-  tax_subspecies
-  tax_species
-  tax_genus
-  tax_family
-  tax_order
-  tax_class
-  tax_phylum
-  tax_kingdom
-  tax_superkingdom
+  tax_id
+  tax_id_parent
+  tax_id_species
+  tax_id_genus
+  tax_id_family
+  tax_id_order
+  tax_id_class
+  tax_id_phylum
+  tax_id_kingdom
   consensus_genomes
   reference_genomes
   sequencing_reads
@@ -1788,6 +2689,15 @@ input TaxonCreateInput {
   upstreamDatabaseId: ID!
   upstreamDatabaseIdentifier: String!
   level: TaxonLevel!
+  taxId: Int!
+  taxIdParent: Int!
+  taxIdSpecies: Int!
+  taxIdGenus: Int!
+  taxIdFamily: Int!
+  taxIdOrder: Int!
+  taxIdClass: Int!
+  taxIdPhylum: Int!
+  taxIdKingdom: Int!
 }
 
 """An edge in a connection."""
@@ -1799,15 +2709,9 @@ type TaxonEdge {
 }
 
 enum TaxonLevel {
-  level_subspecies
-  level_species
-  level_genus
-  level_family
-  level_order
-  level_class
-  level_phylum
-  level_kingdom
-  level_superkingdom
+  species
+  genus
+  family
 }
 
 input TaxonLevelEnumComparators {
@@ -1831,12 +2735,30 @@ type TaxonMinMaxColumns {
   commonName: String
   name: String
   upstreamDatabaseIdentifier: String
+  taxId: Int
+  taxIdParent: Int
+  taxIdSpecies: Int
+  taxIdGenus: Int
+  taxIdFamily: Int
+  taxIdOrder: Int
+  taxIdClass: Int
+  taxIdPhylum: Int
+  taxIdKingdom: Int
 }
 
 type TaxonNumericalColumns {
   producingRunId: Int
   ownerUserId: Int
   collectionId: Int
+  taxId: Int
+  taxIdParent: Int
+  taxIdSpecies: Int
+  taxIdGenus: Int
+  taxIdFamily: Int
+  taxIdOrder: Int
+  taxIdClass: Int
+  taxIdPhylum: Int
+  taxIdKingdom: Int
 }
 
 input TaxonUpdateInput {
@@ -1849,6 +2771,15 @@ input TaxonUpdateInput {
   upstreamDatabaseId: ID = null
   upstreamDatabaseIdentifier: String = null
   level: TaxonLevel = null
+  taxId: Int = null
+  taxIdParent: Int = null
+  taxIdSpecies: Int = null
+  taxIdGenus: Int = null
+  taxIdFamily: Int = null
+  taxIdOrder: Int = null
+  taxIdClass: Int = null
+  taxIdPhylum: Int = null
+  taxIdKingdom: Int = null
 }
 
 input TaxonWhereClause {
@@ -1864,6 +2795,15 @@ input TaxonWhereClause {
   upstreamDatabase: UpstreamDatabaseWhereClause
   upstreamDatabaseIdentifier: StrComparators
   level: TaxonLevelEnumComparators
+  taxId: IntComparators
+  taxIdParent: IntComparators
+  taxIdSpecies: IntComparators
+  taxIdGenus: IntComparators
+  taxIdFamily: IntComparators
+  taxIdOrder: IntComparators
+  taxIdClass: IntComparators
+  taxIdPhylum: IntComparators
+  taxIdKingdom: IntComparators
   consensusGenomes: ConsensusGenomeWhereClause
   referenceGenomes: ReferenceGenomeWhereClause
   sequencingReads: SequencingReadWhereClause
@@ -1872,19 +2812,6 @@ input TaxonWhereClause {
 
 input TaxonWhereClauseMutations {
   id: UUIDComparators
-}
-
-scalar UUID
-
-input UUIDComparators {
-  _eq: UUID
-  _neq: UUID
-  _in: [UUID!]
-  _nin: [UUID!]
-  _gt: UUID
-  _gte: UUID
-  _lt: UUID
-  _lte: UUID
 }
 
 type UpstreamDatabase implements EntityInterface & Node {
@@ -1967,295 +2894,6 @@ input UpstreamDatabaseWhereClause {
 
 input UpstreamDatabaseWhereClauseMutations {
   id: UUIDComparators
-}
-
-type AlignmentConfig {
-  createdAt: ISO8601DateTime!
-  indexDirSuffix: String
-  lineageVersion: String!
-  lineageVersionOld: Int
-  name: String
-  s3Accession2taxidPath: String
-  s3DeuterostomeDbPath: String
-  s3LineagePath: String
-  s3NrDbPath: String
-  s3NrLocDbPath: String
-  s3NtDbPath: String
-  s3NtInfoDbPath: String
-  s3NtLocDbPath: String
-  s3TaxonBlacklistPath: String
-  updatedAt: ISO8601DateTime!
-}
-
-input Annotation {
-  name: String!
-}
-
-type AppConfig {
-  key: String!
-  value: String!
-}
-
-"""
-Represents non-fractional signed whole numeric values. Since the value may
-exceed the size of a 32-bit integer, it's encoded as a string.
-"""
-scalar BigInt
-
-"""Autogenerated return type of CreateUser."""
-type CreateUserPayload {
-  archetypes: String
-  email: String
-  institution: String
-  name: String
-  role: Int
-  segments: String
-  sendActivation: Boolean
-}
-
-type DbSample {
-  alignmentConfigName: String
-  basespaceAccessToken: String
-  clientUpdatedAt: ISO8601DateTime
-  createdAt: ISO8601DateTime!
-  dagVars: String
-  doNotProcess: Boolean!
-  hostGenomeId: Int
-  hostGenomeName: String
-  id: Int!
-  initialWorkflow: String!
-  inputFiles: [InputFile!]!
-  maxInputFragments: Int
-  name: String
-  pipelineBranch: String
-  pipelineCommit: String
-  pipelineExecutionStrategy: String
-  privateUntil: ISO8601DateTime
-  projectId: Int
-  s3Bowtie2IndexPath: String
-  s3PreloadResultPath: String
-  s3StarIndexPath: String
-  sampleNotes: String
-  status: String
-  subsample: Int
-  updatedAt: ISO8601DateTime!
-  uploadError: String
-  uploadedFromBasespace: Int!
-  useTaxonWhitelist: Boolean!
-  userId: Int!
-  webCommit: String
-}
-
-type DerivedSampleOutput {
-  hostGenomeName: String!
-  pipelineRun: PipelineRun
-  projectName: String!
-  summaryStats: SampleSummaryStats
-}
-
-type HostGenome {
-  createdAt: ISO8601DateTime!
-  defaultBackgroundId: Int
-  id: Int!
-  name: String!
-  s3Bowtie2IndexPath: String!
-  s3Minimap2IndexPath: String
-  s3StarIndexPath: String!
-  samplesCount: Int!
-  skipDeuteroFilter: Int!
-  taxaCategory: String!
-  updatedAt: ISO8601DateTime!
-  user: User
-  userId: Int
-}
-
-"""An ISO 8601-encoded datetime"""
-scalar ISO8601DateTime
-
-type InputFile {
-  createdAt: ISO8601DateTime!
-  id: Int!
-  name: String
-  parts: String
-  presignedUrl: String
-  sampleId: Int!
-  source: String
-  sourceType: String
-  updatedAt: ISO8601DateTime
-  uploadClient: String
-}
-
-type MngsRunInfo {
-  createdAt: ISO8601DateTime
-  finalized: Int
-  reportReady: Boolean
-  resultStatusDescription: String
-  totalRuntime: Int
-  withAssembly: Int
-}
-
-type Pathogen {
-  category: String
-  name: String
-  taxId: Int
-}
-
-type PathogenList {
-  citations: [String!]
-  createdAt: ISO8601DateTime
-  id: ID
-  name: String
-  pathogens: [Pathogen!]
-  updatedAt: ISO8601DateTime
-  version: String
-}
-
-type PipelineRun {
-  adjustedRemainingReads: Int
-  alertSent: Boolean!
-  alignmentConfig: AlignmentConfig
-  alignmentConfigId: Int
-  alignmentConfigName: String
-  assembled: Int
-  compressionRatio: Float
-  createdAt: ISO8601DateTime
-  dagVars: String
-  deprecated: Boolean
-  errorMessage: String
-  executedAt: ISO8601DateTime
-  finalized: Int
-  fractionSubsampled: Float
-  id: Int!
-  jobStatus: String
-  knownUserError: String
-  maxInputFragments: Int
-  pipelineBranch: String
-  pipelineCommit: String
-  pipelineExecutionStrategy: String
-  pipelineVersion: String
-  qcPercent: Float
-  resultsFinalized: Int
-  s3OutputPrefix: String
-  sampleId: Int
-  sfnExecutionArn: String
-  subsample: Int
-  timeToFinalized: Int
-  timeToResultsFinalized: Int
-  totalErccReads: Int
-  totalReads: Int
-  truncated: Int
-  unmappedReads: Int
-  updatedAt: ISO8601DateTime!
-  useTaxonWhitelist: Boolean!
-  wdlVersion: String
-}
-
-type Project {
-  backgroundFlag: Int
-  createdAt: ISO8601DateTime!
-  creator: User
-  daysToKeepSamplePrivate: Int!
-  description: String
-  id: Int!
-  maxInputFragmentsDefault: Int
-  name: String!
-  publicAccess: Int!
-  samples: [Sample!]
-  subsampleDefault: Int
-  totalSampleCount: Int!
-  updatedAt: ISO8601DateTime!
-}
-
-type SampleDetails {
-  dbSample: DbSample
-  derivedSampleOutput: DerivedSampleOutput
-  metadata: SampleMetadata
-  mngsRunInfo: MngsRunInfo
-  uploader: SampleUploader!
-  workflowRunsCountByWorkflow: String
-}
-
-type SampleList {
-  sampleIds: [Int!]
-  samples: [Sample!]!
-}
-
-type SampleMetadata {
-  collectionDate: String
-  collectionLocationV2: String
-  nucleotideType: String
-  sampleType: String
-  waterControl: String
-  metadata: [query_SampleMetadata_metadata_items]
-  additional_info: query_SampleMetadata_additional_info
-}
-
-type SampleReadsStats {
-  initialReads: Int
-  name: String
-  pipelineVersion: String
-  sampleId: ID!
-  steps: [SampleSteps!]
-  wdlVersion: String
-}
-
-type SampleReadsStatsList {
-  sampleReadsStats: [SampleReadsStats!]!
-}
-
-type SampleSteps {
-  name: String
-  readsAfter: Int
-}
-
-type SampleSummaryStats {
-  adjustedRemainingReads: Int
-  compressionRatio: Float
-  insertSizeMean: Float
-  insertSizeStandardDeviation: Float
-  lastProcessedAt: ISO8601DateTime
-  percentRemaining: Float
-  qcPercent: Float
-  readsAfterCzidDedup: Int
-  readsAfterPriceseq: Int
-  readsAfterStar: Int
-  readsAfterTrimmomatic: Int
-  unmappedReads: Int
-}
-
-type SampleUploader {
-  id: Int!
-  name: String
-}
-
-type User {
-  archetypes: String!
-  createdByUserId: BigInt!
-  email: String!
-  id: ID!
-  institution: String!
-  name: String!
-  role: Int!
-  segments: String!
-}
-
-type WorkflowRun {
-  cachedResults: String
-  createdAt: ISO8601DateTime!
-  deprecated: Boolean!
-  errorMessage: String
-  executedAt: ISO8601DateTime
-  inputsJson: String
-  rerunFrom: Int
-  s3OutputPrefix: String
-  sample: Sample
-  sampleId: Int
-  sfnExecutionArn: String
-  status: String!
-  timeToFinalized: Int
-  updatedAt: ISO8601DateTime!
-  wdlVersion: String
-  workflow: String!
 }
 
 type AmrDeprecatedResults {

@@ -100,7 +100,7 @@ export const resolvers: Resolvers = {
           log_url,
           analysis_type,
           progress // --> to be discussed on Feb 16th, 2024
-          } = bulkDownload;
+        } = bulkDownload;
 
           // In Next Gen we will have an array with all of the entity input 
           // filtered through the nodes entity query to get the relevant info

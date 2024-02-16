@@ -19,12 +19,12 @@
     },
     "file": {
       "downloadLink": {
-        "url": "https://czi-infectious-disease-development-samples.s3.us-west-2.amazonaws.com/downloads/12715/Sample%20Taxon%20Reports.tar.gz?response-content-disposition=attachment%3B%20filename%3D%22Sample%20Taxon%20Reports.tar.gz%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA2U4NV5TWN2L67EN2%2F20240215%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240215T195813Z&X-Amz-Expires=86400&X-Amz-Security-Token=FwoGZXIvYXdzEOH%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDHRJUknRAvjLiy8uOSLzAu4S9%2BLhWgyAOC7dOoZKXhhQonsXChTUM2fHeIkkgt8C%2BeysUs6R3KAC5sUjahVFl%2FTwmxIRWlNy9uvK81vRAdmSKECMVisIA3zU3QkquSdAeyKKidHGkVFN1M0eWR4KzpKDjRzGRjEhDwjHohtgymkz6mnSfLj4ITP5mTgSXgixDmAFrI7ZEGZqUQh4dm5zjYifwyQsMEASKJChwSED9LSCsrZKUJ%2FzfLhi83XeRuNkeVQBcObHSlwbM7nNj81QP2YXtttJ7PsOrlPj9xKYtIOJtyRE5gQ4NKEJNp0KSeS%2FF79W5bY8ss06wpeESPO3gAL6jFVt6Z7A5RopgWXiLhSEE1FFFIWrs9yJY3n5FL67vWr5rfJjTKWkZIhK4BYOw%2B09LEpk3AiqRxgfh1x6DWvfbyO7TCkMCPaq0mpJOiHos3pB3Rm7uipb1W5aAnSO%2BtUZN%2BflFyHsvkwuSvE3tR2Z1t6Db3Nv%2BOkPqIhAxpQXYib5KILXuK4GMiNV43%2BCYSH8tyx%2BJHa0RG3O2WHKU6lRG5XlKWG9yELIHE1fpg%3D%3D&X-Amz-SignedHeaders=host&X-Amz-Signature=9ce0ec747ecff56342e828d0b9d71697606580c6b55b5c81c56dbbf50e326133"
+        "url": "http://url.com"      
       },
       "size": 57197
     },
     "toDelete": {
-      "user_name": "Suzette McCanny",
+      "user_name": "Paula Duncan",
       "log_url": null,
       "totalSamples": 3,
       "progress": 0.87
@@ -51,7 +51,7 @@
       "size": null
     },
     "toDelete": {
-      "user_name": "Suzette McCanny",
+      "user_name": "Paula Duncan",
       "log_url": null,
       "totalSamples": null,
       "progress": 1.0

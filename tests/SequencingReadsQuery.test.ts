@@ -26,7 +26,7 @@ describe("sequencingReads query:", () => {
     const response = await execute(query, {});
 
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&search=abc&listAllIds=false",
+      "/workflow_runs.json?&mode=with_sample_info&search=abc&limit=50&offset=100&listAllIds=false",
       expect.anything(),
       expect.anything()
     );

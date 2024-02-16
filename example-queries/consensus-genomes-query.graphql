@@ -1,14 +1,19 @@
 query TestQuery {
     consensusGenomes(input: {
+        after: "{\"limit\":50,\"offset\":100}"
         where: {
             producingRunId: {
-            _in: ["abc", "def"]
+                _in: ["abc", "def"]
             }
         }
         todoRemove: {
             search: "abc"
         }
     }) {
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
         producingRunId
         taxon {
             name

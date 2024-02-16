@@ -1,33 +1,38 @@
 query TestQuery {
     sequencingReads(input: {
+        after: "{\"limit\":50,\"offset\":100}"
         where: {
             id: {
-            _in: ["abc", "def"]
+                _in: ["abc", "def"]
             }
         }
         todoRemove: {
             search: "abc"
         }
     }) {
-    id
-    sample {
-        metadatas {
-        edges {
-            node {
-            fieldName
-            value
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        id
+        sample {
+            metadatas {
+                edges {
+                    node {
+                    fieldName
+                    value
+                    }
+                }
             }
         }
-        }
-    }
-    consensusGenomes {
-        edges {
-        node {
-            taxon {
-            name
+        consensusGenomes {
+            edges {
+                node {
+                    taxon {
+                        name
+                    }
+                }
             }
         }
-        }
-    }
     }
 }

@@ -3,6 +3,18 @@
     "items": {
         "type": "object",
         "properties": {
+            "pageInfo": {
+                "type": "object",
+                "properties": {
+                    "hasNextPage": {
+                        "type": "boolean"
+                    },
+                    "endCursor": {
+                        "type": "string"
+                    }
+                },
+                "required": ["hasNextPage"]
+            },
             "producingRunId": {
                 "type": "string"
             },
@@ -166,6 +178,7 @@
                 },
                 "required": ["nucleicAcid", "technology"]
             }
-        }
+        },
+        "required": ["pageInfo"]
     }
 }

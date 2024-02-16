@@ -17,7 +17,7 @@ sources:
     handler:
       graphql:
         endpoint: ${NEXTGEN_WORKFLOW_API_URL}/graphql
-        source: ./sources/nextgen-entities-schema.graphql
+        source: ./sources/nextgen-workflows-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['authorization']}"
   - name: CZIDREST

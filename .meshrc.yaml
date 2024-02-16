@@ -40,6 +40,7 @@ sources:
             responseTypeName: Background
           - type: Query
             field: bulkDownloads
+            path: /bulk_downloads?searchBy=${searchBy}&n=${limit}
             method: GET
             requestSample: {
                 searchBy: "string to search",

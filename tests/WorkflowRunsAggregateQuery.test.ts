@@ -31,12 +31,16 @@ describe("workflows aggregate query:", () => {
     }));
 
     const query = `
-      query WorkflowRunsAggregateQuery(
-        $cgWorkflowRunIds: [Int]
+      query workflowRunsAggregateQuery(
+        $cgWorkflowRunIds: [String]
       ) {
-        WorkflowRunsAggregate(
+        workflowRunsAggregate(
           input: {
-            workflowIds: { consensus_genome: $cgWorkflowRunIds }
+            where: {
+              id: {
+                _in: $cgWorkflowRunIds
+              } 
+            },
             todoRemove: { domain: "my_data", offset: 0 }
           }
         ) {
@@ -48,17 +52,17 @@ describe("workflows aggregate query:", () => {
       }
     `
 
-    const response = await execute(query, {cgWorkflowRunIds: [1, 2, 3]});
+    const response = await execute(query, {cgWorkflowRunIds: ["1", "2", "3"]});
     expect(httpUtils.get).toHaveBeenCalledWith(
       "/projects.json?&domain=my_data&limit=10000000&listAllIds=false&offset=0",
       expect.anything(),
       expect.anything()
     );
 
-    expect(response.data.WorkflowRunsAggregate).toHaveLength(1);
-    expect(response.data.WorkflowRunsAggregate[0].collectionId).toBe(1);
-    expect(response.data.WorkflowRunsAggregate[0].amrRunsCount).toBe(2);
-    expect(response.data.WorkflowRunsAggregate[0].cgRunsCount).toBe(1);
-    expect(response.data.WorkflowRunsAggregate[0].mngsRunsCount).toBe(3);
+    expect(response.data.workflowRunsAggregate).toHaveLength(1);
+    expect(response.data.workflowRunsAggregate[0].collectionId).toBe(1);
+    expect(response.data.workflowRunsAggregate[0].amrRunsCount).toBe(2);
+    expect(response.data.workflowRunsAggregate[0].cgRunsCount).toBe(1);
+    expect(response.data.workflowRunsAggregate[0].mngsRunsCount).toBe(3);
   });
 });

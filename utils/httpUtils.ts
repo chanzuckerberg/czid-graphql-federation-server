@@ -26,20 +26,7 @@ export const get = async (url: string, args: any, context: any) => {
     let baseURL, urlPrefix;
     const nextGenEnabled = await isNextGenEnabled(context);
     if (nextGenEnabled) {
-      // next gen details
-      const czidServicesToken = await getEnrichedToken(context);
-      const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-          Authorization: `Bearer ${czidServicesToken}`,
-        },
-        body: JSON.stringify(query),
-      });
-      return await response.json();
+      return fetchFromNextGenServer(args, context)
     } else {
       baseURL = process.env.API_URL;
       urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
@@ -62,20 +49,7 @@ export const getFullResponse = async (url: string, args: any, context: any) => {
     const baseURL = process.env.API_URL;
     const nextGenEnabled = await isNextGenEnabled(context);
     if (nextGenEnabled) {
-      // next gen details
-      const czidServicesToken = await getEnrichedToken(context);
-      const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-          Authorization: `Bearer ${czidServicesToken}`,
-        },
-        body: JSON.stringify(query),
-      });
-      return response;
+      return fetchFromNextGenServer(args, context, "fullResponse")
     } else {
       const urlPrefix = args.snapshotLinkId
         ? `/pub/${args.snapshotLinkId}`
@@ -109,20 +83,7 @@ export const postWithCSRF = async (
   try {
     const nextGenEnabled = await isNextGenEnabled(context);
     if (nextGenEnabled) {
-      const czidServicesToken = await getEnrichedToken(context);
-      const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-          Authorization: `Bearer ${czidServicesToken}`,
-        },
-        body: JSON.stringify(query),
-      });
-      return await response.json();
-      // next gen details
+      return fetchFromNextGenServer(args, context)
     } else {
       const response = await fetch(process.env.API_URL + url, {
         method: "POST",
@@ -186,3 +147,24 @@ export const isNextGenEnabled = async (context) => {
 //     return Promise.reject(e.response);
 //   }
 // };
+
+
+const fetchFromNextGenServer = async (args, context, fullResponse?: "fullResponse") => {
+  const czidServicesToken = await getEnrichedToken(context);
+  const query = context.params.query;
+  const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL, {
+    method: "POST",
+    headers: {
+      Cookie: context.request.headers.get("cookie"),
+      "Content-Type": "application/json",
+      "X-CSRF-Token": args?.input?.authenticityToken,
+      Authorization: `Bearer ${czidServicesToken}`,
+    },
+    body: JSON.stringify(query),
+  });
+  if (fullResponse === "fullResponse"){
+    return await response.json();
+  } else {
+    return response;
+  }
+};

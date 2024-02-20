@@ -164,7 +164,7 @@ export const getFeatureFlags = async (context: any) => {
 };
 
 export const getFeatureFlagsFromRequest = (context) => {
-  return context.request.headers.get("readfromnextgen");
+  return context.request.headers.get("x-should-read-from-nextgen");
 };
 
 export const isNextGenEnabled = async (context) => {

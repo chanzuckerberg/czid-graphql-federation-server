@@ -2,6 +2,7 @@ import { ExecuteMeshFn } from "@graphql-mesh/runtime";
 import { getMeshInstance } from "./utils/MeshInstance";
 
 import * as httpUtils from "../utils/httpUtils";
+import { getExampleQuery } from "./utils/ExampleQueryFiles";
 jest.mock("../utils/httpUtils");
 
 beforeEach(async () => {
@@ -17,36 +18,7 @@ describe("bulkDownloads Query:", () => {
   });
   
   it("should give correct response with NO params & and a failed run", async () => {
-    const query = `query BulkDownloadsWithNoLimit {
-      bulkDownloads {
-          id
-          status
-          startedAt
-          ownerUserId
-          analysisCount
-          entityInputFileType
-          sampleNames
-          rawInputsJson {
-            description
-            downloadType
-            downloadDisplayName
-            fileFormat
-          }
-          file {
-            downloadLink {
-              url
-            }
-            size
-          }
-          toDelete{
-            user_name
-            log_url
-            totalSamples
-            progress
-          }
-        }
-      }
-    `;
+    const query = getExampleQuery("bulk-downloads-no-limit")
     const railsResponse = [
       {
         id: 12714,
@@ -146,45 +118,7 @@ describe("bulkDownloads Query:", () => {
   });
 
   it("should give correct response with url params & successful run", async () => {
-    const query = `query BulkDownloadsWithLimitQuery(
-      $limit: Int, 
-      $searchBy: String
-    ) {
-        bulkDownloads(
-          input: {
-            searchBy: $searchBy, 
-            limit: $limit
-          }
-        ) 
-        {
-          id
-          status
-          startedAt
-          ownerUserId
-          analysisCount
-          entityInputFileType
-          sampleNames
-          rawInputsJson {
-            description
-            downloadType
-            downloadDisplayName
-            fileFormat
-          }
-          file {
-            downloadLink {
-              url
-            }
-            size
-          }
-          toDelete{
-            user_name
-            log_url
-            totalSamples
-            progress
-          }
-        }
-      }
-    `;
+    const query = getExampleQuery("bulk-downloads-with-limit")
     const railsResponse = [
       {
         id: 12715,

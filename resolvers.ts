@@ -8,7 +8,7 @@ import {
   get,
   formatUrlParams,
   postWithCSRF,
-  getFullResponse,
+  shouldReadFromNextGen,
 } from "./utils/httpUtils";
 import {
   formatTaxonHits,
@@ -87,6 +87,11 @@ export const resolvers: Resolvers = {
       }
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      if (nextGenEnabled){
+        return get("_", args, context);
+      }
+
       const { coverage_viz, quality_metrics, taxon_info } = await get(
         `/workflow_runs/${args.workflowRunId}/results`,
         args,
@@ -97,7 +102,7 @@ export const resolvers: Resolvers = {
         taxon_info || {};
 
       const ret = {
-        metricsConsensusGenome: {
+        metricConsensusGenome: {
           nMissing: quality_metrics?.n_missing,
           nAmbiguous: quality_metrics?.n_ambiguous,
           referenceGenomeLength: quality_metrics?.reference_genome_length,
@@ -118,10 +123,10 @@ export const resolvers: Resolvers = {
           id: taxon_id?.toString(),
           name: taxon_name,
         },
-        referenceGenomes: {
+        referenceGenome: {
           id: accession_id,
         },
-        consensusGenomes: {
+        consensusGenome: {
           accession: {
             accessionId: accession_id,
             accessionName: accession_name,
@@ -524,10 +529,11 @@ export const resolvers: Resolvers = {
       );
     },
     ZipLink: async (root, args, context, info) => {
-      const res = await getFullResponse(
+      const res = await get(
         `/workflow_runs/${args.workflowRunId}/zip_link.json`,
         args,
-        context
+        context,
+        "fullResponse"
       );
       if (res.status !== 200) {
         return {

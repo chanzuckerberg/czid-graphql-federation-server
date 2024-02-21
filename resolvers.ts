@@ -815,7 +815,7 @@ export const resolvers: Resolvers = {
       }
       return projects.map((project): query_workflowRunsAggregate_items => {
         return {
-          collectionId: project.id,
+          collectionId: project.id.toString(),
           mngsRunsCount: project.sample_counts.mngs_runs_count,
           cgRunsCount:
             project.sample_counts.cg_runs_count,

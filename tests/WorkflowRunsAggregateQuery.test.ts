@@ -41,7 +41,7 @@ describe("workflows aggregate query:", () => {
     );
 
     expect(response.data.workflowRunsAggregate).toHaveLength(1);
-    expect(response.data.workflowRunsAggregate[0].collectionId).toBe(1);
+    expect(response.data.workflowRunsAggregate[0].collectionId).toBe("1");
     expect(response.data.workflowRunsAggregate[0].amrRunsCount).toBe(2);
     expect(response.data.workflowRunsAggregate[0].cgRunsCount).toBe(1);
     expect(response.data.workflowRunsAggregate[0].mngsRunsCount).toBe(3);

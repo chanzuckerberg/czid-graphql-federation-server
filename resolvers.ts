@@ -102,7 +102,7 @@ export const resolvers: Resolvers = {
         taxon_info || {};
 
       const ret = {
-        metricsConsensusGenome: {
+        metricConsensusGenome: {
           nMissing: quality_metrics?.n_missing,
           nAmbiguous: quality_metrics?.n_ambiguous,
           referenceGenomeLength: quality_metrics?.reference_genome_length,
@@ -123,10 +123,10 @@ export const resolvers: Resolvers = {
           id: taxon_id?.toString(),
           name: taxon_name,
         },
-        referenceGenomes: {
+        referenceGenome: {
           id: accession_id,
         },
-        consensusGenomes: {
+        consensusGenome: {
           accession: {
             accessionId: accession_id,
             accessionName: accession_name,

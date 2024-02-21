@@ -106,7 +106,7 @@ export const shouldReadFromNextGen = async (context) => {
 const fetchFromNextGenServer = async (args, context, fullResponse?: "fullResponse") => {
   const czidServicesToken = await getEnrichedToken(context);
   const query = context.params.query;
-  const response = await fetch(process.env.NEXTGEN_ENTITIES_API_URL, {
+  const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
     method: "POST",
     headers: {
       Cookie: context.request.headers.get("cookie"),

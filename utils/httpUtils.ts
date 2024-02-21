@@ -21,25 +21,12 @@ export const formatUrlParams = (params: { [s: string]: unknown }) => {
   return "?&" + paramList.join("&");
 };
 
-export const get = async (url: string, args: any, context: any) => {
+export const get = async (url: string, args: any, context: any, fullResponse?: "fullResponse" ) => {
   try {
     let baseURL, urlPrefix;
-    const nextGenEnabled = await isNextGenEnabled(context);
+    const nextGenEnabled = await shouldReadFromNextGen(context);
     if (nextGenEnabled) {
-      // next gen details
-      const czidServicesToken = await getEnrichedToken(context);
-      const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-          Authorization: `Bearer ${czidServicesToken}`,
-        },
-        body: JSON.stringify(query),
-      });
-      return await response.json();
+      return fetchFromNextGenServer(args, context, fullResponse)
     } else {
       baseURL = process.env.API_URL;
       urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
@@ -50,49 +37,17 @@ export const get = async (url: string, args: any, context: any) => {
           "Content-Type": "application/json",
         },
       });
-      return await response.json();
+      if (fullResponse === "fullResponse"){
+        return await response.json();
+      } else {
+        return response;
+      }
     }
   } catch (e) {
     return Promise.reject(e.response);
   }
 };
 
-export const getFullResponse = async (url: string, args: any, context: any) => {
-  try {
-    const baseURL = process.env.API_URL;
-    const nextGenEnabled = await isNextGenEnabled(context);
-    if (nextGenEnabled) {
-      // next gen details
-      const czidServicesToken = await getEnrichedToken(context);
-      const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-          Authorization: `Bearer ${czidServicesToken}`,
-        },
-        body: JSON.stringify(query),
-      });
-      return response;
-    } else {
-      const urlPrefix = args.snapshotLinkId
-        ? `/pub/${args.snapshotLinkId}`
-        : "";
-      const response = await fetch(baseURL + urlPrefix + url, {
-        method: "GET",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-        },
-      });
-      return response;
-    }
-  } catch (e) {
-    return Promise.reject(e.response);
-  }
-};
 
 const checkForLogin = (responseUrl: string | null) => {
   if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
@@ -107,22 +62,9 @@ export const postWithCSRF = async (
   context: any
 ) => {
   try {
-    const nextGenEnabled = await isNextGenEnabled(context);
+    const nextGenEnabled = await shouldReadFromNextGen(context);
     if (nextGenEnabled) {
-      const czidServicesToken = await getEnrichedToken(context);
-      const query = context.params.query;
-      const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-          Authorization: `Bearer ${czidServicesToken}`,
-        },
-        body: JSON.stringify(query),
-      });
-      return await response.json();
-      // next gen details
+      return fetchFromNextGenServer(args, context)
     } else {
       const response = await fetch(process.env.API_URL + url, {
         method: "POST",
@@ -148,33 +90,55 @@ export const notFound = (message: string) => {
   });
 };
 
-export const getFeatureFlags = async (context: any) => {
-  try {
-    const response = await fetch(process.env.API_URL + "/users/feature_flags", {
-      method: "GET",
-      headers: {
-        Cookie: context.request.headers.get("cookie"),
-        "Content-Type": "application/json",
-      },
-    });
-    return await response.json();
-  } catch (e) {
-    return Promise.reject(e.response);
-  }
-};
-
 export const getFeatureFlagsFromRequest = (context) => {
   return context.request.headers.get("x-should-read-from-nextgen");
 };
 
-export const isNextGenEnabled = async (context) => {
-  let readFromNextGen = getFeatureFlagsFromRequest(context);
-  if (readFromNextGen === true || readFromNextGen === "true" || readFromNextGen === "True") {
+export const shouldReadFromNextGen = async (context) => {
+  let shouldReadFromNextGen = getFeatureFlagsFromRequest(context);
+  if (shouldReadFromNextGen === true || shouldReadFromNextGen === "true" || shouldReadFromNextGen === "True") {
     // if the header is set, return the value
     return true;
   }
   return false;
 }
+
+const fetchFromNextGenServer = async (args, context, fullResponse?: "fullResponse") => {
+  const czidServicesToken = await getEnrichedToken(context);
+  const query = context.params.query;
+  const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
+    method: "POST",
+    headers: {
+      Cookie: context.request.headers.get("cookie"),
+      "Content-Type": "application/json",
+      "X-CSRF-Token": args?.input?.authenticityToken,
+      Authorization: `Bearer ${czidServicesToken}`,
+    },
+    body: JSON.stringify(query),
+  });
+  if (fullResponse === "fullResponse"){
+    return await response.json();
+  } else {
+    return response;
+  }
+};
+
+
+// export const getFeatureFlags = async (context: any) => {
+//   try {
+//     const response = await fetch(process.env.API_URL + "/users/feature_flags", {
+//       method: "GET",
+//       headers: {
+//         Cookie: context.request.headers.get("cookie"),
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     return await response.json();
+//   } catch (e) {
+//     return Promise.reject(e.response);
+//   }
+// };
+
 //   try {
 //     const featureFlags = await getFeatureFlags(context);
 //     const combinedFeatureFlags = featureFlags["launched_feature_list"].concat(
@@ -186,3 +150,5 @@ export const isNextGenEnabled = async (context) => {
 //     return Promise.reject(e.response);
 //   }
 // };
+
+

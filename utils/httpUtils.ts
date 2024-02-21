@@ -30,6 +30,7 @@ export const get = async (url: string, args: any, context: any, fullResponse?: "
     } else {
       baseURL = process.env.API_URL;
       urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+
       const response = await fetch(baseURL + urlPrefix + url, {
         method: "GET",
         headers: {
@@ -150,5 +151,4 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
 //     return Promise.reject(e.response);
 //   }
 // };
-
 

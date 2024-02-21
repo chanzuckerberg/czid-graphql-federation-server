@@ -2,6 +2,7 @@ import { ExecuteMeshFn } from "@graphql-mesh/runtime";
 import { getMeshInstance } from "./utils/MeshInstance";
 
 import * as httpUtils from "../utils/httpUtils";
+import { getExampleQuery } from "./utils/ExampleQueryFiles";
 jest.spyOn(httpUtils, "get");
 
 beforeEach(() => {
@@ -30,31 +31,11 @@ describe("workflows aggregate query:", () => {
       ],
     }));
 
-    const query = `
-      query workflowRunsAggregateQuery(
-        $cgWorkflowRunIds: [String]
-      ) {
-        workflowRunsAggregate(
-          input: {
-            where: {
-              id: {
-                _in: $cgWorkflowRunIds
-              } 
-            },
-            todoRemove: { domain: "my_data", offset: 0 }
-          }
-        ) {
-          collectionId
-          amrRunsCount
-          cgRunsCount
-          mngsRunsCount
-        }
-      }
-    `
+    const query = getExampleQuery("workflows-aggregate-query");
 
-    const response = await execute(query, {cgWorkflowRunIds: ["1", "2", "3"]});
+    const response = await execute(query, {});
     expect(httpUtils.get).toHaveBeenCalledWith(
-      "/projects.json?&domain=my_data&limit=10000000&listAllIds=false&offset=0",
+      "/projects.json?&domain=my_data&limit=10000000&listAllIds=false&offset=0&search=abc&visibility=public&time[]=20240214&time[]=20240222",
       expect.anything(),
       expect.anything()
     );

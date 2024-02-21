@@ -21,19 +21,10 @@
             "type": "object",
             "properties": {
                 "projectId": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "domain": {
                     "type": "string"
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "listAllIds": {
-                    "type": "boolean"
-                },
-                "offset": {
-                    "type": "integer"
                 },
                 "host": {
                     "type": "array",
@@ -79,7 +70,10 @@
                     }
                 },
                 "tissue": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "visibility": {
                     "type": "string"
@@ -87,7 +81,7 @@
                 "time": {
                     "type": "array",
                     "items": {
-                        "type": "integer"
+                        "type": "string"
                     }
                 },
                 "taxaLevels": {

@@ -285,15 +285,27 @@ export const resolvers: Resolvers = {
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled){
-        return get("_", args, context);
+        console.log("nextGenEnabled", nextGenEnabled)
+        context.params.query = `query MyQuery {
+          metricsConsensusGenomes{
+            id
+            consensusGenome {
+              id
+            }
+          }
+        }`
+        const ret = await get("_", args, context);
+        console.log("return from next gen", ret)
+        return ret;
       }
-
-      const { coverage_viz, quality_metrics, taxon_info } = await get(
+      console.log("nextGenNotEnabled")
+      const data = await get(
         `/workflow_runs/${args.workflowRunId}/results`,
         args,
         context
       );
-
+      console.log(data)
+      const { coverage_viz, quality_metrics, taxon_info } = data;
       const { accession_id, accession_name, taxon_id, taxon_name } =
         taxon_info || {};
 
@@ -333,6 +345,7 @@ export const resolvers: Resolvers = {
           },
           }
         }
+      console.log(ret)
       return ret;
       },
 

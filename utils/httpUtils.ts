@@ -20,9 +20,9 @@ export const get = async (url: string, args: any, context: any, fullResponse?: "
         },
       });
       if (fullResponse === "fullResponse"){
-        return await response.json();
-      } else {
         return response;
+      } else {
+        return await response.json();
       }
     }
   } catch (e) {
@@ -87,7 +87,9 @@ export const shouldReadFromNextGen = async (context) => {
 
 const fetchFromNextGenServer = async (args, context, fullResponse?: "fullResponse") => {
   const czidServicesToken = await getEnrichedToken(context);
+  console.log('czidServicesToken', czidServicesToken)
   const query = context.params.query;
+  console.log(query)
   const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
     method: "POST",
     headers: {
@@ -99,9 +101,10 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
     body: JSON.stringify(query),
   });
   if (fullResponse === "fullResponse"){
-    return await response.json();
-  } else {
     return response;
+  } else {
+    console.log(response)
+    return await response.json();
   }
 };
 

@@ -61,8 +61,6 @@ describe("sequencingReads query:", () => {
 
     const result = await execute(query, {});
 
-    console.log(JSON.stringify(result));
-
     expect(result.data.sequencingReads).toHaveLength(2);
     expect(result.data.sequencingReads[0]).toEqual(
       expect.objectContaining({

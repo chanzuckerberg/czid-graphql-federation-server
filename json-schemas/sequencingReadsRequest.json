@@ -1,10 +1,10 @@
 {
     "type": "object",
     "properties": {
-        "after": {
-            "type": "string"
+        "limit": {
+            "type": "integer"
         },
-        "first": {
+        "offset": {
             "type": "integer"
         },
         "where": {

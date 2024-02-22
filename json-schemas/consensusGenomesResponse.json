@@ -118,6 +118,9 @@
                             "waterControl": {
                                 "type": "boolean"
                             },
+                            "uploadError": {
+                                "type": "string"
+                            },
                             "hostOrganism": {
                                 "type": "object",
                                 "properties": {

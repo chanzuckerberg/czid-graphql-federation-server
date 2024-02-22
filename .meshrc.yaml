@@ -46,13 +46,15 @@ sources:
             responseSchema: ./json-schemas/snapshotBackground.json
             responseTypeName: Background
           - type: Query
-            field: BulkDownloadDetails
-            path: /bulk_downloads/{args.bulkDownloadId}
+            field: bulkDownloads
+            path: /bulk_downloads?searchBy=${searchBy}&n=${limit}
             method: GET
-            responseSchema: ./json-schemas/bulkDownloadDetails.json
-            responseTypeName: BulkDownloadDetails
-            headers:
-              Cookie: "{context.headers['cookie']}"
+            requestSample: {
+                searchBy: "string to search",
+                limit: 10
+              }            
+            responseSchema: ./json-schemas/bulkDownloads.json
+            responseTypeName: BulkDownloads
           - type: Query
             field: BulkDownloadCGOverview
             path: /bulk_downloads
@@ -60,6 +62,13 @@ sources:
             requestSchema: ./json-schemas/createBulkDownloadCSV.json
             responseSchema: ./json-schemas/cgOverview.json
             responseTypeName: ConsensusGenomeOverviewRows
+          - type: Query
+            field: consensusGenomes
+            method: GET
+            path: /workflow_runs.json
+            requestSchema: ./json-schemas/consensusGenomesRequest.json
+            responseSchema: ./json-schemas/consensusGenomesResponse.json
+            responseTypeName: consensusGenomes
           - type: Query
             field: ConsensusGenomeWorkflowResults
             path: /workflow_runs/{args.workflowRunId}/results
@@ -132,6 +141,13 @@ sources:
             responseSchema: ./json-schemas/samplesResponse.json
             responseTypeName: samples
           - type: Query
+            field: sequencingReads
+            method: GET
+            path: /workflow_runs.json
+            requestSchema: ./json-schemas/sequencingReadsRequest.json
+            responseSchema: ./json-schemas/sequencingReadsResponse.json
+            responseTypeName: sequencingReads
+          - type: Query
             field: Taxons
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
             method: GET
@@ -164,6 +180,13 @@ sources:
             method: POST
             requestSchema: ./json-schemas/workflowRunsRequest.json
             responseSchema: ./json-schemas/workflowRunsResponse.json
+          - type: Query
+            field: workflowRunsAggregate
+            path: /projects.json
+            method: GET
+            requestSchema: ./json-schemas/workflowRunsAggregateRequest.json
+            responseSchema: ./json-schemas/workflowRunsAggregateResponse.json
+            responseTypeName: workflowRunsAggregate
           - type: Query
             field: ZipLink
             path: /workflow_runs/{args.workflowRunId}/zip_link.json

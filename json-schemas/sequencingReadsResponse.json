@@ -3,18 +3,6 @@
     "items": {
         "type": "object",
         "properties": {
-            "pageInfo": {
-                "type": "object",
-                "properties": {
-                    "hasNextPage": {
-                        "type": "boolean"
-                    },
-                    "endCursor": {
-                        "type": "string"
-                    }
-                },
-                "required": ["hasNextPage"]
-            },
             "id": {
                 "type": "string"
             },
@@ -200,6 +188,6 @@
                 "required": ["edges"]
             }
         },
-        "required": ["pageInfo", "id", "nucleicAcid", "technology", "consensusGenomes"]
+        "required": ["id", "nucleicAcid", "technology", "consensusGenomes"]
     }
 }

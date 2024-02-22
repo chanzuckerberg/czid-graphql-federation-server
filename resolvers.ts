@@ -230,10 +230,6 @@ export const resolvers: Resolvers = {
         const sampleInfo = sample?.info;
         const sampleMetadata = sample?.metadata;
         return {
-          pageInfo: {
-            hasNextPage: workflow_runs.length === 50,
-            endCursor: String(offset + 50),
-          },
           producingRunId: run.id?.toString(),
           taxon: {
             name: inputs?.taxon_name,

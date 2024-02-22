@@ -1,6 +1,7 @@
 query TestQuery {
     sequencingReads(input: {
-        after: "{\"limit\":50,\"offset\":100}"
+        limit: 50
+        offset: 100
         where: {
             id: {
                 _in: ["abc", "def"]
@@ -10,10 +11,6 @@ query TestQuery {
             search: "abc"
         }
     }) {
-        pageInfo {
-            hasNextPage
-            endCursor
-        }
         id
         sample {
             metadatas {

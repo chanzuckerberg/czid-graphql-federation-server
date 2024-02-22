@@ -181,7 +181,6 @@ export const resolvers: Resolvers = {
     },
     consensusGenomes: async (root, args, context) => {
       const input = args.input;
-      const offset = parseInt(input?.after ?? "0");
 
       // The comments in the formatUrlParams() call correspond to the line in the current
       // codebase's callstack where the params are set, so help ensure we're not missing anything.
@@ -212,8 +211,8 @@ export const resolvers: Resolvers = {
             workflow: input?.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
-            limit: 50,
-            offset,
+            limit: input?.limit,
+            offset: input?.offset,
             listAllIds: false,
           }),
         args,
@@ -238,7 +237,7 @@ export const resolvers: Resolvers = {
             accessionId: inputs?.accession_id,
             accessionName: inputs?.accession_name,
           },
-          metric: {
+          metrics: {
             coverageDepth: run.cached_results?.coverage_viz?.coverage_depth,
             totalReads: qualityMetrics?.total_reads,
             gcPercent: qualityMetrics?.gc_percent,
@@ -509,7 +508,6 @@ export const resolvers: Resolvers = {
     },
     sequencingReads: async (root, args, context) => {
       const input = args.input;
-      const offset = parseInt(input?.after ?? "0");
 
       // The comments in the formatUrlParams() call correspond to the line in the current
       // codebase's callstack where the params are set, so help ensure we're not missing anything.
@@ -540,8 +538,8 @@ export const resolvers: Resolvers = {
             workflow: input?.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
-            limit: 50,
-            offset,
+            limit: input?.limit,
+            offset: input?.offset,
             listAllIds: false,
           }),
         args,
@@ -558,10 +556,6 @@ export const resolvers: Resolvers = {
         const sampleInfo = sample?.info;
         const sampleMetadata = sample?.metadata;
         return {
-          pageInfo: {
-            hasNextPage: workflow_runs.length === 50,
-            endCursor: String(offset + 50),
-          },
           id: sampleInfo?.id?.toString(),
           nucleicAcid: sampleMetadata?.nucleotide_type,
           protocol: inputs?.wetlab_protocol,
@@ -603,7 +597,7 @@ export const resolvers: Resolvers = {
                     accessionId: inputs?.accession_id,
                     accessionName: inputs?.accession_name,
                   },
-                  metric: {
+                  metrics: {
                     coverageDepth:
                       run.cached_results?.coverage_viz?.coverage_depth,
                     totalReads: qualityMetrics?.total_reads,

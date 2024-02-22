@@ -98,7 +98,7 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
       "X-CSRF-Token": args?.input?.authenticityToken,
       Authorization: `Bearer ${czidServicesToken}`,
     },
-    body: query,
+    body: JSON.stringify(query),
   });
   if (fullResponse === "fullResponse"){
     return response;

@@ -261,6 +261,7 @@ export const resolvers: Resolvers = {
               railsSampleId: sample?.id,
               name: sampleInfo?.name,
               notes: sampleInfo?.sample_notes,
+              uploadError: sampleInfo?.result_status_description,
               collectionLocation: sampleMetadata?.collection_location_v2,
               sampleType: sampleMetadata?.sample_type,
               waterControl: sampleMetadata?.water_control,
@@ -272,7 +273,9 @@ export const resolvers: Resolvers = {
                 public: Boolean(sampleInfo?.public),
               },
               ownerUser: {
-                name: sample?.uploader?.name,
+                // TODO: Make runner come from Workflows stitched with the user service when NextGen
+                // ready.
+                name: run.runner?.name ?? sample?.uploader?.name,
               },
               metadatas: {
                 edges: getMetadataEdges(sampleMetadata),
@@ -568,6 +571,7 @@ export const resolvers: Resolvers = {
             railsSampleId: sampleInfo?.id?.toString(),
             name: sampleInfo?.name,
             notes: sampleInfo?.sample_notes,
+            uploadError: sampleInfo?.result_status_description,
             collectionLocation: sampleMetadata?.collection_location_v2,
             sampleType: sampleMetadata?.sample_type,
             waterControl: sampleMetadata?.water_control,
@@ -579,7 +583,9 @@ export const resolvers: Resolvers = {
               public: Boolean(sampleInfo?.public),
             },
             ownerUser: {
-              name: sample?.uploader?.name,
+              // TODO: Make runner come from Workflows stitched with the user service when NextGen
+              // ready.
+              name: run.runner?.name ?? sample?.uploader?.name,
             },
             metadatas: {
               edges: getMetadataEdges(sampleMetadata),

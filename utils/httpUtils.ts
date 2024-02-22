@@ -90,7 +90,7 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
   console.log('czidServicesToken', czidServicesToken)
   const query = context.params.query;
   console.log(query)
-  const response = await fetch(process.env.NEXTGEN_ENTITIES_URL, {
+  const response = await fetch(`${process.env.NEXTGEN_ENTITIES_URL}/graphql`, {
     method: "POST",
     headers: {
       Cookie: context.request.headers.get("cookie"),
@@ -98,7 +98,7 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
       "X-CSRF-Token": args?.input?.authenticityToken,
       Authorization: `Bearer ${czidServicesToken}`,
     },
-    body: JSON.stringify(query),
+    body: query,
   });
   if (fullResponse === "fullResponse"){
     return response;

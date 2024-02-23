@@ -12,7 +12,12 @@ query TestQuery {
         }
     }) {
         id
+        taxon {
+            name
+        }
         sample {
+            collectionLocation
+            waterControl
             metadatas {
                 edges {
                     node {

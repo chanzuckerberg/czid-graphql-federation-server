@@ -149,4 +149,46 @@ describe("sequencingReads query:", () => {
       0
     );
   });
+
+  it("Only returns taxon object if name exists", async () => {
+    (httpUtils.get as jest.Mock).mockImplementation(() => ({
+      workflow_runs: [{}],
+    }));
+
+    const result = await execute(query, {});
+
+    expect(result.data.sequencingReads[0].taxon).toBeNull();
+  });
+
+  it("Does not return null for required location field", async () => {
+    (httpUtils.get as jest.Mock).mockImplementation(() => ({
+      workflow_runs: [
+        {
+          sample: {},
+        },
+      ],
+    }));
+
+    const result = await execute(query, {});
+
+    expect(result.data.sequencingReads[0].sample.collectionLocation).toBe("");
+  });
+
+  it("Converts water control to boolean", async () => {
+    (httpUtils.get as jest.Mock).mockImplementation(() => ({
+      workflow_runs: [
+        {
+          sample: {
+            metadata: {
+              water_control: "Yes",
+            },
+          },
+        },
+      ],
+    }));
+
+    const result = await execute(query, {});
+
+    expect(result.data.sequencingReads[0].sample.waterControl).toBe(true);
+  });
 });

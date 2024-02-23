@@ -738,7 +738,6 @@ export const resolvers: Resolvers = {
           authenticity_token: input?.todoRemove?.authenticityToken,
           workflowRunIds: input.where.id._in.map((id) => id && parseInt(id)),
         };
-
         const { workflowRuns } = await postWithCSRF(
           `/workflow_runs/valid_consensus_genome_workflow_runs`,
           body,
@@ -761,10 +760,10 @@ export const resolvers: Resolvers = {
             domain: input?.todoRemove?.domain,
             projectId: input?.todoRemove?.projectId,
             search: input?.todoRemove?.search,
-            // Workflows Service will cover sorting by time, version, or creation source, but
-            // Rails doesn't support the latter 2!
-            orderBy: input?.todoRemove.orderBy,
-            orderDir: input?.todoRemove.orderDir,
+            // TODO: Cover sorting by time, version, or creation source (though Rails doesn't
+            // actually support the latter 2).
+            orderBy: input?.todoRemove?.orderBy,
+            orderDir: input?.todoRemove?.orderDir,
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxon,

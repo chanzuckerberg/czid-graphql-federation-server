@@ -7,18 +7,12 @@ import {
   query_workflowRunsAggregate_items,
   query_workflowRuns_items,
 } from "./.mesh";
-import {
-  get,
-  postWithCSRF,
-  getFullResponse,
-} from "./utils/httpUtils";
+import { get, postWithCSRF, getFullResponse } from "./utils/httpUtils";
 import {
   formatTaxonHits,
   formatTaxonLineage,
 } from "./utils/mngsWorkflowResultsUtils";
-import {
-  formatUrlParams
-} from "./utils/paramsUtils";
+import { formatUrlParams } from "./utils/paramsUtils";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -55,94 +49,104 @@ export const resolvers: Resolvers = {
     },
     bulkDownloads: async (root, args, context, info) => {
       const statusDictionary = {
-        "success":"SUCCEEDED",
-        "error": "FAILED",
-        "waiting": "PENDING",
-        "running": "INPROGRESS",
+        success: "SUCCEEDED",
+        error: "FAILED",
+        waiting: "PENDING",
+        running: "INPROGRESS",
         //fyi: in NextGen there is also a status of STARTED
-      }
+      };
       const urlParams = formatUrlParams({
         searchBy: args?.input?.searchBy,
-        n: args?.input?.limit
-      })
+        n: args?.input?.limit,
+      });
       const getEntityInputInfo = (entities) => {
         return entities.map((entity) => {
           return {
             id: entity?.id,
             name: entity?.sample_name,
-          }
-        })
+          };
+        });
       };
       const res = await get(`/bulk_downloads.json${urlParams}`, args, context);
       const mappedRes = res.map(async (bulkDownload) => {
         let url: string | null = null;
-        let entityInputs: {id: string, name: string}[] = [];
+        let entityInputs: { id: string; name: string }[] = [];
         let sampleNames: Set<string> | null = null;
         let totalSamples: number | null = null;
         let description: string;
         let file_type_display: string;
-        const details = await get(`/bulk_downloads/${bulkDownload?.id}.json`, args, context);
-        if (bulkDownload.status === "success"){
+        const details = await get(
+          `/bulk_downloads/${bulkDownload?.id}.json`,
+          args,
+          context
+        );
+        if (bulkDownload.status === "success") {
           url = details?.bulk_download?.presigned_output_url;
-          entityInputs = [...getEntityInputInfo(details?.bulk_download?.workflow_runs), ...getEntityInputInfo(details?.bulk_download?.pipeline_runs)];
-          sampleNames = new Set(entityInputs.map((entityInput) => entityInput.name));
-          totalSamples = details?.bulk_download?.params?.sample_ids?.value?.length;
+          entityInputs = [
+            ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
+            ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
+          ];
+          sampleNames = new Set(
+            entityInputs.map((entityInput) => entityInput.name)
+          );
+          totalSamples =
+            details?.bulk_download?.params?.sample_ids?.value?.length;
         }
         description = details?.download_type?.description;
         file_type_display = details?.download_type?.file_type_display;
 
-        const { 
-          id, 
-          status, 
-          user_id, 
+        const {
+          id,
+          status,
+          user_id,
           download_type,
-          created_at, 
-          download_name, 
+          created_at,
+          download_name,
           output_file_size,
-          user_name, 
+          user_name,
           log_url,
           analysis_type,
-          progress // --> to be discussed on Feb 16th, 2024
+          progress, // --> to be discussed on Feb 16th, 2024
         } = bulkDownload;
 
-          // In Next Gen we will have an array with all of the entity input 
-          // filtered through the nodes entity query to get the relevant info
-          // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
-          // We will get `sampleNames` by checking __typename to see if the entity is a sample,
-          // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
-          // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
-          return {
-            id, // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
-            startedAt: created_at,
-            status: statusDictionary[status],
-            rawInputsJson: {
-              downloadType:  download_type,
-              downloadDisplayName: download_name,
-              description: description,
-              fileFormat: file_type_display
+        // In Next Gen we will have an array with all of the entity input
+        // filtered through the nodes entity query to get the relevant info
+        // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
+        // We will get `sampleNames` by checking __typename to see if the entity is a sample,
+        // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
+        // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
+        return {
+          id, // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+          startedAt: created_at,
+          status: statusDictionary[status],
+          rawInputsJson: {
+            downloadType: download_type,
+            downloadDisplayName: download_name,
+            description: description,
+            fileFormat: file_type_display,
+          },
+          ownerUserId: user_id,
+          file: {
+            size: output_file_size,
+            downloadLink: {
+              url: url,
             },
-            ownerUserId: user_id,
-            file: {
-              size: output_file_size, 
-              downloadLink: {
-                url: url,
-              }, 
-            },
-            sampleNames,
-            analysisCount: entityInputs.length,
-            entityInputFileType: analysis_type,
-            entityInputs,
-            toDelete: {
-              progress, // --> to be discussed on Feb 16th, 2024
-              user_name, // will need to get from a new Rails endpoint from the FE
-              log_url, // used in admin only, we will deprecate log_url and use something like executionId
-              totalSamples 
-              // dedupping by name isn't entirely reliable 
-              // we will use this as the accurate number of samples until we switch to NextGen 
-              // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
-            }
-          }
-        });
+          },
+          sampleNames,
+          analysisCount: entityInputs.length,
+          entityInputFileType: analysis_type,
+          entityInputs,
+          toDelete: {
+            progress, // --> to be discussed on Feb 16th, 2024
+            user_name, // will need to get from a new Rails endpoint from the FE
+            log_url, // used in admin only, we will deprecate log_url and use something like executionId
+            totalSamples,
+            // dedupping by name isn't entirely reliable
+            // we will use this as the accurate number of samples until we switch to NextGen
+            // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
+          },
+        };
+      });
       return mappedRes;
     },
     BulkDownloadCGOverview: async (root, args, context, info) => {
@@ -228,11 +232,16 @@ export const resolvers: Resolvers = {
         const sample = run.sample;
         const sampleInfo = sample?.info;
         const sampleMetadata = sample?.metadata;
+
+        const taxon =
+          inputs?.taxon_name != null
+            ? {
+                name: inputs.taxon_name,
+              }
+            : null;
         return {
           producingRunId: run.id?.toString(),
-          taxon: {
-            name: inputs?.taxon_name,
-          },
+          taxon,
           referenceGenome: {
             accessionId: inputs?.accession_id,
             accessionName: inputs?.accession_name,
@@ -250,24 +259,25 @@ export const resolvers: Resolvers = {
             referenceGenomeLength: qualityMetrics?.reference_genome_length,
           },
           sequencingRead: {
-            nucleicAcid: sampleMetadata?.nucleotide_type,
+            nucleicAcid: sampleMetadata?.nucleotide_type ?? "",
             protocol: inputs?.wetlab_protocol,
             medakaModel: inputs?.medaka_model,
-            technology: inputs?.technology,
-            taxon: {
-              name: inputs?.taxon_name,
-            },
+            technology: inputs?.technology ?? "",
+            taxon,
             sample: {
               railsSampleId: sample?.id,
-              name: sampleInfo?.name,
+              name: sampleInfo?.name ?? "",
               notes: sampleInfo?.sample_notes,
               uploadError: sampleInfo?.result_status_description,
-              collectionLocation: sampleMetadata?.collection_location_v2,
-              sampleType: sampleMetadata?.sample_type,
-              waterControl: sampleMetadata?.water_control,
-              hostOrganism: {
-                name: sampleInfo?.host_genome_name,
-              },
+              collectionLocation: sampleMetadata?.collection_location_v2 ?? "",
+              sampleType: sampleMetadata?.sample_type ?? "",
+              waterControl: sampleMetadata?.water_control === "Yes",
+              hostOrganism:
+                sampleInfo?.host_genome_name != null
+                  ? {
+                      name: sampleInfo.host_genome_name,
+                    }
+                  : null,
               collection: {
                 name: sample?.project_name,
                 public: Boolean(sampleInfo?.public),
@@ -558,26 +568,34 @@ export const resolvers: Resolvers = {
         const sample = run.sample;
         const sampleInfo = sample?.info;
         const sampleMetadata = sample?.metadata;
+
+        const taxon =
+          inputs?.taxon_name != null
+            ? {
+                name: inputs.taxon_name,
+              }
+            : null;
         return {
-          id: sampleInfo?.id?.toString(),
-          nucleicAcid: sampleMetadata?.nucleotide_type,
+          id: sampleInfo?.id?.toString() ?? "",
+          nucleicAcid: sampleMetadata?.nucleotide_type ?? "",
           protocol: inputs?.wetlab_protocol,
           medakaModel: inputs?.medaka_model,
-          technology: inputs?.technology,
-          taxon: {
-            name: inputs?.taxon_name,
-          },
+          technology: inputs?.technology ?? "",
+          taxon,
           sample: {
-            railsSampleId: sampleInfo?.id?.toString(),
-            name: sampleInfo?.name,
+            railsSampleId: sampleInfo?.id,
+            name: sampleInfo?.name ?? "",
             notes: sampleInfo?.sample_notes,
             uploadError: sampleInfo?.result_status_description,
-            collectionLocation: sampleMetadata?.collection_location_v2,
-            sampleType: sampleMetadata?.sample_type,
-            waterControl: sampleMetadata?.water_control,
-            hostOrganism: {
-              name: sampleInfo?.host_genome_name,
-            },
+            collectionLocation: sampleMetadata?.collection_location_v2 ?? "",
+            sampleType: sampleMetadata?.sample_type ?? "",
+            waterControl: sampleMetadata?.water_control === "Yes",
+            hostOrganism:
+              sampleInfo?.host_genome_name != null
+                ? {
+                    name: sampleInfo.host_genome_name,
+                  }
+                : null,
             collection: {
               name: sample?.project_name,
               public: Boolean(sampleInfo?.public),
@@ -596,9 +614,7 @@ export const resolvers: Resolvers = {
               {
                 node: {
                   producingRunId: run.id?.toString(),
-                  taxon: {
-                    name: inputs?.taxon_name,
-                  },
+                  taxon,
                   referenceGenome: {
                     accessionId: inputs?.accession_id,
                     accessionName: inputs?.accession_name,
@@ -796,26 +812,30 @@ export const resolvers: Resolvers = {
     },
     workflowRunsAggregate: async (root, args, context, info) => {
       const input = args.input;
-      
-      const { projects } = await get("/projects.json" + 
-        formatUrlParams({
-          projectId: input?.todoRemove?.projectId,
-          domain: input?.todoRemove?.domain,
-          limit: TEN_MILLION,
-          listAllIds: false,
-          offset: 0,
-          host: input?.todoRemove?.host,
-          locationV2: input?.todoRemove?.locationV2,
-          taxonThresholds: input?.todoRemove?.taxonThresholds,
-          annotations: input?.todoRemove?.annotations,
-          search: input?.todoRemove?.search,
-          tissue: input?.todoRemove?.tissue,
-          visibility: input?.todoRemove?.visibility,
-          time: input?.todoRemove?.time,
-          taxaLevels: input?.todoRemove?.taxaLevels,
-          taxon: input?.todoRemove?.taxon,
-        }), args, context);
-      
+
+      const { projects } = await get(
+        "/projects.json" +
+          formatUrlParams({
+            projectId: input?.todoRemove?.projectId,
+            domain: input?.todoRemove?.domain,
+            limit: TEN_MILLION,
+            listAllIds: false,
+            offset: 0,
+            host: input?.todoRemove?.host,
+            locationV2: input?.todoRemove?.locationV2,
+            taxonThresholds: input?.todoRemove?.taxonThresholds,
+            annotations: input?.todoRemove?.annotations,
+            search: input?.todoRemove?.search,
+            tissue: input?.todoRemove?.tissue,
+            visibility: input?.todoRemove?.visibility,
+            time: input?.todoRemove?.time,
+            taxaLevels: input?.todoRemove?.taxaLevels,
+            taxon: input?.todoRemove?.taxon,
+          }),
+        args,
+        context
+      );
+
       if (!projects?.length) {
         return [];
       }
@@ -823,8 +843,7 @@ export const resolvers: Resolvers = {
         return {
           collectionId: project.id.toString(),
           mngsRunsCount: project.sample_counts.mngs_runs_count,
-          cgRunsCount:
-            project.sample_counts.cg_runs_count,
+          cgRunsCount: project.sample_counts.cg_runs_count,
           amrRunsCount: project.sample_counts.amr_runs_count,
         };
       });

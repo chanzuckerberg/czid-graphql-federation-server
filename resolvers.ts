@@ -290,7 +290,7 @@ export const resolvers: Resolvers = {
           "query": "query MyQuery { metricsConsensusGenomes { coverageBinSize }}"
         }`)
         const ret = await get("_", args, context);
-        console.log("return from next gen", ret, ret?.errors[0]?.path)
+        console.log("return from next gen", ret)
         return ret;
       }
       console.log("nextGenNotEnabled")

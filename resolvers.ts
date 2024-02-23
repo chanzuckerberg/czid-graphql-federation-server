@@ -286,12 +286,20 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled){
         console.log("nextGenEnabled", nextGenEnabled)
+        console.log(context.params.query);
         context.params.query = JSON.parse(`{
-          "query": "query MyQuery { metricsConsensusGenomes { coverageBinSize }}"
+          "query": "query MyQuery {
+            consensusGenomes {
+              accession {
+                accessionId
+              }
+            }
+          }"
         }`)
         const ret = await get("_", args, context);
-        console.log("return from next gen", ret)
-        return ret;
+        console.log("return from next gen", ret.data.consensusGenomes[0])
+        //this is a hack to be able to see something on the graphiql interface
+        return { consensusGenome: ret.data.consensusGenomes[0]};
       }
       console.log("nextGenNotEnabled")
       const data = await get(

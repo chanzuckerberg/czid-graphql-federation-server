@@ -73,7 +73,7 @@
                 "accession": {
                     "type": "object",
                     "properties": {
-                        "accessionID": {
+                        "accessionId": {
                             "type": "string"
                         },
                         "accessionName": {

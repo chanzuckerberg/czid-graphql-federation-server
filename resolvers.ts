@@ -763,9 +763,8 @@ export const resolvers: Resolvers = {
             search: input?.todoRemove?.search,
             // Workflows Service will cover sorting by time, version, or creation source, but
             // Rails doesn't support the latter 2!
-            orderBy:
-              input?.orderBy?.startedAt != null ? "createdAt" : undefined,
-            orderDir: input?.orderBy?.startedAt,
+            orderBy: input?.todoRemove.orderBy,
+            orderDir: input?.todoRemove.orderDir,
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxon,

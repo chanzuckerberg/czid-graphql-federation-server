@@ -86,7 +86,8 @@ export const shouldReadFromNextGen = async (context) => {
 }
 
 const fetchFromNextGenServer = async (args, context, fullResponse?: "fullResponse") => {
-  const czidServicesToken = await getEnrichedToken(context);
+  // const czidServicesToken = await getEnrichedToken(context);
+  const czidServicesToken = null;
   console.log('czidServicesToken', czidServicesToken)
   const query = context.params.query;
   console.log(query)
@@ -98,7 +99,7 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
       "X-CSRF-Token": args?.input?.authenticityToken,
       Authorization: `Bearer ${czidServicesToken}`,
     },
-    body: query,
+    body: JSON.stringify(query),
   });
   if (fullResponse === "fullResponse"){
     return response;

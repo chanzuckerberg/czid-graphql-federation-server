@@ -286,16 +286,11 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled){
         console.log("nextGenEnabled", nextGenEnabled)
-        context.params.query = `query MyQuery {
-          metricsConsensusGenomes{
-            id
-            consensusGenome {
-              id
-            }
-          }
-        }`
+        context.params.query = JSON.parse(`{
+          "query": "query MyQuery { metricsConsensusGenomes { coverageBinSize }}"
+        }`)
         const ret = await get("_", args, context);
-        console.log("return from next gen", ret)
+        console.log("return from next gen", ret, ret?.errors[0]?.path)
         return ret;
       }
       console.log("nextGenNotEnabled")

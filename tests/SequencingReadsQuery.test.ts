@@ -68,11 +68,11 @@ describe("sequencingReads query:", () => {
         consensusGenomes: {
           edges: [
             {
-              node: {
+              node: expect.objectContaining({
                 taxon: {
                   name: "Taxon1",
                 },
-              },
+              }),
             },
           ],
         },
@@ -84,11 +84,11 @@ describe("sequencingReads query:", () => {
         consensusGenomes: {
           edges: [
             {
-              node: {
+              node: expect.objectContaining({
                 taxon: {
                   name: "Taxon2",
                 },
-              },
+              }),
             },
           ],
         },
@@ -190,5 +190,90 @@ describe("sequencingReads query:", () => {
     const result = await execute(query, {});
 
     expect(result.data.sequencingReads[0].sample.waterControl).toBe(true);
+  });
+
+  it("Returns unique sequencing reads", async () => {
+    (httpUtils.get as jest.Mock).mockImplementation(() => ({
+      workflow_runs: [
+        {
+          id: "a",
+          sample: {
+            info: {
+              id: "123",
+            },
+          },
+          inputs: {
+            taxon_name: "Taxon1",
+          },
+        },
+        {
+          id: "b",
+          sample: {
+            info: {
+              id: "123",
+            },
+          },
+          inputs: {
+            taxon_name: "Taxon2",
+          },
+        },
+        {
+          id: "c",
+          sample: {
+            info: {
+              id: "456",
+            },
+          },
+          inputs: {
+            taxon_name: "Taxon3",
+          },
+        },
+        {
+          id: "d",
+          sample: {
+            info: {
+              id: "123",
+            },
+          },
+          inputs: {
+            taxon_name: "Taxon1",
+          },
+        },
+      ],
+    }));
+
+    const sequencingReads = (await execute(query, {})).data.sequencingReads;
+
+    expect(sequencingReads.length).toBe(2);
+
+    expect(sequencingReads[0].id).toBe("123");
+    expect(sequencingReads[0].consensusGenomes.edges.length).toBe(3);
+    expect(
+      sequencingReads[0].consensusGenomes.edges[0].node.producingRunId
+    ).toBe("a");
+    expect(sequencingReads[0].consensusGenomes.edges[0].node.taxon.name).toBe(
+      "Taxon1"
+    );
+    expect(
+      sequencingReads[0].consensusGenomes.edges[1].node.producingRunId
+    ).toBe("b");
+    expect(sequencingReads[0].consensusGenomes.edges[1].node.taxon.name).toBe(
+      "Taxon2"
+    );
+    expect(
+      sequencingReads[0].consensusGenomes.edges[2].node.producingRunId
+    ).toBe("d");
+    expect(sequencingReads[0].consensusGenomes.edges[2].node.taxon.name).toBe(
+      "Taxon1"
+    );
+
+    expect(sequencingReads[1].id).toBe("456");
+    expect(sequencingReads[1].consensusGenomes.edges.length).toBe(1);
+    expect(
+      sequencingReads[1].consensusGenomes.edges[0].node.producingRunId
+    ).toBe("c");
+    expect(sequencingReads[1].consensusGenomes.edges[0].node.taxon.name).toBe(
+      "Taxon3"
+    );
   });
 });

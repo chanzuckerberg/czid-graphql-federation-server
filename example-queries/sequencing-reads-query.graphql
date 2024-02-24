@@ -30,6 +30,7 @@ query TestQuery {
         consensusGenomes {
             edges {
                 node {
+                    producingRunId
                     taxon {
                         name
                     }

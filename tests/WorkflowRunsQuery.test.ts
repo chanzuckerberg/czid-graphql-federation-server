@@ -19,7 +19,7 @@ describe("workflowRuns query:", () => {
     ({ execute } = mesh$);
   });
 
-  it("Returns input sample", async () => {
+  it("Returns input sequencing read", async () => {
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [
         {
@@ -59,7 +59,7 @@ describe("workflowRuns query:", () => {
           edges: [
             {
               node: {
-                entityType: "Sample",
+                entityType: "SequencingRead",
                 inputEntityId: "2",
               },
             },
@@ -74,7 +74,7 @@ describe("workflowRuns query:", () => {
           edges: [
             {
               node: {
-                entityType: "Sample",
+                entityType: "SequencingRead",
                 inputEntityId: "4",
               },
             },

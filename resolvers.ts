@@ -282,12 +282,10 @@ export const resolvers: Resolvers = {
                 name: sample?.project_name,
                 public: Boolean(sampleInfo?.public),
               },
-              ownerUser: {
-                id: sample?.uploader?.id,
-                // TODO: Make runner come from Workflows stitched with the user service when NextGen
-                // ready.
-                name: run.runner?.name ?? sample?.uploader?.name,
-              },
+              ownerUserId: sample?.uploader?.id,
+              // TODO: Make runner come from Workflows stitched with the user service when NextGen
+              // ready.
+              ownerUserName: run.runner?.name ?? sample?.uploader?.name,
               metadatas: {
                 edges: getMetadataEdges(sampleMetadata),
               },
@@ -635,12 +633,10 @@ export const resolvers: Resolvers = {
                 name: sample?.project_name,
                 public: Boolean(sampleInfo?.public),
               },
-              ownerUser: {
-                id: sample?.uploader?.id,
-                // TODO: Make runner come from Workflows stitched with the user service when NextGen
-                // ready.
-                name: run.runner?.name ?? sample?.uploader?.name,
-              },
+              ownerUserId: sample?.uploader?.id,
+              // TODO: Make runner come from Workflows stitched with the user service when NextGen
+              // ready.
+              ownerUserName: run.runner?.name ?? sample?.uploader?.name,
               metadatas: {
                 edges: getMetadataEdges(sampleMetadata),
               },

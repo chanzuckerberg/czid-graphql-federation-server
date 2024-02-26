@@ -71,16 +71,11 @@
                             }
                         }
                     },
-                    "ownerUser": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "number"
-                            },
-                            "name": {
-                                "type": "string"
-                            }
-                        }
+                    "ownerUserId": {
+                        "type": "number"
+                    },
+                    "ownerUserName": {
+                        "type": "string"
                     },
                     "metadatas": {
                         "type": "object",

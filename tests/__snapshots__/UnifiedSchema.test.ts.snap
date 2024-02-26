@@ -2444,7 +2444,8 @@ type query_consensusGenomes_items_sequencingRead_sample {
   uploadError: String
   hostOrganism: query_consensusGenomes_items_sequencingRead_sample_hostOrganism
   collection: query_consensusGenomes_items_sequencingRead_sample_collection
-  ownerUser: query_consensusGenomes_items_sequencingRead_sample_ownerUser
+  ownerUserId: Float
+  ownerUserName: String
   metadatas: query_consensusGenomes_items_sequencingRead_sample_metadatas!
 }
 
@@ -2455,10 +2456,6 @@ type query_consensusGenomes_items_sequencingRead_sample_hostOrganism {
 type query_consensusGenomes_items_sequencingRead_sample_collection {
   name: String
   public: Boolean
-}
-
-type query_consensusGenomes_items_sequencingRead_sample_ownerUser {
-  name: String
 }
 
 type query_consensusGenomes_items_sequencingRead_sample_metadatas {
@@ -3007,7 +3004,8 @@ type query_sequencingReads_items_sample {
   uploadError: String
   hostOrganism: query_sequencingReads_items_sample_hostOrganism
   collection: query_sequencingReads_items_sample_collection
-  ownerUser: query_sequencingReads_items_sample_ownerUser
+  ownerUserId: Float
+  ownerUserName: String
   metadatas: query_sequencingReads_items_sample_metadatas!
 }
 
@@ -3018,10 +3016,6 @@ type query_sequencingReads_items_sample_hostOrganism {
 type query_sequencingReads_items_sample_collection {
   name: String
   public: Boolean
-}
-
-type query_sequencingReads_items_sample_ownerUser {
-  name: String
 }
 
 type query_sequencingReads_items_sample_metadatas {

@@ -283,6 +283,7 @@ export const resolvers: Resolvers = {
                 public: Boolean(sampleInfo?.public),
               },
               ownerUser: {
+                id: sample?.uploader?.id,
                 // TODO: Make runner come from Workflows stitched with the user service when NextGen
                 // ready.
                 name: run.runner?.name ?? sample?.uploader?.name,
@@ -635,6 +636,7 @@ export const resolvers: Resolvers = {
                 public: Boolean(sampleInfo?.public),
               },
               ownerUser: {
+                id: sample?.uploader?.id,
                 // TODO: Make runner come from Workflows stitched with the user service when NextGen
                 // ready.
                 name: run.runner?.name ?? sample?.uploader?.name,

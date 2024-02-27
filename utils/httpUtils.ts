@@ -110,9 +110,7 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
     },
     body: JSON.stringify({
       "query": cleanQuery,
-      // TODO: (suzette 02/27/24) This is a hard coded id that you may have to change to make it pull from your own local
-      "variables": { workflowRunId: "018dd69b-70e9-715c-9537-dedde3168639" }
-      // "variables": context.params.variables
+      "variables": context.params.variables
     }),
   });
   if (fullResponse === "fullResponse"){

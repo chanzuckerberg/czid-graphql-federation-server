@@ -471,7 +471,7 @@ export const resolvers: Resolvers = {
       return pathogens;
     },
     /** Returns just the sample IDs (and old Rails IDs) to determine which IDs pass the filters. */
-    samples: async (root, args, context) => {
+    fedSamples: async (root, args, context) => {
       const input = args.input;
 
       // The comments in the formatUrlParams() call correspond to the line in the current
@@ -521,7 +521,7 @@ export const resolvers: Resolvers = {
         };
       });
     },
-    sequencingReads: async (root, args, context) => {
+    fedSequencingReads: async (root, args, context) => {
       const input = args.input;
 
       // The comments in the formatUrlParams() call correspond to the line in the current
@@ -824,7 +824,7 @@ export const resolvers: Resolvers = {
         })
       );
     },
-    workflowRunsAggregate: async (root, args, context, info) => {
+    fedWorkflowRunsAggregate: async (root, args, context, info) => {
       const input = args.input;
 
       const { projects } = await get(

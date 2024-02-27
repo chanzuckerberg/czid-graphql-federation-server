@@ -174,6 +174,48 @@ describe("sequencingReads query:", () => {
     expect(result.data.sequencingReads[0].sample.collectionLocation).toBe("");
   });
 
+  it("Returns string location field", async () => {
+    (httpUtils.get as jest.Mock).mockImplementation(() => ({
+      workflow_runs: [
+        {
+          sample: {
+            metadata: {
+              collection_location_v2: "Redwood City",
+            },
+          },
+        },
+      ],
+    }));
+
+    const result = await execute(query, {});
+
+    expect(result.data.sequencingReads[0].sample.collectionLocation).toBe(
+      "Redwood City"
+    );
+  });
+
+  it("Returns object name for location field", async () => {
+    (httpUtils.get as jest.Mock).mockImplementation(() => ({
+      workflow_runs: [
+        {
+          sample: {
+            metadata: {
+              collection_location_v2: {
+                name: "Redwood City",
+              },
+            },
+          },
+        },
+      ],
+    }));
+
+    const result = await execute(query, {});
+
+    expect(result.data.sequencingReads[0].sample.collectionLocation).toBe(
+      "Redwood City"
+    );
+  });
+
   it("Converts water control to boolean", async () => {
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [

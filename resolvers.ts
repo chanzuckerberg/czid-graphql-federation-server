@@ -180,8 +180,57 @@ export const resolvers: Resolvers = {
       }
     },
     consensusGenomes: async (root, args, context) => {
+      const nextGenEnabled = await shouldReadFromNextGen(context); 
+      console.log(args.input) 
+      if (nextGenEnabled){
+          console.log("nextGenEnabled", nextGenEnabled)
+          const ret = await get("_", args, context);
+          console.log("return from next gen", ret)
+          return ret.data.consensusGenomes;
+      }
       const input = args.input;
-
+      console.log("nextGenNotEnabled")
+      if ( input?.where?.id?._eq ){
+        // if there is an _eq in the response than it is a call for a single workflow run result and the rails call will be like this:
+        const workflowRunId = input?.where?.id?._eq;
+        console.log(workflowRunId)
+        const data = await get(
+          `/workflow_runs/${workflowRunId}/results`,
+          args,
+          context
+        );
+        console.log(data)
+        const { coverage_viz, quality_metrics, taxon_info } = data;
+        const { accession_id, accession_name, taxon_id, taxon_name } =
+          taxon_info || {};
+        const ret = [{
+            metrics: {
+              coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
+              coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
+              coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
+              coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
+              coverageViz: coverage_viz,
+              gcPercent: quality_metrics?.gc_percent,
+              percentGenomeCalled: quality_metrics?.percent_genome_called,
+              percentIdentity: quality_metrics?.percent_identity,
+              refSnps: quality_metrics?.ref_snps,
+              nMissing: quality_metrics?.n_missing,
+              nAmbiguous: quality_metrics?.n_ambiguous,
+              nActg: quality_metrics?.n_actg,
+              mappedReads: quality_metrics?.mapped_reads,
+            },
+            accession: {
+              accessionId: accession_id,
+              accessionName: accession_name,
+            },
+            taxon: {
+              id: taxon_id?.toString(),
+              commonName: taxon_name,
+            },
+        }]
+        console.log(ret)
+        return ret;
+      } else {
       // The comments in the formatUrlParams() call correspond to the line in the current
       // codebase's callstack where the params are set, so help ensure we're not missing anything.
       const { workflow_runs } = await get(
@@ -237,7 +286,7 @@ export const resolvers: Resolvers = {
             accessionId: inputs?.accession_id,
             accessionName: inputs?.accession_name,
           },
-          metric: {
+          metrics: {
             coverageDepth: run.cached_results?.coverage_viz?.coverage_depth,
             totalReads: qualityMetrics?.total_reads,
             gcPercent: qualityMetrics?.gc_percent,
@@ -280,77 +329,71 @@ export const resolvers: Resolvers = {
             },
           },
         };
-      });
+      })
+    }
     },
-    ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
-      const nextGenEnabled = await shouldReadFromNextGen(context);
-      if (nextGenEnabled){
-        console.log("nextGenEnabled", nextGenEnabled)
-        console.log(context.params.query);
-        context.params.query = JSON.parse(`{
-          "query": "query MyQuery {
-            consensusGenomes {
-              accession {
-                accessionId
-              }
-            }
-          }"
-        }`)
-        const ret = await get("_", args, context);
-        console.log("return from next gen", ret.data.consensusGenomes[0])
-        //this is a hack to be able to see something on the graphiql interface
-        return { consensusGenome: ret.data.consensusGenomes[0]};
-      }
-      console.log("nextGenNotEnabled")
-      const data = await get(
-        `/workflow_runs/${args.workflowRunId}/results`,
-        args,
-        context
-      );
-      console.log(data)
-      const { coverage_viz, quality_metrics, taxon_info } = data;
-      const { accession_id, accession_name, taxon_id, taxon_name } =
-        taxon_info || {};
+    // ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
+    //   const nextGenEnabled = await shouldReadFromNextGen(context);
+    //   if (nextGenEnabled){
+    //     console.log("nextGenEnabled", nextGenEnabled)
+    //     console.log(context.params.query);
+    //     // split after ConsensusGenomeWorkflowResults { 
+    //     // and send along the query as written to next gen
+    //     context.params.query = JSON.parse(`{
+    //       "query": "query MyQuery {
+    //         consensusGenomes {
+    //           accession {
+    //             accessionId
+    //           }
+    //         }
+    //       }"
+    //     }`)
+    //     const ret = await get("_", args, context);
+    //     console.log("return from next gen", ret.data.consensusGenomes[0])
+    //     //this is a hack to be able to see something on the graphiql interface
+    //     return { consensusGenome: ret.data.consensusGenomes[0]};
+    //   }
+    //   console.log("nextGenNotEnabled")
+    //   const data = await get(
+    //     `/workflow_runs/${args.workflowRunId}/results`,
+    //     args,
+    //     context
+    //   );
+    //   console.log(data)
+    //   const { coverage_viz, quality_metrics, taxon_info } = data;
+    //   const { accession_id, accession_name, taxon_id, taxon_name } =
+    //     taxon_info || {};
 
-      const ret = {
-        metricConsensusGenome: {
-          nMissing: quality_metrics?.n_missing,
-          nAmbiguous: quality_metrics?.n_ambiguous,
-          referenceGenomeLength: quality_metrics?.reference_genome_length,
-          percentGenomeCalled: quality_metrics?.percent_genome_called,
-          percentIdentity: quality_metrics?.percent_identity,
-          totalReads: quality_metrics?.total_reads,
-          refSnps: quality_metrics?.ref_snps,
-          mappedReads: quality_metrics?.mapped_reads,
-          nActg: quality_metrics?.n_actg,
-          gcPercent: quality_metrics?.gc_percent,
-          coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
-          coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
-          coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
-          coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
-          // coverageViz:
-        },
-        taxa: {
-          id: taxon_id?.toString(),
-          name: taxon_name,
-        },
-        referenceGenome: {
-          id: accession_id,
-        },
-        consensusGenome: {
-          accession: {
-            accessionId: accession_id,
-            accessionName: accession_name,
-          },
-          taxon: {
-            id: taxon_id?.toString(),
-            commonName: taxon_name,
-          },
-          }
-        }
-      console.log(ret)
-      return ret;
-      },
+    //   const ret = {
+    //     consensusGenomes: {
+    //       metrics: {
+    //         coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
+    //         coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
+    //         coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
+    //         coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
+    //         coverageViz: coverage_viz,
+    //         gcPercent: quality_metrics?.gc_percent,
+    //         percentGenomeCalled: quality_metrics?.percent_genome_called,
+    //         percentIdentity: quality_metrics?.percent_identity,
+    //         refSnps: quality_metrics?.ref_snps,
+    //         nMissing: quality_metrics?.n_missing,
+    //         nAmbiguous: quality_metrics?.n_ambiguous,
+    //         nActg: quality_metrics?.n_actg,
+    //         mappedReads: quality_metrics?.mapped_reads,
+    //       },
+    //       accession: {
+    //         accessionId: accession_id,
+    //         accessionName: accession_name,
+    //       },
+    //       taxon: {
+    //         id: taxon_id?.toString(),
+    //         commonName: taxon_name,
+    //       },
+    //     },
+    //   }
+    //   console.log(ret)
+    //   return ret;
+    // },
 
       // return {
       //   metric_consensus_genome: {

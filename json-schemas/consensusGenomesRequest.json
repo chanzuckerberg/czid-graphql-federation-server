@@ -14,6 +14,14 @@
                             }
                         }
                     }
+                },
+                "id":{
+                    "type": "object",
+                    "properties": {
+                        "_eq": {
+                            "type":"string"
+                        }
+                    }
                 }
             }
         },

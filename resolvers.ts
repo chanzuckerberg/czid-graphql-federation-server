@@ -269,7 +269,10 @@ export const resolvers: Resolvers = {
               name: sampleInfo?.name ?? "",
               notes: sampleInfo?.sample_notes,
               uploadError: sampleInfo?.result_status_description,
-              collectionLocation: sampleMetadata?.collection_location_v2 ?? "",
+              collectionLocation:
+                typeof sampleMetadata?.collection_location_v2 === "string"
+                  ? sampleMetadata.collection_location_v2
+                  : sampleMetadata?.collection_location_v2?.name ?? "",
               sampleType: sampleMetadata?.sample_type ?? "",
               waterControl: sampleMetadata?.water_control === "Yes",
               hostOrganism:
@@ -620,7 +623,10 @@ export const resolvers: Resolvers = {
               name: sampleInfo?.name ?? "",
               notes: sampleInfo?.sample_notes,
               uploadError: sampleInfo?.result_status_description,
-              collectionLocation: sampleMetadata?.collection_location_v2 ?? "",
+              collectionLocation:
+                typeof sampleMetadata?.collection_location_v2 === "string"
+                  ? sampleMetadata.collection_location_v2
+                  : sampleMetadata?.collection_location_v2?.name ?? "",
               sampleType: sampleMetadata?.sample_type ?? "",
               waterControl: sampleMetadata?.water_control === "Yes",
               hostOrganism:

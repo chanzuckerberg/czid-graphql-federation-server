@@ -2,9 +2,9 @@
 import {
   Resolvers,
   query_consensusGenomes_items,
-  query_samples_items,
-  query_sequencingReads_items,
-  query_workflowRunsAggregate_items,
+  query_fedSamples_items,
+  query_fedSequencingReads_items,
+  query_fedWorkflowRunsAggregate_items,
   query_workflowRuns_items,
 } from "./.mesh";
 import { get, postWithCSRF, getFullResponse } from "./utils/httpUtils";
@@ -514,7 +514,7 @@ export const resolvers: Resolvers = {
         return [];
       }
 
-      return workflow_runs.map((run): query_samples_items => {
+      return workflow_runs.map((run): query_fedSamples_items => {
         return {
           id: run.sample?.info?.id?.toString(),
           railsSampleId: run.sample?.info?.id?.toString(),
@@ -564,7 +564,7 @@ export const resolvers: Resolvers = {
         return [];
       }
 
-      const result: query_sequencingReads_items[] = [];
+      const result: query_fedSequencingReads_items[] = [];
 
       for (const run of workflow_runs) {
         const inputs = run.inputs;
@@ -853,7 +853,7 @@ export const resolvers: Resolvers = {
       if (!projects?.length) {
         return [];
       }
-      return projects.map((project): query_workflowRunsAggregate_items => {
+      return projects.map((project): query_fedWorkflowRunsAggregate_items => {
         return {
           collectionId: project.id.toString(),
           mngsRunsCount: project.sample_counts.mngs_runs_count,

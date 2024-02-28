@@ -1,12 +1,16 @@
 import fetch from "node-fetch";
 import { getEnrichedToken } from "./enrichToken";
 
-export const get = async (url: string, args: any, context: any, fullResponse?: "fullResponse" ) => {
+export const get = async ({url, args, context, serviceType, fullResponse}:{url?: string, args: any, context: any, serviceType?: "workflows" | "entities", fullResponse?: boolean} ) => {
   try {
     let baseURL, urlPrefix;
     const nextGenEnabled = await shouldReadFromNextGen(context);
     if (nextGenEnabled) {
-      return fetchFromNextGenServer(args, context, fullResponse)
+      if (!serviceType) {
+        console.error("You must pass a service type to call next gen") 
+        return null;
+      }
+      return fetchFromNextGenServer(args, context, serviceType, fullResponse)
     } else {
       baseURL = process.env.API_URL;
       urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
@@ -18,7 +22,7 @@ export const get = async (url: string, args: any, context: any, fullResponse?: "
           "Content-Type": "application/json",
         },
       });
-      if (fullResponse === "fullResponse"){
+      if (fullResponse === true){
         return response;
       } else {
         return await response.json();
@@ -29,22 +33,21 @@ export const get = async (url: string, args: any, context: any, fullResponse?: "
   }
 };
 
-const checkForLogin = (responseUrl: string | null) => {
-  if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
-    throw new Error("You must be logged in to perform this action.");
-  }
-};
-
-export const postWithCSRF = async (
+export const postWithCSRF = async ({url, body, args, context, serviceType}:{
   url: string,
   body: any,
   args: any,
-  context: any
-) => {
+  context: any,
+  serviceType?: "workflows" | "entities",
+}) => {
   try {
     const nextGenEnabled = await shouldReadFromNextGen(context);
     if (nextGenEnabled) {
-      return fetchFromNextGenServer(args, context)
+      if (!serviceType) {
+        console.error("You must pass a service type to call next gen") 
+        return null;
+      }
+      return fetchFromNextGenServer(args, context, serviceType)
     } else {
       const response = await fetch(process.env.API_URL + url, {
         method: "POST",
@@ -83,22 +86,33 @@ export const shouldReadFromNextGen = async (context) => {
   return false;
 }
 
-const formatFedQueryForNextGen = (query: string) => {
-  const startAt = query.indexOf("input: {")
-  const cleanQuery = query
-    .replace("input: {", "")
+export const formatFedQueryForNextGen = (query: string) => {
+  let cleanQuery = query;
+
+  // remove fed Prefix
+  if(query.indexOf('fed')){
+    const splitQueryOnFed = query.split("fed")
+    const firstLetterLowerCase = splitQueryOnFed[1][0].toLowerCase();
+      splitQueryOnFed[1] = splitQueryOnFed[1].slice(1)
+      splitQueryOnFed.splice(1, 0, firstLetterLowerCase)
+    cleanQuery = splitQueryOnFed.join('')
+  }
+
+  // remove input object from variables
+    cleanQuery.replace("input: {", "")
     .replace("}}", "}")
     // TODO: (suzette 02/27/24) FIX THESE HACKS TO MAKE THIS FUNCTION MORE UNIVERSAL
-    .replace("String", "UUID")
+    .replace("String", "UUID") // lets make an actual UUID
+    // apply any specific type switches that need to be made - these can be passed in from the resolver
     .replace(/query_consensusGenomes_items/g, "ConsensusGenome")
   return cleanQuery;
 }
-
-const fetchFromNextGenServer = async (args, context, fullResponse?: "fullResponse") => {
+const fetchFromNextGenServer = async (args, context, serviceType: "workflows"|"entities", fullResponse?: boolean) => {
   const czidServicesToken = await getEnrichedToken(context);
   console.log('czidServicesToken', czidServicesToken)
+  const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
   const cleanQuery = formatFedQueryForNextGen(context.params.query) 
-  const response = await fetch(`${process.env.NEXTGEN_ENTITIES_URL}/graphql`, {
+  const response = await fetch(`${baseUrl}/graphql`, {
     method: "POST",
     headers: {
       Cookie: context.request.headers.get("cookie"),
@@ -111,11 +125,17 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
       "variables": context.params.variables
     }),
   });
-  if (fullResponse === "fullResponse"){
+  if (fullResponse === true){
     console.log('full response', response)
     return response;
   } else {
     console.log("data response")
     return await response.json();
+  }
+};
+
+const checkForLogin = (responseUrl: string | null) => {
+  if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
+    throw new Error("You must be logged in to perform this action.");
   }
 };

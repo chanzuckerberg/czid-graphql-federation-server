@@ -385,7 +385,7 @@ export const resolvers: Resolvers = {
       const urlWithParams = args?.input?.pipelineVersion
         ? url + `?pipeline_version=${args?.input?.pipelineVersion}`
         : url;
-      const res = await get(urlWithParams, args, context);
+      const res = await get({ url: urlWithParams, args, context });
       try {
         const metadata = res.metadata.map(item => {
           item.id = item.id.toString();
@@ -428,7 +428,7 @@ export const resolvers: Resolvers = {
         merge_nt_nr: false,
       });
       const { _all_tax_ids, metadata, counts, lineage, _sortedGenus, _highlightedTaxIds } =
-        (await get(`/samples/${args.sampleId}/report_v2` + urlParams, args, context)) || {};
+        (await get({ url: `/samples/${args.sampleId}/report_v2` + urlParams, args, context })) || {};
       const taxonHits = formatTaxonHits(counts);
       const taxonLineage = formatTaxonLineage(lineage);
       return {

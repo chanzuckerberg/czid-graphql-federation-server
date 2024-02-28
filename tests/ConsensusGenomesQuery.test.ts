@@ -25,11 +25,11 @@ describe("fedConsensusGenomes query:", () => {
     }));
     const response = await execute(query, {});
 
-    expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=with_sample_info&search=abc&listAllIds=false",
-      expect.anything(),
-      expect.anything()
-    );
+    expect(httpUtils.get).toHaveBeenCalledWith({
+      url: "/workflow_runs.json?&mode=with_sample_info&search=abc&listAllIds=false",
+      args: expect.anything(),
+      context: expect.anything(),
+    });
     expect(response.data.fedConsensusGenomes).toHaveLength(0);
   });
 
@@ -60,7 +60,7 @@ describe("fedConsensusGenomes query:", () => {
         taxon: {
           name: "Taxon1",
         },
-      })
+      }),
     );
     expect(result.data.fedConsensusGenomes[1]).toEqual(
       expect.objectContaining({
@@ -68,7 +68,7 @@ describe("fedConsensusGenomes query:", () => {
         taxon: {
           name: "Taxon2",
         },
-      })
+      }),
     );
   });
 
@@ -90,10 +90,9 @@ describe("fedConsensusGenomes query:", () => {
 
     const result = await execute(query, {});
 
-    const metadataFields =
-      result.data.fedConsensusGenomes[0].sequencingRead.sample.metadatas.edges.map(
-        (edge) => edge.node.fieldName
-      );
+    const metadataFields = result.data.fedConsensusGenomes[0].sequencingRead.sample.metadatas.edges.map(
+      edge => edge.node.fieldName,
+    );
     expect(metadataFields).toHaveLength(3);
     expect(metadataFields[0]).toEqual("key1");
     expect(metadataFields[1]).toEqual("key2");
@@ -111,8 +110,6 @@ describe("fedConsensusGenomes query:", () => {
 
     const result = await execute(query, {});
 
-    expect(
-      result.data.fedConsensusGenomes[0].sequencingRead.sample.metadatas.edges
-    ).toHaveLength(0);
+    expect(result.data.fedConsensusGenomes[0].sequencingRead.sample.metadatas.edges).toHaveLength(0);
   });
 });

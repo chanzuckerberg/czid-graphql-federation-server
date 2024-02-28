@@ -3,9 +3,7 @@ import { formatFedQueryForNextGen } from "../utils/httpUtils";
 describe("FormatFedQuery:", () => {
   describe("formatFedQuery:", () => {
     it("Removes fed prefix from the top level query", () => {
-      expect(
-        formatFedQueryForNextGen("query fedConsensusGenome")
-      ).toBe("query consensusGenome");
+      expect(formatFedQueryForNextGen("query fedConsensusGenome")).toBe("query consensusGenome");
     });
 
     // it("It does not remove fed from lower in the query", () => {
@@ -29,9 +27,9 @@ describe("FormatFedQuery:", () => {
     // });
 
     it("removes the input wrapper from the query variables", () => {
-      expect(
-        formatFedQueryForNextGen(`consensusGenomes(input: { where: { id: { _eq: $workflowRunId } } }) {`)
-      ).toBe(`consensusGenomes( where: { id: { _eq: $workflowRunId } } ) {`);
+      expect(formatFedQueryForNextGen(`consensusGenomes(input: { where: { id: { _eq: $workflowRunId }}}) {`)).toBe(
+        `consensusGenomes( where: { id: { _eq: $workflowRunId }}) {`,
+      );
     });
   });
 });

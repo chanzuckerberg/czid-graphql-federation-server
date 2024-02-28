@@ -1,7 +1,6 @@
 import fetch from "node-fetch";
 import { getEnrichedToken } from "./enrichToken";
 
-
 export const get = async (url: string, args: any, context: any, fullResponse?: "fullResponse" ) => {
   try {
     let baseURL, urlPrefix;
@@ -29,7 +28,6 @@ export const get = async (url: string, args: any, context: any, fullResponse?: "
     return Promise.reject(e.response);
   }
 };
-
 
 const checkForLogin = (responseUrl: string | null) => {
   if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
@@ -121,5 +119,3 @@ const fetchFromNextGenServer = async (args, context, fullResponse?: "fullRespons
     return await response.json();
   }
 };
-
-

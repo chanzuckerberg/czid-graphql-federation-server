@@ -290,16 +290,6 @@ sources:
         - namingConvention:
             typeNames: camelCase
             fieldNames: camelCase
-transforms:
-  - rename:
-      mode: wrap
-      renames:
-        - from:
-            query: Query
-            field: workflowRunSteps
-          to:
-            query: Query
-            field: aaaaaaa
 additionalTypeDefs: |
   type GraphQLFederationVersion {
     version: String

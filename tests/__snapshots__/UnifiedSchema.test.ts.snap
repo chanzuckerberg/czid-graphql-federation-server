@@ -17,13 +17,6 @@ directive @httpOperation(subgraph: String, path: String, operationSpecificHeader
 directive @transport(subgraph: String, kind: String, location: String, headers: ObjMap, queryStringOptions: ObjMap, queryParams: ObjMap) on OBJECT
 
 type Query {
-  appConfig(id: ID!): AppConfig
-  pathogenList(version: String): PathogenList!
-  project(id: Int!): Project!
-  sample(sampleId: Int!): Sample!
-  sampleReadsStats(sampleIds: [String!]!): SampleReadsStatsList!
-  samplesList(annotations: [Annotation!], basic: Boolean, domain: String, hostIds: [Int!], limit: Int, listAllIds: Boolean, location: String, locationV2: [String!], offset: Int, orderBy: String, orderDir: String, projectId: Int, requestedSampleIds: [Int!], sampleIds: [Int!], searchString: String, taxIds: [Int!], taxLevels: [String!], thresholdFilterInfo: String, time: [String!], tissue: [String!], visibility: [String!], workflow: String): SampleList!
-  user(archetypes: String!, email: String!, institution: String!, name: String!, role: Int!, segments: String!): User!
   node(
     """The ID of the object."""
     id: GlobalID!
@@ -45,7 +38,7 @@ type Query {
   taxa(where: TaxonWhereClause = null, orderBy: [TaxonOrderByClause!] = []): [Taxon!]!
   upstreamDatabases(where: UpstreamDatabaseWhereClause = null, orderBy: [UpstreamDatabaseOrderByClause!] = []): [UpstreamDatabase!]!
   indexFiles(where: IndexFileWhereClause = null, orderBy: [IndexFileOrderByClause!] = []): [IndexFile!]!
-  bulkDownloads(input: queryInput_bulkDownloads_input_Input): [query_bulkDownloads_items] @httpOperation(subgraph: "CZIDREST", path: "/bulk_downloads?searchBy=&n=", httpMethod: GET)
+  bulkDownloads(where: BulkDownloadWhereClause = null, orderBy: [BulkDownloadOrderByClause!] = []): [BulkDownload!]!
   samplesAggregate(where: SampleWhereClause = null): SampleAggregate!
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate!
   genomicRangesAggregate(where: GenomicRangeWhereClause = null): GenomicRangeAggregate!
@@ -59,6 +52,13 @@ type Query {
   upstreamDatabasesAggregate(where: UpstreamDatabaseWhereClause = null): UpstreamDatabaseAggregate!
   indexFilesAggregate(where: IndexFileWhereClause = null): IndexFileAggregate!
   bulkDownloadsAggregate(where: BulkDownloadWhereClause = null): BulkDownloadAggregate!
+  appConfig(id: ID!): AppConfig
+  pathogenList(version: String): PathogenList!
+  project(id: Int!): Project!
+  sample(sampleId: Int!): Sample!
+  sampleReadsStats(sampleIds: [String!]!): SampleReadsStatsList!
+  samplesList(annotations: [Annotation!], basic: Boolean, domain: String, hostIds: [Int!], limit: Int, listAllIds: Boolean, location: String, locationV2: [String!], offset: Int, orderBy: String, orderDir: String, projectId: Int, requestedSampleIds: [Int!], sampleIds: [Int!], searchString: String, taxIds: [Int!], taxLevels: [String!], thresholdFilterInfo: String, time: [String!], tissue: [String!], visibility: [String!], workflow: String): SampleList!
+  user(archetypes: String!, email: String!, institution: String!, name: String!, role: Int!, segments: String!): User!
   tempWorkflowRuns(where: WorkflowRunWhereClause = null, orderBy: [WorkflowRunOrderByClause!] = []): [WorkflowRun!]!
   workflows(where: WorkflowWhereClause = null, orderBy: [WorkflowOrderByClause!] = []): [Workflow!]!
   workflowRunSteps(where: WorkflowRunStepWhereClause = null, orderBy: [WorkflowRunStepOrderByClause!] = []): [WorkflowRunStep!]!
@@ -72,6 +72,7 @@ type Query {
   AmrDeprecatedResults(sampleId: String): AmrDeprecatedResults @httpOperation(subgraph: "CZIDREST", path: "/samples/{args.sampleId}/amr.json", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
   AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   Background(snapshotLinkId: String): Background @httpOperation(subgraph: "CZIDREST", path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
+  fedBulkDownloads(input: queryInput_fedBulkDownloads_input_Input): [query_fedBulkDownloads_items] @httpOperation(subgraph: "CZIDREST", path: "/bulk_downloads?searchBy=&n=", httpMethod: GET)
   BulkDownloadCGOverview(input: queryInput_BulkDownloadCGOverview_input_Input): ConsensusGenomeOverviewRows @httpOperation(subgraph: "CZIDREST", path: "/bulk_downloads", httpMethod: POST)
   fedConsensusGenomes(input: queryInput_fedConsensusGenomes_input_Input): [query_fedConsensusGenomes_items] @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs.json", httpMethod: GET)
   ConsensusGenomeWorkflowResults(workflowRunId: String): ConsensusGenomeWorkflowResults @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
@@ -96,7 +97,6 @@ type Query {
 }
 
 type Mutation {
-  createUser(archetypes: String, email: String!, institution: String, name: String, role: Int, segments: String, sendActivation: Boolean): CreateUserPayload!
   createFile(entityId: ID!, entityFieldName: String!, file: FileCreate!): File!
   uploadFile(entityId: ID!, entityFieldName: String!, file: FileUpload!, expiration: Int! = 3600): MultipartUploadResponse!
   uploadTemporaryFile(expiration: Int! = 3600): MultipartUploadResponse!
@@ -137,6 +137,7 @@ type Mutation {
   deleteIndexFile(where: IndexFileWhereClauseMutations!): [IndexFile!]!
   createBulkDownload(input: BulkDownloadCreateInput!): BulkDownload!
   deleteBulkDownload(where: BulkDownloadWhereClauseMutations!): [BulkDownload!]!
+  createUser(archetypes: String, email: String!, institution: String, name: String, role: Int, segments: String, sendActivation: Boolean): CreateUserPayload!
   createWorkflowRun(input: RunWorkflowVersionInput!): WorkflowRun!
   updateWorkflowRun(input: WorkflowRunUpdateInput!, where: WorkflowRunWhereClauseMutations!): [WorkflowRun!]!
   deleteWorkflowRun(where: WorkflowRunWhereClauseMutations!): [WorkflowRun!]!
@@ -159,407 +160,6 @@ type Mutation {
   KickoffWGSWorkflow(sampleId: String, input: mutationInput_KickoffWGSWorkflow_input_Input): [mutation_KickoffWGSWorkflow_items] @httpOperation(subgraph: "CZIDREST", path: "/samples/{args.sampleId}/kickoff_workflow", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
   KickoffAMRWorkflow(sampleId: String, input: mutationInput_KickoffAMRWorkflow_input_Input): [mutation_KickoffWGSWorkflow_items] @httpOperation(subgraph: "CZIDREST", path: "/samples/{args.sampleId}/kickoff_workflow", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
   UpdateMetadata(sampleId: String, input: mutationInput_UpdateMetadata_input_Input): UpdateMetadataReponse @httpOperation(subgraph: "CZIDREST", path: "/samples/{args.sampleId}/save_metadata_v2", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: POST)
-}
-
-type AlignmentConfig {
-  createdAt: ISO8601DateTime!
-  indexDirSuffix: String
-  lineageVersion: String!
-  lineageVersionOld: Int
-  name: String
-  s3Accession2taxidPath: String
-  s3DeuterostomeDbPath: String
-  s3LineagePath: String
-  s3NrDbPath: String
-  s3NrLocDbPath: String
-  s3NtDbPath: String
-  s3NtInfoDbPath: String
-  s3NtLocDbPath: String
-  s3TaxonBlacklistPath: String
-  updatedAt: ISO8601DateTime!
-}
-
-input Annotation {
-  name: String!
-}
-
-type AppConfig {
-  key: String!
-  value: String!
-}
-
-"""
-Represents non-fractional signed whole numeric values. Since the value may
-exceed the size of a 32-bit integer, it's encoded as a string.
-"""
-scalar BigInt
-
-"""Autogenerated return type of CreateUser."""
-type CreateUserPayload {
-  archetypes: String
-  email: String
-  institution: String
-  name: String
-  role: Int
-  segments: String
-  sendActivation: Boolean
-}
-
-type DbSample {
-  alignmentConfigName: String
-  basespaceAccessToken: String
-  clientUpdatedAt: ISO8601DateTime
-  createdAt: ISO8601DateTime!
-  dagVars: String
-  doNotProcess: Boolean!
-  hostGenomeId: Int
-  hostGenomeName: String
-  id: Int!
-  initialWorkflow: String!
-  inputFiles: [InputFile!]!
-  maxInputFragments: Int
-  name: String
-  pipelineBranch: String
-  pipelineCommit: String
-  pipelineExecutionStrategy: String
-  privateUntil: ISO8601DateTime
-  projectId: Int
-  s3Bowtie2IndexPath: String
-  s3PreloadResultPath: String
-  s3StarIndexPath: String
-  sampleNotes: String
-  status: String
-  subsample: Int
-  updatedAt: ISO8601DateTime!
-  uploadError: String
-  uploadedFromBasespace: Int!
-  useTaxonWhitelist: Boolean!
-  userId: Int!
-  webCommit: String
-}
-
-type DerivedSampleOutput {
-  hostGenomeName: String!
-  pipelineRun: PipelineRun
-  projectName: String!
-  summaryStats: SampleSummaryStats
-}
-
-type HostGenome {
-  createdAt: ISO8601DateTime!
-  defaultBackgroundId: Int
-  id: Int!
-  name: String!
-  s3Bowtie2IndexPath: String!
-  s3Minimap2IndexPath: String
-  s3StarIndexPath: String!
-  samplesCount: Int!
-  skipDeuteroFilter: Int!
-  taxaCategory: String!
-  updatedAt: ISO8601DateTime!
-  user: User
-  userId: Int
-}
-
-"""An ISO 8601-encoded datetime"""
-scalar ISO8601DateTime
-
-type InputFile {
-  createdAt: ISO8601DateTime!
-  id: Int!
-  name: String
-  parts: String
-  presignedUrl: String
-  sampleId: Int!
-  source: String
-  sourceType: String
-  updatedAt: ISO8601DateTime
-  uploadClient: String
-}
-
-type MngsRunInfo {
-  createdAt: ISO8601DateTime
-  finalized: Int
-  reportReady: Boolean
-  resultStatusDescription: String
-  totalRuntime: Int
-  withAssembly: Int
-}
-
-type Pathogen {
-  category: String
-  name: String
-  taxId: Int
-}
-
-type PathogenList {
-  citations: [String!]
-  createdAt: ISO8601DateTime
-  id: ID
-  name: String
-  pathogens: [Pathogen!]
-  updatedAt: ISO8601DateTime
-  version: String
-}
-
-type PipelineRun {
-  adjustedRemainingReads: Int
-  alertSent: Boolean!
-  alignmentConfig: AlignmentConfig
-  alignmentConfigId: Int
-  alignmentConfigName: String
-  assembled: Int
-  compressionRatio: Float
-  createdAt: ISO8601DateTime
-  dagVars: String
-  deprecated: Boolean
-  errorMessage: String
-  executedAt: ISO8601DateTime
-  finalized: Int
-  fractionSubsampled: Float
-  id: Int!
-  jobStatus: String
-  knownUserError: String
-  maxInputFragments: Int
-  pipelineBranch: String
-  pipelineCommit: String
-  pipelineExecutionStrategy: String
-  pipelineVersion: String
-  qcPercent: Float
-  resultsFinalized: Int
-  s3OutputPrefix: String
-  sampleId: Int
-  sfnExecutionArn: String
-  subsample: Int
-  timeToFinalized: Int
-  timeToResultsFinalized: Int
-  totalErccReads: Int
-  totalReads: Int
-  truncated: Int
-  unmappedReads: Int
-  updatedAt: ISO8601DateTime!
-  useTaxonWhitelist: Boolean!
-  wdlVersion: String
-}
-
-type Project {
-  backgroundFlag: Int
-  createdAt: ISO8601DateTime!
-  creator: User
-  daysToKeepSamplePrivate: Int!
-  description: String
-  id: Int!
-  maxInputFragmentsDefault: Int
-  name: String!
-  publicAccess: Int!
-  samples: [Sample!]
-  subsampleDefault: Int
-  totalSampleCount: Int!
-  updatedAt: ISO8601DateTime!
-}
-
-type Sample implements EntityInterface & Node {
-  alignmentConfigName: String
-  basespaceAccessToken: String
-  createdAt: DateTime!
-  dagVars: String
-  defaultBackgroundId: Int
-  defaultPipelineRunId: Int
-  details: SampleDetails!
-  doNotProcess: Boolean!
-  editable: Boolean
-  hostGenome: HostGenome
-  hostGenomeId: Int
-  id: ID!
-  initialWorkflow: String!
-  maxInputFragments: Int
-  name: String!
-  pipelineBranch: String
-  pipelineCommit: String
-  pipelineExecutionStrategy: String
-  pipelineRuns: [PipelineRun!]
-  privateUntil: ISO8601DateTime
-  project: Project
-  projectId: Int
-  public: Int!
-  s3Bowtie2IndexPath: String
-  s3PreloadResultPath: String
-  s3StarIndexPath: String
-  sampleDeletable: Boolean
-  sampleNotes: String
-  status: String
-  subsample: Int
-  updatedAt: DateTime
-  uploadError: String
-  uploadedFromBasespace: Int
-  useTaxonWhitelist: Boolean!
-  user: User
-  userId: Int
-  webCommit: String
-  workflowRuns: [WorkflowRun!]
-  """The Globally Unique ID of this object"""
-  _id: GlobalID!
-  railsSampleId: Int
-  hostOrganism(where: HostOrganismWhereClause = null, orderBy: [HostOrganismOrderByClause!] = []): HostOrganism
-  sequencingReads(
-    where: SequencingReadWhereClause = null
-    orderBy: [SequencingReadOrderByClause!] = []
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-    """Returns the first n items from the list."""
-    first: Int = null
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): SequencingReadConnection!
-  sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
-  metadatas(
-    where: MetadatumWhereClause = null
-    orderBy: [MetadatumOrderByClause!] = []
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-    """Returns the first n items from the list."""
-    first: Int = null
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): MetadatumConnection!
-  metadatasAggregate(where: MetadatumWhereClause = null): MetadatumAggregate
-  producingRunId: ID
-  ownerUserId: Int!
-  collectionId: Int!
-}
-
-type SampleDetails {
-  dbSample: DbSample
-  derivedSampleOutput: DerivedSampleOutput
-  metadata: SampleMetadata
-  mngsRunInfo: MngsRunInfo
-  uploader: SampleUploader!
-  workflowRunsCountByWorkflow: String
-}
-
-type SampleList {
-  sampleIds: [Int!]
-  samples: [Sample!]!
-}
-
-type SampleMetadata {
-  collectionDate: String
-  collectionLocationV2: String
-  nucleotideType: String
-  sampleType: String
-  waterControl: String
-  metadata: [query_SampleMetadata_metadata_items]
-  additional_info: query_SampleMetadata_additional_info
-}
-
-type SampleReadsStats {
-  initialReads: Int
-  name: String
-  pipelineVersion: String
-  sampleId: ID!
-  steps: [SampleSteps!]
-  wdlVersion: String
-}
-
-type SampleReadsStatsList {
-  sampleReadsStats: [SampleReadsStats!]!
-}
-
-type SampleSteps {
-  name: String
-  readsAfter: Int
-}
-
-type SampleSummaryStats {
-  adjustedRemainingReads: Int
-  compressionRatio: Float
-  insertSizeMean: Float
-  insertSizeStandardDeviation: Float
-  lastProcessedAt: ISO8601DateTime
-  percentRemaining: Float
-  qcPercent: Float
-  readsAfterCzidDedup: Int
-  readsAfterPriceseq: Int
-  readsAfterStar: Int
-  readsAfterTrimmomatic: Int
-  unmappedReads: Int
-}
-
-type SampleUploader {
-  id: Int!
-  name: String
-}
-
-type User {
-  archetypes: String!
-  createdByUserId: BigInt!
-  email: String!
-  id: ID!
-  institution: String!
-  name: String!
-  role: Int!
-  segments: String!
-}
-
-type WorkflowRun implements EntityInterface & Node {
-  cachedResults: String
-  createdAt: DateTime!
-  deprecated: Boolean!
-  errorMessage: String
-  executedAt: ISO8601DateTime
-  inputsJson: String
-  rerunFrom: Int
-  s3OutputPrefix: String
-  sample: Sample
-  sampleId: Int
-  sfnExecutionArn: String
-  status: WorkflowRunStatus
-  timeToFinalized: Int
-  updatedAt: DateTime
-  wdlVersion: String
-  workflow: String!
-  """The Globally Unique ID of this object"""
-  _id: GlobalID!
-  id: ID!
-  startedAt: DateTime
-  endedAt: DateTime
-  executionId: String
-  outputsJson: String
-  workflowRunnerInputsJson: String
-  workflowVersion(where: WorkflowVersionWhereClause = null, orderBy: [WorkflowVersionOrderByClause!] = []): WorkflowVersion
-  steps(
-    where: WorkflowRunStepWhereClause = null
-    orderBy: [WorkflowRunStepOrderByClause!] = []
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-    """Returns the first n items from the list."""
-    first: Int = null
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): WorkflowRunStepConnection!
-  stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
-  entityInputs(
-    where: WorkflowRunEntityInputWhereClause = null
-    orderBy: [WorkflowRunEntityInputOrderByClause!] = []
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-    """Returns the first n items from the list."""
-    first: Int = null
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): WorkflowRunEntityInputConnection!
-  entityInputsAggregate(where: WorkflowRunEntityInputWhereClause = null): WorkflowRunEntityInputAggregate
-  rawInputsJson: String
-  ownerUserId: Int!
-  collectionId: Int!
 }
 
 type Accession implements EntityInterface & Node {
@@ -2006,6 +1606,80 @@ input ReferenceGenomeWhereClauseMutations {
   id: UUIDComparators
 }
 
+type Sample implements EntityInterface & Node {
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  railsSampleId: Int
+  name: String!
+  hostOrganism(where: HostOrganismWhereClause = null, orderBy: [HostOrganismOrderByClause!] = []): HostOrganism
+  sequencingReads(
+    where: SequencingReadWhereClause = null
+    orderBy: [SequencingReadOrderByClause!] = []
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): SequencingReadConnection!
+  sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
+  metadatas(
+    where: MetadatumWhereClause = null
+    orderBy: [MetadatumOrderByClause!] = []
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): MetadatumConnection!
+  metadatasAggregate(where: MetadatumWhereClause = null): MetadatumAggregate
+  producingRunId: ID
+  ownerUserId: Int!
+  collectionId: Int!
+  createdAt: ISO8601DateTime
+  updatedAt: ISO8601DateTime
+  alignmentConfigName: String
+  basespaceAccessToken: String
+  dagVars: String
+  defaultBackgroundId: Int
+  defaultPipelineRunId: Int
+  details: SampleDetails!
+  doNotProcess: Boolean!
+  editable: Boolean
+  hostGenome: HostGenome
+  hostGenomeId: Int
+  initialWorkflow: String!
+  maxInputFragments: Int
+  pipelineBranch: String
+  pipelineCommit: String
+  pipelineExecutionStrategy: String
+  pipelineRuns: [PipelineRun!]
+  privateUntil: ISO8601DateTime
+  project: Project
+  projectId: Int
+  public: Int!
+  s3Bowtie2IndexPath: String
+  s3PreloadResultPath: String
+  s3StarIndexPath: String
+  sampleDeletable: Boolean
+  sampleNotes: String
+  status: String
+  subsample: Int
+  uploadError: String
+  uploadedFromBasespace: Int
+  useTaxonWhitelist: Boolean!
+  user: User
+  userId: Int
+  webCommit: String
+  workflowRuns: [WorkflowRun!]
+}
+
 type SampleAggregate {
   aggregate: [SampleAggregateFunctions!]
 }
@@ -2786,6 +2460,333 @@ enum orderBy {
   desc_nulls_last
 }
 
+type AlignmentConfig {
+  createdAt: ISO8601DateTime!
+  indexDirSuffix: String
+  lineageVersion: String!
+  lineageVersionOld: Int
+  name: String
+  s3Accession2taxidPath: String
+  s3DeuterostomeDbPath: String
+  s3LineagePath: String
+  s3NrDbPath: String
+  s3NrLocDbPath: String
+  s3NtDbPath: String
+  s3NtInfoDbPath: String
+  s3NtLocDbPath: String
+  s3TaxonBlacklistPath: String
+  updatedAt: ISO8601DateTime!
+}
+
+input Annotation {
+  name: String!
+}
+
+type AppConfig {
+  key: String!
+  value: String!
+}
+
+"""
+Represents non-fractional signed whole numeric values. Since the value may
+exceed the size of a 32-bit integer, it's encoded as a string.
+"""
+scalar BigInt
+
+"""Autogenerated return type of CreateUser."""
+type CreateUserPayload {
+  archetypes: String
+  email: String
+  institution: String
+  name: String
+  role: Int
+  segments: String
+  sendActivation: Boolean
+}
+
+type DbSample {
+  alignmentConfigName: String
+  basespaceAccessToken: String
+  clientUpdatedAt: ISO8601DateTime
+  createdAt: ISO8601DateTime!
+  dagVars: String
+  doNotProcess: Boolean!
+  hostGenomeId: Int
+  hostGenomeName: String
+  id: Int!
+  initialWorkflow: String!
+  inputFiles: [InputFile!]!
+  maxInputFragments: Int
+  name: String
+  pipelineBranch: String
+  pipelineCommit: String
+  pipelineExecutionStrategy: String
+  privateUntil: ISO8601DateTime
+  projectId: Int
+  s3Bowtie2IndexPath: String
+  s3PreloadResultPath: String
+  s3StarIndexPath: String
+  sampleNotes: String
+  status: String
+  subsample: Int
+  updatedAt: ISO8601DateTime!
+  uploadError: String
+  uploadedFromBasespace: Int!
+  useTaxonWhitelist: Boolean!
+  userId: Int!
+  webCommit: String
+}
+
+type DerivedSampleOutput {
+  hostGenomeName: String!
+  pipelineRun: PipelineRun
+  projectName: String!
+  summaryStats: SampleSummaryStats
+}
+
+type HostGenome {
+  createdAt: ISO8601DateTime!
+  defaultBackgroundId: Int
+  id: Int!
+  name: String!
+  s3Bowtie2IndexPath: String!
+  s3Minimap2IndexPath: String
+  s3StarIndexPath: String!
+  samplesCount: Int!
+  skipDeuteroFilter: Int!
+  taxaCategory: String!
+  updatedAt: ISO8601DateTime!
+  user: User
+  userId: Int
+}
+
+"""An ISO 8601-encoded datetime"""
+scalar ISO8601DateTime
+
+type InputFile {
+  createdAt: ISO8601DateTime!
+  id: Int!
+  name: String
+  parts: String
+  presignedUrl: String
+  sampleId: Int!
+  source: String
+  sourceType: String
+  updatedAt: ISO8601DateTime
+  uploadClient: String
+}
+
+type MngsRunInfo {
+  createdAt: ISO8601DateTime
+  finalized: Int
+  reportReady: Boolean
+  resultStatusDescription: String
+  totalRuntime: Int
+  withAssembly: Int
+}
+
+type Pathogen {
+  category: String
+  name: String
+  taxId: Int
+}
+
+type PathogenList {
+  citations: [String!]
+  createdAt: ISO8601DateTime
+  id: ID
+  name: String
+  pathogens: [Pathogen!]
+  updatedAt: ISO8601DateTime
+  version: String
+}
+
+type PipelineRun {
+  adjustedRemainingReads: Int
+  alertSent: Boolean!
+  alignmentConfig: AlignmentConfig
+  alignmentConfigId: Int
+  alignmentConfigName: String
+  assembled: Int
+  compressionRatio: Float
+  createdAt: ISO8601DateTime
+  dagVars: String
+  deprecated: Boolean
+  errorMessage: String
+  executedAt: ISO8601DateTime
+  finalized: Int
+  fractionSubsampled: Float
+  id: Int!
+  jobStatus: String
+  knownUserError: String
+  maxInputFragments: Int
+  pipelineBranch: String
+  pipelineCommit: String
+  pipelineExecutionStrategy: String
+  pipelineVersion: String
+  qcPercent: Float
+  resultsFinalized: Int
+  s3OutputPrefix: String
+  sampleId: Int
+  sfnExecutionArn: String
+  subsample: Int
+  timeToFinalized: Int
+  timeToResultsFinalized: Int
+  totalErccReads: Int
+  totalReads: Int
+  truncated: Int
+  unmappedReads: Int
+  updatedAt: ISO8601DateTime!
+  useTaxonWhitelist: Boolean!
+  wdlVersion: String
+}
+
+type Project {
+  backgroundFlag: Int
+  createdAt: ISO8601DateTime!
+  creator: User
+  daysToKeepSamplePrivate: Int!
+  description: String
+  id: Int!
+  maxInputFragmentsDefault: Int
+  name: String!
+  publicAccess: Int!
+  samples: [Sample!]
+  subsampleDefault: Int
+  totalSampleCount: Int!
+  updatedAt: ISO8601DateTime!
+}
+
+type SampleDetails {
+  dbSample: DbSample
+  derivedSampleOutput: DerivedSampleOutput
+  metadata: SampleMetadata
+  mngsRunInfo: MngsRunInfo
+  uploader: SampleUploader!
+  workflowRunsCountByWorkflow: String
+}
+
+type SampleList {
+  sampleIds: [Int!]
+  samples: [Sample!]!
+}
+
+type SampleMetadata {
+  collectionDate: String
+  collectionLocationV2: String
+  nucleotideType: String
+  sampleType: String
+  waterControl: String
+  metadata: [query_SampleMetadata_metadata_items]
+  additional_info: query_SampleMetadata_additional_info
+}
+
+type SampleReadsStats {
+  initialReads: Int
+  name: String
+  pipelineVersion: String
+  sampleId: ID!
+  steps: [SampleSteps!]
+  wdlVersion: String
+}
+
+type SampleReadsStatsList {
+  sampleReadsStats: [SampleReadsStats!]!
+}
+
+type SampleSteps {
+  name: String
+  readsAfter: Int
+}
+
+type SampleSummaryStats {
+  adjustedRemainingReads: Int
+  compressionRatio: Float
+  insertSizeMean: Float
+  insertSizeStandardDeviation: Float
+  lastProcessedAt: ISO8601DateTime
+  percentRemaining: Float
+  qcPercent: Float
+  readsAfterCzidDedup: Int
+  readsAfterPriceseq: Int
+  readsAfterStar: Int
+  readsAfterTrimmomatic: Int
+  unmappedReads: Int
+}
+
+type SampleUploader {
+  id: Int!
+  name: String
+}
+
+type User {
+  archetypes: String!
+  createdByUserId: BigInt!
+  email: String!
+  id: ID!
+  institution: String!
+  name: String!
+  role: Int!
+  segments: String!
+}
+
+type WorkflowRun implements EntityInterface & Node {
+  cachedResults: String
+  createdAt: DateTime!
+  deprecated: Boolean!
+  errorMessage: String
+  executedAt: ISO8601DateTime
+  inputsJson: String
+  rerunFrom: Int
+  s3OutputPrefix: String
+  sample: Sample
+  sampleId: Int
+  sfnExecutionArn: String
+  status: WorkflowRunStatus
+  timeToFinalized: Int
+  updatedAt: DateTime
+  wdlVersion: String
+  workflow: String!
+  """The Globally Unique ID of this object"""
+  _id: GlobalID!
+  id: ID!
+  startedAt: DateTime
+  endedAt: DateTime
+  executionId: String
+  outputsJson: String
+  workflowRunnerInputsJson: String
+  workflowVersion(where: WorkflowVersionWhereClause = null, orderBy: [WorkflowVersionOrderByClause!] = []): WorkflowVersion
+  steps(
+    where: WorkflowRunStepWhereClause = null
+    orderBy: [WorkflowRunStepOrderByClause!] = []
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): WorkflowRunStepConnection!
+  stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
+  entityInputs(
+    where: WorkflowRunEntityInputWhereClause = null
+    orderBy: [WorkflowRunEntityInputOrderByClause!] = []
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+    """Returns the first n items from the list."""
+    first: Int = null
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): WorkflowRunEntityInputConnection!
+  entityInputsAggregate(where: WorkflowRunEntityInputWhereClause = null): WorkflowRunEntityInputAggregate
+  rawInputsJson: String
+  ownerUserId: Int!
+  collectionId: Int!
+}
+
 input EntityInputType {
   name: String!
   entityId: ID!
@@ -3550,49 +3551,49 @@ type query_Background_other_backgrounds_items {
   mass_normalized: Boolean
 }
 
-type query_bulkDownloads_items {
+type query_fedBulkDownloads_items {
   id: String
   status: String
   startedAt: String
-  rawInputsJson: query_bulkDownloads_items_rawInputsJson
+  rawInputsJson: query_fedBulkDownloads_items_rawInputsJson
   ownerUserId: String
-  file: query_bulkDownloads_items_file
+  file: query_fedBulkDownloads_items_file
   sampleNames: [JSON]
   analysisCount: Int
   entityInputFileType: String
-  entityInputs: [query_bulkDownloads_items_entityInputs_items]
-  toDelete: query_bulkDownloads_items_toDelete
+  entityInputs: [query_fedBulkDownloads_items_entityInputs_items]
+  toDelete: query_fedBulkDownloads_items_toDelete
 }
 
-type query_bulkDownloads_items_rawInputsJson {
+type query_fedBulkDownloads_items_rawInputsJson {
   description: String
   downloadType: String
   downloadDisplayName: String
   fileFormat: String
 }
 
-type query_bulkDownloads_items_file {
+type query_fedBulkDownloads_items_file {
   size: Int
-  downloadLink: query_bulkDownloads_items_file_downloadLink
+  downloadLink: query_fedBulkDownloads_items_file_downloadLink
 }
 
-type query_bulkDownloads_items_file_downloadLink {
+type query_fedBulkDownloads_items_file_downloadLink {
   url: String
 }
 
-type query_bulkDownloads_items_entityInputs_items {
+type query_fedBulkDownloads_items_entityInputs_items {
   id: String
   name: String
 }
 
-type query_bulkDownloads_items_toDelete {
+type query_fedBulkDownloads_items_toDelete {
   user_name: String
   log_url: String
   totalSamples: Int
   progress: JSON
 }
 
-input queryInput_bulkDownloads_input_Input @example(subgraph: "CZIDREST", value: "{\\"searchBy\\":\\"string to search\\",\\"limit\\":10}") {
+input queryInput_fedBulkDownloads_input_Input @example(subgraph: "CZIDREST", value: "{\\"searchBy\\":\\"string to search\\",\\"limit\\":10}") {
   searchBy: String
   limit: Int
 }

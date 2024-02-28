@@ -69,12 +69,12 @@ sources:
             requestSchema: ./json-schemas/consensusGenomesRequest.json
             responseSchema: ./json-schemas/consensusGenomesResponse.json
             responseTypeName: consensusGenomes
-          # - type: Query
-          #   field: ConsensusGenomeWorkflowResults
-          #   path: /workflow_runs/results
-          #   method: GET
-          #   responseSchema: ./json-schemas/consensusGenomeWorkflowResults.json
-          #   responseTypeName: ConsensusGenomeWorkflowResults
+          - type: Query
+            field: ConsensusGenomeWorkflowResults
+            path: /workflow_runs/${args.workflowRunId}/results
+            method: GET
+            responseSchema: ./json-schemas/consensusGenomeWorkflowResults.json
+            responseTypeName: ConsensusGenomeWorkflowResults
           - type: Query
             field: CoverageVizSummary
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/coverage_viz_summary

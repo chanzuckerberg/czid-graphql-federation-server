@@ -1,85 +1,81 @@
 {
     "type": "object",
     "properties": {
-        "metricConsensusGenome": {
+        "metric_consensus_genome": {
             "type": "object",
             "properties": {
-                "mappedReads": {
+                "ercc_mapped_reads": {
                     "type": "integer"
                 },
-                "nActg": {
+                "mapped_reads": {
                     "type": "integer"
                 },
-                "nAmbiguous": {
+                "n_actg": {
                     "type": "integer"
                 },
-                "nMissing": {
+                "n_ambiguous": {
                     "type": "integer"
                 },
-                "refSnps": {
+                "n_missing": {
                     "type": "integer"
                 },
-                "totalReads": {
+                "ref_snps": {
                     "type": "integer"
                 },
-                "percentIdentity": {
+                "total_reads": {
+                    "type": "integer"
+                },
+                "percent_identity": {
                     "type": "number"
                 },
-                "gcPercent": {
+                "gc_percent": {
                     "type": "number"
                 },
-                "percentGenomeCalled": {
+                "percent_genome_called": {
                     "type": "number"
                 },
-                "referenceGenomeLength": {
+                "reference_genome_length": {
                     "type": "integer"
                 },
-                "coverageBinSize": {
-                    "type": "number"
-                },
-                "maxAlignedLength": {
-                    "type": "integer"
-                },
-                "coverageDepth": {
-                    "type": "number"
-                },
-                "coverageBreadth": {
-                    "type": "number"
-                }
-            }
-        },
-        "referenceGenome": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                }
-            }
-        },
-        "taxa": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "consensusGenome": {
-            "type": "object",
-            "properties": {
-                "accession": {
+                "coverage_viz": {
                     "type": "object",
                     "properties": {
-                        "accessionId": {
-                            "type": "string"
+                        "total_length": {
+                            "type": "integer"
                         },
-                        "accessionName": {
-                            "type": "string"
+                        "coverage": {
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "coverage_bin_size": {
+                            "type": "number"
+                        },
+                        "max_aligned_length": {
+                            "type": "integer"
+                        },
+                        "coverage_depth": {
+                            "type": "number"
+                        },
+                        "coverage_breadth": {
+                            "type": "number"
                         }
                     }
+                }
+            }
+        },
+        "reference_genome": {
+            "type": "object",
+            "properties": {
+                "accession_id": {
+                    "type": "string"
+                },
+                "accession_name": {
+                    "type": "string"
                 },
                 "taxon": {
                     "type": "object",

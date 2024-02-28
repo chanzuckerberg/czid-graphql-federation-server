@@ -22,6 +22,16 @@ sources:
         operationHeaders:
           Cookie: "{context.headers['authorization']}"
           Authorization: "{context.headers.authorization}"
+    transforms:
+      - rename:
+          mode: wrap
+          renames:
+            - from:
+                type: Query
+                field: workflowRuns
+              to:
+                type: Query
+                field: tempWorkflowRuns
   - name: CZIDREST
     handler:
       jsonSchema:
@@ -280,6 +290,16 @@ sources:
         - namingConvention:
             typeNames: camelCase
             fieldNames: camelCase
+transforms:
+  - rename:
+      mode: wrap
+      renames:
+        - from:
+            query: Query
+            field: workflowRunSteps
+          to:
+            query: Query
+            field: aaaaaaa
 additionalTypeDefs: |
   type GraphQLFederationVersion {
     version: String

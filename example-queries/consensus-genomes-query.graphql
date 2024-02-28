@@ -1,8 +1,8 @@
 query TestQuery {
-    consensusGenomes(input: {
+    fedConsensusGenomes(input: {
         where: {
             producingRunId: {
-            _in: ["abc", "def"]
+                _in: ["abc", "def"]
             }
         }
         todoRemove: {

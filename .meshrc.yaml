@@ -6,20 +6,22 @@ sources:
         source: ./sources/czid-schema.graphql
         operationHeaders:
           Cookie: "{context.headers['cookie']}"
-  # - name: NextGenEntities
-  #   handler:
-  #     graphql:
-  #       endpoint: ${NEXTGEN_ENTITIES_API_URL}/graphql
-  #       source: ./sources/nextgen-entities-schema.graphql
-  #       operationHeaders:
-  #         Cookie: "{context.headers['authorization']}"
-  # - name: NextGenWorkflows
-  #   handler:
-  #     graphql:
-  #       endpoint: ${NEXTGEN_WORKFLOW_API_URL}/graphql
-  #       source: ./sources/nextgen-workflows-schema.graphql
-  #       operationHeaders:
-  #         Cookie: "{context.headers['authorization']}"
+  - name: NextGenEntities
+    handler:
+      graphql:
+        endpoint: ${NEXTGEN_ENTITIES_URL}/graphql
+        source: ./sources/nextgen-entities-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['authorization']}"
+          Authorization: "{context.headers.authorization}"
+  - name: NextGenWorkflows
+    handler:
+      graphql:
+        endpoint: ${NEXTGEN_WORKFLOWS_URL}/graphql
+        source: ./sources/nextgen-workflows-schema.graphql
+        operationHeaders:
+          Cookie: "{context.headers['authorization']}"
+          Authorization: "{context.headers.authorization}"
   - name: CZIDREST
     handler:
       jsonSchema:
@@ -60,12 +62,12 @@ sources:
             responseSchema: ./json-schemas/cgOverview.json
             responseTypeName: ConsensusGenomeOverviewRows
           - type: Query
-            field: consensusGenomes
+            field: fedConsensusGenomes
             method: GET
             path: /workflow_runs.json
             requestSchema: ./json-schemas/consensusGenomesRequest.json
             responseSchema: ./json-schemas/consensusGenomesResponse.json
-            responseTypeName: consensusGenomes
+            responseTypeName: fedConsensusGenomes
           - type: Query
             field: ConsensusGenomeWorkflowResults
             path: /workflow_runs/{args.workflowRunId}/results
@@ -129,19 +131,19 @@ sources:
             headers:
               Cookie: "{context.headers['cookie']}"
           - type: Query
-            field: samples
+            field: fedSamples
             method: GET
             path: /workflow_runs.json
             requestSchema: ./json-schemas/samplesRequest.json
             responseSchema: ./json-schemas/samplesResponse.json
-            responseTypeName: samples
+            responseTypeName: fedSamples
           - type: Query
-            field: sequencingReads
+            field: fedSequencingReads
             method: GET
             path: /workflow_runs.json
             requestSchema: ./json-schemas/sequencingReadsRequest.json
             responseSchema: ./json-schemas/sequencingReadsResponse.json
-            responseTypeName: sequencingReads
+            responseTypeName: fedSequencingReads
           - type: Query
             field: Taxons
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}/report_v2?&id={args.sampleId}&pipeline_version={args.workflowVersionId}&merge_nt_nr=false
@@ -177,12 +179,18 @@ sources:
             requestSchema: ./json-schemas/workflowRunsRequest.json
             responseSchema: ./json-schemas/workflowRunsResponse.json
           - type: Query
-            field: workflowRunsAggregate
+            field: fedWorkflowRuns
+            path: /workflow_runs.json
+            method: POST
+            requestSchema: ./json-schemas/workflowRunsRequest.json
+            responseSchema: ./json-schemas/workflowRunsResponse.json
+          - type: Query
+            field: fedWorkflowRunsAggregate
             path: /projects.json
             method: GET
             requestSchema: ./json-schemas/workflowRunsAggregateRequest.json
             responseSchema: ./json-schemas/workflowRunsAggregateResponse.json
-            responseTypeName: workflowRunsAggregate
+            responseTypeName: fedWorkflowRunsAggregate
           - type: Query
             field: ZipLink
             path: /workflow_runs/{args.workflowRunId}/zip_link.json

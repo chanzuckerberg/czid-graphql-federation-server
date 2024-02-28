@@ -122,7 +122,7 @@ export const formatFedQueryForNextGen = (query: string) => {
     // TODO: (suzette 02/27/24) FIX THESE HACKS TO MAKE THIS FUNCTION MORE UNIVERSAL
     .replace("String", "UUID") // lets make an actual UUID
     // apply any specific type switches that need to be made - these can be passed in from the resolver
-    .replace(/query_consensusGenomes_items/g, "ConsensusGenome");
+    .replace(/query_ConsensusGenomes_items/g, "ConsensusGenome");
 
   return finishedQuery;
 };

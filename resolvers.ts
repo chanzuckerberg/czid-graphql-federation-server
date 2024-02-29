@@ -202,11 +202,11 @@ export const resolvers: Resolvers = {
         const ret = [
           {
             metrics: {
-              coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
-              coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
-              coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
-              coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
-              coverageViz: coverage_viz,
+              coverageTotalLength: coverage_viz?.total_length,
+              coverageDepth: coverage_viz?.coverage_depth,
+              coverageBreadth: coverage_viz?.coverage_breadth,
+              coverageBinSize: coverage_viz?.coverage_bin_size,
+              coverageViz: coverage_viz?.coverage,
               gcPercent: quality_metrics?.gc_percent,
               percentGenomeCalled: quality_metrics?.percent_genome_called,
               percentIdentity: quality_metrics?.percent_identity,

@@ -7,38 +7,30 @@ export const get = async ({
   context,
   serviceType,
   fullResponse,
+  customQuery,
 }: {
   url?: string;
   args: any;
   context: any;
   serviceType?: "workflows" | "entities";
   fullResponse?: boolean;
+  customQuery?: string;
 }) => {
   try {
-    let baseURL, urlPrefix;
     const nextGenEnabled = await shouldReadFromNextGen(context);
     if (nextGenEnabled) {
       if (!serviceType) {
         console.error("You must pass a service type to call next gen");
-        return null;
-      }
-      return fetchFromNextGenServer(args, context, serviceType, fullResponse);
-    } else {
-      baseURL = process.env.API_URL;
-      urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
-
-      const response = await fetch(baseURL + urlPrefix + url, {
-        method: "GET",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-        },
-      });
-      if (fullResponse === true) {
-        return response;
+        throw new Error("You must pass a service type to call next gen");
       } else {
-        return await response.json();
+        return fetchFromNextGen(args, context, serviceType, fullResponse, customQuery);
       }
+    } else {
+      if (!url) {
+        console.error("You must pass a url to call rails");
+        throw new Error("You must pass a service type to call next gen");
+      }
+      return getFromRails(url, args, context, fullResponse);
     }
   } catch (e) {
     return Promise.reject(e.response);
@@ -50,35 +42,24 @@ export const postWithCSRF = async ({
   body,
   args,
   context,
-  serviceType,
 }: {
   url: string;
   body: any;
   args: any;
   context: any;
-  serviceType?: "workflows" | "entities";
 }) => {
   try {
-    const nextGenEnabled = await shouldReadFromNextGen(context);
-    if (nextGenEnabled) {
-      if (!serviceType) {
-        console.error("You must pass a service type to call next gen");
-        return null;
-      }
-      return fetchFromNextGenServer(args, context, serviceType);
-    } else {
-      const response = await fetch(process.env.API_URL + url, {
-        method: "POST",
-        headers: {
-          Cookie: context.request.headers.get("cookie"),
-          "Content-Type": "application/json",
-          "X-CSRF-Token": args?.input?.authenticityToken,
-        },
-        body: JSON.stringify(body),
-      });
-      checkForLogin(response?.url);
-      return await response.json();
-    }
+    const response = await fetch(process.env.API_URL + url, {
+      method: "POST",
+      headers: {
+        Cookie: context.request.headers.get("cookie"),
+        "Content-Type": "application/json",
+        "X-CSRF-Token": args?.input?.authenticityToken,
+      },
+      body: JSON.stringify(body),
+    });
+    checkForLogin(response?.url);
+    return await response.json();
   } catch (e) {
     return Promise.reject(e.response ? e.response : e);
   }
@@ -122,15 +103,21 @@ export const formatFedQueryForNextGen = (query: string) => {
     // TODO: (suzette 02/27/24) FIX THESE HACKS TO MAKE THIS FUNCTION MORE UNIVERSAL
     .replace("String", "UUID") // lets make an actual UUID
     // apply any specific type switches that need to be made - these can be passed in from the resolver
-    .replace(/query_consensusGenomes_items/g, "ConsensusGenome");
+    .replace(/query_ConsensusGenomes_items/g, "ConsensusGenome");
 
   return finishedQuery;
 };
 
-const fetchFromNextGenServer = async (args, context, serviceType: "workflows" | "entities", fullResponse?: boolean) => {
+const fetchFromNextGen = async (
+  args,
+  context,
+  serviceType: "workflows" | "entities",
+  fullResponse?: boolean,
+  customQuery?,
+) => {
   const czidServicesToken = await getEnrichedToken(context);
   const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
-  const formattedQuery = formatFedQueryForNextGen(context.params.query);
+  const formattedQuery = customQuery ? customQuery : formatFedQueryForNextGen(context.params.query);
   const response = await fetch(`${baseUrl}/graphql`, {
     method: "POST",
     headers: {
@@ -149,6 +136,24 @@ const fetchFromNextGenServer = async (args, context, serviceType: "workflows" | 
     return response;
   } else {
     console.log("data response");
+    return await response.json();
+  }
+};
+
+const getFromRails = async (url: string, args: any, context: any, fullResponse?: boolean) => {
+  const baseURL = process.env.API_URL;
+  const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+
+  const response = await fetch(baseURL + urlPrefix + url, {
+    method: "GET",
+    headers: {
+      Cookie: context.request.headers.get("cookie"),
+      "Content-Type": "application/json",
+    },
+  });
+  if (fullResponse === true) {
+    return response;
+  } else {
     return await response.json();
   }
 };

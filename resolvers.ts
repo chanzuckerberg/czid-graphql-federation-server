@@ -178,17 +178,17 @@ export const resolvers: Resolvers = {
     },
     fedConsensusGenomes: async (root, args, context) => {
       const nextGenEnabled = await shouldReadFromNextGen(context);
-      console.log(args.input);
       if (nextGenEnabled) {
         console.log("nextGenEnabled", nextGenEnabled);
         const ret = await get({ args, context, serviceType: "entities" });
         console.log("return from next gen", ret);
         return ret.data.consensusGenomes;
       }
+      // Next Gen Not Enabled
       const input = args.input;
-      console.log("nextGenNotEnabled");
       if (input?.where?.id?._eq) {
-        // if there is an _eq in the response than it is a call for a single workflow run result and the rails call will be like this:
+        // if there is an _eq in the response than it is a call for a single workflow run result
+        // and the rails call will be like this:
         const workflowRunId = input?.where?.id?._eq;
         console.log(workflowRunId);
         const data = await get({
@@ -941,6 +941,18 @@ export const resolvers: Resolvers = {
       // TODO (nina): call nextgen in addition to rails to get CG count
     },
     ZipLink: async (root, args, context, info) => {
+      // const nextGenEnabled = await shouldReadFromNextGen(context);
+      // if (nextGenEnabled) {
+      //   const customQuery = `
+      //     query blah bla blah
+      //   `;
+      //   const ret = await get({ args, context, serviceType: "workflows", customQuery });
+      //   console.log("return from next gen", ret);
+      //   return {
+      //     url: null,
+      //     error: null,
+      //   };
+      // }
       const res = await get({
         url: `/workflow_runs/${args.workflowRunId}/zip_link.json`,
         args,

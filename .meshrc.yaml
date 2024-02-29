@@ -22,6 +22,16 @@ sources:
         operationHeaders:
           Cookie: "{context.headers['authorization']}"
           Authorization: "{context.headers.authorization}"
+    transforms:
+      - rename:
+          mode: wrap
+          renames:
+            - from:
+                type: Query
+                field: workflowRuns
+              to:
+                type: Query
+                field: tempWorkflowRuns
   - name: CZIDREST
     handler:
       jsonSchema:
@@ -48,12 +58,12 @@ sources:
             responseSchema: ./json-schemas/snapshotBackground.json
             responseTypeName: Background
           - type: Query
-            field: bulkDownloads
+            field: fedBulkDownloads
             path: /bulk_downloads?searchBy=${searchBy}&n=${limit}
             method: GET
             requestSample: { searchBy: "string to search", limit: 10 }
             responseSchema: ./json-schemas/bulkDownloads.json
-            responseTypeName: BulkDownloads
+            responseTypeName: fedBulkDownloads
           - type: Query
             field: BulkDownloadCGOverview
             path: /bulk_downloads

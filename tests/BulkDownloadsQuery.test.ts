@@ -118,7 +118,7 @@ describe("bulkDownloads Query:", () => {
         },
       },
     ];
-    expect(result.data.bulkDownloads).toStrictEqual(bulkDownloadResponse);
+    expect(result.data.fedBulkDownloads).toStrictEqual(bulkDownloadResponse);
   });
 
   it("should give correct response with url params & successful run", async () => {
@@ -229,6 +229,6 @@ describe("bulkDownloads Query:", () => {
         },
       },
     ];
-    expect(result.data.bulkDownloads).toStrictEqual(bulkDownloadResponse);
+    expect(result.data.fedBulkDownloads).toStrictEqual(bulkDownloadResponse);
   });
 });

@@ -2120,6 +2120,7 @@ input SequencingReadOrderByClause {
 input SequencingReadUpdateInput {
   clearlabsExport: Boolean = null
   medakaModel: String = null
+  primerFileId: ID = null
 }
 
 input SequencingReadWhereClause {

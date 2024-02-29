@@ -6,6 +6,11 @@ help: ## display help for this makefile
 build: ## Build docker images
 	docker compose build
 
+.PHONY: update-schema
+update-schema: ## Update schema
+	rm tests/__snapshots__/UnifiedSchema.test.ts.snap
+	docker compose run gql npm test -- tests/UnifiedSchema.test.ts -u
+
 .PHONY: test
 test: ## Run tests
 	docker compose run --rm gql npm test 

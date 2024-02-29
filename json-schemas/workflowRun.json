@@ -1,0 +1,29 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer"
+        },
+        "entity_id": {
+            "type": "integer"
+        },
+        "status": {
+            "type": "string"
+        },
+        "executed_at": {
+            "type": "string"
+        },
+        "created_at": {
+            "type": "string"
+        },
+        "updated_at": {
+            "type": "string"
+        },
+        "deleted_at": {
+            "type": "string"
+        },
+        "owner_user_id": {
+            "type": "integer"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "id": 5680,
+    "sample_id": 33684,
+    "status": "SUCCEEDED_WITH_ISSUE",
+    "workflow": "consensus-genome",
+    "wdl_version": "3.4.18",
+    "sfn_execution_arn": "arn:aws:states:us-west-2:732052188396:execution:idseq-swipe-staging-default-wdl:idseq-staging-1148-33684-5680-20240202102934",
+    "executed_at": "2024-02-02T10:29:34.000-08:00",
+    "deprecated": false,
+    "created_at": "2024-02-02T10:29:33.000-08:00",
+    "updated_at": "2024-02-02T10:32:27.000-08:00",
+    "rerun_from": null,
+    "cached_results": "{\"coverage_viz\":{\"coverage_breadth\":1.0,\"coverage_depth\":2108.2720437686703,\"max_aligned_length\":29793,\"total_length\":29793},\"quality_metrics\":{\"ercc_mapped_reads\":0,\"mapped_reads\":545789,\"n_actg\":29778,\"n_ambiguous\":2,\"n_missing\":13,\"ref_snps\":0,\"total_reads\":597448,\"percent_identity\":100.0,\"gc_percent\":37.9,\"percent_genome_called\":100.0,\"reference_genome_length\":29790},\"taxon_info\":{\"accession_id\":null,\"accession_name\":null,\"taxon_id\":null,\"taxon_name\":null}}",
+    "inputs_json": "{\"accession_id\":\"MN908947.3\",\"accession_name\":\"Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome\",\"taxon_id\":2697049,\"taxon_name\":\"Severe acute respiratory syndrome coronavirus 2\",\"technology\":\"Illumina\",\"wetlab_protocol\":\"varskip\",\"creation_source\":\"SARS-CoV-2 Upload\"}",
+    "s3_output_prefix": "s3://idseq-samples-staging/samples/1148/33684/5680",
+    "time_to_finalized": 173,
+    "error_message": "There were no reads left after the FilterReads step of the pipeline.",
+    "deleted_at": null,
+    "user_id": "2024-02-02T10:32:27.000-08:00"
+}

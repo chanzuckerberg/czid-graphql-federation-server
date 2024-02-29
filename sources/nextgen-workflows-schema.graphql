@@ -1,6 +1,4 @@
-"""
-Date with time (isoformat)
-"""
+"""Date with time (isoformat)"""
 scalar DateTime
 
 input DatetimeComparators {
@@ -22,9 +20,7 @@ input EntityInputType {
 }
 
 interface EntityInterface implements Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
 }
 
@@ -53,10 +49,7 @@ type Mutation {
   updateWorkflow(input: WorkflowUpdateInput!, where: WorkflowWhereClauseMutations!): [Workflow!]!
   deleteWorkflow(where: WorkflowWhereClauseMutations!): [Workflow!]!
   createWorkflowRunStep(input: WorkflowRunStepCreateInput!): WorkflowRunStep!
-  updateWorkflowRunStep(
-    input: WorkflowRunStepUpdateInput!
-    where: WorkflowRunStepWhereClauseMutations!
-  ): [WorkflowRunStep!]!
+  updateWorkflowRunStep(input: WorkflowRunStepUpdateInput!, where: WorkflowRunStepWhereClauseMutations!): [WorkflowRunStep!]!
   deleteWorkflowRunStep(where: WorkflowRunStepWhereClauseMutations!): [WorkflowRunStep!]!
   createWorkflowRunEntityInput(input: WorkflowRunEntityInputCreateInput!): WorkflowRunEntityInput!
   deleteWorkflowRunEntityInput(where: WorkflowRunEntityInputWhereClauseMutations!): [WorkflowRunEntityInput!]!
@@ -66,68 +59,41 @@ type Mutation {
   runWorkflowRun(workflowRunId: ID!): WorkflowRun!
 }
 
-"""
-An object with a Globally Unique ID
-"""
+"""An object with a Globally Unique ID"""
 interface Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
 }
 
-"""
-Information to aid in pagination.
-"""
+"""Information to aid in pagination."""
 type PageInfo {
-  """
-  When paginating forwards, are there more items?
-  """
+  """When paginating forwards, are there more items?"""
   hasNextPage: Boolean!
 
-  """
-  When paginating backwards, are there more items?
-  """
+  """When paginating backwards, are there more items?"""
   hasPreviousPage: Boolean!
 
-  """
-  When paginating backwards, the cursor to continue.
-  """
+  """When paginating backwards, the cursor to continue."""
   startCursor: String
 
-  """
-  When paginating forwards, the cursor to continue.
-  """
+  """When paginating forwards, the cursor to continue."""
   endCursor: String
 }
 
 type Query {
   node(
-    """
-    The ID of the object.
-    """
+    """The ID of the object."""
     id: GlobalID!
   ): Node!
   nodes(
-    """
-    The IDs of the objects.
-    """
+    """The IDs of the objects."""
     ids: [GlobalID!]!
   ): [Node!]!
   workflowRuns(where: WorkflowRunWhereClause = null, orderBy: [WorkflowRunOrderByClause!] = []): [WorkflowRun!]!
   workflows(where: WorkflowWhereClause = null, orderBy: [WorkflowOrderByClause!] = []): [Workflow!]!
-  workflowRunSteps(
-    where: WorkflowRunStepWhereClause = null
-    orderBy: [WorkflowRunStepOrderByClause!] = []
-  ): [WorkflowRunStep!]!
-  workflowRunEntityInputs(
-    where: WorkflowRunEntityInputWhereClause = null
-    orderBy: [WorkflowRunEntityInputOrderByClause!] = []
-  ): [WorkflowRunEntityInput!]!
-  workflowVersions(
-    where: WorkflowVersionWhereClause = null
-    orderBy: [WorkflowVersionOrderByClause!] = []
-  ): [WorkflowVersion!]!
+  workflowRunSteps(where: WorkflowRunStepWhereClause = null, orderBy: [WorkflowRunStepOrderByClause!] = []): [WorkflowRunStep!]!
+  workflowRunEntityInputs(where: WorkflowRunEntityInputWhereClause = null, orderBy: [WorkflowRunEntityInputOrderByClause!] = []): [WorkflowRunEntityInput!]!
+  workflowVersions(where: WorkflowVersionWhereClause = null, orderBy: [WorkflowVersionOrderByClause!] = []): [WorkflowVersion!]!
   workflowRunsAggregate(where: WorkflowRunWhereClause = null): WorkflowRunAggregate!
   workflowsAggregate(where: WorkflowWhereClause = null): WorkflowAggregate!
   workflowRunStepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate!
@@ -140,6 +106,7 @@ input RunWorkflowVersionInput {
   workflowVersionId: ID!
   entityInputs: [EntityInputType!]
   rawInputJson: String
+  railsWorkflowRunId: Int = null
 }
 
 input StrComparators {
@@ -176,9 +143,7 @@ input UUIDComparators {
 }
 
 type Workflow implements EntityInterface & Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
   id: ID!
   name: String
@@ -188,24 +153,16 @@ type Workflow implements EntityInterface & Node {
     where: WorkflowVersionWhereClause = null
     orderBy: [WorkflowVersionOrderByClause!] = []
 
-    """
-    Returns the items in the list that come before the specified cursor.
-    """
+    """Returns the items in the list that come before the specified cursor."""
     before: String = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     after: String = null
 
-    """
-    Returns the first n items from the list.
-    """
+    """Returns the first n items from the list."""
     first: Int = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     last: Int = null
   ): WorkflowVersionConnection!
   versionsAggregate(where: WorkflowVersionWhereClause = null): WorkflowVersionAggregate
@@ -287,43 +244,31 @@ input WorkflowOrderByClause {
 }
 
 type WorkflowRun implements EntityInterface & Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
   id: ID!
+  railsWorkflowRunId: Int
   startedAt: DateTime
   endedAt: DateTime
   executionId: String
   outputsJson: String
   workflowRunnerInputsJson: String
   status: WorkflowRunStatus
-  workflowVersion(
-    where: WorkflowVersionWhereClause = null
-    orderBy: [WorkflowVersionOrderByClause!] = []
-  ): WorkflowVersion
+  workflowVersion(where: WorkflowVersionWhereClause = null, orderBy: [WorkflowVersionOrderByClause!] = []): WorkflowVersion
   steps(
     where: WorkflowRunStepWhereClause = null
     orderBy: [WorkflowRunStepOrderByClause!] = []
 
-    """
-    Returns the items in the list that come before the specified cursor.
-    """
+    """Returns the items in the list that come before the specified cursor."""
     before: String = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     after: String = null
 
-    """
-    Returns the first n items from the list.
-    """
+    """Returns the first n items from the list."""
     first: Int = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     last: Int = null
   ): WorkflowRunStepConnection!
   stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
@@ -331,24 +276,16 @@ type WorkflowRun implements EntityInterface & Node {
     where: WorkflowRunEntityInputWhereClause = null
     orderBy: [WorkflowRunEntityInputOrderByClause!] = []
 
-    """
-    Returns the items in the list that come before the specified cursor.
-    """
+    """Returns the items in the list that come before the specified cursor."""
     before: String = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     after: String = null
 
-    """
-    Returns the first n items from the list.
-    """
+    """Returns the first n items from the list."""
     first: Int = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     last: Int = null
   ): WorkflowRunEntityInputConnection!
   entityInputsAggregate(where: WorkflowRunEntityInputWhereClause = null): WorkflowRunEntityInputAggregate
@@ -374,22 +311,17 @@ type WorkflowRunAggregateFunctions {
   count(distinct: Boolean = false, columns: WorkflowRunCountColumns = null): Int
 }
 
-"""
-A connection to a list of items.
-"""
+"""A connection to a list of items."""
 type WorkflowRunConnection {
-  """
-  Pagination data for this connection
-  """
+  """Pagination data for this connection"""
   pageInfo: PageInfo!
 
-  """
-  Contains the nodes in this connection
-  """
+  """Contains the nodes in this connection"""
   edges: [WorkflowRunEdge!]!
 }
 
 enum WorkflowRunCountColumns {
+  railsWorkflowRunId
   startedAt
   endedAt
   executionId
@@ -408,25 +340,17 @@ enum WorkflowRunCountColumns {
   updatedAt
 }
 
-"""
-An edge in a connection.
-"""
+"""An edge in a connection."""
 type WorkflowRunEdge {
-  """
-  A cursor for use in pagination
-  """
+  """A cursor for use in pagination"""
   cursor: String!
 
-  """
-  The item at the end of the edge
-  """
+  """The item at the end of the edge"""
   node: WorkflowRun!
 }
 
 type WorkflowRunEntityInput implements EntityInterface & Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
   id: ID!
   inputEntityId: ID
@@ -454,18 +378,12 @@ type WorkflowRunEntityInputAggregateFunctions {
   count(distinct: Boolean = false, columns: WorkflowRunEntityInputCountColumns = null): Int
 }
 
-"""
-A connection to a list of items.
-"""
+"""A connection to a list of items."""
 type WorkflowRunEntityInputConnection {
-  """
-  Pagination data for this connection
-  """
+  """Pagination data for this connection"""
   pageInfo: PageInfo!
 
-  """
-  Contains the nodes in this connection
-  """
+  """Contains the nodes in this connection"""
   edges: [WorkflowRunEntityInputEdge!]!
 }
 
@@ -489,18 +407,12 @@ input WorkflowRunEntityInputCreateInput {
   collectionId: Int!
 }
 
-"""
-An edge in a connection.
-"""
+"""An edge in a connection."""
 type WorkflowRunEntityInputEdge {
-  """
-  A cursor for use in pagination
-  """
+  """A cursor for use in pagination"""
   cursor: String!
 
-  """
-  The item at the end of the edge
-  """
+  """The item at the end of the edge"""
   node: WorkflowRunEntityInput!
 }
 
@@ -559,6 +471,7 @@ input WorkflowRunEntityInputWhereClauseMutations {
 }
 
 type WorkflowRunGroupByOptions {
+  railsWorkflowRunId: Int
   startedAt: DateTime
   endedAt: DateTime
   executionId: String
@@ -576,6 +489,7 @@ type WorkflowRunGroupByOptions {
 }
 
 type WorkflowRunMinMaxColumns {
+  railsWorkflowRunId: Int
   startedAt: DateTime
   endedAt: DateTime
   executionId: String
@@ -589,11 +503,13 @@ type WorkflowRunMinMaxColumns {
 }
 
 type WorkflowRunNumericalColumns {
+  railsWorkflowRunId: Int
   ownerUserId: Int
   collectionId: Int
 }
 
 input WorkflowRunOrderByClause {
+  railsWorkflowRunId: orderBy
   startedAt: orderBy
   endedAt: orderBy
   executionId: orderBy
@@ -635,9 +551,7 @@ input WorkflowRunStatusEnumComparators {
 }
 
 type WorkflowRunStep implements EntityInterface & Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
   id: ID!
   workflowRun(where: WorkflowRunWhereClause = null, orderBy: [WorkflowRunOrderByClause!] = []): WorkflowRun
@@ -665,18 +579,12 @@ type WorkflowRunStepAggregateFunctions {
   count(distinct: Boolean = false, columns: WorkflowRunStepCountColumns = null): Int
 }
 
-"""
-A connection to a list of items.
-"""
+"""A connection to a list of items."""
 type WorkflowRunStepConnection {
-  """
-  Pagination data for this connection
-  """
+  """Pagination data for this connection"""
   pageInfo: PageInfo!
 
-  """
-  Contains the nodes in this connection
-  """
+  """Contains the nodes in this connection"""
   edges: [WorkflowRunStepEdge!]!
 }
 
@@ -699,18 +607,12 @@ input WorkflowRunStepCreateInput {
   collectionId: Int!
 }
 
-"""
-An edge in a connection.
-"""
+"""An edge in a connection."""
 type WorkflowRunStepEdge {
-  """
-  A cursor for use in pagination
-  """
+  """A cursor for use in pagination"""
   cursor: String!
 
-  """
-  The item at the end of the edge
-  """
+  """The item at the end of the edge"""
   node: WorkflowRunStep!
 }
 
@@ -801,6 +703,7 @@ input WorkflowRunUpdateInput {
 }
 
 input WorkflowRunWhereClause {
+  railsWorkflowRunId: IntComparators
   startedAt: DatetimeComparators
   endedAt: DatetimeComparators
   executionId: StrComparators
@@ -829,9 +732,7 @@ input WorkflowUpdateInput {
 }
 
 type WorkflowVersion implements EntityInterface & Node {
-  """
-  The Globally Unique ID of this object
-  """
+  """The Globally Unique ID of this object"""
   _id: GlobalID!
   id: ID!
   graphJson: String
@@ -843,24 +744,16 @@ type WorkflowVersion implements EntityInterface & Node {
     where: WorkflowRunWhereClause = null
     orderBy: [WorkflowRunOrderByClause!] = []
 
-    """
-    Returns the items in the list that come before the specified cursor.
-    """
+    """Returns the items in the list that come before the specified cursor."""
     before: String = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     after: String = null
 
-    """
-    Returns the first n items from the list.
-    """
+    """Returns the first n items from the list."""
     first: Int = null
 
-    """
-    Returns the items in the list that come after the specified cursor.
-    """
+    """Returns the items in the list that come after the specified cursor."""
     last: Int = null
   ): WorkflowRunConnection!
   runsAggregate(where: WorkflowRunWhereClause = null): WorkflowRunAggregate
@@ -885,18 +778,12 @@ type WorkflowVersionAggregateFunctions {
   count(distinct: Boolean = false, columns: WorkflowVersionCountColumns = null): Int
 }
 
-"""
-A connection to a list of items.
-"""
+"""A connection to a list of items."""
 type WorkflowVersionConnection {
-  """
-  Pagination data for this connection
-  """
+  """Pagination data for this connection"""
   pageInfo: PageInfo!
 
-  """
-  Contains the nodes in this connection
-  """
+  """Contains the nodes in this connection"""
   edges: [WorkflowVersionEdge!]!
 }
 
@@ -923,18 +810,12 @@ input WorkflowVersionCreateInput {
   collectionId: Int!
 }
 
-"""
-An edge in a connection.
-"""
+"""An edge in a connection."""
 type WorkflowVersionEdge {
-  """
-  A cursor for use in pagination
-  """
+  """A cursor for use in pagination"""
   cursor: String!
 
-  """
-  The item at the end of the edge
-  """
+  """The item at the end of the edge"""
   node: WorkflowVersion!
 }
 

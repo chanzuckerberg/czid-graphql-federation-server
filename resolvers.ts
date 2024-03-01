@@ -190,23 +190,21 @@ export const resolvers: Resolvers = {
         // if there is an _eq in the response than it is a call for a single workflow run result
         // and the rails call will be like this:
         const workflowRunId = input?.where?.id?._eq;
-        console.log(workflowRunId);
         const data = await get({
           url: `/workflow_runs/${workflowRunId}/results`,
           args,
           context,
         });
-        console.log(data);
         const { coverage_viz, quality_metrics, taxon_info } = data;
         const { accession_id, accession_name, taxon_id, taxon_name } = taxon_info || {};
         const ret = [
           {
             metrics: {
-              coverageTotalLength: quality_metrics?.coverage_viz?.total_length,
-              coverageDepth: quality_metrics?.coverage_viz?.coverage_depth,
-              coverageBreadth: quality_metrics?.coverage_viz?.coverage_breadth,
-              coverageBinSize: quality_metrics?.coverage_viz?.coverage_bin_size,
-              coverageViz: coverage_viz,
+              coverageTotalLength: coverage_viz?.total_length,
+              coverageDepth: coverage_viz?.coverage_depth,
+              coverageBreadth: coverage_viz?.coverage_breadth,
+              coverageBinSize: coverage_viz?.coverage_bin_size,
+              coverageViz: coverage_viz?.coverage,
               gcPercent: quality_metrics?.gc_percent,
               percentGenomeCalled: quality_metrics?.percent_genome_called,
               percentIdentity: quality_metrics?.percent_identity,
@@ -226,7 +224,6 @@ export const resolvers: Resolvers = {
             },
           },
         ];
-        console.log(ret);
         return ret;
       } else {
         // The comments in the formatUrlParams() call correspond to the line in the current

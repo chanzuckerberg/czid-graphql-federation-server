@@ -824,6 +824,7 @@ type HostOrganism implements EntityInterface & Node {
   name: String!
   ownerUserId: Int!
   producingRunId: ID
+  railsHostGenomeId: Int
   samples(
     """Returns the items in the list that come after the specified cursor."""
     after: String = null
@@ -885,6 +886,7 @@ enum HostOrganismCountColumns {
   name
   ownerUserId
   producingRunId
+  railsHostGenomeId
   samples
   updatedAt
   version
@@ -896,6 +898,7 @@ input HostOrganismCreateInput {
   isDeuterostome: Boolean!
   name: String!
   producingRunId: ID = null
+  railsHostGenomeId: Int = null
   version: String!
 }
 
@@ -908,6 +911,7 @@ type HostOrganismGroupByOptions {
   name: String
   ownerUserId: Int
   producingRunId: UUID
+  railsHostGenomeId: Int
   updatedAt: DateTime
   version: String
 }
@@ -917,6 +921,7 @@ type HostOrganismMinMaxColumns {
   createdAt: DateTime
   name: String
   ownerUserId: Int
+  railsHostGenomeId: Int
   updatedAt: DateTime
   version: String
 }
@@ -924,6 +929,7 @@ type HostOrganismMinMaxColumns {
 type HostOrganismNumericalColumns {
   collectionId: Int
   ownerUserId: Int
+  railsHostGenomeId: Int
 }
 
 input HostOrganismOrderByClause {
@@ -935,6 +941,7 @@ input HostOrganismOrderByClause {
   name: orderBy
   ownerUserId: orderBy
   producingRunId: orderBy
+  railsHostGenomeId: orderBy
   updatedAt: orderBy
   version: orderBy
 }
@@ -956,6 +963,7 @@ input HostOrganismWhereClause {
   name: StrComparators
   ownerUserId: IntComparators
   producingRunId: UUIDComparators
+  railsHostGenomeId: IntComparators
   samples: SampleWhereClause
   updatedAt: DatetimeComparators
   version: StrComparators
@@ -1298,7 +1306,7 @@ type MetricConsensusGenome implements EntityInterface & Node {
   coverageBreadth: Float
   coverageDepth: Float
   coverageTotalLength: Int
-  coverageViz: [[Int!]!]
+  coverageViz: [[Float!]!]
   createdAt: DateTime!
   gcPercent: Float
   id: ID!
@@ -1363,7 +1371,7 @@ input MetricConsensusGenomeCreateInput {
   coverageBreadth: Float = null
   coverageDepth: Float = null
   coverageTotalLength: Int = null
-  coverageViz: [[Int!]!] = null
+  coverageViz: [[Float!]!] = null
   gcPercent: Float = null
   mappedReads: Int = null
   nActg: Int = null
@@ -1384,7 +1392,7 @@ type MetricConsensusGenomeGroupByOptions {
   coverageBreadth: Float
   coverageDepth: Float
   coverageTotalLength: Int
-  coverageViz: [[Int!]!]
+  coverageViz: [[Float!]!]
   createdAt: DateTime
   gcPercent: Float
   id: UUID
@@ -1888,6 +1896,7 @@ input ReferenceGenomeWhereClauseMutations {
 input RunWorkflowVersionInput {
   collectionId: Int!
   entityInputs: [EntityInputType!]
+  railsWorkflowRunId: Int = null
   rawInputJson: String
   workflowVersionId: ID!
 }
@@ -2472,7 +2481,6 @@ enum TaxonCountColumns {
   taxParent
   taxPhylum
   taxSpecies
-  taxSubspecies
   taxSuperkingdom
   updatedAt
   upstreamDatabase
@@ -2496,7 +2504,6 @@ input TaxonCreateInput {
   taxParentId: ID = null
   taxPhylumId: ID = null
   taxSpeciesId: ID = null
-  taxSubspeciesId: ID = null
   taxSuperkingdomId: ID = null
   upstreamDatabaseId: ID!
   upstreamDatabaseIdentifier: String!
@@ -2536,7 +2543,6 @@ type TaxonGroupByOptions {
   taxParent: TaxonGroupByOptions
   taxPhylum: TaxonGroupByOptions
   taxSpecies: TaxonGroupByOptions
-  taxSubspecies: TaxonGroupByOptions
   taxSuperkingdom: TaxonGroupByOptions
   updatedAt: DateTime
   upstreamDatabase: UpstreamDatabaseGroupByOptions
@@ -2604,7 +2610,6 @@ input TaxonOrderByClause {
   taxParent: orderBy
   taxPhylum: orderBy
   taxSpecies: orderBy
-  taxSubspecies: orderBy
   taxSuperkingdom: orderBy
   updatedAt: orderBy
   upstreamDatabase: UpstreamDatabaseOrderByClause
@@ -2625,7 +2630,6 @@ input TaxonUpdateInput {
   taxParentId: ID = null
   taxPhylumId: ID = null
   taxSpeciesId: ID = null
-  taxSubspeciesId: ID = null
   taxSuperkingdomId: ID = null
   wikipediaId: String = null
 }
@@ -2962,6 +2966,7 @@ type WorkflowRun implements EntityInterface & Node {
   inputsJson: String
   outputsJson: String
   ownerUserId: Int!
+  railsWorkflowRunId: Int
   rawInputsJson: String
   rerunFrom: Int
   s3OutputPrefix: String
@@ -3024,6 +3029,7 @@ enum WorkflowRunCountColumns {
   id
   outputsJson
   ownerUserId
+  railsWorkflowRunId
   rawInputsJson
   startedAt
   status
@@ -3169,6 +3175,7 @@ type WorkflowRunGroupByOptions {
   id: UUID
   outputsJson: String
   ownerUserId: Int
+  railsWorkflowRunId: Int
   rawInputsJson: String
   startedAt: DateTime
   status: WorkflowRunStatus
@@ -3184,6 +3191,7 @@ type WorkflowRunMinMaxColumns {
   executionId: String
   outputsJson: String
   ownerUserId: Int
+  railsWorkflowRunId: Int
   rawInputsJson: String
   startedAt: DateTime
   updatedAt: DateTime
@@ -3193,6 +3201,7 @@ type WorkflowRunMinMaxColumns {
 type WorkflowRunNumericalColumns {
   collectionId: Int
   ownerUserId: Int
+  railsWorkflowRunId: Int
 }
 
 input WorkflowRunOrderByClause {
@@ -3204,6 +3213,7 @@ input WorkflowRunOrderByClause {
   id: orderBy
   outputsJson: orderBy
   ownerUserId: orderBy
+  railsWorkflowRunId: orderBy
   rawInputsJson: orderBy
   startedAt: orderBy
   status: orderBy
@@ -3395,6 +3405,7 @@ input WorkflowRunWhereClause {
   id: UUIDComparators
   outputsJson: StrComparators
   ownerUserId: IntComparators
+  railsWorkflowRunId: IntComparators
   rawInputsJson: StrComparators
   startedAt: DatetimeComparators
   status: WorkflowRunStatusEnumComparators

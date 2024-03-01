@@ -179,9 +179,7 @@ export const resolvers: Resolvers = {
     fedConsensusGenomes: async (root, args, context) => {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
-        console.log("nextGenEnabled", nextGenEnabled);
         const ret = await get({ args, context, serviceType: "entities" });
-        console.log("return from next gen", ret);
         return ret.data.consensusGenomes;
       }
       // Next Gen Not Enabled
@@ -944,7 +942,6 @@ export const resolvers: Resolvers = {
       //     query blah bla blah
       //   `;
       //   const ret = await get({ args, context, serviceType: "workflows", customQuery });
-      //   console.log("return from next gen", ret);
       //   return {
       //     url: null,
       //     error: null,

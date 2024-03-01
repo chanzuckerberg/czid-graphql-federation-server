@@ -22,15 +22,6 @@ describe("FormatFedQuery:", () => {
       );
     });
 
-    // it("It can handle a list of bespoke swaps", () => {
-    //   expect(
-    //     formatFedQueryForNextGen({
-    //       param1: [123, 456],
-    //       param2: [],
-    //     })
-    //   ).toBe("?&param1[]=123&param1[]=456");
-    // });
-
     it("removes the input wrapper from the query variables", () => {
       expect(formatFedQueryForNextGen(`consensusGenomes(input: { where: { id: { _eq: $workflowRunId }}}) {`)).toBe(
         `consensusGenomes( where: { id: { _eq: $workflowRunId }}) {`,

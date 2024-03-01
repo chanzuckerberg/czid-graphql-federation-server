@@ -28,7 +28,7 @@ export const get = async ({
     } else {
       if (!url) {
         console.error("You must pass a url to call rails");
-        throw new Error("You must pass a service type to call next gen");
+        throw new Error("You must pass a url to call rails");
       }
       return getFromRails({ url, args, context, fullResponse });
     }
@@ -78,7 +78,7 @@ export const getFeatureFlagsFromRequest = context => {
 
 export const shouldReadFromNextGen = async context => {
   let shouldReadFromNextGen = getFeatureFlagsFromRequest(context);
-  if (shouldReadFromNextGen === true || shouldReadFromNextGen === "true" || shouldReadFromNextGen === "True") {
+  if (shouldReadFromNextGen === "true") {
     // if the header is set, return the value
     return true;
   }
@@ -104,8 +104,8 @@ export const formatFedQueryForNextGen = (query: string) => {
   const finishedQuery = cleanQuery
     .replace("input: {", "")
     .replace("}}", "}")
-    // apply any specific type switches that need to be made - these can be passed in from the resolver
-    .replace("$workflowRunId: String", "$workflowRunId: UUID") // lets make an actual UUID
+    // apply any specific type switches that need to be made
+    .replace("$workflowRunId: String", "$workflowRunId: UUID")
     .replace(/query_fedConsensusGenomes_items/g, "ConsensusGenome");
 
   return finishedQuery;
@@ -141,10 +141,8 @@ export const fetchFromNextGen = async ({
     }),
   });
   if (fullResponse === true) {
-    console.log("full response", response);
     return response;
   } else {
-    console.log("data response");
     return await response.json();
   }
 };

@@ -23,14 +23,14 @@ export const get = async ({
         console.error("You must pass a service type to call next gen");
         throw new Error("You must pass a service type to call next gen");
       } else {
-        return fetchFromNextGen(args, context, serviceType, fullResponse, customQuery);
+        return fetchFromNextGen({ args, context, serviceType, fullResponse, customQuery });
       }
     } else {
       if (!url) {
         console.error("You must pass a url to call rails");
         throw new Error("You must pass a service type to call next gen");
       }
-      return getFromRails(url, args, context, fullResponse);
+      return getFromRails({ url, args, context, fullResponse });
     }
   } catch (e) {
     return Promise.reject(e.response);
@@ -108,13 +108,19 @@ export const formatFedQueryForNextGen = (query: string) => {
   return finishedQuery;
 };
 
-const fetchFromNextGen = async (
+export const fetchFromNextGen = async ({
   args,
   context,
-  serviceType: "workflows" | "entities",
-  fullResponse?: boolean,
-  customQuery?,
-) => {
+  serviceType,
+  fullResponse,
+  customQuery,
+}: {
+  args;
+  context;
+  serviceType: "workflows" | "entities";
+  fullResponse?: boolean;
+  customQuery?: string;
+}) => {
   const czidServicesToken = await getEnrichedToken(context);
   const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
   const formattedQuery = customQuery ? customQuery : formatFedQueryForNextGen(context.params.query);
@@ -140,7 +146,17 @@ const fetchFromNextGen = async (
   }
 };
 
-const getFromRails = async (url: string, args: any, context: any, fullResponse?: boolean) => {
+export const getFromRails = async ({
+  url,
+  args,
+  context,
+  fullResponse,
+}: {
+  url: string;
+  args: any;
+  context: any;
+  fullResponse?: boolean;
+}) => {
   const baseURL = process.env.API_URL;
   const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
 

@@ -88,22 +88,25 @@ export const shouldReadFromNextGen = async context => {
 export const formatFedQueryForNextGen = (query: string) => {
   let cleanQuery = query;
   // remove fed Prefix
-  if (query.indexOf("fed") !== -1) {
-    const splitQueryOnFed = query.split("fed");
+  const firstCurlyBracket = query.indexOf("{");
+  const secondCurlyBracket = query.indexOf("{", firstCurlyBracket + 1);
+  const fedIndex = query.indexOf("fed");
+  if (fedIndex !== -1 && fedIndex < secondCurlyBracket && fedIndex > firstCurlyBracket) {
+    const splitOnFirstFed = [query.substring(0, fedIndex + 4), query.substring(fedIndex + 4)];
+    const splitQueryOnFed = splitOnFirstFed[0].split("fed");
     const firstLetterLowerCase = splitQueryOnFed[1][0].toLowerCase();
     splitQueryOnFed[1] = splitQueryOnFed[1].slice(1);
     splitQueryOnFed.splice(1, 0, firstLetterLowerCase);
-    cleanQuery = splitQueryOnFed.join("");
+    cleanQuery = splitQueryOnFed.join("").concat(splitOnFirstFed[1]);
   }
 
   // remove input object from variables
   const finishedQuery = cleanQuery
     .replace("input: {", "")
     .replace("}}", "}")
-    // TODO: (suzette 02/27/24) FIX THESE HACKS TO MAKE THIS FUNCTION MORE UNIVERSAL
-    .replace("String", "UUID") // lets make an actual UUID
     // apply any specific type switches that need to be made - these can be passed in from the resolver
-    .replace(/query_ConsensusGenomes_items/g, "ConsensusGenome");
+    .replace("$workflowRunId: String", "$workflowRunId: UUID") // lets make an actual UUID
+    .replace(/query_fedConsensusGenomes_items/g, "ConsensusGenome");
 
   return finishedQuery;
 };
@@ -121,7 +124,7 @@ export const fetchFromNextGen = async ({
   fullResponse?: boolean;
   customQuery?: string;
 }) => {
-  const czidServicesToken = await getEnrichedToken(context);
+  const enrichedToken = await getEnrichedToken(context);
   const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
   const formattedQuery = customQuery ? customQuery : formatFedQueryForNextGen(context.params.query);
   const response = await fetch(`${baseUrl}/graphql`, {
@@ -130,7 +133,7 @@ export const fetchFromNextGen = async ({
       Cookie: context.request.headers.get("cookie"),
       "Content-Type": "application/json",
       "X-CSRF-Token": args?.input?.authenticityToken,
-      Authorization: `Bearer ${czidServicesToken}`,
+      Authorization: `Bearer ${enrichedToken}`,
     },
     body: JSON.stringify({
       query: formattedQuery,

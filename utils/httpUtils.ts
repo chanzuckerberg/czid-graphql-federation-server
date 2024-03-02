@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { getEnrichedToken } from "./enrichToken";
+import { formatFedQueryForNextGen } from "./queryFormatUtils";
 
 export const get = async ({
   url,
@@ -85,32 +86,6 @@ export const shouldReadFromNextGen = async context => {
   return false;
 };
 
-export const formatFedQueryForNextGen = (query: string) => {
-  let cleanQuery = query;
-  // remove fed Prefix
-  const firstCurlyBracket = query.indexOf("{");
-  const secondCurlyBracket = query.indexOf("{", firstCurlyBracket + 1);
-  const fedIndex = query.indexOf("fed");
-  if (fedIndex !== -1 && fedIndex < secondCurlyBracket && fedIndex > firstCurlyBracket) {
-    const splitOnFirstFed = [query.substring(0, fedIndex + 4), query.substring(fedIndex + 4)];
-    const splitQueryOnFed = splitOnFirstFed[0].split("fed");
-    const firstLetterLowerCase = splitQueryOnFed[1][0].toLowerCase();
-    splitQueryOnFed[1] = splitQueryOnFed[1].slice(1);
-    splitQueryOnFed.splice(1, 0, firstLetterLowerCase);
-    cleanQuery = splitQueryOnFed.join("").concat(splitOnFirstFed[1]);
-  }
-
-  // remove input object from variables
-  const finishedQuery = cleanQuery
-    .replace("input: {", "")
-    .replace("}}", "}")
-    // apply any specific type switches that need to be made
-    .replace("$workflowRunId: String", "$workflowRunId: UUID")
-    .replace(/query_fedConsensusGenomes_items/g, "ConsensusGenome");
-
-  return finishedQuery;
-};
-
 export const fetchFromNextGen = async ({
   args,
   context,
@@ -124,26 +99,30 @@ export const fetchFromNextGen = async ({
   fullResponse?: boolean;
   customQuery?: string;
 }) => {
-  const enrichedToken = await getEnrichedToken(context);
-  const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
-  const formattedQuery = customQuery ? customQuery : formatFedQueryForNextGen(context.params.query);
-  const response = await fetch(`${baseUrl}/graphql`, {
-    method: "POST",
-    headers: {
-      Cookie: context.request.headers.get("cookie"),
-      "Content-Type": "application/json",
-      "X-CSRF-Token": args?.input?.authenticityToken,
-      Authorization: `Bearer ${enrichedToken}`,
-    },
-    body: JSON.stringify({
-      query: formattedQuery,
-      variables: context.params.variables,
-    }),
-  });
-  if (fullResponse === true) {
-    return response;
-  } else {
-    return await response.json();
+  try {
+    const enrichedToken = await getEnrichedToken(context);
+    const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
+    const formattedQuery = customQuery ? customQuery : formatFedQueryForNextGen(context.params.query);
+    const response = await fetch(`${baseUrl}/graphql`, {
+      method: "POST",
+      headers: {
+        Cookie: context.request.headers.get("cookie"),
+        "Content-Type": "application/json",
+        "X-CSRF-Token": args?.input?.authenticityToken,
+        Authorization: `Bearer ${enrichedToken}`,
+      },
+      body: JSON.stringify({
+        query: formattedQuery,
+        variables: context.params.variables,
+      }),
+    });
+    if (fullResponse === true) {
+      return response;
+    } else {
+      return await response.json();
+    }
+  } catch (e) {
+    return Promise.reject(e.response);
   }
 };
 
@@ -158,20 +137,24 @@ export const getFromRails = async ({
   context: any;
   fullResponse?: boolean;
 }) => {
-  const baseURL = process.env.API_URL;
-  const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
+  try {
+    const baseURL = process.env.API_URL;
+    const urlPrefix = args.snapshotLinkId ? `/pub/${args.snapshotLinkId}` : "";
 
-  const response = await fetch(baseURL + urlPrefix + url, {
-    method: "GET",
-    headers: {
-      Cookie: context.request.headers.get("cookie"),
-      "Content-Type": "application/json",
-    },
-  });
-  if (fullResponse === true) {
-    return response;
-  } else {
-    return await response.json();
+    const response = await fetch(baseURL + urlPrefix + url, {
+      method: "GET",
+      headers: {
+        Cookie: context.request.headers.get("cookie"),
+        "Content-Type": "application/json",
+      },
+    });
+    if (fullResponse === true) {
+      return response;
+    } else {
+      return await response.json();
+    }
+  } catch (e) {
+    return Promise.reject(e.response);
   }
 };
 

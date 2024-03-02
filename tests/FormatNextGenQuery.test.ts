@@ -1,4 +1,4 @@
-import { formatFedQueryForNextGen } from "../utils/httpUtils";
+import { formatFedQueryForNextGen } from "../utils/queryFormatUtils";
 
 describe("FormatFedQuery:", () => {
   describe("formatFedQuery:", () => {

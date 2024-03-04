@@ -5,7 +5,7 @@ import {
   query_fedSamples_items,
   query_fedSequencingReads_items,
   query_fedWorkflowRunsAggregate_items,
-  query_workflowRuns_items,
+  query_fedWorkflowRuns_items,
 } from "./.mesh";
 import { get, postWithCSRF, shouldReadFromNextGen } from "./utils/httpUtils";
 import {
@@ -865,7 +865,7 @@ export const resolvers: Resolvers = {
       }
 
       return workflow_runs.map(
-        (run): query_workflowRuns_items => ({
+        (run): query_fedWorkflowRuns_items => ({
           id: run.id?.toString(),
           ownerUserId: run.runner?.id?.toString(),
           startedAt: run.created_at,

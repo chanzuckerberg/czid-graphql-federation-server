@@ -147,14 +147,17 @@ export const resolvers: Resolvers = {
       if (!args?.input) {
         throw new Error("No input provided");
       }
-      const { downloadType, workflow, includeMetadata, workflowRunIds } = args?.input;
+      const { downloadType, workflow, includeMetadata, workflowRunIds, workflowRunIdsStrings } = args?.input;
+
+      //array of strings to array of numbers
+      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(id => parseInt(id));
       const body = {
         download_type: downloadType,
         workflow: workflow,
         params: {
           include_metadata: { value: includeMetadata },
           sample_ids: {
-            value: workflowRunIds,
+            value: workflowRunIdsNumbers ? workflowRunIdsNumbers : workflowRunIds,
           },
           workflow: {
             value: workflow,

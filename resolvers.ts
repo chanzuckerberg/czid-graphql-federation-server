@@ -7,7 +7,7 @@ import {
   query_fedWorkflowRunsAggregate_items,
   query_workflowRuns_items,
 } from "./.mesh";
-import { get, postWithCSRF, shouldReadFromNextGen } from "./utils/httpUtils";
+import { get, getFromRails, postWithCSRF, shouldReadFromNextGen } from "./utils/httpUtils";
 import { formatTaxonHits, formatTaxonLineage } from "./utils/mngsWorkflowResultsUtils";
 import { formatUrlParams } from "./utils/paramsUtils";
 
@@ -429,6 +429,112 @@ export const resolvers: Resolvers = {
       } catch {
         return res;
       }
+    },
+    SampleForReport: async (root, args, context) => {
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      const sampleInfo = await getFromRails({
+        url: `/samples/${args.railsSampleId}.json`,
+        args,
+        context,
+      });
+      if (sampleInfo?.pipeline_runs) {
+        const updatedPipelineRuns = sampleInfo?.pipeline_runs.map(
+          pipelineRun => {
+            return {
+              ...pipelineRun,
+              id: pipelineRun.id.toString(),
+            }
+          },
+        );
+        sampleInfo.pipeline_runs = updatedPipelineRuns;
+      }
+      if(sampleInfo?.workflow_runs) {
+        const updatedWorkflowRuns = sampleInfo?.workflow_runs.map(
+          workflowRun => {
+            return {
+              ...workflowRun,
+              id: workflowRun.id.toString(),
+            }
+          },
+        );
+        sampleInfo.workflow_runs = updatedWorkflowRuns;
+      }
+      if(sampleInfo?.project) {
+        sampleInfo.project.id = sampleInfo.project.id.toString();
+      }
+      
+
+      if (!nextGenEnabled) {
+        return {
+          id: args.railsSampleId,
+          railsSampleId: args.railsSampleId,
+          ...sampleInfo,
+        };
+      }
+      // NextGen Steps:
+      // get sample from rails using railsSampleId (same as above)
+        // this includes sample info, pipeline runs and workflowRuns from rails
+        // AMR workflow runs
+        // pre-migration CG workflow runs
+        // dual write CG workflow runs
+      // query entities using railsSampleId to get NextGenSampleId and done CG workflow runs
+      // query workflows using NextGenSampleId to get in progress CG workflow runs
+      // deduplicate CG workflow runs
+        // pre-migration
+          // ??
+        // dual write
+          // ??
+
+      const customQuery = `
+          query MyQuery {
+            samples(where: {railsSampleId: {_eq: ${args.railsSampleId}}}) {
+              id
+              sequencingReads {
+                edges {
+                  node {
+                    consensusGenomes {
+                      edges {
+                        node {
+                          producingRunId
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } 
+        `;
+      const entitiesResp = await get({
+        args,
+        context,
+        serviceType: "entities",
+        customQuery,
+      });
+      console.log("return from next gen", JSON.stringify(entitiesResp));
+
+      // query workflows using NextGenSampleId to get in progress CG workflow runs
+      const nextGenSampleId = entitiesResp?.data.samples[0].id;
+      const workflowsQuery = `
+          query WorkflowsQuery {
+            workflowRuns(where: {entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}}) {
+              id
+              _id
+            }
+          }
+      `;
+      const workflowsResp = await get({
+        args,
+        context,
+        serviceType: "workflows",
+        customQuery: workflowsQuery,
+      });
+      console.log(workflowsResp);
+
+      return {
+        url: null,
+        error: null,
+      };
     },
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get({ url: `/samples/${args.sampleId}.json`, args, context });

@@ -1,0 +1,8 @@
+{
+  "railsSampleId": {
+    "type": "string"
+  },
+  "snapshotLinkId": {
+    "type": "string"
+  }
+}

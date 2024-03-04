@@ -15,19 +15,14 @@
             "status": {
                 "type": "string"
             },
+            "creationSource": {
+                "type": "string"
+            },
             "workflowVersion": {
                 "type": "object",
                 "properties": {
                     "version": {
                         "type": "string"
-                    },
-                    "workflow": {
-                        "type": "object",
-                        "properties": {
-                            "name": {
-                                "type": "string"
-                            }
-                        }
                     }
                 }
             },

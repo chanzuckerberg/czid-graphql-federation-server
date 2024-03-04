@@ -7,7 +7,12 @@ import {
   query_fedWorkflowRunsAggregate_items,
   query_fedWorkflowRuns_items,
 } from "./.mesh";
-import { get, postWithCSRF, shouldReadFromNextGen } from "./utils/httpUtils";
+import {
+  fetchFromNextGen,
+  get,
+  postWithCSRF,
+  shouldReadFromNextGen,
+} from "./utils/httpUtils";
 import {
   formatTaxonHits,
   formatTaxonLineage,
@@ -808,9 +813,10 @@ export const resolvers: Resolvers = {
       });
       return annotations;
     },
-    fedWorkflowRuns: async (root, args, context) => {
+    fedWorkflowRuns: async (root, args, context: any) => {
       const input = args.input;
 
+      // CG REPORT USAGE:
       // If we provide a list of workflowRunIds, we assume that this is for getting valid consensus genome workflow runs.
       // This endpoint only provides id, ownerUserId, and status.
       if (input?.where?.id?._in && typeof input?.where?.id?._in === "object") {
@@ -829,6 +835,30 @@ export const resolvers: Resolvers = {
           ownerUserId: run.owner_user_id,
           status: run.status,
         }));
+      }
+
+      // DISCOVERY VIEW USAGE:
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      if (nextGenEnabled) {
+        const input = context.params.variables.input;
+        const response = await fetchFromNextGen({
+          customQuery: context.params.query
+            .replace(
+              /query [\s\S]*?{/,
+              "query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {",
+            )
+            .replace("fedWorkflowRuns", "workflowRuns")
+            .replace("input: $input", `where: $where, orderBy: $orderBy`),
+          customVariables: {
+            where: input.where,
+            orderBy: input.orderBy ? [input.orderBy] : [],
+          },
+          serviceType: "workflows",
+          args,
+          context,
+        });
+        console.log(JSON.stringify(response));
+        return response.data.workflowRuns;
       }
 
       // TODO(bchu): Remove all the non-Workflows fields after moving and integrating them into the

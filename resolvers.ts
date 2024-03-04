@@ -184,10 +184,10 @@ export const resolvers: Resolvers = {
       }
       // Next Gen Not Enabled
       const input = args.input;
-      if (input?.where?.id?._eq) {
+      if (input?.where?.producingRunId?._eq) {
         // if there is an _eq in the response than it is a call for a single workflow run result
         // and the rails call will be like this:
-        const workflowRunId = input?.where?.id?._eq;
+        const workflowRunId = input?.where?.producingRunId?._eq;
         const data = await get({
           url: `/workflow_runs/${workflowRunId}/results`,
           args,

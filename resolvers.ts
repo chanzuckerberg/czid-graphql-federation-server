@@ -59,8 +59,8 @@ export const resolvers: Resolvers = {
         searchBy: args?.input?.searchBy,
         n: args?.input?.limit,
       });
-      const getEntityInputInfo = (entities) => {
-        return entities.map((entity) => {
+      const getEntityInputInfo = entities => {
+        return entities.map(entity => {
           return {
             id: entity?.id,
             name: entity?.sample_name,
@@ -72,7 +72,7 @@ export const resolvers: Resolvers = {
         args,
         context,
       });
-      const mappedRes = res.map(async (bulkDownload) => {
+      const mappedRes = res.map(async bulkDownload => {
         let url: string | null = null;
         let entityInputs: { id: string; name: string }[] = [];
         let sampleNames: Set<string> | null = null;
@@ -91,7 +91,7 @@ export const resolvers: Resolvers = {
             ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
           ];
           sampleNames = new Set(
-            entityInputs.map((entityInput) => entityInput.name)
+            entityInputs.map(entityInput => entityInput.name),
           );
           totalSamples =
             details?.bulk_download?.params?.sample_ids?.value?.length;
@@ -166,8 +166,8 @@ export const resolvers: Resolvers = {
       } = args?.input;
 
       //array of strings to array of numbers
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map((id) =>
-        parseInt(id)
+      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(id =>
+        parseInt(id),
       );
       const body = {
         download_type: downloadType,
@@ -422,7 +422,7 @@ export const resolvers: Resolvers = {
         : url;
       const res = await get({ url: urlWithParams, args, context });
       try {
-        const metadata = res.metadata.map((item) => {
+        const metadata = res.metadata.map(item => {
           item.id = item.id.toString();
           return item;
         });
@@ -431,7 +431,7 @@ export const resolvers: Resolvers = {
             res.additional_info.pipeline_run.id.toString();
         }
         // location_validated_value is a union type, so we need to add __typename to the object
-        metadata.map((field) => {
+        metadata.map(field => {
           if (typeof field.location_validated_value === "object") {
             field.location_validated_value = {
               __typename:
@@ -670,11 +670,11 @@ export const resolvers: Resolvers = {
         };
 
         const existingSequencingRead = result.find(
-          (sequencingRead) => sequencingRead.id === id
+          sequencingRead => sequencingRead.id === id,
         );
         if (existingSequencingRead !== undefined) {
           existingSequencingRead.consensusGenomes.edges.push(
-            consensusGenomeEdge
+            consensusGenomeEdge,
           );
         } else {
           result.push({
@@ -816,7 +816,7 @@ export const resolvers: Resolvers = {
       if (input?.where?.id?._in && typeof input?.where?.id?._in === "object") {
         const body = {
           authenticity_token: input?.todoRemove?.authenticityToken,
-          workflowRunIds: input.where.id._in.map((id) => id && parseInt(id)),
+          workflowRunIds: input.where.id._in.map(id => id && parseInt(id)),
         };
         const { workflowRuns } = await postWithCSRF({
           url: `/workflow_runs/valid_consensus_genome_workflow_runs`,
@@ -824,7 +824,7 @@ export const resolvers: Resolvers = {
           args,
           context,
         });
-        return workflowRuns.map((run) => ({
+        return workflowRuns.map(run => ({
           id: run.id.toString(),
           ownerUserId: run.owner_user_id,
           status: run.status,
@@ -886,7 +886,7 @@ export const resolvers: Resolvers = {
               },
             ],
           },
-        })
+        }),
       );
     },
     fedWorkflowRunsAggregate: async (root, args, context, info) => {
@@ -1022,7 +1022,7 @@ export const resolvers: Resolvers = {
         context,
       });
       try {
-        const formattedRes = res.map((item) => {
+        const formattedRes = res.map(item => {
           item.id = item.id.toString();
           return item;
         });
@@ -1090,7 +1090,7 @@ export const resolvers: Resolvers = {
 };
 
 function getMetadataEdges(
-  sampleMetadata: any
+  sampleMetadata: any,
 ): Array<{ node: { fieldName: string; value: string } }> {
   return sampleMetadata != null
     ? Object.entries(sampleMetadata)
@@ -1099,7 +1099,7 @@ function getMetadataEdges(
             fieldName !== "nucleotide_type" &&
             fieldName !== "collection_location_v2" &&
             fieldName !== "sample_type" &&
-            fieldName !== "water_control"
+            fieldName !== "water_control",
         )
         .map(([fieldName, value]) => ({
           node: {

@@ -116,6 +116,7 @@ export const fetchFromNextGen = async ({
     const formattedQuery = customQuery
       ? customQuery
       : formatFedQueryForNextGen(context.params.query);
+    console.log(formattedQuery);
     const response = await fetch(`${baseUrl}/graphql`, {
       method: "POST",
       headers: {

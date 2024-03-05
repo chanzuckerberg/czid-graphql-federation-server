@@ -18,7 +18,10 @@ import {
   formatTaxonLineage,
 } from "./utils/mngsWorkflowResultsUtils";
 import { formatUrlParams } from "./utils/paramsUtils";
-import { formatWorkflowRunsQuery } from "./utils/queryFormatUtils";
+import {
+  convertSequencingReadsQuery,
+  convertWorkflowRunsQuery,
+} from "./utils/queryFormatUtils";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -592,8 +595,25 @@ export const resolvers: Resolvers = {
         };
       });
     },
-    fedSequencingReads: async (root, args, context) => {
+    fedSequencingReads: async (root, args, context: any) => {
       const input = args.input;
+
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      if (nextGenEnabled) {
+        const response = await fetchFromNextGen({
+          customQuery: convertSequencingReadsQuery(context.params.query),
+          customVariables: {
+            where: input.where,
+            orderBy: input.orderBy != null ? [input.orderBy] : [], // TODO: Migrate to array orderBy.
+            limitOffset: input.limitOffset,
+            producingRunIds: input?.where?.id?._in,
+          },
+          serviceType: "entities",
+          args,
+          context,
+        });
+        return response.data.workflowRuns;
+      }
 
       // The comments in the formatUrlParams() call correspond to the line in the current
       // codebase's callstack where the params are set, so help ensure we're not missing anything.
@@ -815,9 +835,10 @@ export const resolvers: Resolvers = {
       return annotations;
     },
     fedWorkflowRuns: async (root, args, context: any) => {
+      console.log("fetching");
       const input = args.input;
 
-      // CG REPORT USAGE:
+      // CG REPORT:
       // If we provide a list of workflowRunIds, we assume that this is for getting valid consensus genome workflow runs.
       // This endpoint only provides id, ownerUserId, and status.
       if (input?.where?.id?._in && typeof input?.where?.id?._in === "object") {
@@ -838,14 +859,14 @@ export const resolvers: Resolvers = {
         }));
       }
 
-      // DISCOVERY VIEW USAGE:
+      // DISCOVERY VIEW:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
         const response = await fetchFromNextGen({
-          customQuery: formatWorkflowRunsQuery(context.params.query),
+          customQuery: convertWorkflowRunsQuery(context.params.query),
           customVariables: {
             where: input.where,
-            orderBy: input.orderBy,
+            orderBy: input.orderBy != null ? [input.orderBy] : [], // TODO: Migrate to array orderBy.
           },
           serviceType: "workflows",
           args,

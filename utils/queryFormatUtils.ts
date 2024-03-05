@@ -49,7 +49,7 @@ export const formatFedQueryForNextGen = (query: string): string => {
   return finishedQuery;
 };
 
-export const formatWorkflowRunsQuery = (query: string): string => {
+export const convertWorkflowRunsQuery = (query: string): string => {
   return (
     query
       // Replace Fed variables.
@@ -65,7 +65,31 @@ export const formatWorkflowRunsQuery = (query: string): string => {
       // Add entityInputs filter (Mesh can't expose nested argument types?).
       .replace(
         "entityInputs",
-        'entityInputs(where: { entityType: { _eq: "SequencingRead" }})',
+        'entityInputs(where: { entityType: { _eq: "SequencingRead" } })',
+      )
+  );
+};
+
+export const convertSequencingReadsQuery = (query: string): string => {
+  return (
+    query
+      // Replace Fed variables.
+      .replace(
+        /query [\s\S]*?{/,
+        "query ($where: SequencingReadWhereClause, $orderBy: [SequencingReadOrderByClause!], $limitOffset: LimitOffsetClause, $producingRunIds) {",
+      )
+      // Remove fed prefix.
+      .replace("fedSequencingReads", "sequencingReads")
+      // Replace Fed arguments.
+      .replace(
+        "input: $input",
+        "where: $where, orderBy: $orderBy, limitOffset: $limitOffset",
+      )
+      // TODO: Make FE do this.
+      // Add consensusGenomes filter (Mesh can't expose nested argument types?).
+      .replace(
+        "consensusGenomes",
+        "consensusGenomes(where: { producingRunId: { _in: $producingRunIds } })",
       )
   );
 };

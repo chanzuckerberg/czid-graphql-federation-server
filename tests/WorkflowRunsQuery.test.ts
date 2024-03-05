@@ -5,10 +5,12 @@ import { getMeshInstance } from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
+jest.spyOn(httpUtils, "shouldReadFromNextGen");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
   (httpUtils.postWithCSRF as jest.Mock).mockClear();
+  (httpUtils.shouldReadFromNextGen as jest.Mock).mockClear();
 });
 
 describe("workflowRuns query:", () => {
@@ -20,6 +22,9 @@ describe("workflowRuns query:", () => {
   });
 
   it("Returns input sequencing read", async () => {
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(false),
+    );
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [
         {
@@ -85,6 +90,9 @@ describe("workflowRuns query:", () => {
   });
 
   it("Called with order by", async () => {
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(false),
+    );
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       workflow_runs: [],
     }));

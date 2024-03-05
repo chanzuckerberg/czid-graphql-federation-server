@@ -311,13 +311,17 @@ export const resolvers: Resolvers = {
                   name: inputs.taxon_name,
                 }
               : null;
+          const accession =
+            inputs?.accession_id != null && inputs?.accession_name != null
+              ? {
+                  accessionId: inputs?.accession_id,
+                  accessionName: inputs?.accession_name,
+                }
+              : null;
           return {
             producingRunId: run.id?.toString(),
             taxon,
-            referenceGenome: {
-              accessionId: inputs?.accession_id,
-              accessionName: inputs?.accession_name,
-            },
+            accession,
             metrics: {
               coverageDepth: run.cached_results?.coverage_viz?.coverage_depth,
               totalReads: qualityMetrics?.total_reads,
@@ -598,6 +602,7 @@ export const resolvers: Resolvers = {
     fedSequencingReads: async (root, args, context: any) => {
       const input = args.input;
 
+      // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
         const response = await fetchFromNextGen({
@@ -612,7 +617,7 @@ export const resolvers: Resolvers = {
           args,
           context,
         });
-        return response.data.workflowRuns;
+        return response.data.sequencingReads;
       }
 
       // The comments in the formatUrlParams() call correspond to the line in the current
@@ -672,14 +677,19 @@ export const resolvers: Resolvers = {
                 name: inputs.taxon_name,
               }
             : null;
+        const accession =
+          inputs?.accession_id != null && inputs?.accession_name != null
+            ? {
+                accessionId: inputs?.accession_id,
+                accessionName: inputs?.accession_name,
+              }
+            : null;
         const consensusGenomeEdge = {
           node: {
             producingRunId: run.id?.toString(),
             taxon,
-            referenceGenome: {
-              accessionId: inputs?.accession_id,
-              accessionName: inputs?.accession_name,
-            },
+            referenceGenome: accession,
+            accession,
             metrics: {
               coverageDepth: run.cached_results?.coverage_viz?.coverage_depth,
               totalReads: qualityMetrics?.total_reads,

@@ -1,8 +1,10 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
 import { getExampleQuery } from "./utils/ExampleQueryFiles";
 import { getMeshInstance } from "./utils/MeshInstance";
+import { assertEqualsNoWhitespace } from "./utils/StringUtils";
 
 import * as httpUtils from "../utils/httpUtils";
+import { formatWorkflowRunsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
@@ -111,6 +113,60 @@ describe("workflowRuns query:", () => {
       context: expect.anything(),
     });
     expect(result.data.fedWorkflowRuns).toHaveLength(0);
+  });
+
+  it("Constructs correct NextGen query", async () => {
+    const query = `
+    query DiscoveryViewFCWorkflowsQuery(
+      $input: queryInput_fedWorkflowRuns_input_Input
+    ) {
+      fedWorkflowRuns(input: $input) {
+        id
+        startedAt
+        status
+        workflowVersion {
+          version
+          workflow {
+            name
+          }
+        }
+        entityInputs {
+          edges {
+            node {
+              inputEntityId
+              entityType
+            }
+          }
+        }
+      }
+    }
+  `;
+
+    assertEqualsNoWhitespace(
+      formatWorkflowRunsQuery(query),
+      `
+  query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {
+    workflowRuns(where: $where, orderBy: $orderBy) {
+      id
+      startedAt
+      status
+      workflowVersion {
+        version
+        workflow {
+          name
+        }
+      }
+      entityInputs(where: { entityType: { _eq: "SequencingRead" }}) {
+        edges {
+          node {
+            inputEntityId
+            entityType
+          }
+        }
+      }
+    }
+  }`,
+    );
   });
 
   describe("validConsensusGenomes query", () => {

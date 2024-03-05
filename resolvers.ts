@@ -18,6 +18,7 @@ import {
   formatTaxonLineage,
 } from "./utils/mngsWorkflowResultsUtils";
 import { formatUrlParams } from "./utils/paramsUtils";
+import { formatWorkflowRunsQuery } from "./utils/queryFormatUtils";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -841,22 +842,7 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
         const response = await fetchFromNextGen({
-          customQuery: context.params.query
-            // Replace Fed variables.
-            .replace(
-              /query [\s\S]*?{/,
-              "query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {",
-            )
-            // Remove fed prefix.
-            .replace("fedWorkflowRuns", "workflowRuns")
-            // Replace Fed arguments.
-            .replace("input: $input", "where: $where, orderBy: $orderBy")
-            // TODO: Make FE do this.
-            // Add entityInputs filter (Mesh can't expose nested argument types?).
-            .replace(
-              "entityInputs",
-              'entityInputs(where: { entityType: { _eq: "SequencingRead" }})',
-            ),
+          customQuery: formatWorkflowRunsQuery(context.params.query),
           customVariables: {
             where: input.where,
             orderBy: input.orderBy,

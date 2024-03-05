@@ -166,8 +166,8 @@ export const resolvers: Resolvers = {
       } = args?.input;
 
       //array of strings to array of numbers
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(id =>
-        id && parseInt(id),
+      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
+        id => id && parseInt(id),
       );
       const body = {
         download_type: downloadType,
@@ -729,7 +729,7 @@ export const resolvers: Resolvers = {
       }
       const { selectedIdsStrings, workflow, selectedIds } = args?.input;
       const body = {
-        selectedIds: selectedIdsStrings ? selectedIdsStrings : selectedIds,
+        selectedIds: selectedIdsStrings ?? selectedIds,
         workflow: workflow,
       };
       const res = await postWithCSRF({
@@ -949,16 +949,25 @@ export const resolvers: Resolvers = {
             }
           }
         `;
-        const ret = await get({ args, context, serviceType: "workflows", customQuery });
-        if(ret.data.consensusGenomes[0].intermediateOutputs[0].downloadLink.url){
+        const ret = await get({
+          args,
+          context,
+          serviceType: "workflows",
+          customQuery,
+        });
+        if (
+          ret.data?.consensusGenomes[0]?.intermediateOutputs[0]?.downloadLink
+            ?.url
+        ) {
           return {
-            url: ret.data.consensusGenomes[0].intermediateOutputs[0].downloadLink.url,
-          }
+            url: ret.data.consensusGenomes[0].intermediateOutputs[0]
+              .downloadLink.url,
+          };
         } else {
           return {
             url: null,
             error: ret.error,
-          }
+          };
         }
       }
       /* --------------------- Rails ------------------------- */
@@ -1021,7 +1030,7 @@ export const resolvers: Resolvers = {
       }
       const { idsStrings, workflow, ids } = args?.input;
       const body = {
-        selectedIds: idsStrings ? idsStrings : ids,
+        selectedIds: idsStrings ?? ids,
         workflow: workflow,
       };
       const { deletedIds, error } = await postWithCSRF({

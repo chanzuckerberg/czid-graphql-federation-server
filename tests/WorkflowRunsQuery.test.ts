@@ -6,11 +6,13 @@ import * as httpUtils from "../utils/httpUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
+jest.spyOn(httpUtils, "fetchFromNextGen");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
   (httpUtils.postWithCSRF as jest.Mock).mockClear();
   (httpUtils.shouldReadFromNextGen as jest.Mock).mockClear();
+  (httpUtils.fetchFromNextGen as jest.Mock).mockClear();
 });
 
 describe("workflowRuns query:", () => {
@@ -104,7 +106,7 @@ describe("workflowRuns query:", () => {
 
     // TODO: Add support for NextGen orderBy field.
     expect(httpUtils.get).toHaveBeenCalledWith({
-      url: "/workflow_runs.json?&mode=basic&limit=10000000&offset=0&listAllIds=false",
+      url: "/workflow_runs.json?&mode=basic&orderBy=createdAt&orderDir=ASC&limit=10000000&offset=0&listAllIds=false",
       args: expect.anything(),
       context: expect.anything(),
     });

@@ -840,7 +840,6 @@ export const resolvers: Resolvers = {
       // DISCOVERY VIEW USAGE:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
-        const input = context.params.variables.input;
         const response = await fetchFromNextGen({
           customQuery: context.params.query
             // Replace Fed variables.
@@ -848,12 +847,12 @@ export const resolvers: Resolvers = {
               /query [\s\S]*?{/,
               "query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {",
             )
-            // Replace fed prefix.
+            // Remove fed prefix.
             .replace("fedWorkflowRuns", "workflowRuns")
             // Replace Fed arguments.
             .replace("input: $input", "where: $where, orderBy: $orderBy")
             // TODO: Make FE do this.
-            // Insert entityInputs filter (Mesh can't expose nested argument types?).
+            // Add entityInputs filter (Mesh can't expose nested argument types?).
             .replace(
               "entityInputs",
               'entityInputs(where: { entityType: { _eq: "SequencingRead" }})',

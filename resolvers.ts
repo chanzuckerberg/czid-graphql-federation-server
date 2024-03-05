@@ -848,16 +848,19 @@ export const resolvers: Resolvers = {
               "query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {",
             )
             .replace("fedWorkflowRuns", "workflowRuns")
-            .replace("input: $input", `where: $where, orderBy: $orderBy`),
+            .replace("input: $input", "where: $where, orderBy: $orderBy")
+            .replace(
+              "entityInputs", // TODO: Make FE do this (can't expose nested argument type in Mesh?)
+              'entityInputs(where: { entityType: { _eq: "SequencingRead" }})',
+            ),
           customVariables: {
             where: input.where,
-            orderBy: input.orderBy ? [input.orderBy] : [],
+            orderBy: input.orderBy,
           },
           serviceType: "workflows",
           args,
           context,
         });
-        console.log(JSON.stringify(response));
         return response.data.workflowRuns;
       }
 
@@ -871,8 +874,6 @@ export const resolvers: Resolvers = {
             domain: input?.todoRemove?.domain,
             projectId: input?.todoRemove?.projectId,
             search: input?.todoRemove?.search,
-            // TODO: Cover sorting by time, version, or creation source (though Rails doesn't
-            // actually support the latter 2).
             orderBy: input?.todoRemove?.orderBy,
             orderDir: input?.todoRemove?.orderDir,
             host: input?.todoRemove?.host,
@@ -900,10 +901,11 @@ export const resolvers: Resolvers = {
           ownerUserId: run.runner?.id?.toString(),
           startedAt: run.created_at,
           status: run.status,
+          creationSource: run.inputs?.creation_source,
           workflowVersion: {
             version: run.wdl_version,
             workflow: {
-              name: run.inputs?.creation_source,
+              name: run.inputs?.creation_source, // TODO: Delete when FE uses creationSource.
             },
           },
           entityInputs: {

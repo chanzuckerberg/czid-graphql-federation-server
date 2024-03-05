@@ -67,19 +67,22 @@
             }
         },
         "orderBy": {
-            "type": "object",
-            "properties": {
-                "startedAt": {
-                    "type": "string"
-                },
-                "creationSource": {
-                    "type": "string"
-                },
-                "workflowVersion": {
-                    "type": "object",
-                    "properties": {
-                        "version": {
-                            "type": "string"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "startedAt": {
+                        "type": "string"
+                    },
+                    "creationSource": {
+                        "type": "string"
+                    },
+                    "workflowVersion": {
+                        "type": "object",
+                        "properties": {
+                            "version": {
+                                "type": "string"
+                            }
                         }
                     }
                 }

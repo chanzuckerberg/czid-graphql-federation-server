@@ -4008,7 +4008,7 @@ input queryInput_fedWorkflowRunsAggregate_input_where_id_Input {
 
 input queryInput_fedWorkflowRuns_input_Input {
   entityInputsInput: queryInput_fedWorkflowRuns_input_entityInputsInput_Input
-  orderBy: queryInput_fedWorkflowRuns_input_orderBy_Input
+  orderBy: [queryInput_fedWorkflowRuns_input_orderBy_items_Input]
   todoRemove: queryInput_fedWorkflowRuns_input_todoRemove_Input
   where: queryInput_fedWorkflowRuns_input_where_Input
 }
@@ -4025,18 +4025,14 @@ input queryInput_fedWorkflowRuns_input_entityInputsInput_where_fieldName_Input {
   _eq: String
 }
 
-input queryInput_fedWorkflowRuns_input_orderBy_Input {
+input queryInput_fedWorkflowRuns_input_orderBy_items_Input {
+  creationSource: String
   startedAt: String
-  workflowVersion: queryInput_fedWorkflowRuns_input_orderBy_workflowVersion_Input
+  workflowVersion: queryInput_fedWorkflowRuns_input_orderBy_items_workflowVersion_Input
 }
 
-input queryInput_fedWorkflowRuns_input_orderBy_workflowVersion_Input {
+input queryInput_fedWorkflowRuns_input_orderBy_items_workflowVersion_Input {
   version: String
-  workflow: queryInput_fedWorkflowRuns_input_orderBy_workflowVersion_workflow_Input
-}
-
-input queryInput_fedWorkflowRuns_input_orderBy_workflowVersion_workflow_Input {
-  name: String
 }
 
 input queryInput_fedWorkflowRuns_input_todoRemove_Input {
@@ -4733,6 +4729,7 @@ type query_fedWorkflowRunsAggregate_items {
 }
 
 type query_fedWorkflowRuns_items {
+  creationSource: String
   entityInputs: query_fedWorkflowRuns_items_entityInputs!
   id: String!
   ownerUserId: Int!

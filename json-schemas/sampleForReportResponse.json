@@ -136,88 +136,8 @@
                             "ref_fasta": {
                                 "type": "string"
                             },
-                            "primer_bed": {
-                                "type": "string"
-                            },
                             "creation_source": {
                                 "type": "string"
-                            }
-                        }
-                    },
-                    "parsed_cached_results": {
-                        "type": "object",
-                        "properties": {
-                            "coverage_viz": {
-                                "type": "object",
-                                "properties": {
-                                    "coverage_breadth": {
-                                        "type": "number"
-                                    },
-                                    "coverage_depth": {
-                                        "type": "number"
-                                    },
-                                    "max_aligned_length": {
-                                        "type": "integer"
-                                    },
-                                    "total_length": {
-                                        "type": "integer"
-                                    }
-                                }
-                            },
-                            "quality_metrics": {
-                                "type": "object",
-                                "properties": {
-                                    "ercc_mapped_reads": {
-                                        "type": "integer"
-                                    },
-                                    "mapped_reads": {
-                                        "type": "integer"
-                                    },
-                                    "n_actg": {
-                                        "type": "integer"
-                                    },
-                                    "n_ambiguous": {
-                                        "type": "integer"
-                                    },
-                                    "n_missing": {
-                                        "type": "integer"
-                                    },
-                                    "ref_snps": {
-                                        "type": "integer"
-                                    },
-                                    "total_reads": {
-                                        "type": "integer"
-                                    },
-                                    "percent_identity": {
-                                        "type": "number"
-                                    },
-                                    "gc_percent": {
-                                        "type": "number"
-                                    },
-                                    "percent_genome_called": {
-                                        "type": "number"
-                                    },
-                                    "reference_genome_length": {
-                                        "type": "integer"
-                                    }
-                                }
-                            },
-                            "taxon_info": {
-                                "type": "object",
-                                "properties": {
-                                    "accession_id": {
-                                        "type": "string"
-                                    },
-                                    "accession_name": {
-                                        "type": "string"
-                                    },
-                                    "taxon_id": {
-                                        "type": "string"
-                                    },
-                                    "taxon_name": {
-                                        "type": "string"
-                                    }
-                                }
                             }
                         }
                     },

@@ -500,7 +500,7 @@ export const resolvers: Resolvers = {
           ...sampleInfo,
         };
       }
-  
+
       // NextGen Steps:
       // get sample from rails using railsSampleId (same as above). This includes:
       // -- sample info
@@ -511,31 +511,62 @@ export const resolvers: Resolvers = {
       // ---- dual write CG workflow runs
       // query entities using railsSampleId to get NextGenSampleId and done CG workflow runs
       // query workflows using NextGenSampleId to get in progress CG workflow runs
-      
+
       // Note: it looks like some info is in entities and some is in workflows, so we can
       // just get what we need from each service and merge based on NextGenSampleId
 
       // Fields still need to find:
       // deprecated
       // input_error
+      // reference fasta
+      // workflow type = "consensus_genome"
       // I think the inputs will be in the rawInputsJson field of the workflows call
       // We may want to see if these are even used on the frontend before we add
       // JSON parsing to this.
 
-      // deduplicate CG workflow runs
-      // pre-migration
-      // ??
-      // dual write
-      // ??
-
       // Continue using all fields from rails except for workflow_runs
-      // The ownerUserId can come from workflows so it's the runner of the workflow
-
 
       const entitiesQuery = `
           query MyQuery {
             samples(where: {railsSampleId: {_eq: ${args.railsSampleId}}}) {
               id
+              producingRunId
+              sequencingReads {
+                edges {
+                  node {
+                    consensusGenomes {
+                      edges {
+                        node {
+                          id
+                          createdAt
+                          referenceGenome {
+                            id
+                            file {
+                              path
+                            }
+                          }
+                          accession {
+                            accessionId
+                            accessionName
+                          }
+                          taxon {
+                            id
+                            name
+                          }
+                          sequencingRead {
+                            technology
+                          }
+                        }
+                      }
+                    }
+                    sample {
+                      hostOrganism {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
             }
           } 
         `;
@@ -554,15 +585,17 @@ export const resolvers: Resolvers = {
             workflowRuns(where: {entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}}) {
               id
               _id
+              railsWorkflowRunId
               status
               ownerUserId
               workflowVersion {
-                version
+                id
                 workflow {
                   name
                 }
               }
               createdAt
+              endedAt
               rawInputsJson
             }
           }
@@ -573,11 +606,57 @@ export const resolvers: Resolvers = {
         serviceType: "workflows",
         customQuery: workflowsQuery,
       });
-      console.log(workflowsResp);
 
+      // add data from here
+      // entitiesResp
+      const consensusGenomes =
+        entitiesResp.data.samples[0].sequencingReads.edges[0].node
+          .consensusGenomes.edges[0].node;
+      const workflowsWorkflowRuns = workflowsResp.workflowRuns;
+      const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
+        const consensusGenome = consensusGenomes.find(consensusGenome => {
+          return consensusGenome.producingRunId === workflowRun.id;
+        });
+        // if !consensusGenome this is a workflow run that is in progress
+        return {
+          deprecated: null,
+          executed_at: workflowRun.createdAt,
+          id: workflowRun.id,
+          input_error: null,
+          inputs: {
+            accession_id: consensusGenome?.accession.accessionId,
+            accession_name: consensusGenome?.accession.accessionName,
+            creation_source: workflowRun.workflowVersion.workflow.name,
+            ref_fasta: consensusGenome?.referenceGenome.file.path,
+            taxon_id: consensusGenome?.taxon.id,
+            taxon_name: consensusGenome?.taxon.name,
+            technology: consensusGenome?.sequencingRead.technology,
+          },
+          rails_workflow_run_id: workflowRun.railsWorkflowRunId, // this is added for deduplicating below
+          run_finalized: workflowRun.endedAt,
+          status: workflowRun.status,
+          wdl_version: workflowRun.workflowVersion.id,
+          workflow: "consensus_genome",
+        };
+      });
+
+      // deduplicate sampleInfo.workflow_runs and nextGenWorkflowRuns
+      const dedupedWorkflowRuns = [...nextGenWorkflowRuns];
+      for (const railsWorkflowRun of sampleInfo.workflow_runs) {
+        const alreadyExists = nextGenWorkflowRuns.find(
+          nextGenWorkflowRun =>
+          nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
+        );
+        if (!alreadyExists) {
+          dedupedWorkflowRuns.push(railsWorkflowRun);
+        }
+      }
+
+      console.log("sampleInfo", {...sampleInfo, workflow_runs: dedupedWorkflowRuns})
       return {
-        url: null,
-        error: null,
+        id: args.railsSampleId,
+        railsSampleId: args.railsSampleId,
+        sampleInfo: {...sampleInfo, workflow_runs: dedupedWorkflowRuns},
       };
     },
     MngsWorkflowResults: async (root, args, context, info) => {

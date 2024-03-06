@@ -653,8 +653,8 @@ export const resolvers: Resolvers = {
             workflow: input?.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
-            limit: input?.limit,
-            offset: input?.offset,
+            limit: input?.limit ?? input?.limitOffset?.limit, // TODO: Just use limitOffset.
+            offset: input?.offset ?? input?.limitOffset?.offset,
             listAllIds: false,
           }),
         args,

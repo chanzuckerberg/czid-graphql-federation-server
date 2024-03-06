@@ -569,7 +569,7 @@ export const resolvers: Resolvers = {
         serviceType: "entities",
         customQuery: entitiesQuery,
       });
-      console.log("return from next gen", JSON.stringify(entitiesResp));
+      console.log("return from next gen entitiesResp", JSON.stringify(entitiesResp));
 
       // query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
@@ -601,12 +601,15 @@ export const resolvers: Resolvers = {
         customQuery: workflowsQuery,
       });
 
+      console.log("return from next gen workflowsResp", JSON.stringify(workflowsResp));
+
       // add data from here
       // entitiesResp
       const consensusGenomes =
         entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges[0].node;
       const workflowsWorkflowRuns = workflowsResp.workflowRuns;
+      console.log(workflowsWorkflowRuns)
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
         const consensusGenome = consensusGenomes.find(consensusGenome => {
           return consensusGenome.producingRunId === workflowRun.id;

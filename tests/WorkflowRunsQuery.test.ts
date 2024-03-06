@@ -122,6 +122,7 @@ describe("workflowRuns query:", () => {
           id
           startedAt
           status
+          creationSource
           workflowVersion {
             version
             workflow {

@@ -495,13 +495,14 @@ export const resolvers: Resolvers = {
 
       if (!nextGenEnabled) {
         return {
-          id: args.railsSampleId,
+          id: `sample-for-query-${args.railsSampleId}`,
           railsSampleId: args.railsSampleId,
           ...sampleInfo,
         };
       }
 
       // NextGen Steps:
+      // continue using everything from rails except for workflow_runs
       // get sample from rails using railsSampleId (same as above). This includes:
       // -- sample info
       // -- pipeline runs
@@ -511,20 +512,12 @@ export const resolvers: Resolvers = {
       // ---- dual write CG workflow runs
       // query entities using railsSampleId to get NextGenSampleId and done CG workflow runs
       // query workflows using NextGenSampleId to get in progress CG workflow runs
+      // combine workflow data from entities and workflows
+      // deduplicate between rails and next gen
 
-      // Note: it looks like some info is in entities and some is in workflows, so we can
-      // just get what we need from each service and merge based on NextGenSampleId
-
-      // Fields still need to find:
+      // TODO: these are in workflows now
       // deprecated
       // input_error
-      // reference fasta
-      // workflow type = "consensus_genome"
-      // I think the inputs will be in the rawInputsJson field of the workflows call
-      // We may want to see if these are even used on the frontend before we add
-      // JSON parsing to this.
-
-      // Continue using all fields from rails except for workflow_runs
 
       const entitiesQuery = `
           query MyQuery {
@@ -580,6 +573,7 @@ export const resolvers: Resolvers = {
 
       // query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
+      // TODO: this where clause might need to specify "consensus_genome" workflow type
       const workflowsQuery = `
           query WorkflowsQuery {
             workflowRuns(where: {entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}}) {
@@ -627,7 +621,7 @@ export const resolvers: Resolvers = {
             accession_id: consensusGenome?.accession.accessionId,
             accession_name: consensusGenome?.accession.accessionName,
             creation_source: workflowRun.workflowVersion.workflow.name,
-            ref_fasta: consensusGenome?.referenceGenome.file.path,
+            ref_fasta: consensusGenome?.referenceGenome.file.path, // TODO: parse from entitiesResp
             taxon_id: consensusGenome?.taxon.id,
             taxon_name: consensusGenome?.taxon.name,
             technology: consensusGenome?.sequencingRead.technology,
@@ -641,22 +635,40 @@ export const resolvers: Resolvers = {
       });
 
       // deduplicate sampleInfo.workflow_runs and nextGenWorkflowRuns
-      const dedupedWorkflowRuns = [...nextGenWorkflowRuns];
-      for (const railsWorkflowRun of sampleInfo.workflow_runs) {
-        const alreadyExists = nextGenWorkflowRuns.find(
-          nextGenWorkflowRun =>
-          nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
-        );
-        if (!alreadyExists) {
-          dedupedWorkflowRuns.push(railsWorkflowRun);
+      // if nextGenEnabled, prefer nextGen data, otherwise prefer rails data
+      let dedupedWorkflowRuns;
+      if (nextGenEnabled) {
+        dedupedWorkflowRuns = [...nextGenWorkflowRuns];
+        for (const railsWorkflowRun of sampleInfo.workflow_runs) {
+          const alreadyExists = nextGenWorkflowRuns.find(
+            nextGenWorkflowRun =>
+              nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
+          );
+          if (!alreadyExists) {
+            dedupedWorkflowRuns.push(railsWorkflowRun);
+          }
+        }
+      } else {
+        dedupedWorkflowRuns = [...sampleInfo.workflow_runs];
+        for (const nextGenWorkflowRun of nextGenWorkflowRuns) {
+          const alreadyExists = sampleInfo.workflow_runs.find(
+            railsWorkflowRun =>
+              nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
+          );
+          if (!alreadyExists) {
+            dedupedWorkflowRuns.push(nextGenWorkflowRun);
+          }
         }
       }
 
-      console.log("sampleInfo", {...sampleInfo, workflow_runs: dedupedWorkflowRuns})
+      console.log("sampleInfo", {
+        ...sampleInfo,
+        workflow_runs: dedupedWorkflowRuns,
+      });
       return {
         id: args.railsSampleId,
         railsSampleId: args.railsSampleId,
-        sampleInfo: {...sampleInfo, workflow_runs: dedupedWorkflowRuns},
+        sampleInfo: { ...sampleInfo, workflow_runs: dedupedWorkflowRuns },
       };
     },
     MngsWorkflowResults: async (root, args, context, info) => {

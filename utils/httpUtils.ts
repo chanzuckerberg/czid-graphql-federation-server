@@ -99,10 +99,12 @@ export const fetchFromNextGen = async ({
   fullResponse?: boolean;
   customQuery?: string;
 }) => {
+  console.log("fetching from next gen");
   try {
     const enrichedToken = await getEnrichedToken(context);
     const baseUrl = serviceType === "workflows" ? process.env.NEXTGEN_WORKFLOWS_URL : process.env.NEXTGEN_ENTITIES_URL;
     const formattedQuery = customQuery ? customQuery : formatFedQueryForNextGen(context.params.query);
+    console.log({baseUrl, formattedQuery, variables: context.params.variables});
     const response = await fetch(`${baseUrl}/graphql`, {
       method: "POST",
       headers: {
@@ -117,8 +119,10 @@ export const fetchFromNextGen = async ({
       }),
     });
     if (fullResponse === true) {
+      console.log("returning full response", response);
       return response;
     } else {
+      console.log("returning json", response);
       return await response.json();
     }
   } catch (e) {

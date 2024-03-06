@@ -206,8 +206,10 @@ export const resolvers: Resolvers = {
     },
     fedConsensusGenomes: async (root, args, context) => {
       const nextGenEnabled = await shouldReadFromNextGen(context);
+      console.log("nextGenEnabled", nextGenEnabled);
       if (nextGenEnabled) {
         const ret = await get({ args, context, serviceType: "entities" });
+        console.log("ret in resolvers", ret);
         return ret.data.consensusGenomes;
       }
       // Next Gen Not Enabled
@@ -216,11 +218,13 @@ export const resolvers: Resolvers = {
         // if there is an _eq in the response than it is a call for a single workflow run result
         // and the rails call will be like this:
         const workflowRunId = input?.where?.producingRunId?._eq;
+        console.log("rails workflowRunId", workflowRunId);
         const data = await get({
           url: `/workflow_runs/${workflowRunId}/results`,
           args,
           context,
         });
+        console.log("rails data in resolvers", data);
         const { coverage_viz, quality_metrics, taxon_info } = data;
         const { accession_id, accession_name, taxon_id, taxon_name } =
           taxon_info || {};

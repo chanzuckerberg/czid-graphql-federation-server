@@ -573,6 +573,7 @@ export const resolvers: Resolvers = {
 
       // query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
+      console.log("nextGenSampleId", nextGenSampleId);
       // TODO: this where clause might need to specify "consensus_genome" workflow type
       const workflowsQuery = `
           query WorkflowsQuery {

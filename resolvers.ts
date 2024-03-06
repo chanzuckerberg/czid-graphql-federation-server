@@ -922,7 +922,7 @@ export const resolvers: Resolvers = {
           ownerUserId: run.runner?.id?.toString(),
           startedAt: run.created_at,
           status: run.status,
-          creationSource: run.inputs?.creation_source,
+          rawInputsJson: `{"creation_source": "${run.inputs?.creation_source ?? ""}"}`,
           workflowVersion: {
             version: run.wdl_version,
             workflow: {

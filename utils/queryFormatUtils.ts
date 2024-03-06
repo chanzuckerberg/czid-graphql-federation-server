@@ -61,8 +61,6 @@ export const convertWorkflowRunsQuery = (query: string): string => {
       .replace("fedWorkflowRuns", "workflowRuns")
       // Replace Fed arguments.
       .replace("input: $input", "where: $where, orderBy: $orderBy")
-      // Replace unsupported field.
-      .replace("creationSource", "")
       // TODO: Make FE do this.
       // Add entityInputs filter (Mesh can't expose nested argument types?).
       .replace(

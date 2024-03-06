@@ -1914,7 +1914,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -1972,7 +1972,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!
@@ -4774,10 +4774,10 @@ type query_fedWorkflowRunsAggregate_items {
 }
 
 type query_fedWorkflowRuns_items {
-  creationSource: String
   entityInputs: query_fedWorkflowRuns_items_entityInputs!
   id: String!
   ownerUserId: Int!
+  rawInputsJson: String
   startedAt: String
   status: String
   workflowVersion: query_fedWorkflowRuns_items_workflowVersion

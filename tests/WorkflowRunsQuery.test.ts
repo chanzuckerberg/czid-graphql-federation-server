@@ -122,7 +122,7 @@ describe("workflowRuns query:", () => {
           id
           startedAt
           status
-          creationSource
+          rawInputsJson
           workflowVersion {
             version
             workflow {
@@ -147,6 +147,7 @@ describe("workflowRuns query:", () => {
           id
           startedAt
           status
+          rawInputsJson
           workflowVersion {
             version
             workflow {

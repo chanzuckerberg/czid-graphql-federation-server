@@ -15,7 +15,7 @@
             "status": {
                 "type": "string"
             },
-            "creationSource": {
+            "rawInputsJson": {
                 "type": "string"
             },
             "workflowVersion": {

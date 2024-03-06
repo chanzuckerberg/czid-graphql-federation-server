@@ -4,17 +4,15 @@ import { getMeshInstance } from "./utils/MeshInstance";
 import { assertEqualsNoWhitespace } from "./utils/StringUtils";
 
 import * as httpUtils from "../utils/httpUtils";
-import { formatWorkflowRunsQuery } from "../utils/queryFormatUtils";
+import { convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
-jest.spyOn(httpUtils, "fetchFromNextGen");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
   (httpUtils.postWithCSRF as jest.Mock).mockClear();
   (httpUtils.shouldReadFromNextGen as jest.Mock).mockClear();
-  (httpUtils.fetchFromNextGen as jest.Mock).mockClear();
 });
 
 describe("workflowRuns query:", () => {
@@ -117,55 +115,53 @@ describe("workflowRuns query:", () => {
 
   it("Constructs correct NextGen query", async () => {
     const query = `
-    query DiscoveryViewFCWorkflowsQuery(
-      $input: queryInput_fedWorkflowRuns_input_Input
-    ) {
-      fedWorkflowRuns(input: $input) {
-        id
-        startedAt
-        status
-        workflowVersion {
-          version
-          workflow {
-            name
+      query DiscoveryViewFCWorkflowsQuery(
+        $input: queryInput_fedWorkflowRuns_input_Input
+      ) {
+        fedWorkflowRuns(input: $input) {
+          id
+          startedAt
+          status
+          workflowVersion {
+            version
+            workflow {
+              name
+            }
           }
-        }
-        entityInputs {
-          edges {
-            node {
-              inputEntityId
-              entityType
+          entityInputs {
+            edges {
+              node {
+                inputEntityId
+                entityType
+              }
             }
           }
         }
-      }
-    }
-  `;
+      }`;
 
     assertEqualsNoWhitespace(
-      formatWorkflowRunsQuery(query),
-      `
-  query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {
-    workflowRuns(where: $where, orderBy: $orderBy) {
-      id
-      startedAt
-      status
-      workflowVersion {
-        version
-        workflow {
-          name
-        }
-      }
-      entityInputs(where: { entityType: { _eq: "SequencingRead" }}) {
-        edges {
-          node {
-            inputEntityId
-            entityType
+      convertWorkflowRunsQuery(query),
+      `query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {
+        workflowRuns(where: $where, orderBy: $orderBy) {
+          id
+          startedAt
+          status
+          workflowVersion {
+            version
+            workflow {
+              name
+            }
+          }
+          entityInputs(where: { entityType: { _eq: "SequencingRead" } }) {
+            edges {
+              node {
+                inputEntityId
+                entityType
+              }
+            }
           }
         }
-      }
-    }
-  }`,
+      }`,
     );
   });
 

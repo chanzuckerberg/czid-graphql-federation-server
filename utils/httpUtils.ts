@@ -74,6 +74,8 @@ export const notFound = (message: string) => {
 };
 
 export const getFeatureFlagsFromRequest = context => {
+  console.log("headers", context.request.headers);
+  console.log("x-should-read-from-nextgen", context.request.headers.get("x-should-read-from-nextgen"));
   return context.request.headers.get("x-should-read-from-nextgen");
 };
 

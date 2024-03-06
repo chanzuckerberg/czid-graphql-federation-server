@@ -926,7 +926,7 @@ export const resolvers: Resolvers = {
           workflowVersion: {
             version: run.wdl_version,
             workflow: {
-              name: run.inputs?.creation_source, // TODO: Delete when FE uses creationSource.
+              name: run.inputs?.creation_source, // TODO: Delete when FE uses rawInputsJson.
             },
           },
           entityInputs: {

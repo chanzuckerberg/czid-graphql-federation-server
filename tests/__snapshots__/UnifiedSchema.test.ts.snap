@@ -4061,7 +4061,6 @@ input queryInput_fedWorkflowRuns_input_entityInputsInput_where_fieldName_Input {
 }
 
 input queryInput_fedWorkflowRuns_input_orderByArray_items_Input {
-  creationSource: String
   startedAt: String
   workflowVersion: queryInput_fedWorkflowRuns_input_orderByArray_items_workflowVersion_Input
 }
@@ -4071,13 +4070,7 @@ input queryInput_fedWorkflowRuns_input_orderByArray_items_workflowVersion_Input 
 }
 
 input queryInput_fedWorkflowRuns_input_orderBy_Input {
-  creationSource: String
   startedAt: String
-  workflowVersion: queryInput_fedWorkflowRuns_input_orderBy_workflowVersion_Input
-}
-
-input queryInput_fedWorkflowRuns_input_orderBy_workflowVersion_Input {
-  version: String
 }
 
 input queryInput_fedWorkflowRuns_input_todoRemove_Input {

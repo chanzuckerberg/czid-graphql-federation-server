@@ -71,17 +71,6 @@
             "properties": {
                 "startedAt": {
                     "type": "string"
-                },
-                "creationSource": {
-                    "type": "string"
-                },
-                "workflowVersion": {
-                    "type": "object",
-                    "properties": {
-                        "version": {
-                            "type": "string"
-                        }
-                    }
                 }
             }
         },
@@ -91,9 +80,6 @@
                 "type": "object",
                 "properties": {
                     "startedAt": {
-                        "type": "string"
-                    },
-                    "creationSource": {
                         "type": "string"
                     },
                     "workflowVersion": {

@@ -10,6 +10,7 @@ import {
 import {
   fetchFromNextGen,
   get,
+  getFromRails,
   postWithCSRF,
   shouldReadFromNextGen,
 } from "./utils/httpUtils";
@@ -608,7 +609,7 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
-        const response = await fetchFromNextGen({
+        const nextGenResponse = await fetchFromNextGen({
           customQuery: convertSequencingReadsQuery(context.params.query),
           customVariables: {
             where: input.where,
@@ -620,7 +621,22 @@ export const resolvers: Resolvers = {
           args,
           context,
         });
-        return response.data.sequencingReads;
+        const railsResponse = await getFromRails({
+          url:
+            "/samples/index_v2.json" +
+            formatUrlParams({
+              sampleIds: nextGenResponse.data.sequencingReads.map(
+                sequencingRead => sequencingRead.sample.railsSampleId,
+              ),
+              limit: TEN_MILLION,
+              offset: 0,
+              listAllIds: false,
+            }),
+          args,
+          context,
+        });
+
+        return nextGenResponse.data.sequencingReads;
       }
 
       // The comments in the formatUrlParams() call correspond to the line in the current

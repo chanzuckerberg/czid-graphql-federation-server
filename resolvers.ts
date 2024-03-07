@@ -609,8 +609,9 @@ export const resolvers: Resolvers = {
       const consensusGenomes =
         entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges[0].node;
-      const workflowsWorkflowRuns = workflowsResp.workflowRuns;
-      console.log(workflowsWorkflowRuns)
+      console.log("consensusGenomes", consensusGenomes);
+      const workflowsWorkflowRuns = workflowsResp.data.workflowRuns;
+      console.log("workflowsWorkflowRuns", workflowsWorkflowRuns)
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
         const consensusGenome = consensusGenomes.find(consensusGenome => {
           return consensusGenome.producingRunId === workflowRun.id;
@@ -637,6 +638,8 @@ export const resolvers: Resolvers = {
           workflow: "consensus_genome",
         };
       });
+
+      console.log("nextGenWorkflowRuns", nextGenWorkflowRuns);
 
       // deduplicate sampleInfo.workflow_runs and nextGenWorkflowRuns
       // if nextGenEnabled, prefer nextGen data, otherwise prefer rails data

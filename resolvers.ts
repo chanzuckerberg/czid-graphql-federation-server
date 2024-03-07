@@ -467,6 +467,7 @@ export const resolvers: Resolvers = {
         args,
         context,
       });
+      // Make output acceptable to Relay - convert ids to strings
       if (sampleInfo?.pipeline_runs) {
         const updatedPipelineRuns = sampleInfo?.pipeline_runs.map(
           pipelineRun => {
@@ -529,6 +530,9 @@ export const resolvers: Resolvers = {
       // 3. ✅ 🤷‍♀️ specify "consensus-genome" workflow type from workflowsQuery
       // 4. 🤷‍♀️ add clause to workflowQuery to specify "consensus-genome" rather than "bulk-download"
       // 5. ✅ parse creationSource from rawInputsJson
+
+      // 6. make sure snapshotLinkId is being used
+      // 7. add tests
 
       const entitiesQuery = `
           query MyQuery {
@@ -615,7 +619,7 @@ export const resolvers: Resolvers = {
 
       const consensusGenomes = entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
-      const workflowsWorkflowRuns = workflowsResp.data.workflowRuns;
+      const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
         const consensusGenome = consensusGenomes.find(consensusGenome => {
           return consensusGenome.node.producingRunId === workflowRun.id;
@@ -632,7 +636,7 @@ export const resolvers: Resolvers = {
             accession_id: accession?.accessionId,
             accession_name: accession?.accessionName,
             creation_source: parsedRawInputsJson?.creation_source,
-            ref_fasta: "TODO: parse consensusGenome?.node?.referenceGenome.file.path", // TODO: parse from entitiesResp
+            ref_fasta: "TODO: parse consensusGenome?.node?.referenceGenome.file.path", // TODO: parse from entitiesResp .split('/').pop()
             taxon_id: taxon?.id,
             taxon_name: taxon?.name,
             technology: sequencingRead?.technology,

@@ -99,12 +99,6 @@ sources:
           - type: Query
             field: SampleForReport
             method: GET
-            path: /samples/{args.railsSampleId}.json
-            responseSchema: ./json-schemas/sampleForReportResponse.json
-            responseTypeName: SampleForReport
-          - type: Query
-            field: SampleForReport
-            method: GET
             path: /pub/{args.snapshotLinkId}/samples/{args.railsSampleId}.json
             responseSchema: ./json-schemas/sampleForReportResponse.json
             responseTypeName: SampleForReport

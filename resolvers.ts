@@ -611,13 +611,53 @@ export const resolvers: Resolvers = {
       entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
       console.log("consensusGenomes", consensusGenomes);
+      // const consensusGenomes = [
+      //   {
+      //     node: {
+      //       id: '018df726-e9c5-7fd7-be8f-ca1d140ec6ac',
+      //       createdAt: '2024-02-29T23:15:39.005266+00:00',
+      //       producingRunId: '018df720-fbd6-77f9-9b4a-1ca468d5207f',
+      //       referenceGenome: null,
+      //       accession: {
+      //         accessionId:"MN908947.3",
+      //         accessionName:"Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
+      //       },
+      //       taxon: {
+      //         id:"018ded47-34ac-7f3a-9dff-a43e5036393a",
+      //         name:"Severe acute respiratory syndrome coronavirus 2"
+      //       },
+      //       sequencingRead: {
+      //         technology:"Illumina"
+      //       }
+      //     }
+      //   }
+      // ];
       // const TOREMOVEworkflowsResp = {"data":{"workflowRuns":[{"id":"018df720-fbd6-77f9-9b4a-1ca468d5207f","_id":"V29ya2Zsb3dSdW46MDE4ZGY3MjAtZmJkNi03N2Y5LTliNGEtMWNhNDY4ZDUyMDdm","railsWorkflowRunId":7126,"status":"SUCCEEDED","ownerUserId":345,"workflowVersion":{"id":"018df6ca-d3c0-7edd-a243-4127e06eb1d1","workflow":{"name":"consensus-genome"}},"createdAt":"2024-02-29T23:09:10.470257+00:00","endedAt":null,"rawInputsJson":"{\"ncbi_index_version\": \"2021-01-22\", \"sars_cov_2\": true, \"creation_source\": \"SARS-CoV-2 Upload\"}"}]}};
       const workflowsWorkflowRuns = workflowsResp.data.workflowRuns;
       console.log("workflowsWorkflowRuns", workflowsWorkflowRuns)
+      // const workflowsWorkflowRuns = [
+      //   {
+      //     id: '018df720-fbd6-77f9-9b4a-1ca468d5207f',
+      //     _id: 'V29ya2Zsb3dSdW46MDE4ZGY3MjAtZmJkNi03N2Y5LTliNGEtMWNhNDY4ZDUyMDdm',
+      //     railsWorkflowRunId: 7126,
+      //     status: 'SUCCEEDED',
+      //     ownerUserId: 345,
+      //     workflowVersion:{
+      //       id:"018df6ca-d3c0-7edd-a243-4127e06eb1d1",
+      //       workflow:{
+      //         name:"consensus-genome"
+      //       }
+      //     },
+      //     createdAt: '2024-02-29T23:09:10.470257+00:00',
+      //     endedAt: null,
+      //     rawInputsJson: '{"ncbi_index_version": "2021-01-22", "sars_cov_2": true, "creation_source": "SARS-CoV-2 Upload"}'
+      //   }
+      // ]
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
         const consensusGenome = consensusGenomes.find(consensusGenome => {
-          return consensusGenome.producingRunId === workflowRun.id;
+          return consensusGenome.node.producingRunId === workflowRun.id;
         });
+        const {accession, taxon, sequencingRead} = consensusGenome?.node || {};
         // if !consensusGenome this is a workflow run that is in progress
         return {
           deprecated: null,
@@ -625,13 +665,13 @@ export const resolvers: Resolvers = {
           id: workflowRun.id,
           input_error: null,
           inputs: {
-            accession_id: consensusGenome?.accession.accessionId,
-            accession_name: consensusGenome?.accession.accessionName,
+            accession_id: accession?.accessionId,
+            accession_name: accession?.accessionName,
             creation_source: workflowRun.workflowVersion.workflow.name,
-            ref_fasta: consensusGenome?.referenceGenome.file.path, // TODO: parse from entitiesResp
-            taxon_id: consensusGenome?.taxon.id,
-            taxon_name: consensusGenome?.taxon.name,
-            technology: consensusGenome?.sequencingRead.technology,
+            ref_fasta: "consensusGenome?.node?.referenceGenome.file.path", // TODO: parse from entitiesResp
+            taxon_id: taxon?.id,
+            taxon_name: taxon?.name,
+            technology: sequencingRead?.technology,
           },
           rails_workflow_run_id: workflowRun.railsWorkflowRunId, // this is added for deduplicating below
           run_finalized: workflowRun.endedAt,
@@ -646,8 +686,9 @@ export const resolvers: Resolvers = {
       // deduplicate sampleInfo.workflow_runs and nextGenWorkflowRuns
       // if nextGenEnabled, prefer nextGen data, otherwise prefer rails data
       let dedupedWorkflowRuns;
-      if (nextGenEnabled) {
+      // if (nextGenEnabled) {
         dedupedWorkflowRuns = [...nextGenWorkflowRuns];
+        console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs)
         for (const railsWorkflowRun of sampleInfo.workflow_runs) {
           const alreadyExists = nextGenWorkflowRuns.find(
             nextGenWorkflowRun =>
@@ -657,18 +698,18 @@ export const resolvers: Resolvers = {
             dedupedWorkflowRuns.push(railsWorkflowRun);
           }
         }
-      } else {
-        dedupedWorkflowRuns = [...sampleInfo.workflow_runs];
-        for (const nextGenWorkflowRun of nextGenWorkflowRuns) {
-          const alreadyExists = sampleInfo.workflow_runs.find(
-            railsWorkflowRun =>
-              nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
-          );
-          if (!alreadyExists) {
-            dedupedWorkflowRuns.push(nextGenWorkflowRun);
-          }
-        }
-      }
+      // } else {
+      //   dedupedWorkflowRuns = [...sampleInfo.workflow_runs];
+      //   for (const nextGenWorkflowRun of nextGenWorkflowRuns) {
+      //     const alreadyExists = sampleInfo.workflow_runs.find(
+      //       railsWorkflowRun =>
+      //         nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
+      //     );
+      //     if (!alreadyExists) {
+      //       dedupedWorkflowRuns.push(nextGenWorkflowRun);
+      //     }
+      //   }
+      // }
 
       console.log("sampleInfo", {
         ...sampleInfo,
@@ -677,7 +718,8 @@ export const resolvers: Resolvers = {
       return {
         id: args.railsSampleId,
         railsSampleId: args.railsSampleId,
-        sampleInfo: { ...sampleInfo, workflow_runs: dedupedWorkflowRuns },
+        ...sampleInfo, 
+        workflow_runs: dedupedWorkflowRuns
       };
     },
     MngsWorkflowResults: async (root, args, context, info) => {

@@ -532,6 +532,7 @@ export const resolvers: Resolvers = {
                         node {
                           id
                           createdAt
+                          producingRunId
                           referenceGenome {
                             id
                             file {
@@ -603,13 +604,14 @@ export const resolvers: Resolvers = {
       });
 
       console.log("return from next gen workflowsResp", JSON.stringify(workflowsResp));
-
+      // const TOREMOVEentitiesresponse = {"data":{"samples":[{"id":"018df720-f584-79df-b1b2-8cd87dba3a18","producingRunId":null,"sequencingReads":{"edges":[{"node":{"consensusGenomes":{"edges":[{"node":{"id":"018df726-e9c5-7fd7-be8f-ca1d140ec6ac","createdAt":"2024-02-29T23:15:39.005266+00:00","referenceGenome":null,"accession":{"accessionId":"MN908947.3","accessionName":"Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"},"taxon":{"id":"018ded47-34ac-7f3a-9dff-a43e5036393a","name":"Severe acute respiratory syndrome coronavirus 2"},"sequencingRead":{"technology":"Illumina"}}}]},"sample":{"hostOrganism":{"id":"018df6c3-150d-76f6-bb43-e957145253d3"}}}}]}}]}};
       // add data from here
       // entitiesResp
       const consensusGenomes =
-        entitiesResp.data.samples[0].sequencingReads.edges[0].node
-          .consensusGenomes.edges[0].node;
+      entitiesResp.data.samples[0].sequencingReads.edges[0].node
+          .consensusGenomes.edges;
       console.log("consensusGenomes", consensusGenomes);
+      // const TOREMOVEworkflowsResp = {"data":{"workflowRuns":[{"id":"018df720-fbd6-77f9-9b4a-1ca468d5207f","_id":"V29ya2Zsb3dSdW46MDE4ZGY3MjAtZmJkNi03N2Y5LTliNGEtMWNhNDY4ZDUyMDdm","railsWorkflowRunId":7126,"status":"SUCCEEDED","ownerUserId":345,"workflowVersion":{"id":"018df6ca-d3c0-7edd-a243-4127e06eb1d1","workflow":{"name":"consensus-genome"}},"createdAt":"2024-02-29T23:09:10.470257+00:00","endedAt":null,"rawInputsJson":"{\"ncbi_index_version\": \"2021-01-22\", \"sars_cov_2\": true, \"creation_source\": \"SARS-CoV-2 Upload\"}"}]}};
       const workflowsWorkflowRuns = workflowsResp.data.workflowRuns;
       console.log("workflowsWorkflowRuns", workflowsWorkflowRuns)
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {

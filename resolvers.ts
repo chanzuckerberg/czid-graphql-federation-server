@@ -609,34 +609,63 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
-        const nextGenResponse = await fetchFromNextGen({
-          customQuery: convertSequencingReadsQuery(context.params.query),
-          customVariables: {
-            where: input.where,
-            orderBy: input.orderBy != null ? [input.orderBy] : [], // TODO: Migrate to array orderBy.
-            limitOffset: input.limitOffset,
-            producingRunIds: input?.where?.id?._in,
-          },
-          serviceType: "entities",
-          args,
-          context,
-        });
-        const railsResponse = await getFromRails({
-          url:
-            "/samples/index_v2.json" +
-            formatUrlParams({
-              sampleIds: nextGenResponse.data.sequencingReads.map(
-                sequencingRead => sequencingRead.sample.railsSampleId,
-              ),
-              limit: TEN_MILLION,
-              offset: 0,
-              listAllIds: false,
-            }),
-          args,
-          context,
-        });
+        const nextGenSequencingReads = (
+          await fetchFromNextGen({
+            customQuery: convertSequencingReadsQuery(context.params.query),
+            customVariables: {
+              where: input.where,
+              orderBy: input.orderBy != null ? [input.orderBy] : [], // TODO: Migrate to array orderBy.
+              limitOffset: input.limitOffset,
+              producingRunIds: input?.where?.id?._in,
+            },
+            serviceType: "entities",
+            args,
+            context,
+          })
+        ).data.sequencingReads;
+        const railsSamples = (
+          await getFromRails({
+            url:
+              "/samples/index_v2.json" +
+              formatUrlParams({
+                sampleIds: nextGenSequencingReads.data.sequencingReads.map(
+                  sequencingRead => sequencingRead.sample.railsSampleId,
+                ),
+                limit: TEN_MILLION,
+                offset: 0,
+                listAllIds: false,
+              }),
+            args,
+            context,
+          })
+        ).samples;
 
-        return nextGenResponse.data.sequencingReads;
+        const samplesById = new Map<number, any>(
+          railsSamples.map(sample => [sample.id, sample]),
+        );
+        for (const nextGenSequencingRead of nextGenSequencingReads) {
+          const nextGenSample = nextGenSequencingRead.sample;
+          const railsSample = samplesById.get(nextGenSample.railsSampleId);
+          const railsMetadata = railsSample.details?.metadata;
+
+          nextGenSequencingRead.nucleicAcid =
+            railsMetadata?.nucleotide_type ?? "";
+          nextGenSample.notes = railsSample.details?.db_sample?.sample_notes;
+          nextGenSample.uploadError = railsSample.db_sample?.upload_error;
+          nextGenSample.collectionLocation =
+            railsMetadata?.collection_location_v2 ?? "";
+          nextGenSample.sampleType = railsMetadata?.sample_type ?? "";
+          nextGenSample.waterControl = railsMetadata?.water_control === "Yes";
+          nextGenSample.collection = {
+            name: railsSample.details?.derived_sample_output?.project_name,
+            public: railsSample.public === 1,
+          };
+          nextGenSample.metadatas = {
+            edges: getMetadataEdges(railsMetadata),
+          };
+        }
+
+        return nextGenSequencingReads;
       }
 
       // The comments in the formatUrlParams() call correspond to the line in the current

@@ -589,7 +589,7 @@ export const resolvers: Resolvers = {
         serviceType: "entities",
         customQuery: entitiesQuery,
       });
-      console.log("entitiesResp - get 1", entitiesResp)
+      console.log("entitiesResp - get 1", JSON.stringify(entitiesResp))
 
       // Query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
@@ -621,7 +621,7 @@ export const resolvers: Resolvers = {
         serviceType: "workflows",
         customQuery: workflowsQuery,
       });
-      console.log("workflowsResp - get 2", workflowsResp);
+      console.log("workflowsResp - get 2", JSON.stringify(workflowsResp));
       const consensusGenomes = entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
       const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
@@ -641,7 +641,7 @@ export const resolvers: Resolvers = {
             accession_id: accession?.accessionId,
             accession_name: accession?.accessionName,
             creation_source: parsedRawInputsJson?.creation_source,
-            ref_fasta: parseRefFasta(consensusGenome?.node?.referenceGenome.file.path),
+            ref_fasta: parseRefFasta(consensusGenome?.node?.referenceGenome?.file?.path),
             taxon_id: taxon?.id,
             taxon_name: taxon?.name,
             technology: sequencingRead?.technology,

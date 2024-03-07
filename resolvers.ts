@@ -676,8 +676,8 @@ export const resolvers: Resolvers = {
           rails_workflow_run_id: workflowRun.railsWorkflowRunId, // this is added for deduplicating below
           run_finalized: workflowRun.endedAt,
           status: workflowRun.status,
-          wdl_version: workflowRun?.workflowVersion?.name,
-          workflow: "consensus_genome",
+          wdl_version: workflowRun.workflowVersion.id,
+          workflow: "consensus-genome",
         };
       });
 
@@ -686,7 +686,7 @@ export const resolvers: Resolvers = {
       //   {
       //     deprecated: null,
       //     executed_at: '2024-02-29T23:09:10.470257+00:00',
-      //     id: '018df720-fbd6-77f9-9b4a-1ca468d5207f',
+      //     id: '018de5ec-8b6a-7040-9ba2-7d4ff989569c',
       //     input_error: null,
       //     inputs: {
       //       accession_id: 'MN908947.3',
@@ -701,10 +701,10 @@ export const resolvers: Resolvers = {
       //     run_finalized: null,
       //     status: 'SUCCEEDED',
       //     wdl_version: '018df6ca-d3c0-7edd-a243-4127e06eb1d1',
-      //     workflow: 'consensus_genome'
+      //     workflow: 'consensus-genome'
       //   }
       // ];
-      // const sampleInfoWorkflowRuns = [
+      // const sampleInfoWorkflow_runs = [
       //   {
       //     id: '7126',
       //     status: 'SUCCEEDED',

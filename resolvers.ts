@@ -480,6 +480,7 @@ export const resolvers: Resolvers = {
         args,
         context,
       });
+      console.log("sampleInfo - getFromRails", JSON.stringify(sampleInfo))
       // Make output acceptable to Relay - convert ids to strings
       if (sampleInfo?.pipeline_runs) {
         const updatedPipelineRuns = sampleInfo?.pipeline_runs.map(
@@ -510,6 +511,11 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       /* --------------------- Rails --------------------- */
       if (!nextGenEnabled) {
+        console.log("next gen off Response", {
+          id: `sample-for-query-${args.railsSampleId}`,
+          railsSampleId: args.railsSampleId,
+          ...sampleInfo,
+        })
         return {
           id: `sample-for-query-${args.railsSampleId}`,
           railsSampleId: args.railsSampleId,
@@ -532,20 +538,6 @@ export const resolvers: Resolvers = {
       // combine workflow data from entities and workflows
       // deduplicate between rails and next gen
 
-      // TODO: 
-      // 1. find these in workflows now
-      // ✅ deprecated
-      // ✅ input_error
-      // 🤷‍♀️ run_finalized
-      // ✅ wdl_version
-
-      // 2. ✅  parse ref_fasta from entitiesResp
-      // 3. ✅ specify "consensus-genome" workflow type from workflowsQuery
-      // 4. 🤷‍♀️ add clause to workflowQuery to specify "consensus-genome" rather than "bulk-download"
-      // 5. ✅ parse creationSource from rawInputsJson
-
-      // 6. make sure snapshotLinkId is being used
-      // 7. add tests
 
       const entitiesQuery = `
           query MyQuery {
@@ -597,6 +589,7 @@ export const resolvers: Resolvers = {
         serviceType: "entities",
         customQuery: entitiesQuery,
       });
+      console.log("entitiesResp - get 1", entitiesResp)
 
       // Query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
@@ -629,7 +622,7 @@ export const resolvers: Resolvers = {
         serviceType: "workflows",
         customQuery: workflowsQuery,
       });
-
+      console.log("workflowsResp - get 2", workflowsResp);
       const consensusGenomes = entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
       const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
@@ -661,7 +654,7 @@ export const resolvers: Resolvers = {
           workflow: workflowRun?.workflowVersion.workflow.name,
         };
       });
-
+      console.log("nextGenWorkflowRuns", nextGenWorkflowRuns)
       // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
       let dedupedWorkflowRuns;
         dedupedWorkflowRuns = [...nextGenWorkflowRuns];
@@ -675,6 +668,13 @@ export const resolvers: Resolvers = {
             dedupedWorkflowRuns.push(railsWorkflowRun);
           }
         }
+        console.log("dedupedWorkflowRuns", dedupedWorkflowRuns)
+        console.log('return next gen enabled', {
+          id: args.railsSampleId,
+          railsSampleId: args.railsSampleId,
+          ...sampleInfo, 
+          workflow_runs: dedupedWorkflowRuns
+        })
       return {
         id: args.railsSampleId,
         railsSampleId: args.railsSampleId,

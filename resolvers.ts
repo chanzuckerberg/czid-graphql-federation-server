@@ -601,7 +601,6 @@ export const resolvers: Resolvers = {
               railsWorkflowRunId
               status
               ownerUserId
-              deprecatedBy
               errorMessage
               workflowVersion {
                 version

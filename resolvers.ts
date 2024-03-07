@@ -23,6 +23,7 @@ import {
   convertSequencingReadsQuery,
   convertWorkflowRunsQuery,
 } from "./utils/queryFormatUtils";
+import { parseRefFasta } from "./utils/responseHelperUtils";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -534,12 +535,12 @@ export const resolvers: Resolvers = {
       // TODO: 
       // 1. find these in workflows now
       // ✅ deprecated
-      // ✅ 🤷‍♀️ input_error
+      // ✅ input_error
       // 🤷‍♀️ run_finalized
-      // ✅ 🤷‍♀️ wdl_version
+      // ✅ wdl_version
 
-      // 2. ⏰ parse ref_fasta from entitiesResp
-      // 3. ✅ 🤷‍♀️ specify "consensus-genome" workflow type from workflowsQuery
+      // 2. ✅  parse ref_fasta from entitiesResp
+      // 3. ✅ specify "consensus-genome" workflow type from workflowsQuery
       // 4. 🤷‍♀️ add clause to workflowQuery to specify "consensus-genome" rather than "bulk-download"
       // 5. ✅ parse creationSource from rawInputsJson
 
@@ -607,7 +608,7 @@ export const resolvers: Resolvers = {
               railsWorkflowRunId
               status
               ownerUserId
-              deprecated
+              deprecated_by
               errorMessage
               workflowVersion {
                 version
@@ -640,7 +641,7 @@ export const resolvers: Resolvers = {
         const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson);
         // If !consensusGenome this is a workflow run that is in progress
         return {
-          deprecated: workflowRun?.deprecated,
+          deprecated: workflowRun?.deprecated_by,
           executed_at: workflowRun?.createdAt,
           id: workflowRun?.id,
           input_error: workflowRun?.errorMessage,
@@ -648,7 +649,7 @@ export const resolvers: Resolvers = {
             accession_id: accession?.accessionId,
             accession_name: accession?.accessionName,
             creation_source: parsedRawInputsJson?.creation_source,
-            ref_fasta: "TODO: parse consensusGenome?.node?.referenceGenome.file.path", // TODO: parse from entitiesResp .split('/').pop()
+            ref_fasta: parseRefFasta(consensusGenome?.node?.referenceGenome.file.path),
             taxon_id: taxon?.id,
             taxon_name: taxon?.name,
             technology: sequencingRead?.technology,

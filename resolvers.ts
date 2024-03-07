@@ -734,7 +734,7 @@ export const resolvers: Resolvers = {
       let dedupedWorkflowRuns;
         dedupedWorkflowRuns = [...nextGenWorkflowRuns];
         console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs)
-        for (const railsWorkflowRun of sampleInfo.workflowRuns) {
+        for (const railsWorkflowRun of sampleInfo.workflow_runs) {
           const alreadyExists = nextGenWorkflowRuns.find(
             nextGenWorkflowRun =>
               nextGenWorkflowRun.rails_workflow_run_id.toString() === railsWorkflowRun.id,

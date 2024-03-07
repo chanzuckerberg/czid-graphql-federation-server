@@ -676,40 +676,74 @@ export const resolvers: Resolvers = {
           rails_workflow_run_id: workflowRun.railsWorkflowRunId, // this is added for deduplicating below
           run_finalized: workflowRun.endedAt,
           status: workflowRun.status,
-          wdl_version: workflowRun.workflowVersion.id,
+          wdl_version: workflowRun?.workflowVersion?.name,
           workflow: "consensus_genome",
         };
       });
 
       console.log("nextGenWorkflowRuns", nextGenWorkflowRuns);
-
+      // const nextGenWorkflowRunsFake = [
+      //   {
+      //     deprecated: null,
+      //     executed_at: '2024-02-29T23:09:10.470257+00:00',
+      //     id: '018df720-fbd6-77f9-9b4a-1ca468d5207f',
+      //     input_error: null,
+      //     inputs: {
+      //       accession_id: 'MN908947.3',
+      //       accession_name: 'Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome',
+      //       creation_source: 'consensus-genome',
+      //       ref_fasta: 'consensusGenome?.node?.referenceGenome.file.path',
+      //       taxon_id: '018ded47-34ac-7f3a-9dff-a43e5036393a',
+      //       taxon_name: 'Severe acute respiratory syndrome coronavirus 2',
+      //       technology: 'Illumina'
+      //     },
+      //     rails_workflow_run_id: 7126,
+      //     run_finalized: null,
+      //     status: 'SUCCEEDED',
+      //     wdl_version: '018df6ca-d3c0-7edd-a243-4127e06eb1d1',
+      //     workflow: 'consensus_genome'
+      //   }
+      // ];
+      // const sampleInfoWorkflowRuns = [
+      //   {
+      //     id: '7126',
+      //     status: 'SUCCEEDED',
+      //     workflow: 'consensus-genome',
+      //     wdl_version: '3.5.0',
+      //     executed_at: '2024-02-29T15:09:11.000-08:00',
+      //     deprecated: false,
+      //     input_error: null,
+      //     inputs: {
+      //       accession_id: 'MN908947.3',
+      //       accession_name: 'Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome',
+      //       taxon_id: 2697049,
+      //       taxon_name: 'Severe acute respiratory syndrome coronavirus 2',
+      //       technology: 'Illumina',
+      //       wetlab_protocol: 'artic_v4',
+      //       creation_source: 'SARS-CoV-2 Upload'
+      //     },
+      //     parsed_cached_results: {
+      //       coverage_viz: [Object],
+      //       quality_metrics: [Object],
+      //       taxon_info: [Object]
+      //     },
+      //     run_finalized: true
+      //   }
+      // ];
       // deduplicate sampleInfo.workflow_runs and nextGenWorkflowRuns
-      // if nextGenEnabled, prefer nextGen data, otherwise prefer rails data
       let dedupedWorkflowRuns;
-      // if (nextGenEnabled) {
         dedupedWorkflowRuns = [...nextGenWorkflowRuns];
         console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs)
-        for (const railsWorkflowRun of sampleInfo.workflow_runs) {
+        for (const railsWorkflowRun of sampleInfo.workflowRuns) {
           const alreadyExists = nextGenWorkflowRuns.find(
             nextGenWorkflowRun =>
-              nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
+              nextGenWorkflowRun.rails_workflow_run_id.toString() === railsWorkflowRun.id,
           );
           if (!alreadyExists) {
             dedupedWorkflowRuns.push(railsWorkflowRun);
           }
         }
-      // } else {
-      //   dedupedWorkflowRuns = [...sampleInfo.workflow_runs];
-      //   for (const nextGenWorkflowRun of nextGenWorkflowRuns) {
-      //     const alreadyExists = sampleInfo.workflow_runs.find(
-      //       railsWorkflowRun =>
-      //         nextGenWorkflowRun.rails_workflow_run_id === railsWorkflowRun.id,
-      //     );
-      //     if (!alreadyExists) {
-      //       dedupedWorkflowRuns.push(nextGenWorkflowRun);
-      //     }
-      //   }
-      // }
+      console.log("dedupedWorkflowRuns", dedupedWorkflowRuns);
 
       console.log("sampleInfo", {
         ...sampleInfo,

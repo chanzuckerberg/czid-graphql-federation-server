@@ -628,7 +628,7 @@ export const resolvers: Resolvers = {
             url:
               "/samples/index_v2.json" +
               formatUrlParams({
-                sampleIds: nextGenSequencingReads.data.sequencingReads.map(
+                sampleIds: nextGenSequencingReads.map(
                   sequencingRead => sequencingRead.sample.railsSampleId,
                 ),
                 limit: TEN_MILLION,
@@ -647,15 +647,16 @@ export const resolvers: Resolvers = {
           const nextGenSample = nextGenSequencingRead.sample;
           const railsSample = samplesById.get(nextGenSample.railsSampleId);
           const railsMetadata = railsSample.details?.metadata;
+          const railsDbSample = railsSample.details?.db_sample;
 
           nextGenSequencingRead.nucleicAcid =
             railsMetadata?.nucleotide_type ?? "";
-          nextGenSample.notes = railsSample.details?.db_sample?.sample_notes;
-          nextGenSample.uploadError = railsSample.db_sample?.upload_error;
           nextGenSample.collectionLocation =
             railsMetadata?.collection_location_v2 ?? "";
           nextGenSample.sampleType = railsMetadata?.sample_type ?? "";
           nextGenSample.waterControl = railsMetadata?.water_control === "Yes";
+          nextGenSample.notes = railsDbSample?.sample_notes;
+          nextGenSample.uploadError = railsDbSample?.upload_error;
           nextGenSample.collection = {
             name: railsSample.details?.derived_sample_output?.project_name,
             public: railsSample.public === 1,

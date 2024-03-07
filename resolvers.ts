@@ -461,7 +461,7 @@ export const resolvers: Resolvers = {
       }
     },
     SampleForReport: async (root, args, context) => {
-      const nextGenEnabled = await shouldReadFromNextGen(context);
+      /* --------------------- Rails and Next Gen --------------------- */
       const sampleInfo = await getFromRails({
         url: `/samples/${args.railsSampleId}.json`,
         args,
@@ -493,6 +493,8 @@ export const resolvers: Resolvers = {
         sampleInfo.project.id = sampleInfo.project.id.toString();
       }
 
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      /* --------------------- Rails --------------------- */
       if (!nextGenEnabled) {
         return {
           id: `sample-for-query-${args.railsSampleId}`,
@@ -500,6 +502,7 @@ export const resolvers: Resolvers = {
           ...sampleInfo,
         };
       }
+      /* --------------------- Next Gen --------------------- */
 
       // NextGen Steps:
       // continue using everything from rails except for workflow_runs
@@ -515,15 +518,22 @@ export const resolvers: Resolvers = {
       // combine workflow data from entities and workflows
       // deduplicate between rails and next gen
 
-      // TODO: these are in workflows now
-      // deprecated
-      // input_error
+      // TODO: 
+      // 1. find these in workflows now
+      // ✅ deprecated
+      // ✅ 🤷‍♀️ input_error
+      // 🤷‍♀️ run_finalized
+      // ✅ 🤷‍♀️ wdl_version
+
+      // 2. ⏰ parse ref_fasta from entitiesResp
+      // 3. ✅ 🤷‍♀️ specify "consensus-genome" workflow type from workflowsQuery
+      // 4. 🤷‍♀️ add clause to workflowQuery to specify "consensus-genome" rather than "bulk-download"
+      // 5. ✅ parse creationSource from rawInputsJson
 
       const entitiesQuery = `
           query MyQuery {
             samples(where: {railsSampleId: {_eq: ${args.railsSampleId}}}) {
               id
-              producingRunId
               sequencingReads {
                 edges {
                   node {
@@ -570,12 +580,9 @@ export const resolvers: Resolvers = {
         serviceType: "entities",
         customQuery: entitiesQuery,
       });
-      console.log("return from next gen entitiesResp", JSON.stringify(entitiesResp));
 
-      // query workflows using NextGenSampleId to get in progress CG workflow runs
+      // Query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
-      console.log("nextGenSampleId", nextGenSampleId);
-      // TODO: this where clause might need to specify "consensus_genome" workflow type
       const workflowsQuery = `
           query WorkflowsQuery {
             workflowRuns(where: {entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}}) {
@@ -584,7 +591,10 @@ export const resolvers: Resolvers = {
               railsWorkflowRunId
               status
               ownerUserId
+              deprecated
+              errorMessage
               workflowVersion {
+                version
                 id
                 workflow {
                   name
@@ -603,134 +613,39 @@ export const resolvers: Resolvers = {
         customQuery: workflowsQuery,
       });
 
-      console.log("return from next gen workflowsResp", JSON.stringify(workflowsResp));
-      // const TOREMOVEentitiesresponse = {"data":{"samples":[{"id":"018df720-f584-79df-b1b2-8cd87dba3a18","producingRunId":null,"sequencingReads":{"edges":[{"node":{"consensusGenomes":{"edges":[{"node":{"id":"018df726-e9c5-7fd7-be8f-ca1d140ec6ac","createdAt":"2024-02-29T23:15:39.005266+00:00","referenceGenome":null,"accession":{"accessionId":"MN908947.3","accessionName":"Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"},"taxon":{"id":"018ded47-34ac-7f3a-9dff-a43e5036393a","name":"Severe acute respiratory syndrome coronavirus 2"},"sequencingRead":{"technology":"Illumina"}}}]},"sample":{"hostOrganism":{"id":"018df6c3-150d-76f6-bb43-e957145253d3"}}}}]}}]}};
-      // add data from here
-      // entitiesResp
-      const consensusGenomes =
-      entitiesResp.data.samples[0].sequencingReads.edges[0].node
+      const consensusGenomes = entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
-      console.log("consensusGenomes", consensusGenomes);
-      // const consensusGenomes = [
-      //   {
-      //     node: {
-      //       id: '018df726-e9c5-7fd7-be8f-ca1d140ec6ac',
-      //       createdAt: '2024-02-29T23:15:39.005266+00:00',
-      //       producingRunId: '018df720-fbd6-77f9-9b4a-1ca468d5207f',
-      //       referenceGenome: null,
-      //       accession: {
-      //         accessionId:"MN908947.3",
-      //         accessionName:"Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
-      //       },
-      //       taxon: {
-      //         id:"018ded47-34ac-7f3a-9dff-a43e5036393a",
-      //         name:"Severe acute respiratory syndrome coronavirus 2"
-      //       },
-      //       sequencingRead: {
-      //         technology:"Illumina"
-      //       }
-      //     }
-      //   }
-      // ];
-      // const TOREMOVEworkflowsResp = {"data":{"workflowRuns":[{"id":"018df720-fbd6-77f9-9b4a-1ca468d5207f","_id":"V29ya2Zsb3dSdW46MDE4ZGY3MjAtZmJkNi03N2Y5LTliNGEtMWNhNDY4ZDUyMDdm","railsWorkflowRunId":7126,"status":"SUCCEEDED","ownerUserId":345,"workflowVersion":{"id":"018df6ca-d3c0-7edd-a243-4127e06eb1d1","workflow":{"name":"consensus-genome"}},"createdAt":"2024-02-29T23:09:10.470257+00:00","endedAt":null,"rawInputsJson":"{\"ncbi_index_version\": \"2021-01-22\", \"sars_cov_2\": true, \"creation_source\": \"SARS-CoV-2 Upload\"}"}]}};
       const workflowsWorkflowRuns = workflowsResp.data.workflowRuns;
-      console.log("workflowsWorkflowRuns", workflowsWorkflowRuns)
-      // const workflowsWorkflowRuns = [
-      //   {
-      //     id: '018df720-fbd6-77f9-9b4a-1ca468d5207f',
-      //     _id: 'V29ya2Zsb3dSdW46MDE4ZGY3MjAtZmJkNi03N2Y5LTliNGEtMWNhNDY4ZDUyMDdm',
-      //     railsWorkflowRunId: 7126,
-      //     status: 'SUCCEEDED',
-      //     ownerUserId: 345,
-      //     workflowVersion:{
-      //       id:"018df6ca-d3c0-7edd-a243-4127e06eb1d1",
-      //       workflow:{
-      //         name:"consensus-genome"
-      //       }
-      //     },
-      //     createdAt: '2024-02-29T23:09:10.470257+00:00',
-      //     endedAt: null,
-      //     rawInputsJson: '{"ncbi_index_version": "2021-01-22", "sars_cov_2": true, "creation_source": "SARS-CoV-2 Upload"}'
-      //   }
-      // ]
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
         const consensusGenome = consensusGenomes.find(consensusGenome => {
           return consensusGenome.node.producingRunId === workflowRun.id;
         });
         const {accession, taxon, sequencingRead} = consensusGenome?.node || {};
-        // if !consensusGenome this is a workflow run that is in progress
+        const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson);
+        // If !consensusGenome this is a workflow run that is in progress
         return {
-          deprecated: null,
-          executed_at: workflowRun.createdAt,
-          id: workflowRun.id,
-          input_error: null,
+          deprecated: workflowRun?.deprecated,
+          executed_at: workflowRun?.createdAt,
+          id: workflowRun?.id,
+          input_error: workflowRun?.errorMessage,
           inputs: {
             accession_id: accession?.accessionId,
             accession_name: accession?.accessionName,
-            creation_source: workflowRun.workflowVersion.workflow.name,
-            ref_fasta: "consensusGenome?.node?.referenceGenome.file.path", // TODO: parse from entitiesResp
+            creation_source: parsedRawInputsJson?.creation_source,
+            ref_fasta: "TODO: parse consensusGenome?.node?.referenceGenome.file.path", // TODO: parse from entitiesResp
             taxon_id: taxon?.id,
             taxon_name: taxon?.name,
             technology: sequencingRead?.technology,
           },
-          rails_workflow_run_id: workflowRun.railsWorkflowRunId, // this is added for deduplicating below
-          run_finalized: workflowRun.endedAt,
-          status: workflowRun.status,
-          wdl_version: workflowRun.workflowVersion.id,
-          workflow: "consensus-genome",
+          rails_workflow_run_id: workflowRun?.railsWorkflowRunId, // this is added for deduplicating below
+          run_finalized: workflowRun?.endedAt,
+          status: workflowRun?.status,
+          wdl_version: workflowRun?.workflowVersion.version,
+          workflow: workflowRun?.workflowVersion.workflow.name,
         };
       });
 
-      console.log("nextGenWorkflowRuns", nextGenWorkflowRuns);
-      // const nextGenWorkflowRunsFake = [
-      //   {
-      //     deprecated: null,
-      //     executed_at: '2024-02-29T23:09:10.470257+00:00',
-      //     id: '018de5ec-8b6a-7040-9ba2-7d4ff989569c',
-      //     input_error: null,
-      //     inputs: {
-      //       accession_id: 'MN908947.3',
-      //       accession_name: 'Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome',
-      //       creation_source: 'consensus-genome',
-      //       ref_fasta: 'consensusGenome?.node?.referenceGenome.file.path',
-      //       taxon_id: '018ded47-34ac-7f3a-9dff-a43e5036393a',
-      //       taxon_name: 'Severe acute respiratory syndrome coronavirus 2',
-      //       technology: 'Illumina'
-      //     },
-      //     rails_workflow_run_id: 7126,
-      //     run_finalized: null,
-      //     status: 'SUCCEEDED',
-      //     wdl_version: '018df6ca-d3c0-7edd-a243-4127e06eb1d1',
-      //     workflow: 'consensus-genome'
-      //   }
-      // ];
-      // const sampleInfoWorkflow_runs = [
-      //   {
-      //     id: '7126',
-      //     status: 'SUCCEEDED',
-      //     workflow: 'consensus-genome',
-      //     wdl_version: '3.5.0',
-      //     executed_at: '2024-02-29T15:09:11.000-08:00',
-      //     deprecated: false,
-      //     input_error: null,
-      //     inputs: {
-      //       accession_id: 'MN908947.3',
-      //       accession_name: 'Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome',
-      //       taxon_id: 2697049,
-      //       taxon_name: 'Severe acute respiratory syndrome coronavirus 2',
-      //       technology: 'Illumina',
-      //       wetlab_protocol: 'artic_v4',
-      //       creation_source: 'SARS-CoV-2 Upload'
-      //     },
-      //     parsed_cached_results: {
-      //       coverage_viz: [Object],
-      //       quality_metrics: [Object],
-      //       taxon_info: [Object]
-      //     },
-      //     run_finalized: true
-      //   }
-      // ];
-      // deduplicate sampleInfo.workflow_runs and nextGenWorkflowRuns
+      // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
       let dedupedWorkflowRuns;
         dedupedWorkflowRuns = [...nextGenWorkflowRuns];
         console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs)
@@ -743,12 +658,6 @@ export const resolvers: Resolvers = {
             dedupedWorkflowRuns.push(railsWorkflowRun);
           }
         }
-      console.log("dedupedWorkflowRuns", dedupedWorkflowRuns);
-
-      console.log("sampleInfo", {
-        ...sampleInfo,
-        workflow_runs: dedupedWorkflowRuns,
-      });
       return {
         id: args.railsSampleId,
         railsSampleId: args.railsSampleId,

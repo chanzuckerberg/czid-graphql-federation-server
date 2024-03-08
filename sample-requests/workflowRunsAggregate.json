@@ -6,6 +6,20 @@
           "1234"
         ]
       }
+    },
+    "workflowVersion": {
+      "workflow": {
+        "name": {
+          "_in": {
+            "items": [
+              "consensus-genome",
+              "short-read-mngs",
+              "long-read-mngs",
+              "amr"
+            ]
+          }
+        }
+      }
     }
   },
   "todoRemove": {

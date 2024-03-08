@@ -1,12 +1,15 @@
 // resolvers.ts
 import {
   Resolvers,
+  fedWorkflowRunsAggregate,
   query_fedConsensusGenomes_items,
   query_fedSamples_items,
   query_fedSequencingReads_items,
+  query_fedWorkflowRunsAggregate_aggregate_items,
   query_fedWorkflowRunsAggregate_items,
   query_fedWorkflowRuns_items,
 } from "./.mesh";
+import { processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
 import {
   fetchFromNextGen,
   get,
@@ -1226,7 +1229,7 @@ export const resolvers: Resolvers = {
         }),
       );
     },
-    fedWorkflowRunsAggregate: async (root, args, context, info) => {
+    fedWorkflowRunsAggregate: async (root, args, context: any, info) => {
       const input = args.input;
       const { projects } = await get({
         url:
@@ -1252,19 +1255,42 @@ export const resolvers: Resolvers = {
         context,
       });
 
-      if (!projects?.length) {
-        return [];
-      }
-      return projects.map((project): query_fedWorkflowRunsAggregate_items => {
-        return {
-          collectionId: project.id.toString(),
-          mngsRunsCount: project.sample_counts.mngs_runs_count,
-          cgRunsCount: project.sample_counts.cg_runs_count,
-          amrRunsCount: project.sample_counts.amr_runs_count,
-        };
-      });
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      const customQuery = 
+      `
+        query nextGenWorkflowsAggregate {
+          workflowRunsAggregate(where: $where) {
+            aggregate {
+              groupBy {
+                collectionId
+                workflowVersion {
+                  workflow {
+                    name
+                  }
+                }
+              }
+              count
+            }
+          }
+        }
+      `;
 
-      // TODO (nina): call nextgen in addition to rails to get CG count
+      let nextGenProjectAggregates: query_fedWorkflowRunsAggregate_aggregate_items[] = [];
+
+      if (nextGenEnabled) {
+        const consensusGenomesAggregateResponse = await fetchFromNextGen({
+          args,
+          context,
+          serviceType: "workflows",
+          customQuery,
+          customVariables: {
+            where: args.input?.where,
+          }
+        });
+        nextGenProjectAggregates = consensusGenomesAggregateResponse?.data?.workflowsAggregate?.aggregate;
+      }
+
+      return processWorkflowsAggregateResponse(nextGenProjectAggregates, projects, nextGenEnabled);
     },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */

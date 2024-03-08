@@ -4,7 +4,12 @@ query workflowRunsAggregateQuery {
       where: {
         id: {
           _in: ["1", "2", "3"]
-        } 
+        },
+        workflowVersion: {
+          workflow: {
+            name: "consensus-genome"
+          }
+        },
       },
       todoRemove: { 
         domain: "my_data",
@@ -15,9 +20,16 @@ query workflowRunsAggregateQuery {
       }
     }
   ) {
-    collectionId
-    amrRunsCount
-    cgRunsCount
-    mngsRunsCount
+    aggregate {
+      groupBy {
+        collectionId
+        workflowVersion {
+          workflow {
+            name
+          }
+        }
+      }
+      count
+    }
   }
 }

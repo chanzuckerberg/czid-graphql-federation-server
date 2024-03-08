@@ -23,7 +23,7 @@ import {
   convertSequencingReadsQuery,
   convertWorkflowRunsQuery,
 } from "./utils/queryFormatUtils";
-import { parseRefFasta } from "./utils/responseHelperUtils";
+import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -480,7 +480,7 @@ export const resolvers: Resolvers = {
         args,
         context,
       });
-      console.log("sampleInfo - getFromRails", JSON.stringify(sampleInfo))
+      console.log("sampleInfo - getFromRails", JSON.stringify(sampleInfo));
       // Make output acceptable to Relay - convert ids to strings
       if (sampleInfo?.pipeline_runs) {
         const updatedPipelineRuns = sampleInfo?.pipeline_runs.map(
@@ -515,7 +515,7 @@ export const resolvers: Resolvers = {
           id: `sample-for-query-${args.railsSampleId}`,
           railsSampleId: args.railsSampleId,
           ...sampleInfo,
-        })
+        });
         return {
           id: `sample-for-query-${args.railsSampleId}`,
           railsSampleId: args.railsSampleId,
@@ -538,9 +538,8 @@ export const resolvers: Resolvers = {
       // combine workflow data from entities and workflows
       // deduplicate between rails and next gen
 
-
       const entitiesQuery = `
-          query MyQuery {
+          query EntitiesQuery {
             samples(where: {railsSampleId: {_eq: ${args.railsSampleId}}}) {
               id
               sequencingReads {
@@ -589,7 +588,7 @@ export const resolvers: Resolvers = {
         serviceType: "entities",
         customQuery: entitiesQuery,
       });
-      console.log("entitiesResp - get 1", JSON.stringify(entitiesResp))
+      console.log("entitiesResp - get 1", JSON.stringify(entitiesResp));
 
       // Query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
@@ -622,14 +621,16 @@ export const resolvers: Resolvers = {
         customQuery: workflowsQuery,
       });
       console.log("workflowsResp - get 2", JSON.stringify(workflowsResp));
-      const consensusGenomes = entitiesResp.data.samples[0].sequencingReads.edges[0].node
+      const consensusGenomes =
+        entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
       const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
       const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
         const consensusGenome = consensusGenomes.find(consensusGenome => {
           return consensusGenome.node.producingRunId === workflowRun.id;
         });
-        const {accession, taxon, sequencingRead} = consensusGenome?.node || {};
+        const { accession, taxon, sequencingRead } =
+          consensusGenome?.node || {};
         const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson);
         // If !consensusGenome this is a workflow run that is in progress
         return {
@@ -641,44 +642,47 @@ export const resolvers: Resolvers = {
             accession_id: accession?.accessionId,
             accession_name: accession?.accessionName,
             creation_source: parsedRawInputsJson?.creation_source,
-            ref_fasta: parseRefFasta(consensusGenome?.node?.referenceGenome?.file?.path),
+            ref_fasta: parseRefFasta(
+              consensusGenome?.node?.referenceGenome?.file?.path,
+            ),
             taxon_id: taxon?.id,
             taxon_name: taxon?.name,
             technology: sequencingRead?.technology,
           },
           rails_workflow_run_id: workflowRun?.railsWorkflowRunId, // this is added for deduplicating below
-          run_finalized: workflowRun?.endedAt,
+          run_finalized: isRunFinalized(workflowRun?.status),
           status: workflowRun?.status,
           wdl_version: workflowRun?.workflowVersion.version,
           workflow: workflowRun?.workflowVersion.workflow.name,
         };
       });
-      console.log("nextGenWorkflowRuns", nextGenWorkflowRuns)
+      console.log("nextGenWorkflowRuns", nextGenWorkflowRuns);
       // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
       let dedupedWorkflowRuns;
-        dedupedWorkflowRuns = [...nextGenWorkflowRuns];
-        console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs)
-        for (const railsWorkflowRun of sampleInfo.workflow_runs) {
-          const alreadyExists = nextGenWorkflowRuns.find(
-            nextGenWorkflowRun =>
-              nextGenWorkflowRun.rails_workflow_run_id.toString() === railsWorkflowRun.id,
-          );
-          if (!alreadyExists) {
-            dedupedWorkflowRuns.push(railsWorkflowRun);
-          }
+      dedupedWorkflowRuns = [...nextGenWorkflowRuns];
+      console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs);
+      for (const railsWorkflowRun of sampleInfo.workflow_runs) {
+        const alreadyExists = nextGenWorkflowRuns.find(
+          nextGenWorkflowRun =>
+            nextGenWorkflowRun.rails_workflow_run_id.toString() ===
+            railsWorkflowRun.id,
+        );
+        if (!alreadyExists) {
+          dedupedWorkflowRuns.push(railsWorkflowRun);
         }
-        console.log("dedupedWorkflowRuns", dedupedWorkflowRuns)
-        console.log('return next gen enabled', {
-          id: args.railsSampleId,
-          railsSampleId: args.railsSampleId,
-          ...sampleInfo, 
-          workflow_runs: dedupedWorkflowRuns
-        })
+      }
+      console.log("dedupedWorkflowRuns", dedupedWorkflowRuns);
+      console.log("return next gen enabled", {
+        id: args.railsSampleId,
+        railsSampleId: args.railsSampleId,
+        ...sampleInfo,
+        workflow_runs: dedupedWorkflowRuns,
+      });
       return {
         id: args.railsSampleId,
         railsSampleId: args.railsSampleId,
-        ...sampleInfo, 
-        workflow_runs: dedupedWorkflowRuns
+        ...sampleInfo,
+        workflow_runs: dedupedWorkflowRuns,
       };
     },
     MngsWorkflowResults: async (root, args, context, info) => {

@@ -479,7 +479,6 @@ export const resolvers: Resolvers = {
         args,
         context,
       });
-      console.log("sampleInfo - getFromRails", JSON.stringify(sampleInfo));
       // Make output acceptable to Relay - convert ids to strings
       if (sampleInfo?.pipeline_runs) {
         const updatedPipelineRuns = sampleInfo?.pipeline_runs.map(
@@ -510,13 +509,8 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       /* --------------------- Rails --------------------- */
       if (!nextGenEnabled) {
-        console.log("next gen off Response", {
-          id: `sample-for-query-${args.railsSampleId}`,
-          railsSampleId: args.railsSampleId,
-          ...sampleInfo,
-        });
         return {
-          id: `sample-for-query-${args.railsSampleId}`,
+          id: `${args.railsSampleId}`,
           railsSampleId: args.railsSampleId,
           ...sampleInfo,
         };
@@ -587,7 +581,6 @@ export const resolvers: Resolvers = {
         serviceType: "entities",
         customQuery: entitiesQuery,
       });
-      console.log("entitiesResp - get 1", JSON.stringify(entitiesResp));
 
       // Query workflows using NextGenSampleId to get in progress CG workflow runs
       const nextGenSampleId = entitiesResp?.data.samples[0].id;
@@ -619,7 +612,6 @@ export const resolvers: Resolvers = {
         serviceType: "workflows",
         customQuery: workflowsQuery,
       });
-      console.log("workflowsResp - get 2", JSON.stringify(workflowsResp));
       const consensusGenomes =
         entitiesResp.data.samples[0].sequencingReads.edges[0].node
           .consensusGenomes.edges;
@@ -655,11 +647,9 @@ export const resolvers: Resolvers = {
           workflow: workflowRun?.workflowVersion.workflow.name,
         };
       });
-      console.log("nextGenWorkflowRuns", nextGenWorkflowRuns);
       // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
       let dedupedWorkflowRuns;
       dedupedWorkflowRuns = [...nextGenWorkflowRuns];
-      console.log("sampleInfo.workflow_runs", sampleInfo.workflow_runs);
       for (const railsWorkflowRun of sampleInfo.workflow_runs) {
         const alreadyExists = nextGenWorkflowRuns.find(
           nextGenWorkflowRun =>
@@ -670,13 +660,6 @@ export const resolvers: Resolvers = {
           dedupedWorkflowRuns.push(railsWorkflowRun);
         }
       }
-      console.log("dedupedWorkflowRuns", dedupedWorkflowRuns);
-      console.log("return next gen enabled", {
-        id: args.railsSampleId,
-        railsSampleId: args.railsSampleId,
-        ...sampleInfo,
-        workflow_runs: dedupedWorkflowRuns,
-      });
       return {
         id: args.railsSampleId,
         railsSampleId: args.railsSampleId,

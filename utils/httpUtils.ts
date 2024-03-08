@@ -133,6 +133,7 @@ export const fetchFromNextGen = async ({
     if (fullResponse === true) {
       return response;
     } else {
+      console.log("response", response);
       return await response.json();
     }
   } catch (e) {

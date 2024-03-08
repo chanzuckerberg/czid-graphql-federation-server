@@ -9,7 +9,6 @@ import {
 } from "./.mesh";
 import {
   fetchFromNextGen,
-  getFromRails,
   get,
   getFromRails,
   postWithCSRF,

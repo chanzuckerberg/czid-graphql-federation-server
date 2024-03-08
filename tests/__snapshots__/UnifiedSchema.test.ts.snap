@@ -1915,7 +1915,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -1973,7 +1973,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!

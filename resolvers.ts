@@ -981,7 +981,7 @@ export const resolvers: Resolvers = {
             edges: [
               {
                 node: {
-                  entityType: "SequencingRead",
+                  entityType: "sequencing_read",
                   inputEntityId: run.sample?.info?.id?.toString(),
                 },
               },

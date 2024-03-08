@@ -32,7 +32,6 @@ export const processWorkflowsAggregateResponse = (
       "consensus-genome": nextGenEnabled ? nextGenCgCount : project.sample_counts.cg_runs_count,
       "amr": project.sample_counts.amr_runs_count,
     }
-    console.log(counts)
     for (const workflow of ["consensus-genome", "short-read-mngs", "amr"]) {
       aggregates?.aggregate?.push({
         "groupBy": {

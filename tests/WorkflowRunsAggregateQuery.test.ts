@@ -5,6 +5,7 @@ import * as httpUtils from "../utils/httpUtils";
 import { getExampleQuery } from "./utils/ExampleQueryFiles";
 import { query_fedWorkflowRunsAggregate_aggregate_items } from "../.mesh";
 jest.spyOn(httpUtils, "get");
+jest.spyOn(httpUtils, "shouldReadFromNextGen");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
@@ -19,6 +20,9 @@ describe("workflows aggregate query:", () => {
   });
 
   it("Returns aggregate counts for each workflow", async () => {
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(false),
+    );
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       projects: [
         {
@@ -41,7 +45,7 @@ describe("workflows aggregate query:", () => {
       context: expect.anything(),
     });
 
-    console.log(response.data);
+    console.log(response);
 
     const aggregates: query_fedWorkflowRunsAggregate_aggregate_items[] = response.data.fedWorkflowRunsAggregate.aggregate;
 

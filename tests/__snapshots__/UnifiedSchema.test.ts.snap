@@ -219,7 +219,7 @@ input BoolComparators {
   _gt: Int
   _gte: Int
   _in: [Int!]
-  _is_null: Int
+  _is_null: Boolean
   _lt: Int
   _lte: Int
   _neq: Int
@@ -4867,21 +4867,21 @@ type query_fedSequencingReads_items_taxon {
 }
 
 type query_fedWorkflowRunsAggregate_aggregate_items {
-  count: Int
-  groupBy: query_fedWorkflowRunsAggregate_aggregate_items_groupBy
+  count: Int!
+  groupBy: query_fedWorkflowRunsAggregate_aggregate_items_groupBy!
 }
 
 type query_fedWorkflowRunsAggregate_aggregate_items_groupBy {
-  collectionId: Int
-  workflowVersion: query_fedWorkflowRunsAggregate_aggregate_items_groupBy_workflowVersion
+  collectionId: Int!
+  workflowVersion: query_fedWorkflowRunsAggregate_aggregate_items_groupBy_workflowVersion!
 }
 
 type query_fedWorkflowRunsAggregate_aggregate_items_groupBy_workflowVersion {
-  workflow: query_fedWorkflowRunsAggregate_aggregate_items_groupBy_workflowVersion_workflow
+  workflow: query_fedWorkflowRunsAggregate_aggregate_items_groupBy_workflowVersion_workflow!
 }
 
 type query_fedWorkflowRunsAggregate_aggregate_items_groupBy_workflowVersion_workflow {
-  name: String
+  name: String!
 }
 
 type query_fedWorkflowRuns_items {

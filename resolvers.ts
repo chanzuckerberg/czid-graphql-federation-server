@@ -1,7 +1,6 @@
 // resolvers.ts
 import {
   Resolvers,
-  fedWorkflowRunsAggregate,
   query_fedConsensusGenomes_items,
   query_fedSamples_items,
   query_fedSequencingReads_items,

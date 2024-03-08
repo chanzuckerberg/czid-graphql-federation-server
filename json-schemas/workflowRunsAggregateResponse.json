@@ -21,16 +21,30 @@
                                             "name": {
                                                 "type": "string"
                                             }
-                                        }
+                                        },
+                                        "required": [
+                                            "name"
+                                        ]
                                     }
-                                }
+                                },
+                                "required": [
+                                    "workflow"
+                                ]
                             }
-                        }
+                        },
+                        "required": [
+                            "collectionId",
+                            "workflowVersion"
+                        ]
                     },
                     "count": {
                         "type": "integer"
                     }
-                }
+                },
+                "required": [
+                    "groupBy",
+                    "count"
+                ]
             }
         }
     }

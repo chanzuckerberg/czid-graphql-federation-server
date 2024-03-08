@@ -1,6 +1,25 @@
 # Changelog
 
 
+## [2.14.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.13.0...v2.14.0) (2024-03-07)
+
+
+### Features
+
+* update staging env variables urls ([#153](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/153)) ([26afdd7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/26afdd7888752856d13d3fa255cb94dfcde6c23b))
+
+## [2.13.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.12.0...v2.13.0) (2024-03-06)
+
+
+### Features
+
+* Integrate fedWorkflowRuns and fedSequencingReads with NextGen ([#146](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/146)) ([8f51783](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/8f51783d81050e059eb11f475fbc03238c222c51))
+
+
+### Bug Fixes
+
+* createBulkDownload Change workflowRunIdsStrings type and remove required for workflowRunIds ([#145](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/145)) ([256173d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/256173dd1b8aaa8794daea7d0527656496238021))
+
 ## [2.12.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.11.1...v2.12.0) (2024-03-04)
 
 

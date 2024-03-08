@@ -41,9 +41,11 @@ describe("workflows aggregate query:", () => {
       context: expect.anything(),
     });
 
+    console.log(response.data);
+
     const aggregates: query_fedWorkflowRunsAggregate_aggregate_items[] = response.data.fedWorkflowRunsAggregate.aggregate;
 
-    expect(response.data.fedWorkflowRunsAggregate).toHaveLength(3);
+    expect(aggregates).toHaveLength(3);
     const cgAggregate = aggregates.find(aggregate => aggregate.groupBy?.workflowVersion?.workflow?.name === "consensus-genome");
     expect(cgAggregate?.count).toBe(1);
     const amrAggregate = aggregates.find(aggregate => aggregate.groupBy?.workflowVersion?.workflow?.name === "amr");

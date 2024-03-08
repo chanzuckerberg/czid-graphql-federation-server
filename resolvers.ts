@@ -6,7 +6,6 @@ import {
   query_fedSamples_items,
   query_fedSequencingReads_items,
   query_fedWorkflowRunsAggregate_aggregate_items,
-  query_fedWorkflowRunsAggregate_items,
   query_fedWorkflowRuns_items,
 } from "./.mesh";
 import { processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
@@ -840,12 +839,12 @@ export const resolvers: Resolvers = {
           await fetchFromNextGen({
             customQuery: convertSequencingReadsQuery(context.params.query),
             customVariables: {
-              where: input.where,
+              where: input?.where,
               // TODO: Migrate to array orderBy.
               orderBy:
-                (input.orderBy != null ? [input.orderBy] : undefined) ??
+                (input?.orderBy != null ? [input.orderBy] : undefined) ??
                 input.orderByArray,
-              limitOffset: input.limitOffset,
+              limitOffset: input?.limitOffset,
               producingRunIds: input.where?.id?._in,
             },
             serviceType: "entities",
@@ -1159,10 +1158,10 @@ export const resolvers: Resolvers = {
         const response = await fetchFromNextGen({
           customQuery: convertWorkflowRunsQuery(context.params.query),
           customVariables: {
-            where: input.where,
+            where: input?.where,
             // TODO: Migrate to array orderBy.
             orderBy:
-              (input.orderBy != null ? [input.orderBy] : undefined) ??
+              (input?.orderBy != null ? [input.orderBy] : undefined) ??
               input.orderByArray,
           },
           serviceType: "workflows",
@@ -1287,7 +1286,7 @@ export const resolvers: Resolvers = {
             where: args.input?.where,
           }
         });
-        nextGenProjectAggregates = consensusGenomesAggregateResponse?.data?.workflowsAggregate?.aggregate;
+        nextGenProjectAggregates = consensusGenomesAggregateResponse?.data?.workflowRunsAggregate?.aggregate;
       }
 
       return processWorkflowsAggregateResponse(nextGenProjectAggregates, projects, nextGenEnabled);

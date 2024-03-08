@@ -7,8 +7,9 @@ query workflowRunsAggregateQuery {
         },
         workflowVersion: {
           workflow: {
-            name: "consensus-genome"
-          }
+            name: 
+              _in: ["consensus-genome"]
+          },
         },
       },
       todoRemove: { 

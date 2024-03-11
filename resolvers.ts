@@ -492,8 +492,9 @@ export const resolvers: Resolvers = {
         );
         sampleInfo.pipeline_runs = updatedPipelineRuns;
       }
-      if (sampleInfo?.default_pipeline_run_id){
-        sampleInfo.default_pipeline_run_id = sampleInfo.default_pipeline_run_id.toString();
+      if (sampleInfo?.default_pipeline_run_id) {
+        sampleInfo.default_pipeline_run_id =
+          sampleInfo.default_pipeline_run_id.toString();
       }
       if (sampleInfo?.workflow_runs) {
         const updatedWorkflowRuns = sampleInfo?.workflow_runs.map(
@@ -872,6 +873,7 @@ export const resolvers: Resolvers = {
           nextGenSample.waterControl = railsMetadata?.water_control === "Yes";
           nextGenSample.notes = railsDbSample?.sample_notes;
           nextGenSample.uploadError = railsDbSample?.upload_error;
+          nextGenSample.ownerUserName = railsSample.details?.uploader?.name;
           nextGenSample.collection = {
             name: railsSample.details?.derived_sample_output?.project_name,
             public: railsSample.public === 1,

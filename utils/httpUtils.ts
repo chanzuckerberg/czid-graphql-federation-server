@@ -19,7 +19,7 @@ export const get = async ({
 }) => {
   try {
     const nextGenEnabled = await shouldReadFromNextGen(context);
-    const shouldQueryNextGen = nextGenEnabled && customQuery;
+    const shouldQueryNextGen = nextGenEnabled && !url;
     if (shouldQueryNextGen) {
       if (!serviceType) {
         console.error("You must pass a service type to call next gen");

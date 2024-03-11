@@ -167,6 +167,23 @@ describe("workflowRuns query:", () => {
     );
   });
 
+  it("Uses orderBy array field for NextGen", async () => {
+    const query = getExampleQuery("workflow-runs-query-order-by-array");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+
+    await execute(query, {}, { params: { query } });
+
+    expect(httpUtils.fetchFromNextGen as jest.Mock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customVariables: expect.objectContaining({
+          orderBy: [{ startedAt: "asc" }],
+        }),
+      }),
+    );
+  });
+
   describe("validConsensusGenomes query", () => {
     it("should call the correct rails endpoint", async () => {
       await execute(getExampleQuery("workflow-runs-query-id-list"), {

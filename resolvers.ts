@@ -592,7 +592,9 @@ export const resolvers: Resolvers = {
       // Non-WGS workflows will not have nextGenSampleId. In this case, return sampleInfo from Rails.
       const nextGenSampleId = entitiesResp?.data.samples?.[0]?.id;
       if (!nextGenSampleId) {
-        console.log(`No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`);
+        console.log(
+          `No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`,
+        );
         return {
           id: args.railsSampleId,
           railsSampleId: args.railsSampleId,
@@ -838,13 +840,14 @@ export const resolvers: Resolvers = {
           await fetchFromNextGen({
             customQuery: convertSequencingReadsQuery(context.params.query),
             customVariables: {
-              where: input?.where,
+              where: input.where,
               // TODO: Migrate to array orderBy.
               orderBy:
-                (input?.orderBy != null ? [input.orderBy] : undefined) ??
+                (input.orderBy != null ? [input.orderBy] : undefined) ??
                 input.orderByArray,
-              limitOffset: input?.limitOffset,
-              producingRunIds: input.where?.id?._in,
+              limitOffset: input.limitOffset,
+              producingRunIds:
+                input.consensusGenomesInput?.where?.producingRunId?._in,
             },
             serviceType: "entities",
             args,
@@ -1157,10 +1160,10 @@ export const resolvers: Resolvers = {
         const response = await fetchFromNextGen({
           customQuery: convertWorkflowRunsQuery(context.params.query),
           customVariables: {
-            where: input?.where,
+            where: input.where,
             // TODO: Migrate to array orderBy.
             orderBy:
-              (input?.orderBy != null ? [input.orderBy] : undefined) ??
+              (input.orderBy != null ? [input.orderBy] : undefined) ??
               input.orderByArray,
           },
           serviceType: "workflows",
@@ -1255,11 +1258,11 @@ export const resolvers: Resolvers = {
 
       const nextGenEnabled = await shouldReadFromNextGen(context);
 
-      let nextGenProjectAggregates: query_fedWorkflowRunsAggregate_aggregate_items[] = [];
+      let nextGenProjectAggregates: query_fedWorkflowRunsAggregate_aggregate_items[] =
+        [];
 
       if (nextGenEnabled) {
-        const customQuery = 
-          `
+        const customQuery = `
             query nextGenWorkflowsAggregate {
               workflowRunsAggregate(where: $where) {
                 aggregate {
@@ -1283,12 +1286,18 @@ export const resolvers: Resolvers = {
           customQuery,
           customVariables: {
             where: args.input?.where,
-          }
+          },
         });
-        nextGenProjectAggregates = consensusGenomesAggregateResponse?.data?.workflowRunsAggregate?.aggregate;
+        nextGenProjectAggregates =
+          consensusGenomesAggregateResponse?.data?.workflowRunsAggregate
+            ?.aggregate;
       }
 
-      return processWorkflowsAggregateResponse(nextGenProjectAggregates, projects, nextGenEnabled);
+      return processWorkflowsAggregateResponse(
+        nextGenProjectAggregates,
+        projects,
+        nextGenEnabled,
+      );
     },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */

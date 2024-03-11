@@ -1,6 +1,84 @@
 # Changelog
 
 
+## [2.15.3](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.15.2...v2.15.3) (2024-03-11)
+
+
+### Bug Fixes
+
+* return rails data when no nextgen id available ([#167](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/167)) ([b268861](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/b268861d93ba4146edad4f3b88ba9bcce92f4e04))
+
+## [2.15.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.15.1...v2.15.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* fix malformed id ([#164](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/164)) ([51988c7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/51988c73f508b784451cba459c584da492259841))
+
+## [2.15.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.15.0...v2.15.1) (2024-03-08)
+
+
+### Bug Fixes
+
+* Don't call Rails for the join if there were no sequencing reads returned by NextGen ([#162](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/162)) ([5281fca](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5281fca487b43a8f1d455a4c69a0bf1ac4c926dd))
+* Sample View header & pipeline version ([#160](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/160)) ([a23593d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/a23593dbaee669b8bbdd012c0cf89b9f60ab14b8))
+
+## [2.15.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.14.0...v2.15.0) (2024-03-08)
+
+
+### Features
+
+* Add deprecated filter to federated request ([#151](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/151)) ([57057fc](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/57057fcf1c80807f81fecafa535f8feea195d19b))
+* federate SampleForReport object ([#148](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/148)) ([91f0b1d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/91f0b1d65974a2b8a6e08adf593166245c53d33f))
+* Join NextGen data with Rails data in resolver ([#152](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/152)) ([9aa47f7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/9aa47f7469cb91d1f11490a2b5a1fceae4d7887a))
+* Update NextGen schema ([#158](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/158)) ([bc23402](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/bc23402e1c84647d5de58a58cd2756a813688ca2))
+* Ziplink NG Connection and Delete to accept strings ([#149](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/149)) ([d3afbb8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/d3afbb803d849a7fc049493a76fd73d2aead4b14))
+
+
+### Bug Fixes
+
+* Change to underscore entity input format ([#157](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/157)) ([8866b51](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/8866b516e919c354e2224763f8ac78552e850c19))
+
+## [2.14.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.13.0...v2.14.0) (2024-03-07)
+
+
+### Features
+
+* update staging env variables urls ([#153](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/153)) ([26afdd7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/26afdd7888752856d13d3fa255cb94dfcde6c23b))
+
+## [2.13.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.12.0...v2.13.0) (2024-03-06)
+
+
+### Features
+
+* Integrate fedWorkflowRuns and fedSequencingReads with NextGen ([#146](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/146)) ([8f51783](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/8f51783d81050e059eb11f475fbc03238c222c51))
+
+
+### Bug Fixes
+
+* createBulkDownload Change workflowRunIdsStrings type and remove required for workflowRunIds ([#145](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/145)) ([256173d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/256173dd1b8aaa8794daea7d0527656496238021))
+
+## [2.12.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.11.1...v2.12.0) (2024-03-04)
+
+
+### Features
+
+* Add fed prefix to a few fields ([#123](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/123)) ([832210f](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/832210fa1320261aba9ea4903e1bc51b160e12b7))
+* Create Connection between Fed Server and Next Gen  ([#137](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/137)) ([b98dd14](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/b98dd1486c808e3b65c810769619a7f8204d11b3))
+* Re-enable nextgen sources & update schemas ([#120](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/120)) ([0304aa4](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/0304aa4ffef7cb1d88dd3cdc1da9ec7699d0a690))
+* schema edits for workflows, fedWorkflows, BulkDownloadModal and fedConsensusGenomes ([#142](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/142)) ([f89e183](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/f89e18380059bb971b3be6b23d6cd0f95d582c3f))
+* Update paginated endpoints with limit/offset ([#112](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/112)) ([ae755ed](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/ae755ed673fa1a423b0f59f06f59a1ab738c41af))
+* Use nodemon to auto restart mesh after files change. ([#124](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/124)) ([312dcef](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/312dcef29778e1c0d835cdfb9ff171bc4ed19e53))
+
+
+### Bug Fixes
+
+* Revert "fix: return id as a string" ([#140](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/140)) ([e8da29b](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/e8da29b3f0fc0ce42ced2fec1d632cbdf9ed8096))
+* Revert "fix: update mutation to expect a string and tests" ([#139](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/139)) ([8c532ee](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/8c532eee47581dbfd9b8f67ef2a8adcd92a8bf23))
+* switch "_" objects to prefixed fields ([#125](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/125)) ([f7911df](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/f7911df4438c12fedbee5b9a78e15fa90a9a436e))
+* update mutation to expect a string and tests ([#121](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/121)) ([c72561f](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c72561fecc33b9e54c54580e47f7483361444829))
+* update to fedConsensusGenomes ([#127](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/127)) ([af20c6c](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/af20c6c43e34b7b3d84e0e783ca2617c64ac2e45))
+
 ## [2.11.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.11.0...v2.11.1) (2024-02-23)
 
 

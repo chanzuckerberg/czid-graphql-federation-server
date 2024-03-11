@@ -7,6 +7,12 @@
       "workflowRunIds": {
         "type": "array",
         "items": {
+            "type": "integer"
+        }
+      },
+      "workflowRunIdsStrings": {
+        "type": "array",
+        "items": {
             "type": "string"
         }
       },

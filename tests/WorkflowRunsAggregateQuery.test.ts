@@ -25,25 +25,25 @@ describe("workflows aggregate query:", () => {
           sample_counts: {
             cg_runs_count: 1,
             amr_runs_count: 2,
-            mngs_runs_count: 3
-          }
-        }
+            mngs_runs_count: 3,
+          },
+        },
       ],
     }));
 
     const query = getExampleQuery("workflows-aggregate-query");
 
     const response = await execute(query, {});
-    expect(httpUtils.get).toHaveBeenCalledWith(
-      "/projects.json?&domain=my_data&limit=10000000&listAllIds=false&offset=0&search=abc&visibility=public&time[]=20240214&time[]=20240222",
-      expect.anything(),
-      expect.anything()
-    );
+    expect(httpUtils.get).toHaveBeenCalledWith({
+      url: "/projects.json?&domain=my_data&limit=10000000&listAllIds=false&offset=0&search=abc&visibility=public&time[]=20240214&time[]=20240222",
+      args: expect.anything(),
+      context: expect.anything(),
+    });
 
-    expect(response.data.workflowRunsAggregate).toHaveLength(1);
-    expect(response.data.workflowRunsAggregate[0].collectionId).toBe("1");
-    expect(response.data.workflowRunsAggregate[0].amrRunsCount).toBe(2);
-    expect(response.data.workflowRunsAggregate[0].cgRunsCount).toBe(1);
-    expect(response.data.workflowRunsAggregate[0].mngsRunsCount).toBe(3);
+    expect(response.data.fedWorkflowRunsAggregate).toHaveLength(1);
+    expect(response.data.fedWorkflowRunsAggregate[0].collectionId).toBe("1");
+    expect(response.data.fedWorkflowRunsAggregate[0].amrRunsCount).toBe(2);
+    expect(response.data.fedWorkflowRunsAggregate[0].cgRunsCount).toBe(1);
+    expect(response.data.fedWorkflowRunsAggregate[0].mngsRunsCount).toBe(3);
   });
 });

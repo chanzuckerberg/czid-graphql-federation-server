@@ -1,7 +1,11 @@
 query TestQuery {
-    workflowRuns(input: {
+    fedWorkflowRuns(input: {
         orderBy: {
-            startedAt: "ASC"
+            startedAt: "asc"
+        },
+        todoRemove: {
+            orderBy: "createdAt"
+            orderDir: "ASC"
         }
     }) {
         id

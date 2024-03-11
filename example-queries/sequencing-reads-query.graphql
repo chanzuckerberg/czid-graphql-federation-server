@@ -1,5 +1,5 @@
 query TestQuery {
-    sequencingReads(input: {
+    fedSequencingReads(input: {
         limit: 50
         offset: 100
         where: {
@@ -12,12 +12,19 @@ query TestQuery {
         }
     }) {
         id
+        technology
         taxon {
             name
         }
         sample {
+            railsSampleId
             collectionLocation
             waterControl
+            notes
+            collection {
+                name
+                public
+            }
             metadatas {
                 edges {
                     node {

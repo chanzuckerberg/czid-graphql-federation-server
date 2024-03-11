@@ -26,12 +26,12 @@ describe("samples query:", () => {
 
     const response = await execute(query, {});
 
-    expect(httpUtils.get).toHaveBeenCalledWith(
-      "/workflow_runs.json?&mode=basic&search=abc",
-      expect.anything(),
-      expect.anything()
-    );
-    expect(response.data.samples).toHaveLength(0);
+    expect(httpUtils.get).toHaveBeenCalledWith({
+      url: "/workflow_runs.json?&mode=basic&search=abc",
+      args: expect.anything(),
+      context: expect.anything(),
+    });
+    expect(response.data.fedSamples).toHaveLength(0);
   });
 
   it("Returns IDs", async () => {
@@ -48,7 +48,7 @@ describe("samples query:", () => {
 
     const result = await execute(query, {});
 
-    const samples = result.data.samples;
+    const samples = result.data.fedSamples;
     expect(samples).toHaveLength(2);
     expect(samples[0].id).toEqual("123");
     expect(samples[1].id).toEqual("456");

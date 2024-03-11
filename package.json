@@ -1,12 +1,23 @@
 {
   "name": "czi-graphql-federation",
-  "version": "2.11.1",
+  "version": "2.15.3",
   "description": "",
   "scripts": {
     "start": "mesh start",
     "build": "mesh build",
-    "dev": "mesh dev",
+    "dev": "nodemon",
     "test": "mesh build && jest --detectOpenHandles"
+  },
+  "nodemonConfig": {
+    "exec": "mesh dev",
+    "watch": [
+      ".meshrc.yaml",
+      "**/*.ts"
+    ],
+    "ignore": [
+      "**/tests/**"
+    ],
+    "delay": 250
   },
   "repository": {
     "type": "git",
@@ -20,11 +31,16 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
-    "@graphql-mesh/cli": "^0.88.5",
-    "@graphql-mesh/graphql": "^0.96.3",
-    "@graphql-mesh/json-schema": "^0.97.4",
+    "@graphql-mesh/cli": "^0.89.0",
+    "@graphql-mesh/graphql": "^0.97.0",
+    "@graphql-mesh/json-schema": "^0.99.0",
+    "@graphql-mesh/transform-encapsulate": "^0.97.0",
+    "@graphql-mesh/transform-prefix": "^0.97.0",
+    "@graphql-mesh/transform-rename": "^0.97.0",
+    "@graphql-mesh/transform-transfer-schema": "^0.97.0",
     "@graphql-yoga/plugin-csrf-prevention": "^3.1.1",
-    "graphql": "^16.8.1"
+    "graphql": "^16.8.1",
+    "nodemon": "^3.1.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",

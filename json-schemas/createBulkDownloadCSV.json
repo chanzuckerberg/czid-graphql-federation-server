@@ -10,6 +10,12 @@
                 "type": "integer"
             }
         },
+        "workflowRunIdsStrings": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
         "workflow": {
             "type": "string"
         },
@@ -20,5 +26,5 @@
             "type": "string"
         }
     },
-    "required": ["downloadType", "workflowRunIds", "workflow", "includeMetadata", "authenticityToken"]
+    "required": ["downloadType", "workflow", "includeMetadata", "authenticityToken"]
 }

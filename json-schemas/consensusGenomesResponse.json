@@ -11,11 +11,17 @@
                 "properties": {
                     "name": {
                         "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "commonName": {
+                        "type": "string"
                     }
                 },
                 "required": ["name"]
             },
-            "referenceGenome": {
+            "accession": {
                 "type": "object",
                 "properties": {
                     "accessionId": {
@@ -24,12 +30,31 @@
                     "accessionName": {
                         "type": "string"
                     }
-                }
+                },
+                "required": ["accessionId", "accessionName"]
             },
             "metrics": {
                 "type": "object",
                 "properties": {
                     "coverageDepth": {
+                        "type": "number"
+                    },
+                    "coverageBreadth": {
+                        "type": "number"
+                    },
+                    "coverageTotalLength": {
+                        "type": "number"
+                    },
+                    "coverageViz": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "coverageBinSize": {
                         "type": "number"
                     },
                     "totalReads": {
@@ -58,6 +83,9 @@
                     },
                     "referenceGenomeLength": {
                         "type": "number"
+                    },
+                    "mappedReads": {
+                        "type": "integer"
                     }
                 }
             },

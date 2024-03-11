@@ -816,6 +816,9 @@ export const resolvers: Resolvers = {
     },
     fedSequencingReads: async (root, args, context: any) => {
       const input = args.input;
+      if (input == null) {
+        throw new Error("fedSequencingReads input is nullish");
+      }
 
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
@@ -825,9 +828,12 @@ export const resolvers: Resolvers = {
             customQuery: convertSequencingReadsQuery(context.params.query),
             customVariables: {
               where: input.where,
-              orderBy: input.orderBy != null ? [input.orderBy] : [], // TODO: Migrate to array orderBy.
+              // TODO: Migrate to array orderBy.
+              orderBy:
+                (input.orderBy != null ? [input.orderBy] : undefined) ??
+                input.orderByArray,
               limitOffset: input.limitOffset,
-              producingRunIds: input?.where?.id?._in,
+              producingRunIds: input.where?.id?._in,
             },
             serviceType: "entities",
             args,
@@ -897,27 +903,27 @@ export const resolvers: Resolvers = {
             mode: "with_sample_info",
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
-            domain: input?.todoRemove?.domain,
+            domain: input.todoRemove?.domain,
             //  -- DiscoveryView.tsx
             //     ...this.getConditions(workflow)
-            projectId: input?.todoRemove?.projectId,
-            search: input?.todoRemove?.search,
-            orderBy: input?.todoRemove?.orderBy,
-            orderDir: input?.todoRemove?.orderDir,
+            projectId: input.todoRemove?.projectId,
+            search: input.todoRemove?.search,
+            orderBy: input.todoRemove?.orderBy,
+            orderDir: input.todoRemove?.orderDir,
             //  --- DiscoveryView.tsx
             //      filters: {
-            host: input?.todoRemove?.host,
-            locationV2: input?.todoRemove?.locationV2,
-            taxon: input?.todoRemove?.taxons,
-            taxaLevels: input?.todoRemove?.taxaLevels,
-            time: input?.todoRemove?.time,
-            tissue: input?.todoRemove?.tissue,
-            visibility: input?.todoRemove?.visibility,
-            workflow: input?.todoRemove?.workflow,
+            host: input.todoRemove?.host,
+            locationV2: input.todoRemove?.locationV2,
+            taxon: input.todoRemove?.taxons,
+            taxaLevels: input.todoRemove?.taxaLevels,
+            time: input.todoRemove?.time,
+            tissue: input.todoRemove?.tissue,
+            visibility: input.todoRemove?.visibility,
+            workflow: input.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
-            limit: input?.limit ?? input?.limitOffset?.limit, // TODO: Just use limitOffset.
-            offset: input?.offset ?? input?.limitOffset?.offset,
+            limit: input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
+            offset: input.offset ?? input.limitOffset?.offset,
             listAllIds: false,
           }),
         args,
@@ -1116,13 +1122,16 @@ export const resolvers: Resolvers = {
     },
     fedWorkflowRuns: async (root, args, context: any) => {
       const input = args.input;
+      if (input == null) {
+        throw new Error("fedWorkflowRuns input is nullish");
+      }
 
       // CG REPORT:
       // If we provide a list of workflowRunIds, we assume that this is for getting valid consensus genome workflow runs.
       // This endpoint only provides id, ownerUserId, and status.
-      if (input?.where?.id?._in && typeof input?.where?.id?._in === "object") {
+      if (input.where?.id?._in && typeof input.where?.id?._in === "object") {
         const body = {
-          authenticity_token: input?.todoRemove?.authenticityToken,
+          authenticity_token: input.todoRemove?.authenticityToken,
           workflowRunIds: input.where.id._in.map(id => id && parseInt(id)),
         };
         const { workflowRuns } = await postWithCSRF({
@@ -1145,7 +1154,10 @@ export const resolvers: Resolvers = {
           customQuery: convertWorkflowRunsQuery(context.params.query),
           customVariables: {
             where: input.where,
-            orderBy: input.orderBy != null ? [input.orderBy] : [], // TODO: Migrate to array orderBy.
+            // TODO: Migrate to array orderBy.
+            orderBy:
+              (input.orderBy != null ? [input.orderBy] : undefined) ??
+              input.orderByArray,
           },
           serviceType: "workflows",
           args,
@@ -1161,19 +1173,19 @@ export const resolvers: Resolvers = {
           "/workflow_runs.json" +
           formatUrlParams({
             mode: "basic",
-            domain: input?.todoRemove?.domain,
-            projectId: input?.todoRemove?.projectId,
-            search: input?.todoRemove?.search,
-            orderBy: input?.todoRemove?.orderBy,
-            orderDir: input?.todoRemove?.orderDir,
-            host: input?.todoRemove?.host,
-            locationV2: input?.todoRemove?.locationV2,
-            taxon: input?.todoRemove?.taxon,
-            taxaLevels: input?.todoRemove?.taxonLevels,
-            time: input?.todoRemove?.time,
-            tissue: input?.todoRemove?.tissue,
-            visibility: input?.todoRemove?.visibility,
-            workflow: input?.todoRemove?.workflow,
+            domain: input.todoRemove?.domain,
+            projectId: input.todoRemove?.projectId,
+            search: input.todoRemove?.search,
+            orderBy: input.todoRemove?.orderBy,
+            orderDir: input.todoRemove?.orderDir,
+            host: input.todoRemove?.host,
+            locationV2: input.todoRemove?.locationV2,
+            taxon: input.todoRemove?.taxon,
+            taxaLevels: input.todoRemove?.taxonLevels,
+            time: input.todoRemove?.time,
+            tissue: input.todoRemove?.tissue,
+            visibility: input.todoRemove?.visibility,
+            workflow: input.todoRemove?.workflow,
             limit: TEN_MILLION,
             offset: 0,
             listAllIds: false,

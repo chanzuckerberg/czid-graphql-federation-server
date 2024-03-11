@@ -219,7 +219,7 @@ input BoolComparators {
   _gt: Int
   _gte: Int
   _in: [Int!]
-  _is_null: Boolean
+  _is_null: Int
   _lt: Int
   _lte: Int
   _neq: Int
@@ -1915,7 +1915,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -1973,7 +1973,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!
@@ -2981,7 +2981,7 @@ type WorkflowRun implements EntityInterface & Node {
   _id: GlobalID!
   cachedResults: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime!
   deprecated: Boolean!
   endedAt: DateTime
   entityInputs(
@@ -3012,7 +3012,7 @@ type WorkflowRun implements EntityInterface & Node {
   sampleId: Int
   sfnExecutionArn: String
   startedAt: DateTime
-  status: WorkflowRunStatus
+  status: String!
   steps(
     """Returns the items in the list that come after the specified cursor."""
     after: String = null
@@ -3027,7 +3027,7 @@ type WorkflowRun implements EntityInterface & Node {
   ): WorkflowRunStepConnection!
   stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
   timeToFinalized: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime!
   wdlVersion: String
   workflow: String!
   workflowRunnerInputsJson: String

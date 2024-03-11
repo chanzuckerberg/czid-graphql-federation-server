@@ -1254,28 +1254,28 @@ export const resolvers: Resolvers = {
       });
 
       const nextGenEnabled = await shouldReadFromNextGen(context);
-      const customQuery = 
-      `
-        query nextGenWorkflowsAggregate {
-          workflowRunsAggregate(where: $where) {
-            aggregate {
-              groupBy {
-                collectionId
-                workflowVersion {
-                  workflow {
-                    name
-                  }
-                }
-              }
-              count
-            }
-          }
-        }
-      `;
 
       let nextGenProjectAggregates: query_fedWorkflowRunsAggregate_aggregate_items[] = [];
 
       if (nextGenEnabled) {
+        const customQuery = 
+          `
+            query nextGenWorkflowsAggregate {
+              workflowRunsAggregate(where: $where) {
+                aggregate {
+                  groupBy {
+                    collectionId
+                    workflowVersion {
+                      workflow {
+                        name
+                      }
+                    }
+                  }
+                  count
+                }
+              }
+            }
+          `;
         const consensusGenomesAggregateResponse = await fetchFromNextGen({
           args,
           context,

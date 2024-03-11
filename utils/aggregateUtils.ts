@@ -26,7 +26,7 @@ export const processWorkflowsAggregateResponse = (
       aggregate =>
         aggregate?.groupBy?.workflowVersion?.workflow?.name ===
           "consensus-genome" && aggregate?.groupBy?.collectionId === project.id,
-    );
+    )?.count || 0;
     const counts = {
       "short-read-mngs": project.sample_counts.mngs_runs_count,
       "consensus-genome": nextGenEnabled ? nextGenCgCount : project.sample_counts.cg_runs_count,

@@ -219,7 +219,7 @@ input BoolComparators {
   _gt: Int
   _gte: Int
   _in: [Int!]
-  _is_null: Int
+  _is_null: Boolean
   _lt: Int
   _lte: Int
   _neq: Int

@@ -587,11 +587,18 @@ export const resolvers: Resolvers = {
       });
       console.log("entitiesResp - get 1", JSON.stringify(entitiesResp));
 
-      // Query workflows using NextGenSampleId to get in progress CG workflow runs
+      // Non-WGS workflows will not have nextGenSampleId. In this case, return sampleInfo from Rails.
       const nextGenSampleId = entitiesResp?.data.samples?.[0]?.id;
       if (!nextGenSampleId) {
-        throw new Error(`No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`);
+        console.log(`No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`);
+        return {
+          id: args.railsSampleId,
+          railsSampleId: args.railsSampleId,
+          ...sampleInfo,
+        };
       }
+
+      // Query workflows using NextGenSampleId to get in progress CG workflow runs
       const workflowsQuery = `
           query WorkflowsQuery {
             workflowRuns(where: {entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}}) {

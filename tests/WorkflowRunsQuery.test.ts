@@ -8,11 +8,13 @@ import { convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
+jest.spyOn(httpUtils, "fetchFromNextGen");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
   (httpUtils.postWithCSRF as jest.Mock).mockClear();
   (httpUtils.shouldReadFromNextGen as jest.Mock).mockClear();
+  (httpUtils.fetchFromNextGen as jest.Mock).mockClear();
 });
 
 describe("workflowRuns query:", () => {

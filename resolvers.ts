@@ -1091,14 +1091,7 @@ export const resolvers: Resolvers = {
         pipelineVersion: args.workflowVersionId,
         merge_nt_nr: false,
       });
-      const {
-        _all_tax_ids,
-        _metadata,
-        counts,
-        _lineage,
-        _sortedGenus,
-        _highlightedTaxIds,
-      } =
+      const { counts } =
         (await get({
           url: `/samples/${args.sampleId}/report_v2` + urlParams,
           args,
@@ -1120,7 +1113,7 @@ export const resolvers: Resolvers = {
       });
       return annotations;
     },
-    fedWorkflowRuns: async (root, args, context: any) => {
+    fedWorkflowRuns: async (_, args, context: any) => {
       const input = args.input;
       if (input == null) {
         throw new Error("fedWorkflowRuns input is nullish");

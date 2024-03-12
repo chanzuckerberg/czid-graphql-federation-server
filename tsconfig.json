@@ -2,11 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "declaration": false,
-    "lib": [
-      "esnext",
-    ],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "nodenext",
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "noUnusedLocals": false,

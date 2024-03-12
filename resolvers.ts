@@ -836,6 +836,19 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
+        if (/{\s*id\s*}/.test(context.params.query)) {
+          return (
+            await fetchFromNextGen({
+              customQuery: convertSequencingReadsQuery(context.params.query),
+              customVariables: {
+                where: input.where,
+              },
+              serviceType: "entities",
+              args,
+              context,
+            })
+          ).data.sequencingReads;
+        }
         const nextGenSequencingReads = (
           await fetchFromNextGen({
             customQuery: convertSequencingReadsQuery(context.params.query),
@@ -854,13 +867,13 @@ export const resolvers: Resolvers = {
             context,
           })
         ).data.sequencingReads;
+
         const railsSampleIds = nextGenSequencingReads
           .map(sequencingRead => sequencingRead.sample.railsSampleId)
           .filter(id => id != null);
         if (railsSampleIds.length === 0) {
           return [];
         }
-
         const railsSamples = (
           await getFromRails({
             url:
@@ -876,12 +889,12 @@ export const resolvers: Resolvers = {
           })
         ).samples;
 
-        const samplesById = new Map<number, any>(
+        const railsSamplesById = new Map<number, any>(
           railsSamples.map(sample => [sample.id, sample]),
         );
         for (const nextGenSequencingRead of nextGenSequencingReads) {
           const nextGenSample = nextGenSequencingRead.sample;
-          const railsSample = samplesById.get(nextGenSample.railsSampleId);
+          const railsSample = railsSamplesById.get(nextGenSample.railsSampleId);
           const railsMetadata = railsSample.details?.metadata;
           const railsDbSample = railsSample.details?.db_sample;
 

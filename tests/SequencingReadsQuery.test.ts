@@ -601,15 +601,6 @@ describe("sequencingReads query:", () => {
       }),
     );
 
-    console.log(
-      JSON.stringify(
-        await execute(
-          query,
-          { input: { where: { collectionId: { _in: [123] } } } },
-          { params: { query } },
-        ),
-      ),
-    );
     const sequencingReads = (
       await execute(
         query,

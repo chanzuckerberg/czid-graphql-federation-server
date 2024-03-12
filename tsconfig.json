@@ -4,10 +4,8 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "declaration": false,
-    "jsx": "react",
     "lib": [
       "esnext",
-      "dom"
     ],
     "module": "esnext",
     "moduleResolution": "node",

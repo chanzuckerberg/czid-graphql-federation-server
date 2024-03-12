@@ -18,6 +18,5 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "esnext",
-    "baseUrl": "./",
   },
 }

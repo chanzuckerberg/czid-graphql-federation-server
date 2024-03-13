@@ -4,9 +4,10 @@ import {
   query_fedConsensusGenomes_items,
   query_fedSamples_items,
   query_fedSequencingReads_items,
-  query_fedWorkflowRunsAggregate_items,
+  query_fedWorkflowRunsAggregate_aggregate_items,
   query_fedWorkflowRuns_items,
 } from "./.mesh";
+import { processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
 import {
   fetchFromNextGen,
   get,
@@ -835,30 +836,48 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
-        const nextGenSequencingReads = (
-          await fetchFromNextGen({
-            customQuery: convertSequencingReadsQuery(context.params.query),
-            customVariables: {
-              where: input.where,
-              // TODO: Migrate to array orderBy.
-              orderBy:
-                (input.orderBy != null ? [input.orderBy] : undefined) ??
-                input.orderByArray,
-              limitOffset: input.limitOffset,
-              producingRunIds: input.where?.id?._in,
-            },
-            serviceType: "entities",
-            args,
-            context,
-          })
-        ).data.sequencingReads;
+        if (/{\s*id\s*}/.test(context.params.query)) {
+          return (
+            await fetchFromNextGen({
+              customQuery: convertSequencingReadsQuery(context.params.query),
+              customVariables: {
+                where: input.where,
+              },
+              serviceType: "entities",
+              args,
+              context,
+            })
+          ).data.sequencingReads;
+        }
+        const nextGenResponse = await fetchFromNextGen({
+          customQuery: convertSequencingReadsQuery(context.params.query),
+          customVariables: {
+            where: input.where,
+            // TODO: Migrate to array orderBy.
+            orderBy:
+              (input.orderBy != null ? [input.orderBy] : undefined) ??
+              input.orderByArray,
+            limitOffset: input.limitOffset,
+            producingRunIds:
+              input.consensusGenomesInput?.where?.producingRunId?._in,
+          },
+          serviceType: "entities",
+          args,
+          context,
+        });
+        const nextGenSequencingReads = nextGenResponse?.data?.sequencingReads;
+        if (nextGenSequencingReads == null) {
+          throw new Error(
+            `NextGen sequencingReads query failed: ${JSON.stringify(nextGenResponse)}`,
+          );
+        }
+
         const railsSampleIds = nextGenSequencingReads
           .map(sequencingRead => sequencingRead.sample.railsSampleId)
           .filter(id => id != null);
         if (railsSampleIds.length === 0) {
           return [];
         }
-
         const railsSamples = (
           await getFromRails({
             url:
@@ -874,12 +893,12 @@ export const resolvers: Resolvers = {
           })
         ).samples;
 
-        const samplesById = new Map<number, any>(
+        const railsSamplesById = new Map<number, any>(
           railsSamples.map(sample => [sample.id, sample]),
         );
         for (const nextGenSequencingRead of nextGenSequencingReads) {
           const nextGenSample = nextGenSequencingRead.sample;
-          const railsSample = samplesById.get(nextGenSample.railsSampleId);
+          const railsSample = railsSamplesById.get(nextGenSample.railsSampleId);
           const railsMetadata = railsSample.details?.metadata;
           const railsDbSample = railsSample.details?.db_sample;
 
@@ -1168,6 +1187,11 @@ export const resolvers: Resolvers = {
           args,
           context,
         });
+        if (response?.data?.workflowRuns == null) {
+          throw new Error(
+            `NextGen workflowRuns query failed: ${JSON.stringify(response)}`,
+          );
+        }
         return response.data.workflowRuns;
       }
 
@@ -1228,7 +1252,7 @@ export const resolvers: Resolvers = {
         }),
       );
     },
-    fedWorkflowRunsAggregate: async (root, args, context, info) => {
+    fedWorkflowRunsAggregate: async (root, args, context: any, info) => {
       const input = args.input;
       const { projects } = await get({
         url:
@@ -1254,19 +1278,48 @@ export const resolvers: Resolvers = {
         context,
       });
 
-      if (!projects?.length) {
-        return [];
-      }
-      return projects.map((project): query_fedWorkflowRunsAggregate_items => {
-        return {
-          collectionId: project.id.toString(),
-          mngsRunsCount: project.sample_counts.mngs_runs_count,
-          cgRunsCount: project.sample_counts.cg_runs_count,
-          amrRunsCount: project.sample_counts.amr_runs_count,
-        };
-      });
+      const nextGenEnabled = await shouldReadFromNextGen(context);
 
-      // TODO (nina): call nextgen in addition to rails to get CG count
+      let nextGenProjectAggregates: query_fedWorkflowRunsAggregate_aggregate_items[] =
+        [];
+
+      if (nextGenEnabled) {
+        const customQuery = `
+            query nextGenWorkflowsAggregate {
+              workflowRunsAggregate(where: $where) {
+                aggregate {
+                  groupBy {
+                    collectionId
+                    workflowVersion {
+                      workflow {
+                        name
+                      }
+                    }
+                  }
+                  count
+                }
+              }
+            }
+          `;
+        const consensusGenomesAggregateResponse = await fetchFromNextGen({
+          args,
+          context,
+          serviceType: "workflows",
+          customQuery,
+          customVariables: {
+            where: args.input?.where,
+          },
+        });
+        nextGenProjectAggregates =
+          consensusGenomesAggregateResponse?.data?.workflowRunsAggregate
+            ?.aggregate;
+      }
+
+      return processWorkflowsAggregateResponse(
+        nextGenProjectAggregates,
+        projects,
+        nextGenEnabled,
+      );
     },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */

@@ -1,6 +1,27 @@
 # Changelog
 
 
+## [2.17.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.17.1...v2.17.2) (2024-03-13)
+
+
+### Bug Fixes
+
+* make sure query param is a string ([#185](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/185)) ([154904f](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/154904f5f69383457fa8dca7fc5aebd95a13eb37))
+
+## [2.17.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.17.0...v2.17.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* Ziplink return from NextGen ([#180](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/180)) ([9102025](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/91020253e4419a0bdeb527abcd0575c1f682243c))
+
+## [2.17.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.16.2...v2.17.0) (2024-03-13)
+
+
+### Features
+
+* Log NextGen responses when they error ([#181](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/181)) ([a7b746e](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/a7b746ee04264b05e8a2da08d38855ceb0d78d59))
+
 ## [2.16.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.16.1...v2.16.2) (2024-03-12)
 
 

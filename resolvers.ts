@@ -849,24 +849,28 @@ export const resolvers: Resolvers = {
             })
           ).data.sequencingReads;
         }
-        const nextGenSequencingReads = (
-          await fetchFromNextGen({
-            customQuery: convertSequencingReadsQuery(context.params.query),
-            customVariables: {
-              where: input.where,
-              // TODO: Migrate to array orderBy.
-              orderBy:
-                (input.orderBy != null ? [input.orderBy] : undefined) ??
-                input.orderByArray,
-              limitOffset: input.limitOffset,
-              producingRunIds:
-                input.consensusGenomesInput?.where?.producingRunId?._in,
-            },
-            serviceType: "entities",
-            args,
-            context,
-          })
-        ).data.sequencingReads;
+        const nextGenResponse = await fetchFromNextGen({
+          customQuery: convertSequencingReadsQuery(context.params.query),
+          customVariables: {
+            where: input.where,
+            // TODO: Migrate to array orderBy.
+            orderBy:
+              (input.orderBy != null ? [input.orderBy] : undefined) ??
+              input.orderByArray,
+            limitOffset: input.limitOffset,
+            producingRunIds:
+              input.consensusGenomesInput?.where?.producingRunId?._in,
+          },
+          serviceType: "entities",
+          args,
+          context,
+        });
+        const nextGenSequencingReads = nextGenResponse?.data?.sequencingReads;
+        if (nextGenSequencingReads == null) {
+          throw new Error(
+            `NextGen sequencingReads query failed: ${JSON.stringify(nextGenResponse)}`,
+          );
+        }
 
         const railsSampleIds = nextGenSequencingReads
           .map(sequencingRead => sequencingRead.sample.railsSampleId)
@@ -1183,6 +1187,11 @@ export const resolvers: Resolvers = {
           args,
           context,
         });
+        if (response?.data?.workflowRuns == null) {
+          throw new Error(
+            `NextGen workflowRuns query failed: ${JSON.stringify(response)}`,
+          );
+        }
         return response.data.workflowRuns;
       }
 
@@ -1318,7 +1327,7 @@ export const resolvers: Resolvers = {
       if (nextGenEnabled) {
         const customQuery = `
           query GetZipLink {
-            consensusGenomes(where: {producingRunId: {_eq: ${args.workflowRunId}}}){
+            consensusGenomes(where: {producingRunId: {_eq: "${args.workflowRunId}"}}){
               intermediateOutputs {
                 downloadLink {
                   url
@@ -1333,13 +1342,13 @@ export const resolvers: Resolvers = {
           serviceType: "workflows",
           customQuery,
         });
+        console.log("ret - ZipLink", JSON.stringify(ret));
         if (
-          ret.data?.consensusGenomes[0]?.intermediateOutputs[0]?.downloadLink
-            ?.url
+          ret.data?.consensusGenomes[0]?.intermediateOutputs?.downloadLink?.url
         ) {
           return {
-            url: ret.data.consensusGenomes[0].intermediateOutputs[0]
-              .downloadLink.url,
+            url: ret.data.consensusGenomes[0].intermediateOutputs.downloadLink
+              .url,
           };
         } else {
           return {

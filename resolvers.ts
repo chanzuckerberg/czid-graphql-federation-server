@@ -849,27 +849,26 @@ export const resolvers: Resolvers = {
             })
           ).data.sequencingReads;
         }
-        const nextGenSequencingReads = (
-          await fetchFromNextGen({
-            customQuery: convertSequencingReadsQuery(context.params.query),
-            customVariables: {
-              where: input.where,
-              // TODO: Migrate to array orderBy.
-              orderBy:
-                (input.orderBy != null ? [input.orderBy] : undefined) ??
-                input.orderByArray,
-              limitOffset: input.limitOffset,
-              producingRunIds:
-                input.consensusGenomesInput?.where?.producingRunId?._in,
-            },
-            serviceType: "entities",
-            args,
-            context,
-          })
-        )?.data?.sequencingReads;
+        const nextGenResponse = await fetchFromNextGen({
+          customQuery: convertSequencingReadsQuery(context.params.query),
+          customVariables: {
+            where: input.where,
+            // TODO: Migrate to array orderBy.
+            orderBy:
+              (input.orderBy != null ? [input.orderBy] : undefined) ??
+              input.orderByArray,
+            limitOffset: input.limitOffset,
+            producingRunIds:
+              input.consensusGenomesInput?.where?.producingRunId?._in,
+          },
+          serviceType: "entities",
+          args,
+          context,
+        });
+        const nextGenSequencingReads = nextGenResponse?.data?.sequencingReads;
         if (nextGenSequencingReads == null) {
           throw new Error(
-            `NextGen sequencingReads query failed: ${JSON.stringify(nextGenSequencingReads)}`,
+            `NextGen sequencingReads query failed: ${JSON.stringify(nextGenResponse)}`,
           );
         }
 
@@ -1188,6 +1187,11 @@ export const resolvers: Resolvers = {
           args,
           context,
         });
+        if (response?.data?.workflowRuns == null) {
+          throw new Error(
+            `NextGen workflowRuns query failed: ${JSON.stringify(response)}`,
+          );
+        }
         return response.data.workflowRuns;
       }
 

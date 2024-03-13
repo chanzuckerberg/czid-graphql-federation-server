@@ -866,7 +866,12 @@ export const resolvers: Resolvers = {
             args,
             context,
           })
-        ).data.sequencingReads;
+        )?.data?.sequencingReads;
+        if (nextGenSequencingReads == null) {
+          throw new Error(
+            `NextGen sequencingReads query failed: ${JSON.stringify(nextGenSequencingReads)}`,
+          );
+        }
 
         const railsSampleIds = nextGenSequencingReads
           .map(sequencingRead => sequencingRead.sample.railsSampleId)

@@ -591,7 +591,9 @@ export const resolvers: Resolvers = {
       // Non-WGS workflows will not have nextGenSampleId. In this case, return sampleInfo from Rails.
       const nextGenSampleId = entitiesResp?.data.samples?.[0]?.id;
       if (!nextGenSampleId) {
-        console.log(`No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`);
+        console.log(
+          `No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`,
+        );
         return {
           id: args.railsSampleId,
           railsSampleId: args.railsSampleId,
@@ -1331,28 +1333,58 @@ export const resolvers: Resolvers = {
         throw new Error("No input provided");
       }
       console.log("CreateBulkDownload args", args);
-      const { downloadType, workflow, downloadFormat, workflowRunIds, workflowRunIdsStrings } =
-        args?.input;
+      const {
+        downloadType,
+        workflow,
+        downloadFormat,
+        workflowRunIds,
+        workflowRunIdsStrings,
+      } = args?.input;
       const nextGenEnabled = await shouldReadFromNextGen(context);
+      /* --------------------- Rails --------------------- */
+      if (!nextGenEnabled) {
+        const body = {
+          download_type: downloadType,
+          workflow: workflow,
+          params: {
+            download_format: {
+              value: downloadFormat,
+            },
+            sample_ids: {
+              value: workflowRunIds,
+            },
+            workflow: {
+              value: workflow,
+            },
+          },
+          workflow_run_ids: workflowRunIds,
+        };
+        const res = await postWithCSRF({
+          url: `/bulk_downloads`,
+          body,
+          args,
+          context,
+        });
+        return res;
+      }
       /* --------------------- Next Gen --------------------- */
-      if (nextGenEnabled) {
-        // get the default bulk download workflow version id from the workflow service
-        const getBulkdownloadDefautVersion = `
+      // get the default bulk download workflow version id from the workflow service
+      const getBulkdownloadDefautVersion = `
           query GetBulkDownloadDefaultVersion {
             workflows(where: {name: {_eq: "bulk-downloads"}}){
               defaultVersion
             }
           }
         `;
-        const resDefaultVersion = await get({
-          args,
-          context,
-          serviceType: "workflows",
-          customQuery: getBulkdownloadDefautVersion,
-        });
-        console.log("resDefaultVersion", resDefaultVersion);
-        const defaultVersion = resDefaultVersion.data.workflows[0].defaultVersion;
-        const getBulkdownloadVersionId = `
+      const resDefaultVersion = await get({
+        args,
+        context,
+        serviceType: "workflows",
+        customQuery: getBulkdownloadDefautVersion,
+      });
+      console.log("resDefaultVersion", resDefaultVersion);
+      const defaultVersion = resDefaultVersion.data.workflows[0].defaultVersion;
+      const getBulkdownloadVersionId = `
           query MyQuery {
             workflows(
               where: {versions: {version: {_eq: ${defaultVersion}}}, name: {_eq: "bulk-download"}}
@@ -1360,27 +1392,29 @@ export const resolvers: Resolvers = {
               id
             }
           }`;
-        const resWorkflowVersionId = await get({ 
-          args, 
-          context, 
-          serviceType: "workflows", 
-          customQuery: getBulkdownloadVersionId 
-        });
-        console.log("resWorkflowVersionId", resWorkflowVersionId);
-        const bulkdownloadVersionId = resWorkflowVersionId.data.workflows[0].id;
-        
-        // get the files from the entity service
-        console.log("downloadType", downloadType);
-        let downloadEntity;
-        let downloadDisplayName;
-        if (downloadType === "consensus_genome") {
-          downloadEntity = "sequence";
-          downloadDisplayName = "Consensus Genome";
-        } else if (downloadType === "consensus_genome_intermediate_output_files") {
-          downloadEntity = "intermediateOutputs";
-          downloadDisplayName = "Intermediate Output Files";
-        }
-        const getFileIdsQuery = `query GetFilesFromEntities {
+      const resWorkflowVersionId = await get({
+        args,
+        context,
+        serviceType: "workflows",
+        customQuery: getBulkdownloadVersionId,
+      });
+      console.log("resWorkflowVersionId", resWorkflowVersionId);
+      const bulkdownloadVersionId = resWorkflowVersionId.data.workflows[0].id;
+
+      // get the files from the entity service
+      console.log("downloadType", downloadType);
+      let downloadEntity;
+      let downloadDisplayName;
+      if (downloadType === "consensus_genome") {
+        downloadEntity = "sequence";
+        downloadDisplayName = "Consensus Genome";
+      } else if (
+        downloadType === "consensus_genome_intermediate_output_files"
+      ) {
+        downloadEntity = "intermediateOutputs";
+        downloadDisplayName = "Intermediate Output Files";
+      }
+      const getFileIdsQuery = `query GetFilesFromEntities {
             consensusGenomes(where: {producingRunId: {_in: ${workflowRunIdsStrings}}}){
               ${downloadEntity} {
                 id
@@ -1388,24 +1422,24 @@ export const resolvers: Resolvers = {
             }
           }
         `;
-        const resFileIds = await get({
-          args,
-          context,
-          serviceType: "entities",
-          customQuery: getFileIdsQuery,
-        });
-        console.log("resFileIds", resFileIds);
-        const files = resFileIds.data.consensusGenomes.map((consensusGenome) => {  
-          return `{name: "files", entityType: "file", entityId: ${consensusGenome[downloadEntity].id}}`;
-        });
+      const resFileIds = await get({
+        args,
+        context,
+        serviceType: "entities",
+        customQuery: getFileIdsQuery,
+      });
+      console.log("resFileIds", resFileIds);
+      const files = resFileIds.data.consensusGenomes.map(consensusGenome => {
+        return `{name: "files", entityType: "file", entityId: ${consensusGenome[downloadEntity].id}}`;
+      });
 
-        // run the workflow version with the files as inputs
-        let bulkDownloadType = "zip";
-        if (downloadFormat === "Single File (Concatenated)"){
-          bulkDownloadType = "concatenated";
-        }
-        //TODO: could add a collectionId - not sure if we need it
-        const runBulkDownload = `
+      // run the workflow version with the files as inputs
+      let bulkDownloadType = "zip";
+      if (downloadFormat === "Single File (Concatenated)") {
+        bulkDownloadType = "concatenated";
+      }
+      //TODO: could add a collectionId - not sure if we need it
+      const runBulkDownload = `
           mutation BulkDownload {
             runWorkflowVersion(
               input: {
@@ -1425,30 +1459,6 @@ export const resolvers: Resolvers = {
         customQuery: runBulkDownload,
       });
       console.log("bulk download kicked off", res);
-    }
-      /* --------------------- Rails --------------------- */
-      const body = {
-        download_type: downloadType,
-        workflow: workflow,
-        params: {
-          download_format: {
-            value: downloadFormat,
-          },
-          sample_ids: {
-            value: workflowRunIds,
-          },
-          workflow: {
-            value: workflow,
-          },
-        },
-        workflow_run_ids: workflowRunIds,
-      };
-      const res = await postWithCSRF({
-        url: `/bulk_downloads`,
-        body,
-        args,
-        context,
-      });
       return res;
     },
     DeleteSamples: async (root, args, context, info) => {

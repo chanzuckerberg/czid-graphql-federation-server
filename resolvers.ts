@@ -855,14 +855,14 @@ export const resolvers: Resolvers = {
                       locationV2: input.where.sample.collectionLocation?._in,
                       host: input.where.sample.hostOrganism?.name?._in,
                       tissue: input.where.sample.sampleType?._in,
-                      limit: TEN_MILLION,
+                      limit: 0,
                       offset: 0,
-                      listAllIds: false,
+                      listAllIds: true,
                     }),
                   args,
                   context,
                 })
-              ).samples.map(sample => sample.id),
+              ).all_samples_ids,
             );
             sequencingReads = sequencingReads.filter(sequencingRead =>
               filteredSampleIds.has(sequencingRead.sample.railsSampleId),

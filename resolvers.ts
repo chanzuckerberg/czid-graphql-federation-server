@@ -887,7 +887,7 @@ export const resolvers: Resolvers = {
         for (const nextGenSequencingRead of nextGenSequencingReads) {
           const nextGenSample = nextGenSequencingRead.sample;
           const railsSample = railsSamplesById.get(nextGenSample.railsSampleId);
-          if (railsSample === undefined) {
+          if (nextGenSample == undefined || railsSample === undefined) {
             continue;
           }
 

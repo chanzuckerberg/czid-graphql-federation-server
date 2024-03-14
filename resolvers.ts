@@ -1,6 +1,7 @@
 // resolvers.ts
 import {
   Resolvers,
+  queryInput_fedSequencingReads_input_where_Input,
   query_fedConsensusGenomes_items,
   query_fedSamples_items,
   query_fedSequencingReads_items,
@@ -825,17 +826,49 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
         if (/{\s*id\s*}/.test(context.params.query)) {
-          return (
+          let sequencingReads = (
             await fetchFromNextGen({
               customQuery: convertSequencingReadsQuery(context.params.query),
               customVariables: {
-                where: input.where,
+                // Entities Service doesn't support sample metadata yet.
+                where: {
+                  collectionId: input.where?.collectionId,
+                  taxon: input.where?.taxon,
+                  consensusGenomes: input.where?.consensusGenomes,
+                },
               },
               serviceType: "entities",
               args,
               context,
             })
           ).data.sequencingReads;
+          if (input.where?.sample != null && sequencingReads.length > 0) {
+            const filteredSampleIds = new Set(
+              (
+                await getFromRails({
+                  url:
+                    "/samples/index_v2.json" +
+                    formatUrlParams({
+                      sampleIds: sequencingReads.map(
+                        sequencingRead => sequencingRead.sample.railsSampleId,
+                      ),
+                      locationV2: input.where.sample.collectionLocation?._in,
+                      host: input.where.sample.hostOrganism?.name?._in,
+                      tissue: input.where.sample.sampleType?._in,
+                      limit: TEN_MILLION,
+                      offset: 0,
+                      listAllIds: false,
+                    }),
+                  args,
+                  context,
+                })
+              ).samples.map(sample => sample.id),
+            );
+            sequencingReads = sequencingReads.filter(sequencingRead =>
+              filteredSampleIds.has(sequencingRead.sample.railsSampleId),
+            );
+          }
+          return sequencingReads;
         }
 
         const nextGenResponse = await fetchFromNextGen({

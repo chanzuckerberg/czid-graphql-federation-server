@@ -402,6 +402,9 @@ describe("sequencingReads query:", () => {
       `query ($where: SequencingReadWhereClause) {
         sequencingReads(where: $where) {
           id
+          sample {
+            railsSampleId
+          }
         }
       }`,
     );

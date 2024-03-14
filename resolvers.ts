@@ -902,6 +902,12 @@ export const resolvers: Resolvers = {
           nextGenSample.waterControl = railsMetadata?.water_control === "Yes";
           nextGenSample.notes = railsDbSample?.sample_notes;
           nextGenSample.uploadError = railsDbSample?.upload_error;
+          nextGenSample.hostOrganism =
+            railsDbSample?.host_genome_name != null
+              ? {
+                  name: railsDbSample.host_genome_name,
+                }
+              : null;
           nextGenSample.ownerUserName = railsSample.details?.uploader?.name;
           nextGenSample.collection = {
             name: railsSample.details?.derived_sample_output?.project_name,

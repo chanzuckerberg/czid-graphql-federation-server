@@ -568,6 +568,111 @@ describe("sequencingReads query:", () => {
     ]);
   });
 
+  it("Joins NextGen and Rails data for IDs only", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [
+            {
+              id: "abc",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "def",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "ghi",
+              sample: {
+                railsSampleId: 456,
+              },
+            },
+          ],
+        },
+      }),
+    );
+    (httpUtils.getFromRails as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        all_samples_ids: [123],
+      }),
+    );
+
+    const sequencingReads = (
+      await execute(
+        query,
+        { input: { where: { sample: {} } } },
+        { params: { query } },
+      )
+    ).data.fedSequencingReads;
+
+    expect(sequencingReads).toMatchObject([
+      {
+        id: "abc",
+      },
+      {
+        id: "def",
+      },
+    ]);
+  });
+
+  it("Does not call Rails if ID query has no sample filter", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [
+            {
+              id: "abc",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "def",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "ghi",
+              sample: {
+                railsSampleId: 456,
+              },
+            },
+          ],
+        },
+      }),
+    );
+
+    const sequencingReads = (
+      await execute(query, { input: {} }, { params: { query } })
+    ).data.fedSequencingReads;
+
+    expect(httpUtils.getFromRails as jest.Mock).not.toHaveBeenCalled();
+    expect(sequencingReads).toMatchObject([
+      {
+        id: "abc",
+      },
+      {
+        id: "def",
+      },
+      {
+        id: "ghi",
+      },
+    ]);
+  });
+
   it("Does not call Rails to do join if no NextGen data returned", async () => {
     (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
       Promise.resolve(true),

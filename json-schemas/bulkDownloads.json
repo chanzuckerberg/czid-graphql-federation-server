@@ -12,41 +12,26 @@
             "startedAt": {
                 "type": "string"
             },
-            "rawInputsJson": {
-                "type": "object",
-                "properties": {
-                    "description": {
-                        "type": "string"
-                    },
-                    "downloadType": {
-                        "type": "string"
-                    },
-                    "downloadDisplayName": {
-                        "type": "string"
-                    },
-                    "fileFormat": {
-                        "type": "string"
-                    }
-                }
+            "description": {
+                "type": "string"
+            },
+            "downloadType": {
+                "type": "string"
+            },
+            "downloadDisplayName": {
+                "type": "string"
+            },
+            "fileFormat": {
+                "type": "string"
             },
             "ownerUserId": {
                 "type": "string"
             },
-            "file": {
-                "type": "object",
-                "properties": {
-                    "size": {
-                        "type": "integer"
-                    },
-                    "downloadLink": {
-                        "type": "object",
-                        "properties": {
-                            "url": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
+            "fileSize": {
+                "type": "integer"
+            },
+            "url": {
+                "type": "string"
             },
             "sampleNames": {
                 "type": "array",
@@ -72,23 +57,12 @@
                     }
                 }
             },
-            "toDelete": {
-                "type": "object",
-                "properties": {
-                    "user_name": {
-                        "type": "string"
-                    },
-                    "log_url": {
-                        "type": "string"
-                    },
-                    "totalSamples": {
-                        "type": "integer"
-                    },
-                    "progress": {
-                        "type": "float"
-                    }
-                }
+            "logUrl": {
+                "type": "string"
+            },
+            "totalSamples": {
+                "type": "integer"
             }
-}
+        }
     }
 }

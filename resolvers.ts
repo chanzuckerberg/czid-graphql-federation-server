@@ -85,31 +85,23 @@ export const resolvers: Resolvers = {
         context,
       });
       const mappedRes = res.map(async bulkDownload => {
-        let url: string | null = null;
-        let entityInputs: { id: string; name: string }[] = [];
-        let sampleNames: Set<string> | null = null;
-        let totalSamples: number | null = null;
-        let description: string;
-        let file_type_display: string;
         const details = await get({
           url: `/bulk_downloads/${bulkDownload?.id}.json`,
           args,
           context,
         });
-        if (bulkDownload.status === "success") {
-          url = details?.bulk_download?.presigned_output_url;
-          entityInputs = [
-            ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
-            ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
-          ];
-          sampleNames = new Set(
-            entityInputs.map(entityInput => entityInput.name),
-          );
-          totalSamples =
-            details?.bulk_download?.params?.sample_ids?.value?.length;
-        }
-        description = details?.download_type?.description;
-        file_type_display = details?.download_type?.file_type_display;
+        const url = details?.bulk_download?.presigned_output_url;
+        console.log(details);
+        const entityInputs = [
+          ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
+          ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
+        ];
+        console.log(entityInputs);
+        const sampleNames = new Set(
+          entityInputs.map(entityInput => entityInput.name),
+        );
+        const totalSamples =
+          details?.bulk_download?.params?.sample_ids?.value?.length;
 
         const {
           id,
@@ -117,12 +109,9 @@ export const resolvers: Resolvers = {
           user_id,
           download_type,
           created_at,
-          download_name,
           output_file_size,
-          user_name,
-          log_url,
+          logUrl,
           analysis_type,
-          progress, // --> to be discussed on Feb 16th, 2024
         } = bulkDownload;
 
         // In Next Gen we will have an array with all of the entity input
@@ -132,35 +121,22 @@ export const resolvers: Resolvers = {
         // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
         // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
         return {
-          id, // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+          id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
           startedAt: created_at,
           status: statusDictionary[status],
-          rawInputsJson: {
-            downloadType: download_type,
-            downloadDisplayName: download_name,
-            description: description,
-            fileFormat: file_type_display,
-          },
+          downloadType: download_type,
           ownerUserId: user_id,
-          file: {
-            size: output_file_size,
-            downloadLink: {
-              url: url,
-            },
-          },
+          fileSize: output_file_size,
+          url,
           sampleNames,
           analysisCount: entityInputs.length,
           entityInputFileType: analysis_type,
           entityInputs,
-          toDelete: {
-            progress, // --> to be discussed on Feb 16th, 2024
-            user_name, // will need to get from a new Rails endpoint from the FE
-            log_url, // used in admin only, we will deprecate log_url and use something like executionId
-            totalSamples,
-            // dedupping by name isn't entirely reliable
-            // we will use this as the accurate number of samples until we switch to NextGen
-            // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
-          },
+          logUrl, // used in admin only, we will deprecate log_url and use something like executionId
+          totalSamples,
+          // dedupping by name isn't entirely reliable
+          // we will use this as the accurate number of samples until we switch to NextGen
+          // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
         };
       });
       return mappedRes;
@@ -1385,10 +1361,17 @@ export const resolvers: Resolvers = {
       if (!args?.input) {
         throw new Error("No input provided");
       }
-      const { downloadType, workflow, downloadFormat, workflowRunIds, workflowRunIdsStrings } =
-        args?.input;
+      const {
+        downloadType,
+        workflow,
+        downloadFormat,
+        workflowRunIds,
+        workflowRunIdsStrings,
+      } = args?.input;
 
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(id => id && parseInt(id));
+      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
+        id => id && parseInt(id),
+      );
       const body = {
         download_type: downloadType,
         workflow: workflow,

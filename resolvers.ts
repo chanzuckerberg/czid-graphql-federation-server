@@ -952,26 +952,17 @@ export const resolvers: Resolvers = {
         return nextGenSequencingReads;
       }
 
-      // The comments in the formatUrlParams() call correspond to the line in the current
-      // codebase's callstack where the params are set, so help ensure we're not missing anything.
+      // RAILS:
       const { all_workflow_run_ids, workflow_runs } = await get({
         url:
           "/workflow_runs.json" +
           formatUrlParams({
-            // index.ts
-            // const getWorkflowRuns = ({
             mode: "with_sample_info",
-            //  - DiscoveryDataLayer.ts
-            //    await this._collection.fetchDataCallback({
             domain: input.todoRemove?.domain,
-            //  -- DiscoveryView.tsx
-            //     ...this.getConditions(workflow)
             projectId: input.todoRemove?.projectId,
             search: input.todoRemove?.search,
             orderBy: input.todoRemove?.orderBy,
             orderDir: input.todoRemove?.orderDir,
-            //  --- DiscoveryView.tsx
-            //      filters: {
             host: input.todoRemove?.host,
             locationV2: input.todoRemove?.locationV2,
             taxon: input.todoRemove?.taxons,
@@ -980,8 +971,6 @@ export const resolvers: Resolvers = {
             tissue: input.todoRemove?.tissue,
             visibility: input.todoRemove?.visibility,
             workflow: input.todoRemove?.workflow,
-            //  - DiscoveryDataLayer.ts
-            //    await this._collection.fetchDataCallback({
             limit: queryingIdsOnly
               ? 0
               : input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
@@ -994,7 +983,7 @@ export const resolvers: Resolvers = {
         context,
       });
       if (queryingIdsOnly) {
-        return all_workflow_run_ids;
+        return all_workflow_run_ids.map(id => ({ id }));
       }
       if (!workflow_runs?.length) {
         return [];

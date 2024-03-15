@@ -1,5 +1,9 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getMeshInstance } from "./utils/MeshInstance";
+import {
+  MeshExecuteTestFunction,
+  getMeshExecute,
+  getMeshInstance,
+} from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
 import { getExampleQuery } from "./utils/ExampleQueryFiles";
 import { assertEqualsNoWhitespace } from "./utils/StringUtils";
@@ -20,14 +24,13 @@ beforeEach(() => {
 const query = getExampleQuery("sequencing-reads-query");
 
 describe("sequencingReads query:", () => {
-  let execute: ExecuteMeshFn;
+  let execute: MeshExecuteTestFunction;
 
   beforeEach(async () => {
     (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
       Promise.resolve(false),
     );
-    const mesh$ = await getMeshInstance();
-    ({ execute } = mesh$);
+    execute = await getMeshExecute();
   });
 
   it("Returns empty list", async () => {
@@ -35,6 +38,7 @@ describe("sequencingReads query:", () => {
       workflow_runs: [],
     }));
     const response = await execute(query, {});
+    console.log(JSON.stringify(response));
 
     expect(httpUtils.get).toHaveBeenCalledWith({
       url: "/workflow_runs.json?&mode=with_sample_info&search=abc&limit=50&offset=100&listAllIds=false",
@@ -489,8 +493,7 @@ describe("sequencingReads query:", () => {
       }),
     );
 
-    const sequencingReads = (await execute(query, {}, { params: { query } }))
-      .data.fedSequencingReads;
+    const sequencingReads = (await execute(query, {})).data.fedSequencingReads;
 
     expect(sequencingReads).toMatchObject([
       expect.objectContaining({
@@ -606,11 +609,7 @@ describe("sequencingReads query:", () => {
     );
 
     const sequencingReads = (
-      await execute(
-        query,
-        { input: { where: { sample: {} } } },
-        { params: { query } },
-      )
+      await execute(query, { input: { where: { sample: {} } } })
     ).data.fedSequencingReads;
 
     expect(sequencingReads).toMatchObject([
@@ -621,6 +620,24 @@ describe("sequencingReads query:", () => {
         id: "def",
       },
     ]);
+  });
+
+  it("Fetches all IDs only from Rails if NextGen off", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(false),
+    );
+    (httpUtils.get as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        all_workflow_run_ids: [123, 456],
+      }),
+    );
+
+    const sequencingReads = (await execute(query, { input: {} })).data
+      .fedSequencingReads;
+
+    expect(httpUtils.fetchFromNextGen as jest.Mock).not.toHaveBeenCalled();
+    expect(sequencingReads).toMatchObject([{ id: 123 }, { id: 456 }]);
   });
 
   it("Does not call Rails if ID query has no sample filter", async () => {
@@ -655,9 +672,8 @@ describe("sequencingReads query:", () => {
       }),
     );
 
-    const sequencingReads = (
-      await execute(query, { input: {} }, { params: { query } })
-    ).data.fedSequencingReads;
+    const sequencingReads = (await execute(query, { input: {} })).data
+      .fedSequencingReads;
 
     expect(httpUtils.getFromRails as jest.Mock).not.toHaveBeenCalled();
     expect(sequencingReads).toMatchObject([
@@ -685,8 +701,7 @@ describe("sequencingReads query:", () => {
       }),
     );
 
-    const sequencingReads = (await execute(query, {}, { params: { query } }))
-      .data.fedSequencingReads;
+    const sequencingReads = (await execute(query, {})).data.fedSequencingReads;
 
     expect(sequencingReads).toEqual([]);
     expect(httpUtils.getFromRails as jest.Mock).not.toHaveBeenCalled();
@@ -710,11 +725,7 @@ describe("sequencingReads query:", () => {
     );
 
     const sequencingReads = (
-      await execute(
-        query,
-        { input: { where: { id: { _in: ["abc"] } } } },
-        { params: { query } },
-      )
+      await execute(query, { input: { where: { id: { _in: ["abc"] } } } })
     ).data.fedSequencingReads;
 
     expect(sequencingReads).toEqual([{ id: "abc" }]);

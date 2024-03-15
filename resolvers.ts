@@ -818,6 +818,7 @@ export const resolvers: Resolvers = {
     },
     fedSequencingReads: async (root, args, context: any) => {
       const input = args.input;
+      const queryingIdsOnly = /{\s*id\s*}/.test(context.params.query);
       if (input == null) {
         throw new Error("fedSequencingReads input is nullish");
       }
@@ -825,7 +826,7 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
-        if (/{\s*id\s*}/.test(context.params.query)) {
+        if (queryingIdsOnly) {
           let sequencingReads = (
             await fetchFromNextGen({
               customQuery: convertSequencingReadsQuery(context.params.query),
@@ -953,7 +954,7 @@ export const resolvers: Resolvers = {
 
       // The comments in the formatUrlParams() call correspond to the line in the current
       // codebase's callstack where the params are set, so help ensure we're not missing anything.
-      const { workflow_runs } = await get({
+      const { all_workflow_run_ids, workflow_runs } = await get({
         url:
           "/workflow_runs.json" +
           formatUrlParams({
@@ -981,13 +982,20 @@ export const resolvers: Resolvers = {
             workflow: input.todoRemove?.workflow,
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
-            limit: input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
-            offset: input.offset ?? input.limitOffset?.offset,
-            listAllIds: false,
+            limit: queryingIdsOnly
+              ? 0
+              : input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
+            offset: queryingIdsOnly
+              ? 0
+              : input.offset ?? input.limitOffset?.offset,
+            listAllIds: queryingIdsOnly,
           }),
         args,
         context,
       });
+      if (queryingIdsOnly) {
+        return all_workflow_run_ids;
+      }
       if (!workflow_runs?.length) {
         return [];
       }

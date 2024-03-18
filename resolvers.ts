@@ -1159,8 +1159,11 @@ export const resolvers: Resolvers = {
       if (input.where?.id?._in && typeof input.where?.id?._in === "object") {
         const workflowRunIds = input.where.id._in;
         if (nextGenEnabled) {
+          const query = convertValidateConsensusGenomeQuery(
+            context.params.query,
+          );
           const response = await fetchFromNextGen({
-            customQuery: convertValidateConsensusGenomeQuery(context.params.query),
+            customQuery: query,
             customVariables: {
               where: input.where,
             },

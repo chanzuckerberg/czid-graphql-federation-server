@@ -103,6 +103,7 @@ export const fetchFromNextGen = async ({
   customQuery?: string;
   customVariables?: object;
 }) => {
+  console.log("fetchFromNextGen")
   try {
     const enrichedToken = await getEnrichedToken(context);
     const baseUrl =

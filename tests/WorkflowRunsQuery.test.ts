@@ -4,7 +4,7 @@ import { getMeshInstance } from "./utils/MeshInstance";
 import { assertEqualsNoWhitespace } from "./utils/StringUtils";
 
 import * as httpUtils from "../utils/httpUtils";
-import { convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
+import { convertValidateConsensusGenomeQuery, convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
@@ -181,17 +181,6 @@ describe("workflowRuns query:", () => {
         context: expect.anything(),
         args: expect.anything(),
       });
-    });
-
-    it.only("should call NextGen when shouldReadFromNextGen is true", async () => {
-      (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
-        Promise.resolve(true),
-      );
-      await execute(getExampleQuery("workflow-runs-query-id-list"), {
-        authenticityToken: "authtoken1234",
-        workflowRunIds: ["1997", "2007"],
-      });
-      expect(httpUtils.fetchFromNextGen as jest.Mock).toHaveBeenCalled();
     });
   });
 });

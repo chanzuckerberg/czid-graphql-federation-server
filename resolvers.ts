@@ -22,7 +22,9 @@ import {
 import { formatUrlParams } from "./utils/paramsUtils";
 import {
   convertSequencingReadsQuery,
+  convertValidateConsensusGenomeQuery,
   convertWorkflowRunsQuery,
+  formatFedQueryForNextGen,
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
 
@@ -1157,13 +1159,14 @@ export const resolvers: Resolvers = {
       if (input.where?.id?._in && typeof input.where?.id?._in === "object") {
         const workflowRunIds = input.where.id._in;
         if (nextGenEnabled) {
-          const query = convertWorkflowRunsQuery(context.params.query);
-          console.log("query", query);
           const response = await fetchFromNextGen({
-            customQuery: query,
-            serviceType: "workflows",
+            customQuery: convertValidateConsensusGenomeQuery(context.params.query),
+            customVariables: {
+              where: input.where,
+            },
             args,
             context,
+            serviceType: "workflows",
           });
           if (response?.data?.workflowRuns == null) {
             throw new Error(

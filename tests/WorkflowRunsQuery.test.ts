@@ -183,10 +183,14 @@ describe("workflowRuns query:", () => {
       });
     });
 
-    it("should call NextGen when shouldReadFromNextGen is true", async () => {
+    it.only("should call NextGen when shouldReadFromNextGen is true", async () => {
       (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
         Promise.resolve(true),
       );
+      await execute(getExampleQuery("workflow-runs-query-id-list"), {
+        authenticityToken: "authtoken1234",
+        workflowRunIds: ["1997", "2007"],
+      });
       expect(httpUtils.fetchFromNextGen as jest.Mock).toHaveBeenCalled();
     });
   });

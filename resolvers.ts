@@ -1149,30 +1149,48 @@ export const resolvers: Resolvers = {
       if (input == null) {
         throw new Error("fedWorkflowRuns input is nullish");
       }
+      const nextGenEnabled = await shouldReadFromNextGen(context);
 
-      // CG REPORT:
+      // CG BULK DOWNLOAD MODAL:
       // If we provide a list of workflowRunIds, we assume that this is for getting valid consensus genome workflow runs.
       // This endpoint only provides id, ownerUserId, and status.
       if (input.where?.id?._in && typeof input.where?.id?._in === "object") {
-        const body = {
-          authenticity_token: input.todoRemove?.authenticityToken,
-          workflowRunIds: input.where.id._in.map(id => id && parseInt(id)),
-        };
-        const { workflowRuns } = await postWithCSRF({
-          url: `/workflow_runs/valid_consensus_genome_workflow_runs`,
-          body,
-          args,
-          context,
-        });
-        return workflowRuns.map(run => ({
-          id: run.id.toString(),
-          ownerUserId: run.owner_user_id,
-          status: run.status,
-        }));
+        const workflowRunIds = input.where.id._in;
+        if (nextGenEnabled) {
+          const query = convertWorkflowRunsQuery(context.params.query);
+          console.log("query", query);
+          const response = await fetchFromNextGen({
+            customQuery: query,
+            serviceType: "workflows",
+            args,
+            context,
+          });
+          if (response?.data?.workflowRuns == null) {
+            throw new Error(
+              `NextGen workflowRuns query failed: ${JSON.stringify(response)}`,
+            );
+          }
+          return response.data.workflowRuns;
+        } else {
+          const body = {
+            authenticity_token: input.todoRemove?.authenticityToken,
+            workflowRunIds: workflowRunIds.map(id => id && parseInt(id)),
+          };
+          const { workflowRuns } = await postWithCSRF({
+            url: `/workflow_runs/valid_consensus_genome_workflow_runs`,
+            body,
+            args,
+            context,
+          });
+          return workflowRuns.map(run => ({
+            id: run.id.toString(),
+            ownerUserId: run.owner_user_id,
+            status: run.status,
+          }));
+        }
       }
 
       // DISCOVERY VIEW:
-      const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
         const response = await fetchFromNextGen({
           customQuery: convertWorkflowRunsQuery(context.params.query),
@@ -1385,10 +1403,17 @@ export const resolvers: Resolvers = {
       if (!args?.input) {
         throw new Error("No input provided");
       }
-      const { downloadType, workflow, downloadFormat, workflowRunIds, workflowRunIdsStrings } =
-        args?.input;
+      const {
+        downloadType,
+        workflow,
+        downloadFormat,
+        workflowRunIds,
+        workflowRunIdsStrings,
+      } = args?.input;
 
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(id => id && parseInt(id));
+      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
+        id => id && parseInt(id),
+      );
       const body = {
         download_type: downloadType,
         workflow: workflow,

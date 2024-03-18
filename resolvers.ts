@@ -1170,7 +1170,7 @@ export const resolvers: Resolvers = {
           });
           if (response?.data?.workflowRuns == null) {
             throw new Error(
-              `NextGen workflowRuns query failed: ${JSON.stringify(response)}`,
+              `NextGen validate workflowRuns query failed: ${JSON.stringify(response)}`,
             );
           }
           return response.data.workflowRuns;

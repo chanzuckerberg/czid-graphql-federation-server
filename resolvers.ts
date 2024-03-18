@@ -867,9 +867,6 @@ export const resolvers: Resolvers = {
                   url:
                     "/samples/index_v2.json" +
                     formatUrlParams({
-                      sampleIds: sequencingReads.map(
-                        sequencingRead => sequencingRead.sample.railsSampleId,
-                      ),
                       locationV2: input.where.sample.collectionLocation?._in,
                       host: input.where.sample.hostOrganism?.name?._in,
                       tissue: input.where.sample.sampleType?._in,

@@ -164,7 +164,10 @@ describe("workflowRuns query:", () => {
   });
 
   describe("validConsensusGenomes query", () => {
-    it("should call the correct rails endpoint", async () => {
+    it("should call the correct rails endpoint when shouldReadFromNextGen is false", async () => {
+      (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+        Promise.resolve(false),
+      );
       await execute(getExampleQuery("workflow-runs-query-id-list"), {
         authenticityToken: "authtoken1234",
         workflowRunIds: ["1997", "2007"],
@@ -178,6 +181,13 @@ describe("workflowRuns query:", () => {
         context: expect.anything(),
         args: expect.anything(),
       });
+    });
+
+    it("should call NextGen when shouldReadFromNextGen is true", async () => {
+      (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+        Promise.resolve(true),
+      );
+      expect(httpUtils.fetchFromNextGen as jest.Mock).toHaveBeenCalled();
     });
   });
 });

@@ -977,8 +977,8 @@ export const resolvers: Resolvers = {
             domain: input.todoRemove?.domain,
             projectId: input.todoRemove?.projectId,
             search: input.todoRemove?.search,
-            orderBy: input.todoRemove?.orderBy,
-            orderDir: input.todoRemove?.orderDir,
+            orderBy: queryingIdsOnly ? undefined : input.todoRemove?.orderBy,
+            orderDir: queryingIdsOnly ? undefined : input.todoRemove?.orderDir,
             host: input.todoRemove?.host,
             locationV2: input.todoRemove?.locationV2,
             taxon: input.todoRemove?.taxons,
@@ -987,17 +987,20 @@ export const resolvers: Resolvers = {
             tissue: input.todoRemove?.tissue,
             visibility: input.todoRemove?.visibility,
             workflow: input.todoRemove?.workflow,
-            // TODO: Just use limitOffset.
-            limit: input.limit ?? input.limitOffset?.limit,
-            offset: input.offset ?? input.limitOffset?.offset,
+            limit: queryingIdsOnly
+              ? TEN_MILLION
+              : input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
+            offset: queryingIdsOnly
+              ? 0
+              : input.offset ?? input.limitOffset?.offset,
             listAllIds: false,
           }),
         args,
         context,
       });
       if (queryingIdsOnly) {
-        const uniqueSampleIds = new Set(
-          workflow_runs.map(run => run.sample.info.id),
+        const uniqueSampleIds = new Set<string>(
+          workflow_runs.map(run => run.sample.info.id.toString()),
         );
         return [...uniqueSampleIds].map(sampleId => ({
           id: sampleId,

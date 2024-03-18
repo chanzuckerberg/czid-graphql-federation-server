@@ -969,11 +969,11 @@ export const resolvers: Resolvers = {
       }
 
       // RAILS:
-      const { all_workflow_run_ids, workflow_runs } = await get({
+      const { workflow_runs } = await get({
         url:
           "/workflow_runs.json" +
           formatUrlParams({
-            mode: "with_sample_info",
+            mode: queryingIdsOnly ? "basic" : "with_sample_info",
             domain: input.todoRemove?.domain,
             projectId: input.todoRemove?.projectId,
             search: input.todoRemove?.search,
@@ -987,19 +987,21 @@ export const resolvers: Resolvers = {
             tissue: input.todoRemove?.tissue,
             visibility: input.todoRemove?.visibility,
             workflow: input.todoRemove?.workflow,
-            limit: queryingIdsOnly
-              ? 0
-              : input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
-            offset: queryingIdsOnly
-              ? 0
-              : input.offset ?? input.limitOffset?.offset,
-            listAllIds: queryingIdsOnly,
+            // TODO: Just use limitOffset.
+            limit: input.limit ?? input.limitOffset?.limit,
+            offset: input.offset ?? input.limitOffset?.offset,
+            listAllIds: false,
           }),
         args,
         context,
       });
       if (queryingIdsOnly) {
-        return all_workflow_run_ids.map(id => ({ id }));
+        const uniqueSampleIds = new Set(
+          workflow_runs.map(run => run.sample.info.id),
+        );
+        return [...uniqueSampleIds].map(sampleId => ({
+          id: sampleId,
+        }));
       }
       if (!workflow_runs?.length) {
         return [];

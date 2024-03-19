@@ -34,12 +34,15 @@ jobs:
     environment: ${{ inputs.environment }}
     strategy: 
       matrix: 
-        app_configs: [ 
-          {name: API_URL, value: ${{ inputs.api_url }} },
-          {name: NEXTGEN_ENTITIES_URL, value: ${{ inputs.nextgen_entities_url }} },
-          {name: NEXTGEN_WORKFLOWS_URL, value: ${{ inputs.nextgen_workflows_url }} },
-          {name: ALLOWED_CORS_ORIGINS, value: ${{ inputs.allowed_cors_origin }} },
-        ]
+        app_configs: 
+          - name: API_URL
+            value: ${{ inputs.api_url }}
+          - name: NEXTGEN_ENTITIES_URL
+            value: ${{ inputs.nextgen_entities_url }}
+          - name: NEXTGEN_WORKFLOWS_URL
+            value: ${{ inputs.nextgen_workflows_url }}
+          - name: ALLOWED_CORS_ORIGINS
+            value: ${{ inputs.allowed_cors_origin }}
     permissions:
       id-token: write
       contents: read

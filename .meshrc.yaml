@@ -97,6 +97,12 @@ sources:
             responseSchema: ./json-schemas/sampleMetadata.json
             responseTypeName: SampleMetadata
           - type: Query
+            field: SampleForReport
+            method: GET
+            path: /pub/{args.snapshotLinkId}/samples/{args.railsSampleId}.json
+            responseSchema: ./json-schemas/sampleForReportResponse.json
+            responseTypeName: SampleForReport
+          - type: Query
             field: MngsWorkflowResults
             path: /pub/{args.snapshotLinkId}/samples/{args.sampleId}.json
             method: GET
@@ -169,7 +175,7 @@ sources:
             path: /samples/validate_user_can_delete_objects.json
             method: POST
             requestSample:
-              { "selectedIds": [28114, 28151], "workflow": "short-read-mngs", "authenticityToken": "token" }
+              { "selectedIds": [28114, 28151], "selectedIdsStrings": ["28114", "28151"], "workflow": "short-read-mngs", "authenticityToken": "token" }
             responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
             responseTypeName: ValidateUserCanDeleteObjects
           - type: Query
@@ -202,7 +208,7 @@ sources:
             field: DeleteSamples
             path: /samples/bulk_delete
             method: POST
-            requestSample: { "ids": [1], "workflow": "short-read-mngs", "authenticityToken": "token" }
+            requestSample: { "ids": [1], "idsStrings": ["1"], "workflow": "short-read-mngs", "authenticityToken": "token" }
             responseSchema: ./json-schemas/deleteSamples.json
             responseTypeName: DeleteSamples
           - type: Mutation

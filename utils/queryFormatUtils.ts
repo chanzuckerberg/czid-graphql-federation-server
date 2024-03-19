@@ -49,6 +49,17 @@ export const formatFedQueryForNextGen = (query: string): string => {
   return finishedQuery;
 };
 
+export const convertValidateConsensusGenomeQuery = (query: string): string => {
+  return (
+    query
+      // Remove fed prefix.
+      .replace("fedWorkflowRuns", "workflowRuns")
+      // Replace Fed arguments.
+      .replace(/input:.*\n/, "where: $where")
+      
+  )
+};
+
 export const convertWorkflowRunsQuery = (query: string): string => {
   return (
     query
@@ -65,13 +76,41 @@ export const convertWorkflowRunsQuery = (query: string): string => {
       // Add entityInputs filter (Mesh can't expose nested argument types?).
       .replace(
         "entityInputs",
-        'entityInputs(where: { entityType: { _eq: "SequencingRead" } })',
+        `entityInputs(where: 
+          { entityType: { _eq: "sequencing_read" }, inputEntityId: { _is_null: false } })`,
       )
   );
 };
 
 export const convertSequencingReadsQuery = (query: string): string => {
-  let nextGenQuery = query
+  // Remove fed prefix.
+  query = query.replaceAll("fedSequencingReads", "sequencingReads");
+
+  // Only querying ID.
+  if (/{\s*id\s*}/.test(query)) {
+    return (
+      query
+        // Replace Fed variables.
+        .replace(
+          /query [\s\S]*?{/,
+          `query ($where: SequencingReadWhereClause) {`,
+        )
+        // Replace Fed arguments.
+        .replace("input: $input", "where: $where")
+        // Add railsSampleId field.
+        .replace(
+          /{\s*id\s*}/,
+          `{
+             id
+             sample {
+               railsSampleId
+             }
+           }`,
+        )
+    );
+  }
+
+  query = query
     // Replace Fed variables.
     .replace(
       /query [\s\S]*?{/,
@@ -80,8 +119,6 @@ export const convertSequencingReadsQuery = (query: string): string => {
               $limitOffset: LimitOffsetClause, 
               $producingRunIds: [UUID!]) {`,
     )
-    // Remove fed prefix.
-    .replace("fedSequencingReads", "sequencingReads")
     // Replace Fed arguments.
     .replace(
       "input: $input",
@@ -104,8 +141,8 @@ export const convertSequencingReadsQuery = (query: string): string => {
     "ownerUserName",
     /collection {[\s\S]*?}/,
   ]) {
-    nextGenQuery = nextGenQuery.replace(unsupportedField, "");
+    query = query.replace(unsupportedField, "");
   }
 
-  return nextGenQuery;
+  return query;
 };

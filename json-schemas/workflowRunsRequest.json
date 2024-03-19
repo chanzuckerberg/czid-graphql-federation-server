@@ -107,6 +107,14 @@
                         }
                     }
                 },
+                "deprecatedById": {
+                    "type": "object",
+                    "properties": {
+                        "_is_null": {
+                            "type": "boolean"
+                        }
+                    }
+                },
                 "ownerUserId": {
                     "type": "object",
                     "properties": {
@@ -130,6 +138,27 @@
                             "type": "array",
                             "items": {
                                 "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "entityInputs": {
+                    "type": "object",
+                    "properties": {
+                        "entityType": {
+                            "type": "object",
+                            "properties": {
+                                "_eq": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "inputEntityId": {
+                            "type": "object",
+                            "properties": {
+                                "_is_null": {
+                                    "type": "boolean"
+                                }
                             }
                         }
                     }

@@ -1,5 +1,9 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getMeshInstance } from "./utils/MeshInstance";
+import {
+  MeshExecuteTestFunction,
+  getMeshExecute,
+  getMeshInstance,
+} from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
 import { getExampleQuery } from "./utils/ExampleQueryFiles";
 import { assertEqualsNoWhitespace } from "./utils/StringUtils";
@@ -8,23 +12,25 @@ import { convertSequencingReadsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
 jest.spyOn(httpUtils, "fetchFromNextGen");
+jest.spyOn(httpUtils, "getFromRails");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
   (httpUtils.shouldReadFromNextGen as jest.Mock).mockClear();
+  (httpUtils.fetchFromNextGen as jest.Mock).mockClear();
+  (httpUtils.getFromRails as jest.Mock).mockClear();
 });
 
 const query = getExampleQuery("sequencing-reads-query");
 
 describe("sequencingReads query:", () => {
-  let execute: ExecuteMeshFn;
+  let execute: MeshExecuteTestFunction;
 
   beforeEach(async () => {
     (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
       Promise.resolve(false),
     );
-    const mesh$ = await getMeshInstance();
-    ({ execute } = mesh$);
+    execute = await getMeshExecute();
   });
 
   it("Returns empty list", async () => {
@@ -32,6 +38,7 @@ describe("sequencingReads query:", () => {
       workflow_runs: [],
     }));
     const response = await execute(query, {});
+    console.log(JSON.stringify(response));
 
     expect(httpUtils.get).toHaveBeenCalledWith({
       url: "/workflow_runs.json?&mode=with_sample_info&search=abc&limit=50&offset=100&listAllIds=false",
@@ -329,77 +336,9 @@ describe("sequencingReads query:", () => {
     );
   });
 
-  it("Constructs correct NextGen query", () => {
-    const query = `
-      query DiscoveryViewFCSequencingReadsQuery(
-        $input: queryInput_fedSequencingReads_input_Input
-      ) {
-        fedSequencingReads(input: $input) {
-          id
-          nucleicAcid
-          protocol
-          medakaModel
-          technology
-          taxon {
-            name
-          }
-          sample {
-            railsSampleId
-            name
-            notes
-            collectionLocation
-            sampleType
-            waterControl
-            uploadError
-            hostOrganism {
-              name
-            }
-            collection {
-              name
-              public
-            }
-            ownerUserId
-            ownerUserName
-            metadatas {
-              edges {
-                node {
-                  fieldName
-                  value
-                }
-              }
-            }
-          }
-          consensusGenomes {
-            edges {
-              node {
-                producingRunId
-                taxon {
-                  name
-                }
-                accession {
-                  accessionId
-                  accessionName
-                }
-                metrics {
-                  coverageDepth
-                  totalReads
-                  gcPercent
-                  refSnps
-                  percentIdentity
-                  nActg
-                  percentGenomeCalled
-                  nMissing
-                  nAmbiguous
-                  referenceGenomeLength
-                }
-              }
-            }
-          }
-        }
-      }`;
-
+  it("Constructs correct NextGen paginated query", () => {
     assertEqualsNoWhitespace(
-      convertSequencingReadsQuery(query),
+      convertSequencingReadsQuery(getExampleQuery("sequencing-reads-query-fe")),
       `query ($where: SequencingReadWhereClause,
               $orderBy: [SequencingReadOrderByClause!],
               $limitOffset: LimitOffsetClause,
@@ -457,5 +396,354 @@ describe("sequencingReads query:", () => {
         }
       }`,
     );
+  });
+
+  it("Constructs correct NextGen IDs query", () => {
+    assertEqualsNoWhitespace(
+      convertSequencingReadsQuery(
+        getExampleQuery("sequencing-reads-query-id-fe"),
+      ),
+      `query ($where: SequencingReadWhereClause) {
+        sequencingReads(where: $where) {
+          id
+          sample {
+            railsSampleId
+          }
+        }
+      }`,
+    );
+  });
+
+  it("Joins NextGen and Rails data", async () => {
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [
+            {
+              id: "abc",
+              sample: {
+                railsSampleId: 123,
+              },
+              technology: "Technology A",
+              consensusGenomes: {
+                edges: [],
+              },
+            },
+            {
+              id: "def",
+              sample: {
+                railsSampleId: 123,
+              },
+              technology: "Technology B",
+              consensusGenomes: {
+                edges: [],
+              },
+            },
+            {
+              id: "ghi",
+              sample: {
+                railsSampleId: 456,
+              },
+              technology: "Technology C",
+              consensusGenomes: {
+                edges: [],
+              },
+            },
+          ],
+        },
+      }),
+    );
+    (httpUtils.getFromRails as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        samples: [
+          {
+            id: 123,
+            details: {
+              db_sample: {
+                sample_notes: "Note A",
+              },
+              derived_sample_output: {
+                project_name: "Project A",
+              },
+              metadata: {
+                collection_location_v2: "USA",
+                custom1: "Custom value 1",
+              },
+            },
+          },
+          {
+            id: 456,
+            details: {
+              db_sample: {
+                sample_notes: "Note B",
+              },
+              derived_sample_output: {
+                project_name: "Project B",
+              },
+              metadata: {
+                collection_location_v2: "Mexico",
+                custom2: "Custom value 2",
+              },
+            },
+          },
+        ],
+      }),
+    );
+
+    const sequencingReads = (await execute(query, {})).data.fedSequencingReads;
+
+    expect(sequencingReads).toMatchObject([
+      expect.objectContaining({
+        id: "abc",
+        technology: "Technology A",
+        sample: {
+          railsSampleId: 123,
+          collectionLocation: "USA",
+          notes: "Note A",
+          collection: {
+            name: "Project A",
+            public: false,
+          },
+          metadatas: {
+            edges: [
+              {
+                node: {
+                  fieldName: "custom1",
+                  value: "Custom value 1",
+                },
+              },
+            ],
+          },
+          waterControl: false,
+        },
+      }),
+      expect.objectContaining({
+        id: "def",
+        technology: "Technology B",
+        sample: {
+          railsSampleId: 123,
+          collectionLocation: "USA",
+          notes: "Note A",
+          collection: {
+            name: "Project A",
+            public: false,
+          },
+          metadatas: {
+            edges: [
+              {
+                node: {
+                  fieldName: "custom1",
+                  value: "Custom value 1",
+                },
+              },
+            ],
+          },
+          waterControl: false,
+        },
+      }),
+      expect.objectContaining({
+        id: "ghi",
+        technology: "Technology C",
+        sample: {
+          railsSampleId: 456,
+          collectionLocation: "Mexico",
+          notes: "Note B",
+          collection: {
+            name: "Project B",
+            public: false,
+          },
+          metadatas: {
+            edges: [
+              {
+                node: {
+                  fieldName: "custom2",
+                  value: "Custom value 2",
+                },
+              },
+            ],
+          },
+          waterControl: false,
+        },
+      }),
+    ]);
+  });
+
+  it("Joins NextGen and Rails data for IDs only", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [
+            {
+              id: "abc",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "def",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "ghi",
+              sample: {
+                railsSampleId: 456,
+              },
+            },
+          ],
+        },
+      }),
+    );
+    (httpUtils.getFromRails as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        all_samples_ids: [123],
+      }),
+    );
+
+    const sequencingReads = (
+      await execute(query, { input: { where: { sample: {} } } })
+    ).data.fedSequencingReads;
+
+    expect(sequencingReads).toMatchObject([
+      {
+        id: "abc",
+      },
+      {
+        id: "def",
+      },
+    ]);
+  });
+
+  it("Fetches all IDs only from Rails if NextGen off", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(false),
+    );
+    (httpUtils.get as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        workflow_runs: [
+          {
+            sample: {
+              info: {
+                id: 123,
+              },
+            },
+          },
+          {
+            sample: {
+              info: {
+                id: 456,
+              },
+            },
+          },
+        ],
+      }),
+    );
+
+    const sequencingReads = (await execute(query, { input: {} })).data
+      .fedSequencingReads;
+
+    expect(httpUtils.fetchFromNextGen as jest.Mock).not.toHaveBeenCalled();
+    expect(sequencingReads).toMatchObject([{ id: "123" }, { id: "456" }]);
+  });
+
+  it("Does not call Rails if ID query has no sample filter", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [
+            {
+              id: "abc",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "def",
+              sample: {
+                railsSampleId: 123,
+              },
+            },
+            {
+              id: "ghi",
+              sample: {
+                railsSampleId: 456,
+              },
+            },
+          ],
+        },
+      }),
+    );
+
+    const sequencingReads = (await execute(query, { input: {} })).data
+      .fedSequencingReads;
+
+    expect(httpUtils.getFromRails as jest.Mock).not.toHaveBeenCalled();
+    expect(sequencingReads).toMatchObject([
+      {
+        id: "abc",
+      },
+      {
+        id: "def",
+      },
+      {
+        id: "ghi",
+      },
+    ]);
+  });
+
+  it("Does not call Rails to do join if no NextGen data returned", async () => {
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [],
+        },
+      }),
+    );
+
+    const sequencingReads = (await execute(query, {})).data.fedSequencingReads;
+
+    expect(sequencingReads).toEqual([]);
+    expect(httpUtils.getFromRails as jest.Mock).not.toHaveBeenCalled();
+  });
+
+  it("Does not call Rails to do join if only querying IDs", async () => {
+    const query = getExampleQuery("sequencing-reads-query-id-fe");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+    (httpUtils.fetchFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          sequencingReads: [
+            {
+              id: "abc",
+            },
+          ],
+        },
+      }),
+    );
+
+    const sequencingReads = (
+      await execute(query, { input: { where: { id: { _in: ["abc"] } } } })
+    ).data.fedSequencingReads;
+
+    expect(sequencingReads).toEqual([{ id: "abc" }]);
+    expect(httpUtils.getFromRails as jest.Mock).not.toHaveBeenCalled();
   });
 });

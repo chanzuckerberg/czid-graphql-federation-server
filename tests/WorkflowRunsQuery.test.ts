@@ -4,15 +4,17 @@ import { getMeshInstance } from "./utils/MeshInstance";
 import { assertEqualsNoWhitespace } from "./utils/StringUtils";
 
 import * as httpUtils from "../utils/httpUtils";
-import { convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
+import { convertValidateConsensusGenomeQuery, convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
+jest.spyOn(httpUtils, "fetchFromNextGen");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
   (httpUtils.postWithCSRF as jest.Mock).mockClear();
   (httpUtils.shouldReadFromNextGen as jest.Mock).mockClear();
+  (httpUtils.fetchFromNextGen as jest.Mock).mockClear();
 });
 
 describe("workflowRuns query:", () => {
@@ -66,7 +68,7 @@ describe("workflowRuns query:", () => {
           edges: [
             {
               node: {
-                entityType: "SequencingRead",
+                entityType: "sequencing_read",
                 inputEntityId: "2",
               },
             },
@@ -81,7 +83,7 @@ describe("workflowRuns query:", () => {
           edges: [
             {
               node: {
-                entityType: "SequencingRead",
+                entityType: "sequencing_read",
                 inputEntityId: "4",
               },
             },
@@ -114,34 +116,8 @@ describe("workflowRuns query:", () => {
   });
 
   it("Constructs correct NextGen query", async () => {
-    const query = `
-      query DiscoveryViewFCWorkflowsQuery(
-        $input: queryInput_fedWorkflowRuns_input_Input
-      ) {
-        fedWorkflowRuns(input: $input) {
-          id
-          startedAt
-          status
-          rawInputsJson
-          workflowVersion {
-            version
-            workflow {
-              name
-            }
-          }
-          entityInputs {
-            edges {
-              node {
-                inputEntityId
-                entityType
-              }
-            }
-          }
-        }
-      }`;
-
     assertEqualsNoWhitespace(
-      convertWorkflowRunsQuery(query),
+      convertWorkflowRunsQuery(getExampleQuery("workflow-runs-query-fe")),
       `query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {
         workflowRuns(where: $where, orderBy: $orderBy) {
           id
@@ -154,7 +130,10 @@ describe("workflowRuns query:", () => {
               name
             }
           }
-          entityInputs(where: { entityType: { _eq: "SequencingRead" } }) {
+          entityInputs(where: { 
+            entityType: { _eq: "sequencing_read" },
+            inputEntityId: { _is_null: false } 
+          }) {
             edges {
               node {
                 inputEntityId
@@ -167,8 +146,28 @@ describe("workflowRuns query:", () => {
     );
   });
 
+  it("Uses orderBy array field for NextGen", async () => {
+    const query = getExampleQuery("workflow-runs-query-order-by-array");
+    (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+      Promise.resolve(true),
+    );
+
+    await execute(query, {}, { params: { query } });
+
+    expect(httpUtils.fetchFromNextGen as jest.Mock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customVariables: expect.objectContaining({
+          orderBy: [{ startedAt: "asc" }],
+        }),
+      }),
+    );
+  });
+
   describe("validConsensusGenomes query", () => {
-    it("should call the correct rails endpoint", async () => {
+    it("should call the correct rails endpoint when shouldReadFromNextGen is false", async () => {
+      (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+        Promise.resolve(false),
+      );
       await execute(getExampleQuery("workflow-runs-query-id-list"), {
         authenticityToken: "authtoken1234",
         workflowRunIds: ["1997", "2007"],

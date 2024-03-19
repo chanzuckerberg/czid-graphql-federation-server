@@ -9,6 +9,7 @@ export const get = async ({
   serviceType,
   fullResponse,
   customQuery,
+  securityToken,
 }: {
   url?: string;
   args: any;
@@ -16,6 +17,7 @@ export const get = async ({
   serviceType?: "workflows" | "entities";
   fullResponse?: boolean;
   customQuery?: string;
+  securityToken?: "string";
 }) => {
   try {
     const nextGenEnabled = await shouldReadFromNextGen(context);
@@ -27,6 +29,7 @@ export const get = async ({
         serviceType,
         fullResponse,
         customQuery,
+        securityToken,
       });
     } else {
       if (!url) {
@@ -105,6 +108,7 @@ export const fetchFromNextGen = async ({
   fullResponse,
   customQuery,
   customVariables,
+  securityToken,
 }: {
   args;
   context;
@@ -112,9 +116,10 @@ export const fetchFromNextGen = async ({
   fullResponse?: boolean;
   customQuery?: string;
   customVariables?: object;
+  securityToken?: "string";
 }) => {
   try {
-    const enrichedToken = await getEnrichedToken(context);
+    const enrichedToken = securityToken || await getEnrichedToken(context);
     const baseUrl =
       serviceType === "workflows"
         ? process.env.NEXTGEN_WORKFLOWS_URL

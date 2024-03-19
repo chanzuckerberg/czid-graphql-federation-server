@@ -5,6 +5,8 @@ import { getExampleQuery } from "./utils/ExampleQueryFiles";
 import { query_fedWorkflowRunsAggregate_aggregate_items } from "../.mesh";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
+import { ExecuteMeshFn } from "@graphql-mesh/runtime";
+import { getMeshInstance } from "./utils/MeshInstance";
 jest.spyOn(httpUtils, "fetchFromNextGen");
 
 beforeEach(() => {
@@ -14,10 +16,11 @@ beforeEach(() => {
 });
 
 describe("workflows aggregate query:", () => {
-  let execute: MeshExecuteTestFunction;
+  let execute: ExecuteMeshFn;
 
   beforeEach(async () => {
-    execute = await getMeshExecute();
+    const mesh$ = await getMeshInstance();
+    ({ execute } = mesh$);
   });
 
   it("Returns aggregate counts for each workflow", async () => {
@@ -27,7 +30,7 @@ describe("workflows aggregate query:", () => {
     (httpUtils.get as jest.Mock).mockImplementation(() => ({
       projects: [
         {
-          id: 1,
+          id: 2,
           sample_counts: {
             cg_runs_count: 1,
             amr_runs_count: 2,

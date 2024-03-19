@@ -133,12 +133,14 @@ describe("workflows aggregate query:", () => {
     const aggregates: query_fedWorkflowRunsAggregate_aggregate_items[] =
       response.data.fedWorkflowRunsAggregate.aggregate;
 
-    expect(aggregates).toHaveLength(2);
+    expect(aggregates).toHaveLength(6);
     expect(
-      aggregates.find(aggregate => aggregate.groupBy.collectionId === 2),
-    ).toBeDefined();
+      aggregates.filter(aggregate => aggregate.groupBy.collectionId === 2)
+        .length,
+    ).toBe(3);
     expect(
-      aggregates.find(aggregate => aggregate.groupBy.collectionId === 3),
-    ).toBeDefined();
+      aggregates.filter(aggregate => aggregate.groupBy.collectionId === 3)
+        .length,
+    ).toBe(3);
   });
 });

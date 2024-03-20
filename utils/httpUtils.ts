@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { getEnrichedToken } from "./enrichToken";
 import { formatFedQueryForNextGen } from "./queryFormatUtils";
 
@@ -142,15 +141,9 @@ export const fetchFromNextGen = async ({
         variables: customVariables ?? context.params.variables,
       }),
     });
-    try {
-      console.log("response !== null", response !== null);
-      const responseJson = await response.json();
-      console.log("after");
-      console.log("response json", responseJson);
-    } catch (e) {
-      console.error("error", e);
-    }
+
     checkForLogin(response?.url);
+
     if (fullResponse === true) {
       return response;
     } else {

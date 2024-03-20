@@ -133,6 +133,12 @@
                 },
                 "orderDir": {
                     "type": "string"
+                },
+                "sampleIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         }

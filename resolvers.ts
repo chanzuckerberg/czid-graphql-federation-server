@@ -289,6 +289,7 @@ export const resolvers: Resolvers = {
             //      filters: {
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
+            sampleIds: input?.todoRemove?.sampleIds,
             taxon: input?.todoRemove?.taxons,
             taxaLevels: input?.todoRemove?.taxaLevels,
             time: input?.todoRemove?.time,

@@ -60,7 +60,7 @@ export const convertValidateConsensusGenomeQuery = (query: string): string => {
       // Remove fed prefix.
       .replace("fedWorkflowRuns", "workflowRuns")
       // Replace Fed arguments.
-      .replace(/input:.*\n/, "where: $where\n")      
+      .replace(/input:.*\n/, "where: $where){\n")      
   )
 };
 

@@ -52,11 +52,15 @@ export const formatFedQueryForNextGen = (query: string): string => {
 export const convertValidateConsensusGenomeQuery = (query: string): string => {
   return (
     query
+      // Replace Fed variables.
+      .replace(
+        /query [\s\S]*?{/,
+        "query ($where: ConsensusGenomeWhereClause) {",
+      )
       // Remove fed prefix.
       .replace("fedWorkflowRuns", "workflowRuns")
       // Replace Fed arguments.
-      .replace(/input:.*\n/, "where: $where){\n")
-      
+      .replace(/input:.*\n/, "where: $where\n")      
   )
 };
 

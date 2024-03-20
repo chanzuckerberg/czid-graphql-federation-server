@@ -142,8 +142,6 @@ export const fetchFromNextGen = async ({
       }),
     });
 
-    checkForLogin(response?.url);
-
     if (fullResponse === true) {
       return response;
     } else {

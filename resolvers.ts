@@ -289,14 +289,16 @@ export const resolvers: Resolvers = {
             //      filters: {
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
-            sampleIds: input?.todoRemove?.sampleIds,
             taxon: input?.todoRemove?.taxons,
             taxaLevels: input?.todoRemove?.taxaLevels,
             time: input?.todoRemove?.time,
             tissue: input?.todoRemove?.tissue,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
+            // sampleIds and workflowRunIds are only used for API testing, not in the app.
             workflowRunIds: input?.todoRemove?.workflowRunIds,
+            sampleIds: input?.todoRemove?.sampleIds,
+
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
             limit: input?.limit,

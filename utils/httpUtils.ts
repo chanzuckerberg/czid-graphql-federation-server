@@ -17,7 +17,7 @@ export const get = async ({
   serviceType?: "workflows" | "entities";
   fullResponse?: boolean;
   customQuery?: string;
-  securityToken?: "string";
+  securityToken?: string;
 }) => {
   try {
     const nextGenEnabled = await shouldReadFromNextGen(context);
@@ -116,7 +116,7 @@ export const fetchFromNextGen = async ({
   fullResponse?: boolean;
   customQuery?: string;
   customVariables?: object;
-  securityToken?: "string";
+  securityToken?: string;
 }) => {
   try {
     const enrichedToken = securityToken || await getEnrichedToken(context);
@@ -142,6 +142,15 @@ export const fetchFromNextGen = async ({
         variables: customVariables ?? context.params.variables,
       }),
     });
+    try {
+      console.log("response !== null", response !== null);
+      const responseJson = await response.json();
+      console.log("after");
+      console.log("response json", responseJson);
+    } catch (e) {
+      console.error("error", e);
+    }
+    checkForLogin(response?.url);
     if (fullResponse === true) {
       return response;
     } else {

@@ -1,30 +1,19 @@
+import { getContext } from "../tests/utils/MockContext";
+import { getEnrichedToken } from "./enrichToken";
 import { fetchFromNextGen } from "./httpUtils";
+
+jest.mock("./enrichToken", () => ({
+  getEnrichedToken: jest.fn().mockImplementation(() => { console.log("in mocked function"); return Promise.resolve("mockEnrichedToken"); } ),
+}));
 
 describe('fetchFromNextGen', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  const getContext = () => {
-    const mockedHeaders: unknown = {
-      get: jest.fn().mockReturnValue("cookieValue"),
-    };
-
-    return {
-      params: {
-        query: "query",
-        variables: "variables",
-      },
-      request: {
-        headers: mockedHeaders as Headers,
-      },
-    };
-  };
-
   describe('when security token is provided', () => {
     it('calls nextGen with provided security token ', async () => {
       const mockFetch = jest.fn().mockResolvedValue({
-        status: 200,
         json: jest.fn().mockResolvedValue({ mockField: "mockValue" }),
       });
       global.fetch = mockFetch;
@@ -43,17 +32,38 @@ describe('fetchFromNextGen', () => {
         securityToken,
       });
 
-      console.log("before expect");
-      // Assert that fetch is called with an object that includes a header with the bearer token
       expect(mockFetch).toHaveBeenCalledWith(
-        `${url}/graphql`,
-        expect.anything(),
+        `${process.env.NEXTGEN_ENTITIES_URL}/graphql`,
+        expect.objectContaining({
+          headers: expect.objectContaining({
+          Authorization: `Bearer ${securityToken}`,
+          }),
+        }),
       );
     });
   });
+
+  describe('when no security token is provided', () => {
+    it('calls Rails to get a token', async () => {
+      const mockFetch = jest.fn().mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue({ mockField: "mockValue" }),
+      });
+
+      global.fetch = mockFetch
+
+      const args = {};
+      const context = getContext();
+
+      const url = "https://example.com";
+      process.env.NEXTGEN_ENTITIES_URL = url;
+
+      await fetchFromNextGen({
+        args,
+        context,
+        serviceType: "entities",
+      });
+
+      expect(getEnrichedToken).toHaveBeenCalled();
+    });
+  });
 });
-        // expect.objectContaining({
-        //   headers: expect.objectContaining({
-        //     Authorization: `Bearer ${securityToken}`,
-        //   }),
-        // }),

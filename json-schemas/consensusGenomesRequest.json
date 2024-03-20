@@ -139,6 +139,12 @@
                     "items": {
                         "type": "integer"
                     }
+                },
+                "workflowRunIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         }

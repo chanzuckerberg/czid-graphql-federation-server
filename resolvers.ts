@@ -296,6 +296,7 @@ export const resolvers: Resolvers = {
             tissue: input?.todoRemove?.tissue,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
+            workflowRunIds: input?.todoRemove?.workflowRunIds,
             //  - DiscoveryDataLayer.ts
             //    await this._collection.fetchDataCallback({
             limit: input?.limit,

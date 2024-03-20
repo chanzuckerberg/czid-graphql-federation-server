@@ -7,6 +7,7 @@ import {
   query_fedWorkflowRunsAggregate_aggregate_items,
   query_fedWorkflowRuns_items,
 } from "./.mesh";
+import { fedBulkDowloadsResolver } from "./resolver-functions/fedBulkDownloads";
 import { processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
 import {
   fetchFromNextGen,
@@ -59,88 +60,7 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
-    fedBulkDownloads: async (root, args, context, info) => {
-      const statusDictionary = {
-        success: "SUCCEEDED",
-        error: "FAILED",
-        waiting: "PENDING",
-        running: "INPROGRESS",
-        //fyi: in NextGen there is also a status of STARTED
-      };
-      const urlParams = formatUrlParams({
-        searchBy: args?.input?.searchBy,
-        n: args?.input?.limit,
-      });
-      const getEntityInputInfo = entities => {
-        return entities.map(entity => {
-          return {
-            id: entity?.id,
-            name: entity?.sample_name,
-          };
-        });
-      };
-      const res = await get({
-        url: `/bulk_downloads.json${urlParams}`,
-        args,
-        context,
-      });
-      const mappedRes = res.map(async bulkDownload => {
-        const details = await get({
-          url: `/bulk_downloads/${bulkDownload?.id}.json`,
-          args,
-          context,
-        });
-        const url = details?.bulk_download?.presigned_output_url;
-        console.log(details);
-        const entityInputs = [
-          ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
-          ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
-        ];
-        console.log(entityInputs);
-        const sampleNames = new Set(
-          entityInputs.map(entityInput => entityInput.name),
-        );
-        const totalSamples =
-          details?.bulk_download?.params?.sample_ids?.value?.length;
-
-        const {
-          id,
-          status,
-          user_id,
-          download_type,
-          created_at,
-          output_file_size,
-          logUrl,
-          analysis_type,
-        } = bulkDownload;
-
-        // In Next Gen we will have an array with all of the entity input
-        // filtered through the nodes entity query to get the relevant info
-        // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
-        // We will get `sampleNames` by checking __typename to see if the entity is a sample,
-        // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
-        // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
-        return {
-          id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
-          startedAt: created_at,
-          status: statusDictionary[status],
-          downloadType: download_type,
-          ownerUserId: user_id,
-          fileSize: output_file_size,
-          url,
-          sampleNames,
-          analysisCount: entityInputs.length,
-          entityInputFileType: analysis_type,
-          entityInputs,
-          logUrl, // used in admin only, we will deprecate log_url and use something like executionId
-          totalSamples,
-          // dedupping by name isn't entirely reliable
-          // we will use this as the accurate number of samples until we switch to NextGen
-          // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
-        };
-      });
-      return mappedRes;
-    },
+    fedBulkDownloads: fedBulkDowloadsResolver,
     BulkDownloadCGOverview: async (root, args, context, info) => {
       if (!args?.input) {
         throw new Error("No input provided");

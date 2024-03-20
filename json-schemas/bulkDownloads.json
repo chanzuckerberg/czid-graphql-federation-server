@@ -12,13 +12,7 @@
             "startedAt": {
                 "type": "string"
             },
-            "description": {
-                "type": "string"
-            },
             "downloadType": {
-                "type": "string"
-            },
-            "downloadDisplayName": {
                 "type": "string"
             },
             "fileFormat": {
@@ -32,10 +26,6 @@
             },
             "url": {
                 "type": "string"
-            },
-            "sampleNames": {
-                "type": "array",
-                "items": "string"
             },
             "analysisCount": {
                 "type": "integer"
@@ -57,11 +47,34 @@
                     }
                 }
             },
+            "params": {
+                "type": "object",
+                "properties": {
+                    "downloadFormat": {
+                        "type": "string"
+                    },
+                    "metric": {
+                        "type": "string"
+                    },
+                    "background": {
+                        "type": "string"
+                    },
+                    "filterBy": {
+                        "type": "string"
+                    },
+                    "taxaWithReads": {
+                        "type": "string"
+                    },
+                    "includeMetadata":{
+                        "type": "string"
+                    },
+                    "fileFormat":{
+                        "type": "string"
+                    }
+                }
+            },
             "logUrl": {
                 "type": "string"
-            },
-            "totalSamples": {
-                "type": "integer"
             }
         }
     }

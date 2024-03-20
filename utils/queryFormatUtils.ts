@@ -55,7 +55,7 @@ export const convertValidateConsensusGenomeQuery = (query: string): string => {
       // Replace Fed variables.
       .replace(
         /query [\s\S]*?{/,
-        "query ($where: ConsensusGenomeWhereClause) {",
+        "query ($where: WorkflowRunWhereClause) {",
       )
       // Remove fed prefix.
       .replace("fedWorkflowRuns", "workflowRuns")

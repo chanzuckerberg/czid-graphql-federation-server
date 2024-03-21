@@ -114,7 +114,6 @@ describe("bulkDownloads Query:", () => {
         },
       },
     ];
-    console.log(result.data.fedBulkDownloads);
     expect(result.data.fedBulkDownloads).toStrictEqual(bulkDownloadResponse);
   });
 
@@ -242,7 +241,6 @@ describe("bulkDownloads Query:", () => {
         },
       },
     ];
-    console.log(result.data.fedBulkDownloads?.entityInputs);
     expect(result.data.fedBulkDownloads).toStrictEqual(bulkDownloadResponse);
   });
 });

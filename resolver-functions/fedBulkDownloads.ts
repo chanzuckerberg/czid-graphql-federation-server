@@ -33,7 +33,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       context,
     });
     const url = details?.bulk_download?.presigned_output_url;
-    console.log("params", details?.bulk_download?.params);
     const entityInputs = [
       ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
       ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
@@ -45,7 +44,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       .map(param => {
         params[snakeToCamel(param[0])] = param[1];
       });
-    console.log("params after formatting", params);
 
     const {
       id,

@@ -30,6 +30,9 @@
             "analysisCount": {
                 "type": "integer"
             },
+            "errorMessage": {
+                "type": "string"
+            },
             "entityInputFileType": {
                 "type": "string"
             },

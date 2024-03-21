@@ -1,16 +1,59 @@
 import { getContext } from "../tests/utils/MockContext";
 import { getEnrichedToken } from "./enrichToken";
-import { fetchFromNextGen } from "./httpUtils";
+import * as httpUtils from "./httpUtils";
 
 jest.mock("./enrichToken", () => ({
-  getEnrichedToken: jest.fn().mockImplementation(() => { console.log("in mocked function"); return Promise.resolve("mockEnrichedToken"); } ),
+  getEnrichedToken: jest.fn().mockResolvedValue("mockEnrichedToken"),
 }));
 
-describe('fetchFromNextGen', () => {
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
+const { get, fetchFromNextGen} = httpUtils;
+
+describe('get', () => {
+  let fetchFromNextGenSpy: jest.SpyInstance;
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    if (fetchFromNextGenSpy) {
+      fetchFromNextGenSpy.mockRestore();
+    }
   });
 
+  describe("when nextGenEnabled", () => {
+    let context: unknown;
+
+    beforeEach(() => {
+      context = getContext({ mockHeaderValue: "true" });
+    });
+
+    describe("when security token is provided", () => {
+      it('calls fetchFromNextGen with security token', async () => {
+        fetchFromNextGenSpy = jest.spyOn(httpUtils, "fetchFromNextGen");
+        fetchFromNextGenSpy.mockImplementation(() => Promise.resolve({ mockField: "mockValue" }));
+        const args = {};
+        const serviceType = "entities";
+        const securityToken = "mockSecurityToken";
+
+        await get({
+          args,
+          context,
+          serviceType,
+          securityToken,
+        });
+
+        expect(fetchFromNextGenSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            securityToken,
+          }),
+        );
+      });
+    });
+  });
+});
+
+describe('fetchFromNextGen', () => {
   describe('when security token is provided', () => {
     it('calls nextGen with provided security token ', async () => {
       const mockFetch = jest.fn().mockResolvedValue({
@@ -20,7 +63,7 @@ describe('fetchFromNextGen', () => {
 
       const args = {};
       const context = getContext();
-      const securityToken = "your-security-token";
+      const securityToken = "mockSecurityToken";
 
       const url = "https://example.com";
       process.env.NEXTGEN_ENTITIES_URL = url;
@@ -48,7 +91,6 @@ describe('fetchFromNextGen', () => {
       const mockFetch = jest.fn().mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue({ mockField: "mockValue" }),
       });
-
       global.fetch = mockFetch
 
       const args = {};

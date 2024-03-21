@@ -11,7 +11,7 @@ export const BulkDownloadsCGOverviewResolver = async (
   if (nextGenEnabled) {
     const entitiesQuery = `
       query EntitiesQuery {
-        consensusGenomes(where: {producingRunId: {in: [...${args?.input?.workflowRunIdsStrings}]}}) {
+        consensusGenomes(where: {producingRunId: {in: ${args?.input?.workflowRunIdsStrings}}}) {
           metrics {
             coverageDepth
             totalReads

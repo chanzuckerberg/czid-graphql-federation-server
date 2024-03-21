@@ -1915,7 +1915,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -1973,7 +1973,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!
@@ -2981,7 +2981,7 @@ type WorkflowRun implements EntityInterface & Node {
   _id: GlobalID!
   cachedResults: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime!
   deprecated: Boolean!
   endedAt: DateTime
   entityInputs(
@@ -3012,7 +3012,7 @@ type WorkflowRun implements EntityInterface & Node {
   sampleId: Int
   sfnExecutionArn: String
   startedAt: DateTime
-  status: WorkflowRunStatus
+  status: String!
   steps(
     """Returns the items in the list that come after the specified cursor."""
     after: String = null
@@ -3027,7 +3027,7 @@ type WorkflowRun implements EntityInterface & Node {
   ): WorkflowRunStepConnection!
   stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
   timeToFinalized: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime!
   wdlVersion: String
   workflow: String!
   workflowRunnerInputsJson: String
@@ -4653,16 +4653,19 @@ type query_UserBlastAnnotations_items {
 
 type query_fedBulkDownloads_items {
   analysisCount: Int
+  downloadType: String
   entityInputFileType: String
   entityInputs: [query_fedBulkDownloads_items_entityInputs_items]
-  file: query_fedBulkDownloads_items_file
+  errorMessage: String
+  fileFormat: String
+  fileSize: Int
   id: String
+  logUrl: String
   ownerUserId: String
-  rawInputsJson: query_fedBulkDownloads_items_rawInputsJson
-  sampleNames: [JSON]
+  params: query_fedBulkDownloads_items_params
   startedAt: String
   status: String
-  toDelete: query_fedBulkDownloads_items_toDelete
+  url: String
 }
 
 type query_fedBulkDownloads_items_entityInputs_items {
@@ -4670,27 +4673,14 @@ type query_fedBulkDownloads_items_entityInputs_items {
   name: String
 }
 
-type query_fedBulkDownloads_items_file {
-  downloadLink: query_fedBulkDownloads_items_file_downloadLink
-  size: Int
-}
-
-type query_fedBulkDownloads_items_file_downloadLink {
-  url: String
-}
-
-type query_fedBulkDownloads_items_rawInputsJson {
-  description: String
-  downloadDisplayName: String
-  downloadType: String
+type query_fedBulkDownloads_items_params {
+  background: String
+  downloadFormat: String
   fileFormat: String
-}
-
-type query_fedBulkDownloads_items_toDelete {
-  log_url: String
-  progress: JSON
-  totalSamples: Int
-  user_name: String
+  filterBy: String
+  includeMetadata: String
+  metric: String
+  taxaWithReads: String
 }
 
 type query_fedConsensusGenomes_items {

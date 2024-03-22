@@ -714,32 +714,61 @@ export const resolvers: Resolvers = {
             args,
             context,
           });
-          if (input.where?.sample != null) {
-            const filteredSampleIds = new Set(
-              (
-                await getFromRails({
-                  url:
-                    "/samples/index_v2.json" +
-                    formatUrlParams({
-                      locationV2: input.where.sample.collectionLocation?._in,
-                      host: input.where.sample.hostOrganism?.name?._in,
-                      tissue: input.where.sample.sampleType?._in,
-                      orderBy: input.orderByArray,
-                      limit: 0,
-                      offset: 0,
-                      listAllIds: true,
-                    }),
-                  args,
-                  context,
-                })
-              ).all_samples_ids,
+
+          const isSortingInRails =
+            input.orderByArray?.[0]?.sample?.metadata != null ||
+            input.orderByArray?.[0]?.sample?.hostOrganism?.name != null;
+          if (
+            !input.where?.sample?.collectionLocation?._in?.length &&
+            !input.where?.sample?.hostOrganism?.name?._in?.length &&
+            !input.where?.sample?.sampleType?._in?.length &&
+            !isSortingInRails
+          ) {
+            // Don't need Rails.
+            return (await nextGenPromise).data.sequencingReads;
+          }
+
+          const railsSampleIds: number[] = (
+            await getFromRails({
+              url:
+                "/samples/index_v2.json" +
+                formatUrlParams({
+                  locationV2: input?.where?.sample?.collectionLocation?._in,
+                  host: input?.where?.sample?.hostOrganism?.name?._in,
+                  tissue: input?.where?.sample?.sampleType?._in,
+                  orderBy: isSortingInRails
+                    ? input.orderByArray?.[0]?.sample?.metadata?.fieldName ??
+                      "host"
+                    : undefined,
+                  orderDir: isSortingInRails
+                    ? (input.orderByArray?.[0]?.sample?.metadata?.dir ??
+                        input.orderByArray?.[0]?.sample?.hostOrganism?.name) ===
+                      "asc_nulls_first"
+                      ? "ASC"
+                      : "DESC"
+                    : undefined,
+                  limit: 0,
+                  offset: 0,
+                  listAllIds: true,
+                }),
+              args,
+              context,
+            })
+          ).all_samples_ids;
+
+          if (isSortingInRails) {
+            const railsSampleIdsSet = new Set(
+              (await nextGenPromise).data.sequencingReads.map(
+                sequencingRead => sequencingRead.sample.railsSampleId,
+              ),
             );
+            return railsSampleIds.filter(id => railsSampleIdsSet.has(id));
+          } else {
+            const railsSampleIdsSet = new Set(railsSampleIds);
             return (await nextGenPromise).data.sequencingReads.filter(
               sequencingRead =>
-                filteredSampleIds.has(sequencingRead.sample.railsSampleId),
+                railsSampleIdsSet.has(sequencingRead.sample.railsSampleId),
             );
-          } else {
-            return (await nextGenPromise).data.sequencingReads;
           }
         }
 

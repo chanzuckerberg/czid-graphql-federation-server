@@ -685,16 +685,30 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
+        // NEXT GEN IDS:
         if (queryingIdsOnly) {
           const nextGenPromise = fetchFromNextGen({
             customQuery: convertSequencingReadsQuery(context.params.query),
             customVariables: {
-              // Entities Service doesn't support sample metadata yet.
               where: {
                 collectionId: input.where?.collectionId,
                 taxon: input.where?.taxon,
                 consensusGenomes: input.where?.consensusGenomes,
+                // Entities Service doesn't support sample host + metadata yet.
+                sample:
+                  input.where?.sample?.name != null
+                    ? {
+                        name: input.where.sample.name,
+                      }
+                    : undefined,
               },
+              orderBy:
+                input.orderByArray?.[0]?.protocol != null ||
+                input.orderByArray?.[0]?.technology != null ||
+                input.orderByArray?.[0]?.medakaModel != null ||
+                input.orderByArray?.[0]?.sample?.name != null
+                  ? input.orderByArray
+                  : undefined,
             },
             serviceType: "entities",
             args,
@@ -710,6 +724,7 @@ export const resolvers: Resolvers = {
                       locationV2: input.where.sample.collectionLocation?._in,
                       host: input.where.sample.hostOrganism?.name?._in,
                       tissue: input.where.sample.sampleType?._in,
+                      orderBy: input.orderByArray,
                       limit: 0,
                       offset: 0,
                       listAllIds: true,
@@ -728,6 +743,7 @@ export const resolvers: Resolvers = {
           }
         }
 
+        // NEXT GEN PAGE:
         const nextGenResponse = await fetchFromNextGen({
           customQuery: convertSequencingReadsQuery(context.params.query),
           customVariables: {

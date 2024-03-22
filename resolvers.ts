@@ -757,21 +757,15 @@ export const resolvers: Resolvers = {
           ).all_samples_ids;
 
           if (isSortingInRails) {
-            const sampleIdsToSequencingReads = new Map<number, any>();
+            const sampleIdsToReads = new Map<number, any>();
             for (const read of (await nextGenPromise).data.sequencingReads) {
-              if (!sampleIdsToSequencingReads.has(read.sample.railsSampleId)) {
-                sampleIdsToSequencingReads.set(read.sample.railsSampleId, [
-                  read,
-                ]);
+              if (!sampleIdsToReads.has(read.sample.railsSampleId)) {
+                sampleIdsToReads.set(read.sample.railsSampleId, [read]);
               } else {
-                sampleIdsToSequencingReads
-                  .get(read.sample.railsSampleId)
-                  ?.push(read);
+                sampleIdsToReads.get(read.sample.railsSampleId)?.push(read);
               }
             }
-            return railsSampleIds.flatMap(
-              id => sampleIdsToSequencingReads.get(id) ?? [],
-            );
+            return railsSampleIds.flatMap(id => sampleIdsToReads.get(id) ?? []);
           } else {
             const railsSampleIdsSet = new Set(railsSampleIds);
             return (await nextGenPromise).data.sequencingReads.filter(

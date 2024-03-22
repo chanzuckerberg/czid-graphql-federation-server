@@ -129,13 +129,13 @@ export const SampleForReportResolver = async (root, args, context) => {
       query WorkflowsQuery {
         workflowRuns(where: {
           workflowVersion: {workflow: {name: {_eq: "consensus-genome"}}}, 
-          entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}
+          entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}},
+          deprecatedById: {_is_null: true}
         }) {
           id
           _id
           railsWorkflowRunId
           status
-          deprecated
           ownerUserId
           errorMessage
           workflowVersion {
@@ -169,7 +169,7 @@ export const SampleForReportResolver = async (root, args, context) => {
     const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson);
     // If !consensusGenome this is a workflow run that is in progress
     return {
-      deprecated: workflowRun?.deprecated,
+      deprecated: null,
       executed_at: workflowRun?.createdAt,
       id: workflowRun?.id,
       input_error: workflowRun?.errorMessage,

@@ -6,8 +6,12 @@ export const BulkDownloadsCGOverviewResolver = async (
   context,
   info,
 ) => {
+  if (!args?.input) {
+    throw new Error("No input provided");
+  }
   /* --------------------- Next Gen ------------------------- */
   const nextGenEnabled = await shouldReadFromNextGen(context);
+  console.log("nextGenEnabled hello", nextGenEnabled);
   if (nextGenEnabled) {
     const entitiesQuery = `
       query EntitiesQuery {
@@ -43,9 +47,7 @@ export const BulkDownloadsCGOverviewResolver = async (
       customQuery: entitiesQuery,
     });
     console.log("entitiesResp", entitiesResp);
-  }
-  if (!args?.input) {
-    throw new Error("No input provided");
+    return entitiesResp;
   }
   const {
     downloadType,

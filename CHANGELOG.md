@@ -1,6 +1,34 @@
 # Changelog
 
 
+## [2.23.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.1...v2.23.2) (2024-03-22)
+
+
+### Bug Fixes
+
+* bulk download overview in progress ([#231](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/231)) ([478aeeb](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/478aeeb6529e7e8c412548f5287c0eddecfedc55))
+
+## [2.23.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.0...v2.23.1) (2024-03-22)
+
+
+### Bug Fixes
+
+* begin testing BulkDownloadCGOverview to nextGen ([#227](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/227)) ([5c2c3a8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5c2c3a8842e2951e36474c9aad4e633a3fa8e24d))
+
+## [2.23.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.22.0...v2.23.0) (2024-03-21)
+
+
+### Features
+
+* Also print query inputs in logs. ([#212](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/212)) ([c1687a5](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c1687a51acc8e1cedad88fe80e9fdb0f339a417a))
+
+
+### Bug Fixes
+
+* BulkDownloadModal Validation - Reformat query ([#219](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/219)) ([c9444f8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c9444f83ad1a8b8261a7426aadf7e088f5aad9d4))
+* Edits to fedBulkDownloads ([#198](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/198)) ([1cee495](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/1cee495266f46f0fdb741b18d3fa0fa6e742da12))
+* Use workflowRunIdsNumbers when available ([#225](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/225)) ([cc890fd](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/cc890fd22bc9b80bf5369e0932aacec1a33c85bc))
+
 ## [2.22.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.21.0...v2.22.0) (2024-03-20)
 
 

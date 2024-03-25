@@ -100,8 +100,10 @@ export const BulkDownloadsCGOverviewResolver = async (
     };
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     if (args?.input?.includeMetadata) {
-      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
-        cg => cg.sequencingRead?.sample?.railsSampleId,
+      const railsSampleIds = new Set(
+        entitiesResp.data.consensusGenomes?.map(
+          cg => cg.sequencingRead?.sample?.railsSampleId,
+        ),
       );
       const body = {
         sample_ids: railsSampleIds,

@@ -4,7 +4,7 @@ import { getMeshInstance } from "./utils/MeshInstance";
 import { assertEqualsNoWhitespace } from "./utils/StringUtils";
 
 import * as httpUtils from "../utils/httpUtils";
-import { convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
+import { convertValidateConsensusGenomeQuery, convertWorkflowRunsQuery } from "../utils/queryFormatUtils";
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
@@ -116,34 +116,8 @@ describe("workflowRuns query:", () => {
   });
 
   it("Constructs correct NextGen query", async () => {
-    const query = `
-      query DiscoveryViewFCWorkflowsQuery(
-        $input: queryInput_fedWorkflowRuns_input_Input
-      ) {
-        fedWorkflowRuns(input: $input) {
-          id
-          startedAt
-          status
-          rawInputsJson
-          workflowVersion {
-            version
-            workflow {
-              name
-            }
-          }
-          entityInputs {
-            edges {
-              node {
-                inputEntityId
-                entityType
-              }
-            }
-          }
-        }
-      }`;
-
     assertEqualsNoWhitespace(
-      convertWorkflowRunsQuery(query),
+      convertWorkflowRunsQuery(getExampleQuery("workflow-runs-query-fe")),
       `query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {
         workflowRuns(where: $where, orderBy: $orderBy) {
           id
@@ -156,7 +130,10 @@ describe("workflowRuns query:", () => {
               name
             }
           }
-          entityInputs(where: { entityType: { _eq: "sequencing_read" } }) {
+          entityInputs(where: { 
+            entityType: { _eq: "sequencing_read" },
+            inputEntityId: { _is_null: false } 
+          }) {
             edges {
               node {
                 inputEntityId
@@ -187,8 +164,19 @@ describe("workflowRuns query:", () => {
   });
 
   describe("validConsensusGenomes query", () => {
-    it("should call the correct rails endpoint", async () => {
-      await execute(getExampleQuery("workflow-runs-query-id-list"), {
+    let execute: ExecuteMeshFn;
+    const query = getExampleQuery("workflow-runs-query-id-list");
+
+    beforeEach(async () => {
+      const mesh$ = await getMeshInstance();
+      ({ execute } = mesh$);
+    });
+
+    it("should call the correct rails endpoint when shouldReadFromNextGen is false", async () => {
+      (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+        Promise.resolve(false),
+      );
+      await execute(query, {
         authenticityToken: "authtoken1234",
         workflowRunIds: ["1997", "2007"],
       });
@@ -202,5 +190,29 @@ describe("workflowRuns query:", () => {
         args: expect.anything(),
       });
     });
+
+    it("should call nextgen when shouldReadFromNextGen is true", async () => {
+  
+      (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
+        Promise.resolve(true),
+      );
+      await execute(query, {
+        authenticityToken: "authtoken1234",
+        workflowRunIds: ["1997", "2007"],
+      }, { params: { query } });
+      expect(httpUtils.fetchFromNextGen).toHaveBeenCalledWith(
+        expect.objectContaining({
+          customQuery: expect.stringContaining("workflowRuns"),
+          customVariables: expect.objectContaining({
+            where: expect.objectContaining({
+              id: {
+                _in: ["1997", "2007"],
+              }
+            }),
+          }),
+        }), 
+      );
+    });
+
   });
 });

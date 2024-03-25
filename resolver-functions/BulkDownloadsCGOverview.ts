@@ -44,6 +44,7 @@ export const BulkDownloadsCGOverviewResolver = async (
           sequencingRead {
             sample {
               name
+              railsSampleId
             }
           }
           referenceGenome {
@@ -99,9 +100,13 @@ export const BulkDownloadsCGOverviewResolver = async (
     };
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     if (args?.input?.includeMetadata) {
+      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
+        cg => cg.sequencingRead?.sample?.railsSampleId,
+      );
       const body = {
-        sample_ids: workflowRunIdsStrings,
+        sample_ids: railsSampleIds,
       };
+      console.log("body", body);
       const sampleMetadataRes = await postWithCSRF({
         url: `/bulk_downloads/consensus_genome_sample_metadata`,
         body,

@@ -1,6 +1,35 @@
 # Changelog
 
 
+## [2.23.5](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.4...v2.23.5) (2024-03-25)
+
+
+### Bug Fixes
+
+* in Progress CG Overview testing ([#238](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/238)) ([1ba36ec](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/1ba36ec69cf1935ff4eb4351b4c5370509c84358))
+
+## [2.23.4](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.3...v2.23.4) (2024-03-22)
+
+
+### Bug Fixes
+
+* Bulk download cg overview next gen2 ([#236](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/236)) ([2189473](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/2189473b03d1f6bc3b23f71fef15fa843aadb641))
+
+## [2.23.3](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.2...v2.23.3) (2024-03-22)
+
+
+### Bug Fixes
+
+* account for deprecated and bulk-download runs in SampleForReport query ([#230](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/230)) ([567a2f2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/567a2f2e36c4e695a712c753be81aff0b7235351))
+* testing cg bulk download overview ([#233](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/233)) ([b16f33a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/b16f33a1d28cf2a56b4fbe6ed91ca8ed484bf50b))
+
+## [2.23.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.1...v2.23.2) (2024-03-22)
+
+
+### Bug Fixes
+
+* bulk download overview in progress ([#231](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/231)) ([478aeeb](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/478aeeb6529e7e8c412548f5287c0eddecfedc55))
+
 ## [2.23.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.0...v2.23.1) (2024-03-22)
 
 

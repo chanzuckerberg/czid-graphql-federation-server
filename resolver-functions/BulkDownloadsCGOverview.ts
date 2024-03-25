@@ -11,11 +11,6 @@ export const BulkDownloadsCGOverviewResolver = async (
   }
   /* --------------------- Next Gen ------------------------- */
   const nextGenEnabled = await shouldReadFromNextGen(context);
-  console.log("nextGenEnabled hello", nextGenEnabled);
-  console.log(
-    "workflowRunIdsStrings",
-    args?.input?.workflowRunIdsStrings?.map(id => `"${id}"`),
-  );
   if (nextGenEnabled) {
     const entitiesQuery = `
       query EntitiesQuery {
@@ -51,37 +46,6 @@ export const BulkDownloadsCGOverviewResolver = async (
       serviceType: "entities",
       customQuery: entitiesQuery,
     });
-    console.log("entitiesResp", entitiesResp);
-    // const entitiesResp = {
-    //   data: {
-    //     consensusGenomes: [
-    //       {
-    //         metrics: {
-    //           coverageDepth: 117.01725370086778,
-    //           totalReads: 127140,
-    //           mappedReads: 9395,
-    //           percentGenomeCalled: 93.6,
-    //           percentIdentity: 99,
-    //           referenceGenomeLength: 9795,
-    //           gcPercent: 42.2,
-    //           refSnps: 94,
-    //           nMissing: 32,
-    //           nAmbiguous: 0,
-    //           nActg: 0,
-    //         },
-    //         sequencingRead: {
-    //           sample: {
-    //             name: "TestingNameHello",
-    //           },
-    //         },
-    //         referenceGenome: {
-    //           name: "Covid-19",
-    //           id: "M23423423",
-    //         },
-    //       },
-    //     ],
-    //   },
-    // };
     const formattedForCSV = {
       cgOverviewRows: [
         [
@@ -92,7 +56,7 @@ export const BulkDownloadsCGOverviewResolver = async (
           "% Genome Called",
           "%id",
           "GC Content",
-          // "ERCC Reads",
+          "ERCC Reads",
           "Total Reads",
           "Mapped Reads",
           "SNPs",
@@ -108,8 +72,8 @@ export const BulkDownloadsCGOverviewResolver = async (
           cg.metrics?.referenceGenomeLength,
           cg.metrics?.percentGenomeCalled,
           cg.metrics?.percentIdentity,
-          cg.metrics?.percentGenomeCalled,
-          // 0, //ERCC Reads
+          cg.metrics?.gcPercent,
+          0, //ERCC Reads
           cg.metrics?.totalReads,
           cg.metrics?.mappedReads,
           cg.metrics?.refSnps,
@@ -120,8 +84,10 @@ export const BulkDownloadsCGOverviewResolver = async (
         ]),
       ],
     };
-    console.log("formattedRes", formattedForCSV);
-
+    // TODO: Add Optional Sample Metadata
+    // if (args?.input?.includeMetadata) {
+    //   call rails sample metadata query
+    //}
     return formattedForCSV;
   }
   const {

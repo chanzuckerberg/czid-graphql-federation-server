@@ -780,11 +780,6 @@ export const resolvers: Resolvers = {
           customQuery: convertSequencingReadsQuery(context.params.query),
           customVariables: {
             where: input.where,
-            // TODO: Migrate to array orderBy.
-            orderBy:
-              (input.orderBy != null ? [input.orderBy] : undefined) ??
-              input.orderByArray,
-            limitOffset: input.limitOffset,
             producingRunIds:
               input.consensusGenomesInput?.where?.producingRunId?._in,
           },

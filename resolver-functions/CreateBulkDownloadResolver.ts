@@ -70,7 +70,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   const getBulkdownloadVersionId = `
     query MyQuery {
       workflows(
-        where: {versions: {version: {_eq: ${defaultVersion}}}, name: {_eq: "bulk-download"}}
+        where: {versions: {version: {_eq: "${defaultVersion}"}}, name: {_eq: "bulk-download"}}
       ) {
         id
       }
@@ -97,7 +97,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     downloadDisplayName = "Intermediate Output Files";
   }
   const getFileIdsQuery = `query GetFilesFromEntities {
-    consensusGenomes(where: {producingRunId: {_in: ${workflowRunIdsStrings}}}){
+    consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings?.map(id => `"${id}"`)}]}}){
         ${downloadEntity} {
           id
         }
@@ -111,7 +111,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     customQuery: getFileIdsQuery,
   });
   console.log("resFileIds", resFileIds);
-  const files = resFileIds.data.consensusGenomes.map(consensusGenome => {
+  const files = resFileIds.data?.consensusGenomes?.map(consensusGenome => {
     return `{name: "files", entityType: "file", entityId: ${consensusGenome[downloadEntity].id}}`;
   });
 
@@ -125,7 +125,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
-            workflowVersionId: ${bulkdownloadVersionId},
+            workflowVersionId: "${bulkdownloadVersionId}",
             rawInputJson: "{ \"bulk_download_type\": \"${bulkDownloadType}\", \"download_display_name\": \"${downloadDisplayName}\" }",
             entityInputs: [${files.join(",")}]
           }

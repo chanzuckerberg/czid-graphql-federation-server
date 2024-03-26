@@ -84,7 +84,7 @@ export const resolvers: Resolvers = {
           return ret.data.consensusGenomes;
         }
         /* --------------------- Rails ----------------------------- */
-        const workflowRunId = input.where?.producingRunId?._eq;
+        const workflowRunId = input.where.producingRunId._eq;
         const data = await get({
           url: `/workflow_runs/${workflowRunId}/results`,
           args,

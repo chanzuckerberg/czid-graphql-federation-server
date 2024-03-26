@@ -63,7 +63,7 @@ export const BulkDownloadsCGOverviewResolver = async (
 
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     const include_metadata = args?.input?.includeMetadata;
-    let sampleMetadataResults;
+    let sampleMetadata;
 
     if (include_metadata) {
       const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
@@ -73,13 +73,14 @@ export const BulkDownloadsCGOverviewResolver = async (
         sample_ids: railsSampleIds,
       };
       console.log("body", body);
-      sampleMetadataResults = await postWithCSRF({
+      const sampleMetadataRes = await postWithCSRF({
         url: `/bulk_downloads/consensus_genome_sample_metadata`,
         body,
         args,
         context,
       });
-      console.log("sampleMetadataResults", sampleMetadataResults);
+      console.log("sampleMetadataRes", sampleMetadataRes);
+      sampleMetadata = sampleMetadataRes.sample_metadata;
     }
 
     let cgOverviewHeaders = [
@@ -102,8 +103,8 @@ export const BulkDownloadsCGOverviewResolver = async (
       "Coverage Depth",
     ];
     if (includeMetadata) {
-      console.log("sampleMetadataResults.headers", sampleMetadataResults.headers);
-      cgOverviewHeaders.concat(sampleMetadataResults.headers);
+      console.log("sampleMetadata.headers", sampleMetadata.headers);
+      cgOverviewHeaders.concat(sampleMetadata.headers);
       console.log("cgOverviewHeaders", cgOverviewHeaders);
     }
 
@@ -129,10 +130,8 @@ export const BulkDownloadsCGOverviewResolver = async (
       ];
       if (includeMetadata) {
         const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
-        console.log("railsSampleId", railsSampleId);
-        console.log("sampleMetadataResults[railsSampleId]", sampleMetadataResults[railsSampleId]);
-        row.concat(sampleMetadataResults[railsSampleId]);
-        console.log("CSV data row", row);
+        console.log("sampleMetadata[railsSampleId]", sampleMetadata[railsSampleId]);
+        row.concat(sampleMetadata[railsSampleId]);
       };
       return row;
     });

@@ -1,4 +1,9 @@
-import { get, postWithCSRF, shouldReadFromNextGen } from "../utils/httpUtils";
+import {
+  get,
+  getFromRails,
+  postWithCSRF,
+  shouldReadFromNextGen,
+} from "../utils/httpUtils";
 
 export const BulkDownloadsCGOverviewResolver = async (
   root,
@@ -9,6 +14,14 @@ export const BulkDownloadsCGOverviewResolver = async (
   if (!args?.input) {
     throw new Error("No input provided");
   }
+  const {
+    downloadType,
+    workflow,
+    includeMetadata,
+    workflowRunIds,
+    workflowRunIdsStrings,
+  } = args?.input;
+
   /* --------------------- Next Gen ------------------------- */
   const nextGenEnabled = await shouldReadFromNextGen(context);
   if (nextGenEnabled) {
@@ -31,6 +44,7 @@ export const BulkDownloadsCGOverviewResolver = async (
           sequencingRead {
             sample {
               name
+              railsSampleId
             }
           }
           referenceGenome {
@@ -38,7 +52,7 @@ export const BulkDownloadsCGOverviewResolver = async (
             id
           }
         }
-      } 
+      }
     `;
     const entitiesResp = await get({
       args,
@@ -84,19 +98,27 @@ export const BulkDownloadsCGOverviewResolver = async (
         ]),
       ],
     };
-    // TODO: Add Optional Sample Metadata
-    // if (args?.input?.includeMetadata) {
-    //   call rails sample metadata query
-    //}
+    // TODO: Suzette & Jerry - Add Optional Sample Metadata
+    if (args?.input?.includeMetadata) {
+      const railsSampleIds = Array.from(new Set(
+        entitiesResp.data.consensusGenomes?.map(
+          cg => cg.sequencingRead?.sample?.railsSampleId,
+        ),
+      ));
+      const body = {
+        sample_ids: railsSampleIds,
+      };
+      console.log("body", body);
+      const sampleMetadataRes = await postWithCSRF({
+        url: `/bulk_downloads/consensus_genome_sample_metadata`,
+        body,
+        args,
+        context,
+      });
+      console.log("sampleMetadataRes", sampleMetadataRes);
+    }
     return formattedForCSV;
   }
-  const {
-    downloadType,
-    workflow,
-    includeMetadata,
-    workflowRunIds,
-    workflowRunIdsStrings,
-  } = args?.input;
 
   //array of strings to array of numbers
   const workflowRunIdsNumbers = workflowRunIdsStrings?.map(

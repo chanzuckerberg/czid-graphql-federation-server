@@ -30,8 +30,12 @@ export const get = async ({
       });
     } else {
       if (!url) {
-        console.error(`You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`);
-        throw new Error(`You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`);
+        console.error(
+          `You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`,
+        );
+        throw new Error(
+          `You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`,
+        );
       }
       return getFromRails({ url, args, context, fullResponse });
     }
@@ -62,6 +66,7 @@ export const postWithCSRF = async ({
       body: JSON.stringify(body),
     });
     checkForLogin(response?.url);
+    console.log(response);
     return await response.json();
   } catch (e) {
     return Promise.reject(e.response ? e.response : e);

@@ -119,14 +119,19 @@ export const BulkDownloadsCGOverviewResolver = async (
       });
       console.log("sampleMetadataRes", sampleMetadataRes);
       console.log("formattedForCSV", formattedForCSV);
-      for (const key of Object.keys(sampleMetadataRes)) {
-        // key is going to be the rails sample id
-        // which will correspond to the first item in every array execept the first
-        if (key !== "headers") {
-          formattedForCSV.cgOverviewRows
-            .find(row => row[0] === key)
-            .concat(sampleMetadataRes[key]);
+      if (sampleMetadataRes.sample_metadata) {
+        for (const key of Object.keys(sampleMetadataRes.sample_metadata)) {
+          // key is going to be the rails sample id
+          // which will correspond to the first item in every array execept the first
+          if (key !== "headers") {
+            formattedForCSV.cgOverviewRows
+              .find(row => row[0] === key)
+              .concat(sampleMetadataRes.sample_metadata[key]);
+          }
         }
+      } else {
+        // TO DO - BETTER ERROR HANDLING
+        console.error("No response from sample metadata endpoint");
       }
     }
     return formattedForCSV;

@@ -68,18 +68,17 @@ export const resolvers: Resolvers = {
     fedBulkDownloads: fedBulkDowloadsResolver,
     BulkDownloadCGOverview: BulkDownloadsCGOverviewResolver,
     fedConsensusGenomes: async (root, args, context) => {
-      /* --------------------- Next Gen ------------------------- */
-      const nextGenEnabled = await shouldReadFromNextGen(context);
-      if (nextGenEnabled) {
-        const ret = await get({ args, context, serviceType: "entities" });
-        return ret.data.consensusGenomes;
-      }
-      /* --------------------- Rails ------------------------- */
-      console.log(args.input)
       const input = args.input;
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+
+      // if there is an _eq in the response then it is a call for a single workflow run result
       if (input?.where?.producingRunId?._eq) {
-        // if there is an _eq in the response than it is a call for a single workflow run result
-        // and the rails call will be like this:
+        /* --------------------- Next Gen ------------------------- */
+        if (nextGenEnabled) {
+          const ret = await get({ args, context, serviceType: "entities" });
+          return ret.data.consensusGenomes;
+        }
+        /* --------------------- Rails ----------------------------- */
         const workflowRunId = input?.where?.producingRunId?._eq;
         const data = await get({
           url: `/workflow_runs/${workflowRunId}/results`,
@@ -135,26 +134,48 @@ export const resolvers: Resolvers = {
       }
 
       // DISCOVERY VIEW:
-      // The comments in the formatUrlParams() call correspond to the line in the current
-      // codebase's callstack where the params are set, so help ensure we're not missing anything.
+      if (nextGenEnabled) {
+        return (
+          await fetchFromNextGen({
+            customQuery: convertSequencingReadsQuery(context.params.query),
+            customVariables: {
+              where: {
+                collectionId: input.where?.collectionId,
+                taxon: input.where?.taxon,
+                consensusGenomes: input.where?.consensusGenomes,
+                // Entities Service doesn't support sample host + metadata yet.
+                sample:
+                  input.where?.sample?.name != null
+                    ? {
+                        name: input.where.sample.name,
+                      }
+                    : undefined,
+              },
+              orderBy:
+                input.orderByArray?.[0]?.protocol != null ||
+                input.orderByArray?.[0]?.technology != null ||
+                input.orderByArray?.[0]?.medakaModel != null ||
+                input.orderByArray?.[0]?.sample?.name != null
+                  ? input.orderByArray
+                  : undefined,
+            },
+            serviceType: "entities",
+            args,
+            context,
+          })
+        ).data.consensusGenomes;
+      }
+
       const { workflow_runs } = await get({
         url:
           "/workflow_runs.json" +
           formatUrlParams({
-            // index.ts
-            // const getWorkflowRuns = ({
-            mode: "with_sample_info",
-            //  - DiscoveryDataLayer.ts
-            //    await this._collection.fetchDataCallback({
+            mode: "basic",
             domain: input?.todoRemove?.domain,
-            //  -- DiscoveryView.tsx
-            //     ...this.getConditions(workflow)
             projectId: input?.todoRemove?.projectId,
             search: input?.todoRemove?.search,
             orderBy: input?.todoRemove?.orderBy,
             orderDir: input?.todoRemove?.orderDir,
-            //  --- DiscoveryView.tsx
-            //      filters: {
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxons,
@@ -163,14 +184,10 @@ export const resolvers: Resolvers = {
             tissue: input?.todoRemove?.tissue,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
-            // sampleIds and workflowRunIds are only used for API testing, not in the app.
             workflowRunIds: input?.todoRemove?.workflowRunIds,
             sampleIds: input?.todoRemove?.sampleIds,
-
-            //  - DiscoveryDataLayer.ts
-            //    await this._collection.fetchDataCallback({
-            limit: input?.limit,
-            offset: input?.offset,
+            limit: TEN_MILLION,
+            offset: 0,
             listAllIds: false,
           }),
         args,
@@ -180,80 +197,13 @@ export const resolvers: Resolvers = {
         return [];
       }
 
-      return workflow_runs.map((run): query_fedConsensusGenomes_items => {
-        const inputs = run.inputs;
-        const qualityMetrics = run.cached_results?.quality_metrics;
-        const sample = run.sample;
-        const sampleInfo = sample?.info;
-        const sampleMetadata = sample?.metadata;
-
-        const taxon =
-          inputs?.taxon_name != null
-            ? {
-                name: inputs.taxon_name,
-              }
-            : null;
-        const accession =
-          inputs?.accession_id != null && inputs?.accession_name != null
-            ? {
-                accessionId: inputs?.accession_id,
-                accessionName: inputs?.accession_name,
-              }
-            : null;
-        return {
-          producingRunId: run.id?.toString(),
-          taxon,
-          accession,
-          metrics: {
-            coverageDepth: run.cached_results?.coverage_viz?.coverage_depth,
-            totalReads: qualityMetrics?.total_reads,
-            gcPercent: qualityMetrics?.gc_percent,
-            refSnps: qualityMetrics?.ref_snps,
-            percentIdentity: qualityMetrics?.percent_identity,
-            nActg: qualityMetrics?.n_actg,
-            percentGenomeCalled: qualityMetrics?.percent_genome_called,
-            nMissing: qualityMetrics?.n_missing,
-            nAmbiguous: qualityMetrics?.n_ambiguous,
-            referenceGenomeLength: qualityMetrics?.reference_genome_length,
-          },
+      return workflow_runs.map(
+        (run): query_fedConsensusGenomes_items => ({
           sequencingRead: {
-            nucleicAcid: sampleMetadata?.nucleotide_type ?? "",
-            protocol: inputs?.wetlab_protocol,
-            medakaModel: inputs?.medaka_model,
-            technology: inputs?.technology ?? "",
-            taxon,
-            sample: {
-              railsSampleId: sample?.id,
-              name: sampleInfo?.name ?? "",
-              notes: sampleInfo?.sample_notes,
-              uploadError: sampleInfo?.result_status_description,
-              collectionLocation:
-                typeof sampleMetadata?.collection_location_v2 === "string"
-                  ? sampleMetadata.collection_location_v2
-                  : sampleMetadata?.collection_location_v2?.name ?? "",
-              sampleType: sampleMetadata?.sample_type ?? "",
-              waterControl: sampleMetadata?.water_control === "Yes",
-              hostOrganism:
-                sampleInfo?.host_genome_name != null
-                  ? {
-                      name: sampleInfo.host_genome_name,
-                    }
-                  : null,
-              collection: {
-                name: sample?.project_name,
-                public: Boolean(sampleInfo?.public),
-              },
-              ownerUserId: sample?.uploader?.id,
-              // TODO: Make runner come from Workflows stitched with the user service when NextGen
-              // ready.
-              ownerUserName: run.runner?.name ?? sample?.uploader?.name,
-              metadatas: {
-                edges: getMetadataEdges(sampleMetadata),
-              },
-            },
+            id: run.sample.id,
           },
-        };
-      });
+        }),
+      );
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
       const { coverage_viz, quality_metrics, taxon_info } = await get({

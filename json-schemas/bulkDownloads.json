@@ -55,7 +55,7 @@
                 "items": {
                     "type": "object",
                     "properties": {
-                        "id": {
+                        "paramType": {
                             "type": "string"
                         },
                         "displayName": {
@@ -64,7 +64,8 @@
                         "value": {
                             "type": "string"
                         }
-                    }
+                    },
+                    "required": ["id", "value"]
                 }
             },
             "logUrl": {

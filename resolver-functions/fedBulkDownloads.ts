@@ -37,14 +37,18 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
       ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
     ];
-    const params: { id: string; downloadName?: string; value: string }[] = [];
+    const params: {
+      paramType: string;
+      downloadName?: string;
+      value: string;
+    }[] = [];
     Object.entries(details?.bulk_download?.params)
       // remove "workflow" and "sample_ids" from details?.bulk_download?.params
       .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
       // make params into an array of objects
       .map((param: [string, { downloadName?: string; value: string }]) => {
         const paramItem = {
-          id: snakeToCamel(param[0]),
+          paramType: snakeToCamel(param[0]),
           ...param[1],
         };
         params.push(paramItem);

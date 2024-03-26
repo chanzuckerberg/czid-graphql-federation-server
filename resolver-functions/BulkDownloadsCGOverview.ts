@@ -73,14 +73,13 @@ export const BulkDownloadsCGOverviewResolver = async (
         sample_ids: railsSampleIds,
       };
       console.log("body", body);
-      const sampleMetadataRes = await postWithCSRF({
+      sampleMetadataResults = await postWithCSRF({
         url: `/bulk_downloads/consensus_genome_sample_metadata`,
         body,
         args,
         context,
       });
-      console.log("sampleMetadataRes", sampleMetadataRes);
-      sampleMetadataResults = sampleMetadataRes;
+      console.log("sampleMetadataResults", sampleMetadataResults);
     }
 
     let cgOverviewHeaders = [
@@ -102,8 +101,10 @@ export const BulkDownloadsCGOverviewResolver = async (
       "Ambiguous Bases",
       "Coverage Depth",
     ];
-    if (includeMetadata && sampleMetadataResults) {
-        cgOverviewHeaders.concat(sampleMetadataResults?.headers);
+    if (includeMetadata) {
+      console.log("sampleMetadataResults.headers", sampleMetadataResults.headers);
+      cgOverviewHeaders.concat(sampleMetadataResults.headers);
+      console.log("cgOverviewHeaders", cgOverviewHeaders);
     }
 
     let cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map((cg, index) => {
@@ -126,8 +127,12 @@ export const BulkDownloadsCGOverviewResolver = async (
         cg.metrics?.nAmbiguous,
         cg.metrics?.coverageDepth,
       ];
-      if (includeMetadata && sampleMetadataResults) {
-        row.concat(sampleMetadataResults[cg.sequencingRead?.sample?.railsSampleId]);
+      if (includeMetadata) {
+        const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
+        console.log("railsSampleId", railsSampleId);
+        console.log("sampleMetadataResults[railsSampleId]", sampleMetadataResults[railsSampleId]);
+        row.concat(sampleMetadataResults[railsSampleId]);
+        console.log("CSV data row", row);
       };
       return row;
     });

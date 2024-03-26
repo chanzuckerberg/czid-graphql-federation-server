@@ -1,6 +1,8 @@
 {
   "cg_overview_rows": [
     [
+      "Sample Id",
+      "Workflow Run Id",
       "Sample Name",
       "Reference Accession",
       "Reference Accession ID",
@@ -18,6 +20,8 @@
       "Coverage Depth"
     ],
     [
+      34521,
+      "1991",
       "NO_DELETE_PipelineVz",
       "Rhinovirus C isolate CO03302015 polyprotein mRNA, complete cds\n",
       "MG148341.1",
@@ -35,6 +39,8 @@
       165.91836734693877
     ],
     [
+      34521,
+      "2007",
       "NO_DELETE_PipelineVz",
       "Chikungunya virus isolate CHIKV/ITA/Lazio-INMI1-2017, complete genome\n",
       "MG049915.1",

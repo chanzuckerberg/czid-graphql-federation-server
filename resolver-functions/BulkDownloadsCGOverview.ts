@@ -63,6 +63,8 @@ export const BulkDownloadsCGOverviewResolver = async (
     const formattedForCSV = {
       cgOverviewRows: [
         [
+          "Sample Id",
+          "Workflow Run Id",
           "Sample Name",
           "Reference Accession",
           "Reference Accession ID",
@@ -79,7 +81,9 @@ export const BulkDownloadsCGOverviewResolver = async (
           "Ambiguous Bases",
           "Coverage Depth",
         ],
-        ...entitiesResp.data.consensusGenomes?.map(cg => [
+        ...entitiesResp.data.consensusGenomes?.map((cg, index) => [
+          cg.sequencingRead?.sample?.railsSampleId,
+          workflowRunIdsStrings[index],
           cg.sequencingRead?.sample?.name,
           cg.referenceGenome?.name,
           cg.referenceGenome?.id,
@@ -100,11 +104,9 @@ export const BulkDownloadsCGOverviewResolver = async (
     };
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     if (args?.input?.includeMetadata) {
-      const railsSampleIds = Array.from(new Set(
-        entitiesResp.data.consensusGenomes?.map(
-          cg => cg.sequencingRead?.sample?.railsSampleId,
-        ),
-      ));
+      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
+        cg => cg.sequencingRead?.sample?.railsSampleId,
+      );
       const body = {
         sample_ids: railsSampleIds,
       };
@@ -116,6 +118,16 @@ export const BulkDownloadsCGOverviewResolver = async (
         context,
       });
       console.log("sampleMetadataRes", sampleMetadataRes);
+      console.log("formattedForCSV", formattedForCSV);
+      for (const key of Object.keys(sampleMetadataRes)) {
+        // key is going to be the rails sample id
+        // which will correspond to the first item in every array execept the first
+        if (key !== "headers") {
+          formattedForCSV.cgOverviewRows
+            .find(row => row[0] === key)
+            .concat(sampleMetadataRes[key]);
+        }
+      }
     }
     return formattedForCSV;
   }

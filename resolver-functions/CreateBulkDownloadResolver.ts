@@ -112,7 +112,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   });
   console.log("resFileIds", resFileIds);
   const files = resFileIds.data?.consensusGenomes?.map(consensusGenome => {
-    return `{name: "files", entityType: "file", entityId: ${consensusGenome[downloadEntity].id}}`;
+    return `{name: "files", entityType: "file", entityId: "${consensusGenome[downloadEntity].id}"}`;
   });
 
   // run the workflow version with the files as inputs
@@ -120,13 +120,15 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   if (downloadFormat === "Single File (Concatenated)") {
     bulkDownloadType = "concatenated";
   }
-  //TODO: could add a collectionId - not sure if we need it
+  //TODO: add a real collectionId
+
   const runBulkDownload = `
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
+            collectionId: null,
             workflowVersionId: "${bulkdownloadVersionId}",
-            rawInputJson: "{ \"bulk_download_type\": \"${bulkDownloadType}\", \"download_display_name\": \"${downloadDisplayName}\" }",
+            rawInputJson: { \"bulk_download_type\": \"${bulkDownloadType}\", \"download_display_name\": \"${downloadDisplayName}\" }",
             entityInputs: [${files.join(",")}]
           }
         ) {

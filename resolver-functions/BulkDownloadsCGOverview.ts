@@ -52,7 +52,7 @@ export const BulkDownloadsCGOverviewResolver = async (
             id
           }
         }
-      } 
+      }
     `;
     const entitiesResp = await get({
       args,
@@ -100,11 +100,11 @@ export const BulkDownloadsCGOverviewResolver = async (
     };
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     if (args?.input?.includeMetadata) {
-      const railsSampleIds = new Set(
+      const railsSampleIds = Array.from(new Set(
         entitiesResp.data.consensusGenomes?.map(
           cg => cg.sequencingRead?.sample?.railsSampleId,
         ),
-      );
+      ));
       const body = {
         sample_ids: railsSampleIds,
       };

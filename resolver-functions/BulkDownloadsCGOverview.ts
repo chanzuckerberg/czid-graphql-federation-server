@@ -60,26 +60,28 @@ export const BulkDownloadsCGOverviewResolver = async (
       serviceType: "entities",
       customQuery: entitiesQuery,
     });
-    const formattedForCSV = {
-      cgOverviewRows: [
-        [
-          "Sample Name",
-          "Reference Accession",
-          "Reference Accession ID",
-          "Reference Length",
-          "% Genome Called",
-          "%id",
-          "GC Content",
-          "ERCC Reads",
-          "Total Reads",
-          "Mapped Reads",
-          "SNPs",
-          "Informative Nucleotides",
-          "Missing Bases",
-          "Ambiguous Bases",
-          "Coverage Depth",
-        ],
-        ...entitiesResp.data.consensusGenomes?.map(cg => [
+    const rowsBySampleId = {
+      headers: [
+        "Sample Name",
+        "Reference Accession",
+        "Reference Accession ID",
+        "Reference Length",
+        "% Genome Called",
+        "%id",
+        "GC Content",
+        "ERCC Reads",
+        "Total Reads",
+        "Mapped Reads",
+        "SNPs",
+        "Informative Nucleotides",
+        "Missing Bases",
+        "Ambiguous Bases",
+        "Coverage Depth",
+      ],
+    };
+    entitiesResp.data.consensusGenomes?.forEach(cg => {
+      if (rowsBySampleId[cg.sequencingRead?.sample?.id]) {
+        rowsBySampleId[cg.sequencingRead?.sample?.id] = [
           cg.sequencingRead?.sample?.name,
           cg.referenceGenome?.name,
           cg.referenceGenome?.id,
@@ -95,9 +97,9 @@ export const BulkDownloadsCGOverviewResolver = async (
           cg.metrics?.nMissing,
           cg.metrics?.nAmbiguous,
           cg.metrics?.coverageDepth,
-        ]),
-      ],
-    };
+        ];
+      }
+    });
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     if (args?.input?.includeMetadata) {
       const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
@@ -114,13 +116,17 @@ export const BulkDownloadsCGOverviewResolver = async (
         context,
       });
       console.log("sampleMetadataRes", sampleMetadataRes);
-      // for each item in the returned sampleMetadataRes
-      // add the metadata to the corresponding row in formattedForCSV
-      sampleMetadataRes.forEach((item, index) => {
-        formattedForCSV.cgOverviewRows[index].concat(item);
-      });
+
+      for (const key of Object.keys(rowsBySampleId)) {
+        rowsBySampleId[key].concat(sampleMetadataRes[key]);
+      }
     }
-    return formattedForCSV;
+    return {
+      cgOverviewRows: [
+        rowsBySampleId.headers,
+        ...Object.values(rowsBySampleId),
+      ],
+    };
   }
 
   //array of strings to array of numbers

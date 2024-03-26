@@ -100,11 +100,9 @@ export const BulkDownloadsCGOverviewResolver = async (
     };
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
     if (args?.input?.includeMetadata) {
-      const railsSampleIds = Array.from(new Set(
-        entitiesResp.data.consensusGenomes?.map(
-          cg => cg.sequencingRead?.sample?.railsSampleId,
-        ),
-      ));
+      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
+        cg => cg.sequencingRead?.sample?.railsSampleId,
+      );
       const body = {
         sample_ids: railsSampleIds,
       };
@@ -116,6 +114,11 @@ export const BulkDownloadsCGOverviewResolver = async (
         context,
       });
       console.log("sampleMetadataRes", sampleMetadataRes);
+      // for each item in the returned sampleMetadataRes
+      // add the metadata to the corresponding row in formattedForCSV
+      sampleMetadataRes.forEach((item, index) => {
+        formattedForCSV.cgOverviewRows[index].concat(item);
+      });
     }
     return formattedForCSV;
   }

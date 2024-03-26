@@ -53,15 +53,12 @@ export const convertValidateConsensusGenomeQuery = (query: string): string => {
   return (
     query
       // Replace Fed variables.
-      .replace(
-        /query [\s\S]*?{/,
-        "query ($where: WorkflowRunWhereClause) {",
-      )
+      .replace(/query [\s\S]*?{/, "query ($where: WorkflowRunWhereClause) {")
       // Remove fed prefix.
       .replace("fedWorkflowRuns", "workflowRuns")
       // Replace Fed arguments.
-      .replace(/input:[\s\S]*?\)/, "where: $where)")      
-  )
+      .replace(/input:[\s\S]*?\)/, "where: $where)")
+  );
 };
 
 export const convertWorkflowRunsQuery = (query: string): string => {
@@ -149,4 +146,19 @@ export const convertSequencingReadsQuery = (query: string): string => {
   }
 
   return query;
+};
+
+export const convertConsensusGenomesQuery = (query: string): string => {
+  return (
+    query
+      // Replace Fed variables.
+      .replace(
+        /query [\s\S]*?{/,
+        `query ($where: ConsensusGenomeWhereClause, $orderBy: [ConsensusGenomeOrderByClause!]!) {`,
+      )
+      // Remove fed prefix.
+      .replace("fedConsensusGenomes", "consensusGenomes")
+      // Replace Fed arguments.
+      .replace("input: $input", "where: $where, orderBy: $orderBy")
+  );
 };

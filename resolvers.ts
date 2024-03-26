@@ -183,7 +183,7 @@ export const resolvers: Resolvers = {
       });
       return workflow_runs.map(run => ({
         sequencingRead: {
-          id: run.sample.id,
+          id: run.sample.info.id.toString(),
         },
       }));
     },

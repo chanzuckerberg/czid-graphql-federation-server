@@ -54,7 +54,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   // get the default bulk download workflow version id from the workflow service
   const getBulkdownloadDefautVersion = `
       query GetBulkDownloadDefaultVersion {
-        workflows(where: {name: {_eq: "bulk-downloads"}}){
+        workflows(where: {name: {_eq: "bulk-download"}}){
           defaultVersion
         }
       }
@@ -66,15 +66,16 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     customQuery: getBulkdownloadDefautVersion,
   });
   console.log("resDefaultVersion", resDefaultVersion);
-  const defaultVersion = resDefaultVersion.data.workflows[0].defaultVersion;
+  const defaultVersion = resDefaultVersion.data?.workflows?.[0]?.defaultVersion;
   const getBulkdownloadVersionId = `
-      query MyQuery {
-        workflows(
-          where: {versions: {version: {_eq: ${defaultVersion}}}, name: {_eq: "bulk-download"}}
-        ) {
-          id
-        }
-      }`;
+    query MyQuery {
+      workflows(
+        where: {versions: {version: {_eq: ${defaultVersion}}}, name: {_eq: "bulk-download"}}
+      ) {
+        id
+      }
+    }
+  `;
   const resWorkflowVersionId = await get({
     args,
     context,
@@ -82,12 +83,12 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     customQuery: getBulkdownloadVersionId,
   });
   console.log("resWorkflowVersionId", resWorkflowVersionId);
-  const bulkdownloadVersionId = resWorkflowVersionId.data.workflows[0].id;
+  const bulkdownloadVersionId = resWorkflowVersionId.data?.workflows?.[0]?.id;
 
   // get the files from the entity service
   console.log("downloadType", downloadType);
-  let downloadEntity;
-  let downloadDisplayName;
+  let downloadEntity = "";
+  let downloadDisplayName = "";
   if (downloadType === "consensus_genome") {
     downloadEntity = "sequence";
     downloadDisplayName = "Consensus Genome";
@@ -96,13 +97,13 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     downloadDisplayName = "Intermediate Output Files";
   }
   const getFileIdsQuery = `query GetFilesFromEntities {
-        consensusGenomes(where: {producingRunId: {_in: ${workflowRunIdsStrings}}}){
-          ${downloadEntity} {
-            id
-          }
+    consensusGenomes(where: {producingRunId: {_in: ${workflowRunIdsStrings}}}){
+        ${downloadEntity} {
+          id
         }
       }
-    `;
+    }
+  `;
   const resFileIds = await get({
     args,
     context,

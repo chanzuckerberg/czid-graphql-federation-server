@@ -4276,7 +4276,7 @@ input queryInput_fedWorkflowRunsAggregateTotalCount_input_Input {
 
 input queryInput_fedWorkflowRunsAggregateTotalCount_input_todoRemove_Input {
   domain: String
-  projectId: Int
+  projectId: String
 }
 
 input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_Input {

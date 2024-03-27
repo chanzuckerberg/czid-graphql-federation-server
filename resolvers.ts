@@ -1034,7 +1034,7 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
         const totalCountQuery = `
-          query nextGenWorkflowsAggregateTotalCount {
+          query nextGenWorkflowsAggregateTotalCount($where: WorkflowRunWhereClause) {
             workflowRunsAggregate(where: $where) {
               aggregate {
                 count

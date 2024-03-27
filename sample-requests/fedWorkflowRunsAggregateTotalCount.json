@@ -17,6 +17,6 @@
   },
   "todoRemove": {
     "domain": "my_data",
-    "projectId": 1234
+    "projectId": "1234"
   }
 }

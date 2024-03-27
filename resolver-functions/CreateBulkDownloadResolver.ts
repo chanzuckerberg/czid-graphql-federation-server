@@ -116,19 +116,18 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   });
 
   // run the workflow version with the files as inputs
-  let bulkDownloadType = "zip";
+  let aggregateAction = "zip";
   if (downloadFormat === "Single File (Concatenated)") {
-    bulkDownloadType = "concatenated";
+    aggregateAction = "concatenated";
   }
-  //TODO: add a real collectionId
-
+  //TODO: add a real collectionId and bulkdownloadType
   const runBulkDownload = `
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
-            collectionId: null,
+            collectionId: 1153,
             workflowVersionId: "${bulkdownloadVersionId}",
-            rawInputJson: { \"bulk_download_type\": \"${bulkDownloadType}\", \"download_display_name\": \"${downloadDisplayName}\" }",
+            rawInputJson: "{ \"bulk_download_type\": \"consensus_genome\", \"aggregate_action\": \"${aggregateAction}\" }"}            ,
             entityInputs: [${files.join(",")}]
           }
         ) {
@@ -136,6 +135,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
         }
       }
     `;
+
   const res = await fetchFromNextGen({
     args,
     context,

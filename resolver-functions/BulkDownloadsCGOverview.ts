@@ -79,7 +79,7 @@ export const BulkDownloadsCGOverviewResolver = async (
       });
       sampleMetadata = sampleMetadataRes.sample_metadata;
     }
-    let cgOverviewHeaders = [
+    const cgOverviewHeaders = [
       "Sample Name",
       "Reference Accession",
       "Reference Accession ID",
@@ -99,32 +99,30 @@ export const BulkDownloadsCGOverviewResolver = async (
     if (includeMetadata) {
       cgOverviewHeaders.push(...sampleMetadata.headers);
     }
-    let cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map(
-      (cg, index: number) => {
-        let row = [
-          cg.sequencingRead?.sample?.name,
-          cg.referenceGenome?.name,
-          cg.referenceGenome?.id,
-          cg.metrics?.referenceGenomeLength,
-          cg.metrics?.percentGenomeCalled,
-          cg.metrics?.percentIdentity,
-          cg.metrics?.gcPercent,
-          0, //ERCC Reads
-          cg.metrics?.totalReads,
-          cg.metrics?.mappedReads,
-          cg.metrics?.refSnps,
-          cg.metrics?.nActg,
-          cg.metrics?.nMissing,
-          cg.metrics?.nAmbiguous,
-          cg.metrics?.coverageDepth,
-        ];
-        if (includeMetadata) {
-          const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
-          row.push(...sampleMetadata[railsSampleId]);
-        }
-        return row;
-      },
-    );
+    const cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map(cg => {
+      const row = [
+        cg.sequencingRead?.sample?.name,
+        cg.referenceGenome?.name,
+        cg.referenceGenome?.id,
+        cg.metrics?.referenceGenomeLength,
+        cg.metrics?.percentGenomeCalled,
+        cg.metrics?.percentIdentity,
+        cg.metrics?.gcPercent,
+        0, //ERCC Reads
+        cg.metrics?.totalReads,
+        cg.metrics?.mappedReads,
+        cg.metrics?.refSnps,
+        cg.metrics?.nActg,
+        cg.metrics?.nMissing,
+        cg.metrics?.nAmbiguous,
+        cg.metrics?.coverageDepth,
+      ];
+      if (includeMetadata) {
+        const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
+        row.push(...sampleMetadata[railsSampleId]);
+      }
+      return row;
+    });
 
     return {
       cgOverviewRows: [cgOverviewHeaders, ...cgOverviewDataRows],

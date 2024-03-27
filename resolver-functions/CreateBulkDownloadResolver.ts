@@ -82,7 +82,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     serviceType: "workflows",
     customQuery: getBulkdownloadVersionId,
   });
-
   const bulkdownloadVersionId =
     resWorkflowVersionId.data?.workflowVersions?.[0]?.id;
 

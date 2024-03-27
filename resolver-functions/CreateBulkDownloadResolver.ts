@@ -125,7 +125,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
-            collectionId: 1153,
+            collectionId: 1259,
             workflowVersionId: "${bulkdownloadVersionId}",
             rawInputJson: "{ \"bulk_download_type\": \"consensus_genome\", \"aggregate_action\": \"${aggregateAction}\" }"}            ,
             entityInputs: [${files.join(",")}]

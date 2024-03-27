@@ -1998,7 +1998,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int!
-  createdAt: ISO8601DateTime
+  createdAt: DateTime!
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -2057,7 +2057,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: ISO8601DateTime
+  updatedAt: DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!
@@ -3102,7 +3102,7 @@ type WorkflowRun implements EntityInterface & Node {
   _id: GlobalID!
   cachedResults: String
   collectionId: Int!
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime!
   deletedAt: DateTime
   deprecated: Boolean!
   endedAt: DateTime
@@ -4266,6 +4266,37 @@ input queryInput_fedSequencingReads_input_where_taxon_Input {
 }
 
 input queryInput_fedSequencingReads_input_where_taxon_name_Input {
+  _in: [String]
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_Input {
+  todoRemove: queryInput_fedWorkflowRunsAggregateTotalCount_input_todoRemove_Input
+  where: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_Input
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_todoRemove_Input {
+  domain: String
+  projectId: Int
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_Input {
+  collectionId: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_collectionId_Input
+  workflowVersion: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_Input
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_collectionId_Input {
+  _in: [Int]!
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_Input {
+  workflow: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_workflow_Input
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_workflow_Input {
+  name: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_workflow_name_Input
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_workflow_name_Input {
   _in: [String]
 }
 

@@ -82,8 +82,12 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     serviceType: "workflows",
     customQuery: getBulkdownloadVersionId,
   });
-  console.log("resWorkflowVersionId", resWorkflowVersionId);
-  const bulkdownloadVersionId = resWorkflowVersionId.data?.workflows?.[0]?.id;
+  console.log(
+    "resWorkflowVersionId",
+    resWorkflowVersionId.data?.workflowsVersions?.[0]?.id,
+  );
+  const bulkdownloadVersionId =
+    resWorkflowVersionId.data?.workflowsVersions?.[0]?.id;
 
   // get the files from the entity service
   console.log("downloadType", downloadType);

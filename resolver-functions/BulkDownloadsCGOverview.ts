@@ -103,8 +103,7 @@ export const BulkDownloadsCGOverviewResolver = async (
       "Coverage Depth",
     ];
     if (includeMetadata) {
-      console.log("sampleMetadata.headers", sampleMetadata.headers);
-      cgOverviewHeaders.concat(sampleMetadata.headers);
+      cgOverviewHeaders.push(...sampleMetadata.headers);
       console.log("cgOverviewHeaders", cgOverviewHeaders);
     }
 
@@ -130,21 +129,18 @@ export const BulkDownloadsCGOverviewResolver = async (
       ];
       if (includeMetadata) {
         const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
-        console.log("sampleMetadata[railsSampleId]", sampleMetadata[railsSampleId]);
-        row.concat(sampleMetadata[railsSampleId]);
+        row.push(...sampleMetadata[railsSampleId]);
+        console.log(`row for sample id ${railsSampleId}`, row);
       };
       return row;
     });
 
-    const formattedForCSV = {
+    return {
       cgOverviewRows: [
         cgOverviewHeaders,
         ...cgOverviewDataRows,
       ],
     };
-    console.log("formattedForCSV", formattedForCSV);
-
-    return formattedForCSV;
   }
 
   //array of strings to array of numbers

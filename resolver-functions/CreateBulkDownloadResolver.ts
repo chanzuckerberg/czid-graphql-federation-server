@@ -9,8 +9,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   if (!args?.input) {
     throw new Error("No input provided");
   }
-  console.log("CreateBulkDownload args", args);
-
   const {
     downloadType,
     workflow,
@@ -22,7 +20,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
     id => id && parseInt(id),
   );
-
   const nextGenEnabled = await shouldReadFromNextGen(context);
   /* --------------------- Rails --------------------- */
   if (!nextGenEnabled) {
@@ -65,7 +62,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     serviceType: "workflows",
     customQuery: getBulkdownloadDefautVersion,
   });
-  console.log("resDefaultVersion", resDefaultVersion);
   const defaultVersion = resDefaultVersion.data?.workflows?.[0]?.defaultVersion;
   const getBulkdownloadVersionId = `
     query GetBulkDownloadVersionId {
@@ -86,7 +82,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     resWorkflowVersionId.data?.workflowVersions?.[0]?.id;
 
   // get the files from the entity service
-  console.log("downloadType", downloadType);
   let downloadEntity = "";
   if (downloadType === "consensus_genome") {
     downloadEntity = "sequence";
@@ -97,6 +92,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings?.map(id => `"${id}"`)}]}}){
         ${downloadEntity} {
           id
+          collectionId
         }
       }
     }
@@ -107,7 +103,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     serviceType: "entities",
     customQuery: getFileIdsQuery,
   });
-  console.log("resFileIds", resFileIds);
   const files = resFileIds.data?.consensusGenomes?.map(consensusGenome => {
     return `{name: "files", entityType: "file", entityId: "${consensusGenome[downloadEntity].id}"}`;
   });
@@ -117,14 +112,14 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   if (downloadFormat === "Single File (Concatenated)") {
     aggregateAction = "concatenated";
   }
-  //TODO: add a real collectionId and bulkdownloadType
+  //TODO: add a real collectionId
   const runBulkDownload = `
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
             collectionId: 1259,
             workflowVersionId: "${bulkdownloadVersionId}",
-            rawInputJson: "{ \\\"bulk_download_type\\\": \\\"consensus_genome\\\", \\\"aggregate_action\\\": \\\"${aggregateAction}\\\"}",
+            rawInputJson: "{ \\\"bulk_download_type\\\": \\\"${downloadType}\\\", \\\"aggregate_action\\\": \\\"${aggregateAction}\\\"}",
             entityInputs: [${files.join(",")}]
           }
         ) {
@@ -132,13 +127,11 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
         }
       }
     `;
-
   const res = await fetchFromNextGen({
     args,
     context,
     serviceType: "workflows",
     customQuery: runBulkDownload,
   });
-  console.log("bulk download kicked off", res);
   return res;
 };

@@ -127,7 +127,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
           input: {
             collectionId: 1259,
             workflowVersionId: "${bulkdownloadVersionId}",
-            rawInputJson: "${JSON.stringify({ bulk_download_type: "consensus_genome", aggregate_action: "${aggregateAction}" })}",
+            rawInputJson: "{ \\\"bulk_download_type\\\": \\\"consensus_genome\\\", \\\"aggregate_action\\\": \\\"${aggregateAction}\\\"}",
             entityInputs: [${files.join(",")}]
           }
         ) {

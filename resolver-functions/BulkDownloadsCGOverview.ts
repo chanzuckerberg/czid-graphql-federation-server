@@ -77,6 +77,7 @@ export const BulkDownloadsCGOverviewResolver = async (
         args,
         context,
       });
+      console.log("sampleMetadataRes", sampleMetadataRes);
       sampleMetadata = sampleMetadataRes.sample_metadata;
     }
     const cgOverviewHeaders = [
@@ -119,6 +120,7 @@ export const BulkDownloadsCGOverviewResolver = async (
       ];
       if (includeMetadata) {
         const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
+        console.log("Sample", cg.sequencingRead?.sample);
         row.push(...sampleMetadata[railsSampleId]);
       }
       return row;

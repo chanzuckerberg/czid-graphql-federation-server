@@ -60,32 +60,25 @@ export const BulkDownloadsCGOverviewResolver = async (
       serviceType: "entities",
       customQuery: entitiesQuery,
     });
-
-    // TODO: Suzette & Jerry - Add Optional Sample Metadata
-    const include_metadata = args?.input?.includeMetadata;
+    const includeMetadata = args?.input?.includeMetadata;
     let sampleMetadata;
-
-    if (include_metadata) {
+    if (includeMetadata) {
+      // Get sample metadata
       const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
         cg => cg.sequencingRead?.sample?.railsSampleId,
       );
       const body = {
         sample_ids: railsSampleIds,
       };
-      console.log("body", body);
       const sampleMetadataRes = await postWithCSRF({
         url: `/bulk_downloads/consensus_genome_sample_metadata`,
         body,
         args,
         context,
       });
-      console.log("sampleMetadataRes", sampleMetadataRes);
       sampleMetadata = sampleMetadataRes.sample_metadata;
     }
-
-    let cgOverviewHeaders = [
-      "Sample Id",
-      "Workflow Run Id",
+    const cgOverviewHeaders = [
       "Sample Name",
       "Reference Accession",
       "Reference Accession ID",
@@ -104,13 +97,9 @@ export const BulkDownloadsCGOverviewResolver = async (
     ];
     if (includeMetadata) {
       cgOverviewHeaders.push(...sampleMetadata.headers);
-      console.log("cgOverviewHeaders", cgOverviewHeaders);
     }
-
-    let cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map((cg, index) => {
-      let row = [
-        cg.sequencingRead?.sample?.railsSampleId,
-        workflowRunIdsStrings[index],
+    const cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map(cg => {
+      const row = [
         cg.sequencingRead?.sample?.name,
         cg.referenceGenome?.name,
         cg.referenceGenome?.id,
@@ -130,19 +119,15 @@ export const BulkDownloadsCGOverviewResolver = async (
       if (includeMetadata) {
         const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
         row.push(...sampleMetadata[railsSampleId]);
-        console.log(`row for sample id ${railsSampleId}`, row);
-      };
+      }
       return row;
     });
 
     return {
-      cgOverviewRows: [
-        cgOverviewHeaders,
-        ...cgOverviewDataRows,
-      ],
+      cgOverviewRows: [cgOverviewHeaders, ...cgOverviewDataRows],
     };
   }
-
+  /* --------------------- Rails ------------------------- */
   //array of strings to array of numbers
   const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
     id => id && parseInt(id),

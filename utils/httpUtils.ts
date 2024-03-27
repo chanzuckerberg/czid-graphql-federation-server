@@ -93,6 +93,11 @@ export const shouldReadFromNextGen = async context => {
   return false;
 };
 
+/**
+ * Gets an enriched token and then makes a call to NextGen.
+ *
+ * undefined properties in variables will not be sent (due to JSON.stringify() ignoring them).
+ */
 export const fetchFromNextGen = async ({
   args,
   context,

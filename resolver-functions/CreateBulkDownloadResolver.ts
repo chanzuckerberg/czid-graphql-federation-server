@@ -91,7 +91,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     "resWorkflowVersionId.data.workflowsVersions?.[0]",
     resWorkflowVersionId.data?.workflowsVersions?.[0],
   );
-
   const bulkdownloadVersionId =
     resWorkflowVersionId.data?.workflowsVersions?.[0]?.id;
 

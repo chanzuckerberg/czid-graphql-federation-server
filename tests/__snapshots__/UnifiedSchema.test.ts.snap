@@ -3978,7 +3978,12 @@ input queryInput_fedConsensusGenomes_input_todoRemove_Input {
 }
 
 input queryInput_fedConsensusGenomes_input_where_Input {
+  collectionId: queryInput_fedConsensusGenomes_input_where_collectionId_Input
   producingRunId: queryInput_fedConsensusGenomes_input_where_producingRunId_Input
+}
+
+input queryInput_fedConsensusGenomes_input_where_collectionId_Input {
+  _in: [Int]
 }
 
 input queryInput_fedConsensusGenomes_input_where_producingRunId_Input {

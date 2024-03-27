@@ -60,51 +60,15 @@ export const BulkDownloadsCGOverviewResolver = async (
       serviceType: "entities",
       customQuery: entitiesQuery,
     });
-    const formattedForCSV = {
-      cgOverviewRows: [
-        [
-          "Sample Name",
-          "Reference Accession",
-          "Reference Accession ID",
-          "Reference Length",
-          "% Genome Called",
-          "%id",
-          "GC Content",
-          "ERCC Reads",
-          "Total Reads",
-          "Mapped Reads",
-          "SNPs",
-          "Informative Nucleotides",
-          "Missing Bases",
-          "Ambiguous Bases",
-          "Coverage Depth",
-        ],
-        ...entitiesResp.data.consensusGenomes?.map(cg => [
-          cg.sequencingRead?.sample?.name,
-          cg.referenceGenome?.name,
-          cg.referenceGenome?.id,
-          cg.metrics?.referenceGenomeLength,
-          cg.metrics?.percentGenomeCalled,
-          cg.metrics?.percentIdentity,
-          cg.metrics?.gcPercent,
-          0, //ERCC Reads
-          cg.metrics?.totalReads,
-          cg.metrics?.mappedReads,
-          cg.metrics?.refSnps,
-          cg.metrics?.nActg,
-          cg.metrics?.nMissing,
-          cg.metrics?.nAmbiguous,
-          cg.metrics?.coverageDepth,
-        ]),
-      ],
-    };
+
     // TODO: Suzette & Jerry - Add Optional Sample Metadata
-    if (args?.input?.includeMetadata) {
-      const railsSampleIds = Array.from(new Set(
-        entitiesResp.data.consensusGenomes?.map(
-          cg => cg.sequencingRead?.sample?.railsSampleId,
-        ),
-      ));
+    const include_metadata = args?.input?.includeMetadata;
+    let sampleMetadata;
+
+    if (include_metadata) {
+      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
+        cg => cg.sequencingRead?.sample?.railsSampleId,
+      );
       const body = {
         sample_ids: railsSampleIds,
       };
@@ -116,8 +80,67 @@ export const BulkDownloadsCGOverviewResolver = async (
         context,
       });
       console.log("sampleMetadataRes", sampleMetadataRes);
+      sampleMetadata = sampleMetadataRes.sample_metadata;
     }
-    return formattedForCSV;
+
+    let cgOverviewHeaders = [
+      "Sample Id",
+      "Workflow Run Id",
+      "Sample Name",
+      "Reference Accession",
+      "Reference Accession ID",
+      "Reference Length",
+      "% Genome Called",
+      "%id",
+      "GC Content",
+      "ERCC Reads",
+      "Total Reads",
+      "Mapped Reads",
+      "SNPs",
+      "Informative Nucleotides",
+      "Missing Bases",
+      "Ambiguous Bases",
+      "Coverage Depth",
+    ];
+    if (includeMetadata) {
+      cgOverviewHeaders.push(...sampleMetadata.headers);
+      console.log("cgOverviewHeaders", cgOverviewHeaders);
+    }
+
+    let cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map((cg, index) => {
+      let row = [
+        cg.sequencingRead?.sample?.railsSampleId,
+        workflowRunIdsStrings[index],
+        cg.sequencingRead?.sample?.name,
+        cg.referenceGenome?.name,
+        cg.referenceGenome?.id,
+        cg.metrics?.referenceGenomeLength,
+        cg.metrics?.percentGenomeCalled,
+        cg.metrics?.percentIdentity,
+        cg.metrics?.gcPercent,
+        0, //ERCC Reads
+        cg.metrics?.totalReads,
+        cg.metrics?.mappedReads,
+        cg.metrics?.refSnps,
+        cg.metrics?.nActg,
+        cg.metrics?.nMissing,
+        cg.metrics?.nAmbiguous,
+        cg.metrics?.coverageDepth,
+      ];
+      if (includeMetadata) {
+        const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
+        row.push(...sampleMetadata[railsSampleId]);
+        console.log(`row for sample id ${railsSampleId}`, row);
+      };
+      return row;
+    });
+
+    return {
+      cgOverviewRows: [
+        cgOverviewHeaders,
+        ...cgOverviewDataRows,
+      ],
+    };
   }
 
   //array of strings to array of numbers

@@ -54,6 +54,7 @@ describe.only("BulkDownloadCGOverview Query", () => {
             sequencingRead: {
               sample: {
                 name: "NO_DELETE_PipelineVz",
+                railsSampleId: 34521,
               },
             },
             referenceGenome: {
@@ -78,6 +79,7 @@ describe.only("BulkDownloadCGOverview Query", () => {
             sequencingRead: {
               sample: {
                 name: "NO_DELETE_PipelineVz",
+                railsSampleId: 34521,
               },
             },
             referenceGenome: {
@@ -114,7 +116,7 @@ describe.only("BulkDownloadCGOverview Query", () => {
     );
 
     it("should give correct response", async () => {
-      (httpUtils.postWithCSRF as jest.Mock).mockImplementation(
+      (httpUtils.postWithCSRF as jest.Mock).mockReturnValueOnce(
         () => bulkDownloadCGOverviewResponse,
       );
       const result = await execute(query, {
@@ -125,6 +127,7 @@ describe.only("BulkDownloadCGOverview Query", () => {
         workflowRunIds: [1991, 2007],
         workflowRunIdsStrings: ["1991", "2007"],
       });
+      console.log(result.data.BulkDownloadCGOverview.cgOverviewRows);
       expect(result.data.BulkDownloadCGOverview.cgOverviewRows).toStrictEqual(
         bulkDownloadCGOverviewResponse.cg_overview_rows,
       );

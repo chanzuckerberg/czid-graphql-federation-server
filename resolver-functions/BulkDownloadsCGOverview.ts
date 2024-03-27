@@ -60,30 +60,48 @@ export const BulkDownloadsCGOverviewResolver = async (
       serviceType: "entities",
       customQuery: entitiesQuery,
     });
-    const formattedForCSV = {
-      cgOverviewRows: [
-        [
-          "Sample Id",
-          "Workflow Run Id",
-          "Sample Name",
-          "Reference Accession",
-          "Reference Accession ID",
-          "Reference Length",
-          "% Genome Called",
-          "%id",
-          "GC Content",
-          "ERCC Reads",
-          "Total Reads",
-          "Mapped Reads",
-          "SNPs",
-          "Informative Nucleotides",
-          "Missing Bases",
-          "Ambiguous Bases",
-          "Coverage Depth",
-        ],
-        ...entitiesResp.data.consensusGenomes?.map((cg, index) => [
-          cg.sequencingRead?.sample?.railsSampleId,
-          workflowRunIdsStrings[index],
+
+    const includeMetadata = args?.input?.includeMetadata;
+    let sampleMetadata;
+    if (includeMetadata) {
+      // Get sample metadata
+      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
+        cg => cg.sequencingRead?.sample?.railsSampleId,
+      );
+      const body = {
+        sample_ids: railsSampleIds,
+      };
+      const sampleMetadataRes = await postWithCSRF({
+        url: `/bulk_downloads/consensus_genome_sample_metadata`,
+        body,
+        args,
+        context,
+      });
+      sampleMetadata = sampleMetadataRes.sample_metadata;
+    }
+    let cgOverviewHeaders = [
+      "Sample Name",
+      "Reference Accession",
+      "Reference Accession ID",
+      "Reference Length",
+      "% Genome Called",
+      "%id",
+      "GC Content",
+      "ERCC Reads",
+      "Total Reads",
+      "Mapped Reads",
+      "SNPs",
+      "Informative Nucleotides",
+      "Missing Bases",
+      "Ambiguous Bases",
+      "Coverage Depth",
+    ];
+    if (includeMetadata) {
+      cgOverviewHeaders.push(...sampleMetadata.headers);
+    }
+    let cgOverviewDataRows = entitiesResp.data.consensusGenomes?.map(
+      (cg, index: number) => {
+        let row = [
           cg.sequencingRead?.sample?.name,
           cg.referenceGenome?.name,
           cg.referenceGenome?.id,
@@ -99,44 +117,20 @@ export const BulkDownloadsCGOverviewResolver = async (
           cg.metrics?.nMissing,
           cg.metrics?.nAmbiguous,
           cg.metrics?.coverageDepth,
-        ]),
-      ],
-    };
-    // TODO: Suzette & Jerry - Add Optional Sample Metadata
-    if (args?.input?.includeMetadata) {
-      const railsSampleIds = entitiesResp.data.consensusGenomes?.map(
-        cg => cg.sequencingRead?.sample?.railsSampleId,
-      );
-      const body = {
-        sample_ids: railsSampleIds,
-      };
-      console.log("body", body);
-      const sampleMetadataRes = await postWithCSRF({
-        url: `/bulk_downloads/consensus_genome_sample_metadata`,
-        body,
-        args,
-        context,
-      });
-      console.log("sampleMetadataRes", sampleMetadataRes);
-      console.log("formattedForCSV", formattedForCSV);
-      if (sampleMetadataRes.sample_metadata) {
-        for (const key of Object.keys(sampleMetadataRes.sample_metadata)) {
-          // key is going to be the rails sample id
-          // which will correspond to the first item in every array execept the first
-          if (key !== "headers") {
-            formattedForCSV.cgOverviewRows
-              .find(row => row[0] === key)
-              .concat(sampleMetadataRes.sample_metadata[key]);
-          }
+        ];
+        if (includeMetadata) {
+          const railsSampleId = cg.sequencingRead?.sample?.railsSampleId;
+          row.push(...sampleMetadata[railsSampleId]);
         }
-      } else {
-        // TO DO - BETTER ERROR HANDLING
-        console.error("No response from sample metadata endpoint");
-      }
-    }
-    return formattedForCSV;
-  }
+        return row;
+      },
+    );
 
+    return {
+      cgOverviewRows: [cgOverviewHeaders, ...cgOverviewDataRows],
+    };
+  }
+  /* --------------------- Rails ------------------------- */
   //array of strings to array of numbers
   const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
     id => id && parseInt(id),

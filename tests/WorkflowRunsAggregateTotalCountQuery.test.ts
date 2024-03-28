@@ -39,7 +39,7 @@ describe("workflowRuns aggregate total count query:", () => {
       })
     );
 
-    const query = getExampleQuery("workflows-aggregate-total-count-query");
+    const query = getExampleQuery("workflow-runs-aggregate-total-count-query");
     const response = await execute(query, {});
     expect(httpUtils.get).toHaveBeenCalledWith({
       url: "/stats.json/&domain=my_data&projectId=123",

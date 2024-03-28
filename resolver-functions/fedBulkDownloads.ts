@@ -63,6 +63,21 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
 
     // MERGE THE NEXT GEN DOWNLOADS WITH THE RAILS DOWNLOADS
     // Concat and sort by createdAt (but efficiently?)
+    // return {
+    //   id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+    //   startedAt: created_at,
+    //   status: statusDictionary[status] || "UNKNOWN",
+    //   downloadType: download_type (coming from the workflow run rawInputsJson),
+    //   ownerUserId: user_id,
+    //   fileSize: output_file_size,
+    //   url,
+    //   analysisCount: length of the edges in the entityInputs array,
+    //   entityInputFileType: analysis_type ??? this can be on the front end
+    //   entityInputs, array of file ids
+    //   errorMessage: error_message, errorMessage from workflows
+    //   params, from rawInputsJson {paramType: "downloadFormat", downloadName?: string, value: zip/concatenate}
+    //   logUrl, // used in admin only, we will deprecate log_url and use something like executionId
+    // };
     return [];
   }
   /*----------------- Rails -----------------*/
@@ -97,36 +112,31 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       value: string;
     }[] = [];
     let entityInputs: any[] = [];
-    console.log("status", bulkDownload?.status, index);
     if (bulkDownload?.status === "success") {
-      console.log(true, index);
-      //   const details = await get({
-      //     url: `/bulk_downloads/${bulkDownload?.id}.json`,
-      //     args,
-      //     context,
-      //   });
-      //   console.log("details", details, bulkDownload?.id);
-      //   url = details?.bulk_download?.presigned_output_url;
-      //   entityInputs = [
-      //     ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
-      //     ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
-      //   ];
-      //   if (typeof details?.bulk_download?.params === "object") {
-      //     Object.entries(details?.bulk_download?.params)
-      //       // remove "workflow" and "sample_ids" from details?.bulk_download?.params
-      //       .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
-      //       // make params into an array of objects
-      //       .map((param: [string, { downloadName?: string; value: string }]) => {
-      //         console.log("param is tuple?", param);
-      //         const paramItem = {
-      //           paramType: snakeToCamel(param[0]),
-      //           ...param[1],
-      //         };
-      //         params.push(paramItem);
-      //       });
-      //   }
-      // } else {
-      //   console.log("bulkDownload", bulkDownload?.id, bulkDownload);
+      const details = await get({
+        url: `/bulk_downloads/${bulkDownload?.id}.json`,
+        args,
+        context,
+      });
+      url = details?.bulk_download?.presigned_output_url;
+      entityInputs = [
+        ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
+        ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
+      ];
+      if (typeof details?.bulk_download?.params === "object") {
+        Object.entries(details?.bulk_download?.params)
+          // remove "workflow" and "sample_ids" from details?.bulk_download?.params
+          .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
+          // make params into an array of objects
+          .map((param: [string, { downloadName?: string; value: string }]) => {
+            console.log("param is tuple?", param);
+            const paramItem = {
+              paramType: snakeToCamel(param[0]),
+              ...param[1],
+            };
+            params.push(paramItem);
+          });
+      }
     }
     const {
       id,
@@ -149,7 +159,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     return {
       id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
       startedAt: created_at,
-      status: statusDictionary[status] || "UNKNOWN",
+      status: statusDictionary[status],
       downloadType: download_type,
       ownerUserId: user_id,
       fileSize: output_file_size,

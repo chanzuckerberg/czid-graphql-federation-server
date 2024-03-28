@@ -1,3 +1,6 @@
+/** Matches "query" until the first { encountered. */
+const QUERY_TO_BRACE_REGEX = /query [\s\S]*?{/;
+
 /**
  *
  * Transforms a query from the Front End one compatible with the Next Gen server
@@ -14,7 +17,6 @@
  * // returns "query ConsensusGenomeReportQuery($workflowRunId: UUID) {consensusGenomes( where: { id: { _eq: $workflowRunId }}) {...}}"
  *
  */
-
 export const formatFedQueryForNextGen = (query: string): string => {
   let cleanQuery = query;
   // remove fed Prefix
@@ -53,7 +55,7 @@ export const convertValidateConsensusGenomeQuery = (query: string): string => {
   return (
     query
       // Replace Fed variables.
-      .replace(/query [\s\S]*?{/, "query ($where: WorkflowRunWhereClause) {")
+      .replace(QUERY_TO_BRACE_REGEX, "query ($where: WorkflowRunWhereClause) {")
       // Remove fed prefix.
       .replace("fedWorkflowRuns", "workflowRuns")
       // Replace Fed arguments.
@@ -66,7 +68,7 @@ export const convertWorkflowRunsQuery = (query: string): string => {
     query
       // Replace Fed variables.
       .replace(
-        /query [\s\S]*?{/,
+        QUERY_TO_BRACE_REGEX,
         "query ($where: WorkflowRunWhereClause, $orderBy: [WorkflowRunOrderByClause!]) {",
       )
       // Remove fed prefix.
@@ -93,7 +95,7 @@ export const convertSequencingReadsQuery = (query: string): string => {
       query
         // Replace Fed variables.
         .replace(
-          /query [\s\S]*?{/,
+          QUERY_TO_BRACE_REGEX,
           `query ($where: SequencingReadWhereClause, $orderBy: [SequencingReadOrderByClause!]) {`,
         )
         // Replace Fed arguments.
@@ -114,7 +116,7 @@ export const convertSequencingReadsQuery = (query: string): string => {
   query = query
     // Replace Fed variables.
     .replace(
-      /query [\s\S]*?{/,
+      QUERY_TO_BRACE_REGEX,
       `query ($where: SequencingReadWhereClause, 
               $orderBy: [SequencingReadOrderByClause!], 
               $limitOffset: LimitOffsetClause, 
@@ -153,7 +155,7 @@ export const convertConsensusGenomesQuery = (query: string): string => {
     query
       // Replace Fed variables.
       .replace(
-        /query [\s\S]*?{/,
+        QUERY_TO_BRACE_REGEX,
         `query ($where: ConsensusGenomeWhereClause, $orderBy: [ConsensusGenomeOrderByClause!]!) {`,
       )
       // Remove fed prefix.

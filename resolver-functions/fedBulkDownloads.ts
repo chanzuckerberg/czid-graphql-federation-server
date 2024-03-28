@@ -27,7 +27,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   // }
   // for successful bulk downloads, get the output file url from entities service
   //
-
   // return [];
   // }
   /*----------------- Rails -----------------*/
@@ -54,6 +53,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     args,
     context,
   });
+  console.log("res", res);
   const mappedRes = res.map(async bulkDownload => {
     let url: string | null = null;
     let params: {

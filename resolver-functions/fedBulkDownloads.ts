@@ -3,33 +3,66 @@ import { formatUrlParams } from "../utils/paramsUtils";
 import { snakeToCamel } from "../utils/utils";
 
 export const fedBulkDowloadsResolver = async (root, args, context, info) => {
-  // const nextGenEnabled = await shouldReadFromNextGen(context);
+  const nextGenEnabled = await shouldReadFromNextGen(context);
   /*----------------- Next Gen -----------------*/
-  // if (nextGenEnabled) {
-  // const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
-  //   workflowRuns(
-  //   where: {
-  //    workflowVersion: {workflow: {name: {_eq: "bulk-download"}}},
-  //    ownerUserId: {_eq: 412},
-  //    deletedAt: {_is_null: true}
-  // }
-  //   orderBy: {createdAt: desc}
-  // ) {
-  //   id
-  //   status
-  //   rawInputsJson
-  //   createdAt
-  //   workflowVersion {
-  //     id
-  //   }
-  //   ownerUserId
-  // }
-  // }
-  // for successful bulk downloads, get the output file url from entities service
-  //
+  // TODO: get actual user Id
+  if (nextGenEnabled) {
+    const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
+    workflowRuns(
+    where: {
+     workflowVersion: {workflow: {name: {_eq: "bulk-download"}}},
+     ownerUserId: {_eq: 412},
+     deletedAt: {_is_null: true}
+  }
+    orderBy: {createdAt: desc}
+  ) {
+    id
+    status
+    rawInputsJson
+    createdAt
+    workflowVersion {
+      id
+    }
+    ownerUserId
+  }
+  }`;
+    const allBulkDownloadsResp = await get({
+      args,
+      context,
+      serviceType: "workflows",
+      customQuery: getAllBulkDownloadsQuery,
+    });
+    console.log("allBulkDownloadsResp", allBulkDownloadsResp);
 
-  // return [];
-  // }
+    //Return all workflow runs in this format
+
+    // If the workflow run is successful, get the download link
+    // Add the URL to the workflow run object
+    const succeededWorkflowRunIds =
+      allBulkDownloadsResp?.data?.workflowRuns?.filter(
+        bulkDownload => bulkDownload.status === "SUCCEEDED",
+      );
+    console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
+    const downloadLinkQuery = `query GetDownloadURL {
+      bulkDownloads(where: {producingRunId: {_in: ["018e813e-07df-7d03-aeba-865acac2c1db", "018e80fb-8a9d-75f8-adad-a8de9e0abbd1"]}}) {
+        file {
+          downloadLink {
+            url
+          }
+        }
+        id
+      }
+    }`;
+    // const downloadLinksResp = await get({
+    //   args,
+    //   context,
+    //   serviceType: "entities",
+    //   customQuery: downloadLinkQuery,
+    // });
+
+    // MERGE THE NEXT GEN DOWNLOADS WITH THE RAILS DOWNLOADS
+    return [];
+  }
   /*----------------- Rails -----------------*/
   const statusDictionary = {
     success: "SUCCEEDED",
@@ -62,13 +95,14 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       value: string;
     }[] = [];
     let entityInputs: any[] = [];
-    try {
-      if (bulkDownload?.status === "success") {
+    if (bulkDownload?.status === "success") {
+      try {
         const details = await get({
           url: `/bulk_downloads/${bulkDownload?.id}.json`,
           args,
           context,
         });
+        console.log("details", details, bulkDownload?.id);
         url = details?.bulk_download?.presigned_output_url;
         entityInputs = [
           ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
@@ -83,6 +117,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             // make params into an array of objects
             .map(
               (param: [string, { downloadName?: string; value: string }]) => {
+                console.log("param is tuple?", param);
                 const paramItem = {
                   paramType: snakeToCamel(param[0]),
                   ...param[1],
@@ -90,13 +125,11 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
                 params.push(paramItem);
               },
             );
-        } else {
-          console.log("bulk_download in details", details?.bulk_download);
         }
+      } catch (e) {
+        console.error("Error getting bulk download details", e);
+        console.log("bulkDownload", bulkDownload);
       }
-    } catch (e) {
-      console.error("Error getting bulk download details", e);
-      console.log("bulkDownload", bulkDownload);
     }
 
     const {

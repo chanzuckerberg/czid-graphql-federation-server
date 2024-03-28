@@ -208,7 +208,6 @@ describe.only("BulkDownloadCGOverview Query", () => {
         workflowRunIds: [1991, 2007],
         workflowRunIdsStrings: ["1991", "2007"],
       });
-      console.log(result);
       expect(result.data.BulkDownloadCGOverview.cgOverviewRows).toStrictEqual(
         bulkDownloadCGOverviewResponse,
       );

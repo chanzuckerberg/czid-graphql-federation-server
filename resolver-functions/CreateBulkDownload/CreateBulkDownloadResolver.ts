@@ -3,7 +3,7 @@ import {
   get,
   postWithCSRF,
   shouldReadFromNextGen,
-} from "../utils/httpUtils";
+} from "../../utils/httpUtils";
 
 export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   if (!args?.input) {
@@ -90,9 +90,9 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   }
   const getFileIdsQuery = `query GetFilesFromEntities {
     consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings?.map(id => `"${id}"`)}]}}){
+        collectionId
         ${downloadEntity} {
           id
-          collectionId
         }
       }
     }

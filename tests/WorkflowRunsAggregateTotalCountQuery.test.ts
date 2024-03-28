@@ -5,7 +5,6 @@ import { getMeshInstance } from "./utils/MeshInstance";
 import * as httpUtils from "../utils/httpUtils";
 import { query_fedWorkflowRunsAggregateTotalCount_aggregate_items } from "../.mesh";
 jest.spyOn(httpUtils, "get");
-jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
 jest.spyOn(httpUtils, "fetchFromNextGen");
 
@@ -42,7 +41,7 @@ describe("workflowRuns aggregate total count query:", () => {
     const query = getExampleQuery("workflow-runs-aggregate-total-count-query");
     const response = await execute(query, {});
     expect(httpUtils.get).toHaveBeenCalledWith({
-      url: "/stats.json/&domain=my_data&projectId=123",
+      url: "/samples/stats.json?&domain=my_data&projectId=123",
       args: expect.anything(),
       context: expect.anything(),
     });

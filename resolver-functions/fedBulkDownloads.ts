@@ -44,23 +44,25 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       );
     console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
     const downloadLinkQuery = `query GetDownloadURL {
-      bulkDownloads(where: {producingRunId: {_in: ["018e813e-07df-7d03-aeba-865acac2c1db", "018e80fb-8a9d-75f8-adad-a8de9e0abbd1"]}}) {
+      bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         file {
           downloadLink {
             url
           }
         }
-        id
+        producingRunId
       }
     }`;
-    // const downloadLinksResp = await get({
-    //   args,
-    //   context,
-    //   serviceType: "entities",
-    //   customQuery: downloadLinkQuery,
-    // });
+    const downloadLinksResp = await get({
+      args,
+      context,
+      serviceType: "entities",
+      customQuery: downloadLinkQuery,
+    });
+    console.log("downloadLinksResp", downloadLinksResp);
 
     // MERGE THE NEXT GEN DOWNLOADS WITH THE RAILS DOWNLOADS
+    // Concat and sort by createdAt (but efficiently?)
     return [];
   }
   /*----------------- Rails -----------------*/
@@ -87,7 +89,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     args,
     context,
   });
-  const mappedRes = res.map(async bulkDownload => {
+  const mappedRes = res.map(async (bulkDownload, index) => {
     let url: string | null = null;
     let params: {
       paramType: string;
@@ -95,43 +97,37 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       value: string;
     }[] = [];
     let entityInputs: any[] = [];
+    console.log("status", bulkDownload?.status, index);
     if (bulkDownload?.status === "success") {
-      try {
-        const details = await get({
-          url: `/bulk_downloads/${bulkDownload?.id}.json`,
-          args,
-          context,
-        });
-        console.log("details", details, bulkDownload?.id);
-        url = details?.bulk_download?.presigned_output_url;
-        entityInputs = [
-          ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
-          ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
-        ];
-        if (typeof details?.bulk_download?.params === "object") {
-          Object.entries(details?.bulk_download?.params)
-            // remove "workflow" and "sample_ids" from details?.bulk_download?.params
-            .filter(
-              param => param[0] !== "workflow" && param[0] !== "sample_ids",
-            )
-            // make params into an array of objects
-            .map(
-              (param: [string, { downloadName?: string; value: string }]) => {
-                console.log("param is tuple?", param);
-                const paramItem = {
-                  paramType: snakeToCamel(param[0]),
-                  ...param[1],
-                };
-                params.push(paramItem);
-              },
-            );
-        }
-      } catch (e) {
-        console.error("Error getting bulk download details", e);
-        console.log("bulkDownload", bulkDownload);
-      }
+      console.log(true, index);
+      //   const details = await get({
+      //     url: `/bulk_downloads/${bulkDownload?.id}.json`,
+      //     args,
+      //     context,
+      //   });
+      //   console.log("details", details, bulkDownload?.id);
+      //   url = details?.bulk_download?.presigned_output_url;
+      //   entityInputs = [
+      //     ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
+      //     ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
+      //   ];
+      //   if (typeof details?.bulk_download?.params === "object") {
+      //     Object.entries(details?.bulk_download?.params)
+      //       // remove "workflow" and "sample_ids" from details?.bulk_download?.params
+      //       .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
+      //       // make params into an array of objects
+      //       .map((param: [string, { downloadName?: string; value: string }]) => {
+      //         console.log("param is tuple?", param);
+      //         const paramItem = {
+      //           paramType: snakeToCamel(param[0]),
+      //           ...param[1],
+      //         };
+      //         params.push(paramItem);
+      //       });
+      //   }
+      // } else {
+      //   console.log("bulkDownload", bulkDownload?.id, bulkDownload);
     }
-
     const {
       id,
       status,
@@ -153,7 +149,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     return {
       id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
       startedAt: created_at,
-      status: statusDictionary[status],
+      status: statusDictionary[status] || "UNKNOWN",
       downloadType: download_type,
       ownerUserId: user_id,
       fileSize: output_file_size,

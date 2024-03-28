@@ -13,10 +13,7 @@
                                 "type": "integer"
                             }
                         }
-                    },
-                    "required": [
-                        "_in"
-                    ]
+                    }
                 },
                 "workflowVersion": {
                     "type": "object",

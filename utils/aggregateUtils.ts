@@ -63,11 +63,11 @@ export const parseWorkflowsAggregateTotalCountsResponse = (
   nextGenAggregates: query_fedWorkflowRunsAggregateTotalCount_aggregate_items[] | null,
   railsCountByWorkflow: { [key: string]: number },
   nextGenEnabled: boolean,
+  nextGenWorkflows: string[],
 ): fedWorkflowRunsAggregateTotalCount => {
-  const aggregates: any = {
+  const aggregates: fedWorkflowRunsAggregateTotalCount = {
     "aggregate": []
   };
-  const nextGenWorkflows = ["consensus-genome"];
 
   for (const workflow of Object.keys(railsCountByWorkflow)) {
     const nextGenCount = nextGenAggregates?.find(
@@ -77,7 +77,7 @@ export const parseWorkflowsAggregateTotalCountsResponse = (
     
     const isNextGenWorkflow = nextGenWorkflows.includes(workflow);
     
-    aggregates.aggregate.push({
+    aggregates?.aggregate?.push({
       "groupBy": {
         "workflowVersion": {
           "workflow": {

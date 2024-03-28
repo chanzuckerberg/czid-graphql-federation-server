@@ -1030,6 +1030,8 @@ export const resolvers: Resolvers = {
       });
 
       let nextGenAggregates = [];
+      // the frontend decides which workflows are fetched from NextGen vs Rails
+      const nextgenWorkflows = input?.where?.workflowVersion?.workflow?.name?._in as string[] || [];
 
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
@@ -1062,7 +1064,7 @@ export const resolvers: Resolvers = {
         nextGenAggregates = totalCountResponse?.data?.workflowRunsAggregate?.aggregate;
       }
 
-      return parseWorkflowsAggregateTotalCountsResponse(nextGenAggregates, railsCountByWorkflow, nextGenEnabled);
+      return parseWorkflowsAggregateTotalCountsResponse(nextGenAggregates, railsCountByWorkflow, nextGenEnabled, nextgenWorkflows);
     },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */

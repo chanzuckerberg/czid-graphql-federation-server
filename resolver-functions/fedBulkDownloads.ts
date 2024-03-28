@@ -1,4 +1,4 @@
-import { get, shouldReadFromNextGen } from "../utils/httpUtils";
+import { get } from "../utils/httpUtils";
 import { formatUrlParams } from "../utils/paramsUtils";
 import { snakeToCamel } from "../utils/utils";
 

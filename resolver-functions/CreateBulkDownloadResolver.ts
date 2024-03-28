@@ -80,7 +80,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   });
   const bulkdownloadVersionId =
     resWorkflowVersionId.data?.workflowVersions?.[0]?.id;
-
   // get the files from the entity service
   let downloadEntity = "";
   if (downloadType === "consensus_genome") {
@@ -106,7 +105,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   const files = resFileIds.data?.consensusGenomes?.map(consensusGenome => {
     return `{name: "files", entityType: "file", entityId: "${consensusGenome[downloadEntity].id}"}`;
   });
-
   // run the workflow version with the files as inputs
   let aggregateAction = "zip";
   if (downloadFormat === "Single File (Concatenated)") {

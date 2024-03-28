@@ -97,7 +97,7 @@ export const convertSequencingReadsQuery = (query: string): string => {
           `query ($where: SequencingReadWhereClause, $orderBy: [SequencingReadOrderByClause!]) {`,
         )
         // Replace Fed arguments.
-        .replace("input: $input", "where: $where")
+        .replace("input: $input", "where: $where, orderBy: $orderBy")
         // Add railsSampleId field.
         .replace(
           /{\s*id\s*}/,

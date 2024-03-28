@@ -1,8 +1,16 @@
-import { get } from "../utils/httpUtils";
+import { get, shouldReadFromNextGen } from "../utils/httpUtils";
 import { formatUrlParams } from "../utils/paramsUtils";
 import { snakeToCamel } from "../utils/utils";
 
 export const fedBulkDowloadsResolver = async (root, args, context, info) => {
+  // const nextGenEnabled = await shouldReadFromNextGen(context);
+  /*----------------- Next Gen -----------------*/
+  // if (nextGenEnabled) {
+  // get all bulk download workflow runs per user (or all users if admin)
+  // for successful bulk downloads, get the output file url from entities service
+  // return [];
+  // }
+  /*----------------- Rails -----------------*/
   const statusDictionary = {
     success: "SUCCEEDED",
     error: "FAILED",
@@ -67,9 +75,9 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       output_file_size,
       logUrl,
       analysis_type,
+      analysis_count,
       error_message,
     } = bulkDownload;
-
     // In Next Gen we will have an array with all of the entity input
     // filtered through the nodes entity query to get the relevant info
     // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
@@ -84,7 +92,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       ownerUserId: user_id,
       fileSize: output_file_size,
       url,
-      analysisCount: entityInputs.length,
+      analysisCount: analysis_count,
       entityInputFileType: analysis_type,
       entityInputs,
       errorMessage: error_message,

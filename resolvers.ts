@@ -1093,7 +1093,6 @@ export const resolvers: Resolvers = {
           serviceType: "entities",
           customQuery,
         });
-        console.log("ret - ZipLink", JSON.stringify(ret));
         if (
           ret.data?.consensusGenomes[0]?.intermediateOutputs?.downloadLink?.url
         ) {

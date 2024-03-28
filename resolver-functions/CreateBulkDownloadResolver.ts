@@ -82,6 +82,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     resWorkflowVersionId.data?.workflowVersions?.[0]?.id;
   // get the files from the entity service
   let downloadEntity = "";
+  console.log("downloadType", downloadType);
   if (downloadType === "consensus_genome") {
     downloadEntity = "sequence";
   } else if (downloadType === "consensus_genome_intermediate_output_files") {
@@ -108,8 +109,9 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   // run the workflow version with the files as inputs
   let aggregateAction = "zip";
   if (downloadFormat === "Single File (Concatenated)") {
-    aggregateAction = "concatenated";
+    aggregateAction = "concatenate";
   }
+  console.log("files", files);
   //TODO: add a real collectionId
   const runBulkDownload = `
       mutation BulkDownload {

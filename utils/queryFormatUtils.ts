@@ -94,7 +94,7 @@ export const convertSequencingReadsQuery = (query: string): string => {
         // Replace Fed variables.
         .replace(
           /query [\s\S]*?{/,
-          `query ($where: SequencingReadWhereClause) {`,
+          `query ($where: SequencingReadWhereClause, $orderBy: [SequencingReadOrderByClause!]) {`,
         )
         // Replace Fed arguments.
         .replace("input: $input", "where: $where")

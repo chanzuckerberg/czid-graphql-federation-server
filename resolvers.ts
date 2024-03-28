@@ -72,8 +72,7 @@ export const resolvers: Resolvers = {
       const nextGenEnabled = await shouldReadFromNextGen(context);
       const input = args.input;
       if (input == null) {
-        console.log("Error: fedConsensusGenomes input was nullish");
-        return [];
+        throw new Error("fedConsensusGenomes input was nullish");
       }
 
       // if there is an _eq in the response then it is a call for a single workflow run result

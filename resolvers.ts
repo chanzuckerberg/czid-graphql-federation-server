@@ -607,6 +607,8 @@ export const resolvers: Resolvers = {
             tissue: input.todoRemove?.tissue,
             visibility: input.todoRemove?.visibility,
             workflow: input.todoRemove?.workflow,
+            workflowRunIds: input?.todoRemove?.workflowRunIds,
+            sampleIds: input?.todoRemove?.sampleIds,
             limit: queryingIdsOnly
               ? TEN_MILLION
               : input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.

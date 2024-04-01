@@ -3,6 +3,93 @@ import { formatUrlParams } from "../utils/paramsUtils";
 import { snakeToCamel } from "../utils/utils";
 
 export const fedBulkDowloadsResolver = async (root, args, context, info) => {
+  const nextGenEnabled = await shouldReadFromNextGen(context);
+  /*----------------- Next Gen -----------------*/
+  // TODO: get actual user Id
+  if (nextGenEnabled) {
+    const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
+        workflowRuns(
+          where: {
+            workflowVersion: {workflow: {name: {_eq: "bulk-download"}}},
+            ownerUserId: {_eq: 412},
+            deletedAt: {_is_null: true}
+        }
+        orderBy: {createdAt: desc}
+      ) {
+          id
+          status
+          rawInputsJson
+          createdAt
+          workflowVersion {
+            id
+          }
+          entityInputs{
+            edges{
+              node{
+                fieldName
+                inputEntityId
+              }
+            }
+          }
+          ownerUserId
+        }
+      }`;
+    const allBulkDownloadsResp = await get({
+      args,
+      context,
+      serviceType: "workflows",
+      customQuery: getAllBulkDownloadsQuery,
+    });
+    console.log("allBulkDownloadsResp", allBulkDownloadsResp);
+
+    // If the workflow run is successful, get the download link
+    // Add the URL to the workflow run object
+    const succeededWorkflowRunIds =
+      allBulkDownloadsResp?.data?.workflowRuns?.filter(
+        bulkDownload => bulkDownload.status === "SUCCEEDED",
+      );
+    console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
+    const downloadLinkQuery = `query GetDownloadURL {
+      bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
+        file {
+          downloadLink {
+            url
+          }
+        }
+        producingRunId
+      }
+    }`;
+    const downloadLinksResp = await get({
+      args,
+      context,
+      serviceType: "entities",
+      customQuery: downloadLinkQuery,
+    });
+    console.log("downloadLinksResp", downloadLinksResp);
+    // rawInputsJson looks like this:
+    // "rawInputsJson": "{\"bulk_download_type\": \"consensus_genome\", \"aggregate_action\": \"zip\"}",
+
+    // MERGE THE NEXT GEN DOWNLOADS WITH THE RAILS DOWNLOADS
+    // Concat NextGen and Rails Downloads (but efficiently?)
+
+    // each workflow run should be returned in this format
+    // return {
+    //   id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+    //   startedAt: created_at,
+    //   status:  workflowRuns.status
+    //   downloadType: workflowRuns.rawInputsJson.bulk_download_type,
+    //   ownerUserId: workflowRuns.ownerUserId,
+    //   fileSize: From Entities,
+    //   url: From Entities,
+    //   analysisCount: length of the edges array from workflows.entityInputs ,
+    //   entityInputFileType: analysis_type - this can be a config on the front end needs to be changed for Rails too
+    //   entityInputs, workflowRuns.entityInputs
+    //   errorMessage: workflowRuns.errorMessage
+    //   params, from rawInputsJson {paramType: "downloadFormat", downloadName?: "File Format", value: either zip/concatenate - found in rawInputsJson}
+    //   logUrl, // used in admin only, we will deprecate log_url and use something like executionId
+    // };
+    return [];
+  }
   /*----------------- Rails -----------------*/
   const statusDictionary = {
     success: "SUCCEEDED",
@@ -56,7 +143,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             // make params into an array of objects
             .map(
               (param: [string, { downloadName?: string; value: string }]) => {
-                console.log("param is tuple?", param);
                 const paramItem = {
                   paramType: snakeToCamel(param[0]),
                   ...param[1],

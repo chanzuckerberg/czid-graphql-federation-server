@@ -1,6 +1,41 @@
 # Changelog
 
 
+## [2.28.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.27.0...v2.28.0) (2024-03-29)
+
+
+### Features
+
+* Add new input to fedSequencingReads - workflowRunIds and sampleIds ([#283](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/283)) ([3e6ff5e](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/3e6ff5e0f825f6a0a6b919bd9dda48a7d9e667b2))
+
+
+### Reverts
+
+* Enable more detailed logs in sandbox and staging envs" ([#271](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/271)) ([7c12a14](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/7c12a14d46328db0a888c52f21b673988acbbc14))
+
+## [2.27.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.26.1...v2.27.0) (2024-03-28)
+
+
+### Features
+
+* federate querying total count of each workflow ([#189](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/189)) ([93b8c29](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/93b8c2972d8227fa0cb30a5e47ffdb560082d71a))
+
+## [2.26.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.26.0...v2.26.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* Add back query log ([#272](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/272)) ([49e7f30](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/49e7f300d787736432105967800043547c809b87))
+
+## [2.26.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.25.0...v2.26.0) (2024-03-28)
+
+
+### Features
+
+* Add sorting by consensusGenomes field functionality in Fed ([#246](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/246)) ([c87eaa2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c87eaa25dbc0f84aed80bfa54e8527c8dc0ad00c))
+* Allow security token to be passed for nextGen calls ([#218](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/218)) ([bed5cd2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/bed5cd26daf5a91b9a416fe9d3e14cc8624c9c5f))
+* CZID-9499 Add referenceGenome to fedConsensusGenome ([#260](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/260)) ([409d793](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/409d79391170a5a02ea60bb73d9a3eeed9b900ca))
+
 ## [2.25.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.24.0...v2.25.0) (2024-03-28)
 
 

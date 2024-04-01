@@ -4197,6 +4197,7 @@ input queryInput_fedSequencingReads_input_todoRemove_Input {
   orderBy: String
   orderDir: String
   projectId: String
+  sampleIds: [Int]
   search: String
   taxaLevels: [String]
   taxons: [Int]
@@ -4204,6 +4205,7 @@ input queryInput_fedSequencingReads_input_todoRemove_Input {
   tissue: [String]
   visibility: String
   workflow: String
+  workflowRunIds: [Int]
 }
 
 input queryInput_fedSequencingReads_input_where_Input {
@@ -4286,11 +4288,16 @@ input queryInput_fedWorkflowRunsAggregateTotalCount_input_todoRemove_Input {
 
 input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_Input {
   collectionId: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_collectionId_Input
+  deprecatedById: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_deprecatedById_Input
   workflowVersion: queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_Input
 }
 
 input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_collectionId_Input {
   _in: [Int]
+}
+
+input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_deprecatedById_Input {
+  _is_null: Boolean
 }
 
 input queryInput_fedWorkflowRunsAggregateTotalCount_input_where_workflowVersion_Input {
@@ -4338,12 +4345,17 @@ input queryInput_fedWorkflowRunsAggregate_input_todoRemove_taxonThresholds_items
 
 input queryInput_fedWorkflowRunsAggregate_input_where_Input {
   collectionId: queryInput_fedWorkflowRunsAggregate_input_where_collectionId_Input
+  deprecatedById: queryInput_fedWorkflowRunsAggregate_input_where_deprecatedById_Input
   id: queryInput_fedWorkflowRunsAggregate_input_where_id_Input
   workflowVersion: queryInput_fedWorkflowRunsAggregate_input_where_workflowVersion_Input
 }
 
 input queryInput_fedWorkflowRunsAggregate_input_where_collectionId_Input {
   _in: [Int]
+}
+
+input queryInput_fedWorkflowRunsAggregate_input_where_deprecatedById_Input {
+  _is_null: Boolean
 }
 
 input queryInput_fedWorkflowRunsAggregate_input_where_id_Input {
@@ -4934,8 +4946,8 @@ type query_fedBulkDownloads_items_entityInputs_items {
 
 type query_fedBulkDownloads_items_params_items {
   displayName: String
-  paramType: String!
-  value: String!
+  paramType: String
+  value: String
 }
 
 type query_fedConsensusGenomes_items {

@@ -27,6 +27,22 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     args,
     context,
   });
+  const brokenIds = [1433, 1531, 12409, 2283];
+  brokenIds.forEach(async brokenIds => {
+    try {
+      const details = await get({
+        url: `/bulk_downloads/${brokenIds}.json`,
+        args,
+        context,
+      });
+      console.log("details", details);
+    } catch (e) {
+      console.error(
+        `Error fetching bulk download details for bulk download id ${brokenIds}`,
+        e,
+      );
+    }
+  });
   const mappedRes = res.map(async (bulkDownload, index) => {
     let url: string | null = null;
     let params: {
@@ -35,20 +51,23 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       value: string;
     }[] = [];
     let entityInputs: any[] = [];
+    if (brokenIds.includes(bulkDownload?.id)) {
+      console.log("bulkDownload", bulkDownload);
+    }
     if (bulkDownload?.status === "success") {
-      try {
-        const details = await get({
-          url: `/bulk_downloads/${bulkDownload?.id}.json`,
-          args,
-          context,
-        });
-      } catch (e) {
-        console.error(
-          `Error fetching bulk download details for bulk download id ${bulkDownload?.id}`,
-          e,
-        );
-      }
-      // url = details?.bulk_download?.presigned_output_url;
+      // try {
+      //   const details = await get({
+      //     url: `/bulk_downloads/${bulkDownload?.id}.json`,
+      //     args,
+      //     context,
+      //   });
+      //   url = details?.bulk_download?.presigned_output_url;
+      // } catch (e) {
+      //   console.error(
+      //     `Error fetching bulk download details for bulk download id ${bulkDownload?.id}`,
+      //     e,
+      //   );
+      // }
       // entityInputs = [
       //   ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
       //   ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),

@@ -56,7 +56,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             // make params into an array of objects
             .map(
               (param: [string, { downloadName?: string; value: string }]) => {
-                console.log("param is tuple?", param);
                 const paramItem = {
                   paramType: snakeToCamel(param[0]),
                   ...param[1],

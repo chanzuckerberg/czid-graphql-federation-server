@@ -46,7 +46,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
       ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
       .map(bulkDownload => bulkDownload.id);
-
     const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         file {

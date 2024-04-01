@@ -1,4 +1,4 @@
-import { get } from "../utils/httpUtils";
+import { get, shouldReadFromNextGen } from "../utils/httpUtils";
 import { formatUrlParams } from "../utils/paramsUtils";
 import { snakeToCamel } from "../utils/utils";
 
@@ -94,7 +94,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     return {
       id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
       startedAt: created_at,
-      status: statusDictionary[status],
+      status: statusDictionary[status] || "UNKNOWN",
       downloadType: download_type,
       ownerUserId: user_id,
       fileSize: output_file_size,

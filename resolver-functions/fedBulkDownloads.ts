@@ -40,15 +40,12 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       serviceType: "workflows",
       customQuery: getAllBulkDownloadsQuery,
     });
-    console.log("allBulkDownloadsResp", allBulkDownloadsResp);
 
     // If the workflow run is successful, get the download link
     // Add the URL to the workflow run object
     const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
       ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
       .map(bulkDownload => bulkDownload.id);
-    console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
-
     const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         file {
@@ -66,7 +63,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       serviceType: "entities",
       customQuery: downloadLinkQuery,
     });
-    console.log("downloadLinksResp", downloadLinksResp);
     const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns?.map(
       workflowRun => {
         const bulkDownloadFromEntities =
@@ -102,7 +98,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         };
       },
     );
-    console.log("nextGenBulkDownloads", nextGenBulkDownloads);
     // rawInputsJson looks like this:
     // "rawInputsJson": "{\"bulk_download_type\": \"consensus_genome\", \"aggregate_action\": \"zip\"}",
 
@@ -125,7 +120,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     //   params, from rawInputsJson {paramType: "downloadFormat", downloadName?: "File Format", value: either zip/concatenate - found in rawInputsJson}
     //   logUrl, // used in admin only, we will deprecate log_url and use something like executionId
     // };
-    return [];
+    return nextGenBulkDownloads;
   }
   /*----------------- Rails -----------------*/
   const statusDictionary = {

@@ -4197,6 +4197,7 @@ input queryInput_fedSequencingReads_input_todoRemove_Input {
   orderBy: String
   orderDir: String
   projectId: String
+  sampleIds: [Int]
   search: String
   taxaLevels: [String]
   taxons: [Int]
@@ -4204,6 +4205,7 @@ input queryInput_fedSequencingReads_input_todoRemove_Input {
   tissue: [String]
   visibility: String
   workflow: String
+  workflowRunIds: [Int]
 }
 
 input queryInput_fedSequencingReads_input_where_Input {
@@ -4939,8 +4941,8 @@ type query_fedBulkDownloads_items_entityInputs_items {
 
 type query_fedBulkDownloads_items_params_items {
   displayName: String
-  paramType: String!
-  value: String!
+  paramType: String
+  value: String
 }
 
 type query_fedConsensusGenomes_items {

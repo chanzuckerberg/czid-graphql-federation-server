@@ -44,14 +44,15 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
 
     // If the workflow run is successful, get the download link
     // Add the URL to the workflow run object
-    const succeededWorkflowRunIds =
-      allBulkDownloadsResp?.data?.workflowRuns?.filter(
-        bulkDownload => bulkDownload.status === "SUCCEEDED",
-      );
+    const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
+      ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
+      .map(bulkDownload => bulkDownload.id);
     console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
+
     const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         file {
+          size
           downloadLink {
             url
           }
@@ -66,6 +67,42 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       customQuery: downloadLinkQuery,
     });
     console.log("downloadLinksResp", downloadLinksResp);
+    const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns?.map(
+      workflowRun => {
+        const bulkDownloadFromEntities =
+          downloadLinksResp?.data?.bulkDownloads?.find(
+            bulkDownload => bulkDownload.producingRunId === workflowRun.id,
+          );
+        return {
+          id: workflowRun.id.toString(),
+          startedAt: workflowRun.createdAt,
+          status: workflowRun.status,
+          downloadType: JSON.parse(workflowRun.rawInputsJson)
+            ?.bulk_download_type,
+          ownerUserId: workflowRun.ownerUserId,
+          fileSize: bulkDownloadFromEntities?.file?.size,
+          url: bulkDownloadFromEntities?.file?.downloadLink?.url,
+          analysisCount: workflowRun.entityInputs.edges.length,
+          entityInputFileType: workflowRun.rawInputsJson.bulk_download_type, // got to remove this for Rails implementation too
+          entityInputs: workflowRun.entityInputs.edges.map(edge => {
+            return {
+              id: edge.node.inputEntityId,
+              name: edge.node.fieldName,
+            };
+          }),
+          errorMessage: workflowRun.errorMessage,
+          params: [
+            {
+              paramType: "downloadFormat",
+              downloadName: "File Format",
+              value: workflowRun.rawInputsJson.aggregate_action,
+            },
+          ],
+          logUrl: null,
+        };
+      },
+    );
+    console.log("nextGenBulkDownloads", nextGenBulkDownloads);
     // rawInputsJson looks like this:
     // "rawInputsJson": "{\"bulk_download_type\": \"consensus_genome\", \"aggregate_action\": \"zip\"}",
 

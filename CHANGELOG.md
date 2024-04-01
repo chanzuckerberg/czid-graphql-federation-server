@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## [2.28.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.27.0...v2.28.0) (2024-03-29)
 
 

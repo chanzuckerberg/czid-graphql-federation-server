@@ -32,6 +32,7 @@ import {
   formatFedQueryForNextGen,
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
+import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownloadResolver";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -1090,7 +1091,6 @@ export const resolvers: Resolvers = {
           serviceType: "entities",
           customQuery,
         });
-        console.log("ret - ZipLink", JSON.stringify(ret));
         if (
           ret.data?.consensusGenomes[0]?.intermediateOutputs?.downloadLink?.url
         ) {
@@ -1129,45 +1129,7 @@ export const resolvers: Resolvers = {
     }),
   },
   Mutation: {
-    CreateBulkDownload: async (root, args, context, info) => {
-      if (!args?.input) {
-        throw new Error("No input provided");
-      }
-      const {
-        downloadType,
-        workflow,
-        downloadFormat,
-        workflowRunIds,
-        workflowRunIdsStrings,
-      } = args?.input;
-
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
-        id => id && parseInt(id),
-      );
-      const body = {
-        download_type: downloadType,
-        workflow: workflow,
-        params: {
-          download_format: {
-            value: downloadFormat,
-          },
-          sample_ids: {
-            value: workflowRunIdsNumbers ?? workflowRunIds,
-          },
-          workflow: {
-            value: workflow,
-          },
-        },
-        workflow_run_ids: workflowRunIdsNumbers ?? workflowRunIds,
-      };
-      const res = await postWithCSRF({
-        url: `/bulk_downloads`,
-        body,
-        args,
-        context,
-      });
-      return res;
-    },
+    CreateBulkDownload: CreateBulkDownloadResolver,
     DeleteSamples: async (root, args, context, info) => {
       if (!args?.input) {
         throw new Error("No input provided");

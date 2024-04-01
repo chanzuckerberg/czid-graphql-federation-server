@@ -36,11 +36,18 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     }[] = [];
     let entityInputs: any[] = [];
     if (bulkDownload?.status === "success") {
-      // const details = await get({
-      //   url: `/bulk_downloads/${bulkDownload?.id}.json`,
-      //   args,
-      //   context,
-      // });
+      try {
+        const details = await get({
+          url: `/bulk_downloads/${bulkDownload?.id}.json`,
+          args,
+          context,
+        });
+      } catch (e) {
+        console.error(
+          `Error fetching bulk download details for bulk download id ${bulkDownload?.id}`,
+          e,
+        );
+      }
       // url = details?.bulk_download?.presigned_output_url;
       // entityInputs = [
       //   ...getEntityInputInfo(details?.bulk_download?.workflow_runs),

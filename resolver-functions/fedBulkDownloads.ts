@@ -37,7 +37,18 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     }[] = [];
     let entityInputs: any[] = [];
     if (index < 8) {
-      console.log(bulkDownload.download_type_details);
+      console.log(bulkDownload?.download_type_details);
+    }
+    if (bulkDownload?.download_type_details) {
+      url = bulkDownload?.download_type_details?.presigned_output_url;
+      entityInputs = [
+        ...getEntityInputInfo(
+          bulkDownload?.download_type_details?.workflow_runs,
+        ),
+        ...getEntityInputInfo(
+          bulkDownload?.download_type_details?.pipeline_runs,
+        ),
+      ];
     }
     // if (bulkDownload?.status === "success") {
     // try {

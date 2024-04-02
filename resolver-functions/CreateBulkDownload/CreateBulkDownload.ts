@@ -49,6 +49,12 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   }
   /* --------------------- Next Gen --------------------- */
   // get the default bulk download workflow version id from the workflow service
+  if (!workflowRunIdsStrings) {
+    throw new Error("No Next Gen Workflow Ids provided for bulk download creation");
+  }
+  if (!downloadType) {
+    throw new Error("No downloadType provided for bulk download creation");
+  }
   const getBulkdownloadDefautVersion = `
       query GetBulkDownloadDefaultVersion {
         workflows(where: {name: {_eq: "bulk-download"}}){
@@ -82,14 +88,13 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     resWorkflowVersionId.data?.workflowVersions?.[0]?.id;
   // get the files from the entity service
   let downloadEntity = "";
-  console.log("downloadType", downloadType);
   if (downloadType === "consensus_genome") {
     downloadEntity = "sequence";
   } else if (downloadType === "consensus_genome_intermediate_output_files") {
     downloadEntity = "intermediateOutputs";
   }
   const getFileIdsQuery = `query GetFilesFromEntities {
-    consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings?.map(id => `"${id}"`)}]}}){
+    consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings.map(id => `"${id}"`)}]}}){
         collectionId
         ${downloadEntity} {
           id
@@ -104,7 +109,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     customQuery: getFileIdsQuery,
   });
   const files = resFileIds.data?.consensusGenomes?.map(consensusGenome => {
-    return `{name: "files", entityType: "file", entityId: "${consensusGenome[downloadEntity].id}"}`;
+    return `{name: "consensus_genomes", entityType: "consensus_genome", entityId: "${consensusGenome[downloadEntity].id}"}`;
   });
   // run the workflow version with the files as inputs
   let aggregateAction = "zip";
@@ -117,7 +122,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
-            collectionId: 1259,
+            collectionId: 1153,
             workflowVersionId: "${bulkdownloadVersionId}",
             rawInputJson: "{ \\\"bulk_download_type\\\": \\\"${downloadType}\\\", \\\"aggregate_action\\\": \\\"${aggregateAction}\\\"}",
             entityInputs: [${files.join(",")}]

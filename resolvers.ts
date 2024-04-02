@@ -31,7 +31,7 @@ import {
   formatFedQueryForNextGen,
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
-import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownload/CreateBulkDownloadResolver";
+import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownload/CreateBulkDownload";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to

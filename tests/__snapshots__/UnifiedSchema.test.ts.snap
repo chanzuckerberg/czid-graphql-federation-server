@@ -5107,6 +5107,7 @@ type query_fedSequencingReads_items_consensusGenomes_edges_items_node_referenceG
 }
 
 type query_fedSequencingReads_items_consensusGenomes_edges_items_node_taxon {
+  level: String
   name: String!
 }
 

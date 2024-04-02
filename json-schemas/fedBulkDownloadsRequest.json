@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "toRemove": {
+      "type": "object",
+      "properties": {
+        "searchBy":{
+          "type": "string"
+        }, 
+        "limit":{
+          "type": "integer"
+        }
+      }
+    },
+    "where": {
+      "type": "object",
+      "properties": {
+        "ownerUserId": {
+          "type": "object",
+          "properties": {
+            "_eq": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

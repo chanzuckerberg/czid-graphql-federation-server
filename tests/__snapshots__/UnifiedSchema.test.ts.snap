@@ -5149,6 +5149,7 @@ type query_fedSequencingReads_items_sample_metadatas_edges_items_node {
 }
 
 type query_fedSequencingReads_items_taxon {
+  level: String
   name: String!
 }
 

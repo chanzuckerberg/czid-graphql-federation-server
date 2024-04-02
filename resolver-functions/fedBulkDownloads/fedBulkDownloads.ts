@@ -105,7 +105,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   const nextGenEnabled = await shouldReadFromNextGen(context);
   /*----------------- Next Gen -----------------*/
   //TODO: Suzette - REMOVE THIS HARDCODED USERID
-  const userId = args.input.userId ?? 412;
+  const userId = args?.input?.userId ?? 412;
   if (!userId) {
     console.error("No userId provided for bulk downloads query");
     return mappedRes;

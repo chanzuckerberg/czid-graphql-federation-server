@@ -23,6 +23,9 @@
                 "properties": {
                     "name": {
                         "type": "string"
+                    },
+                    "level": {
+                        "type": "string"
                     }
                 },
                 "required": ["name"]

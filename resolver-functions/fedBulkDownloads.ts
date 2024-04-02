@@ -15,6 +15,9 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     n: args?.input?.limit,
   });
   const getEntityInputInfo = entities => {
+    if (!entities || entities.length === 0) {
+      return [];
+    }
     return entities.map(entity => {
       return {
         id: entity?.id.toString(),
@@ -29,64 +32,31 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   });
 
   const mappedRes = res.map(async (bulkDownload, index) => {
-    let url: string | null = null;
+    if (index < 8) {
+      console.log("bulk download", bulkDownload);
+    }
+    const entityInputs = [
+      ...getEntityInputInfo(bulkDownload?.workflow_runs),
+      ...getEntityInputInfo(bulkDownload?.pipeline_runs),
+    ];
     let params: {
       paramType: string;
       downloadName?: string;
       value: string;
     }[] = [];
-    let entityInputs: any[] = [];
-    if (index < 8) {
-      console.log("bulk download", bulkDownload);
+    if (typeof bulkDownload?.params === "object") {
+      Object.entries(bulkDownload?.params)
+        // remove "workflow" and "sample_ids" from details?.bulk_download?.params
+        .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
+        // make params into an array of objects
+        .map((param: [string, { downloadName?: string; value: string }]) => {
+          const paramItem = {
+            paramType: snakeToCamel(param[0]),
+            ...param[1],
+          };
+          params.push(paramItem);
+        });
     }
-    if (bulkDownload?.download_type_details) {
-      url = bulkDownload?.download_type_details?.presigned_output_url;
-      // entityInputs = [
-      //   ...getEntityInputInfo(
-      //     bulkDownload?.download_type_details?.workflow_runs,
-      //   ),
-      //   ...getEntityInputInfo(
-      //     bulkDownload?.download_type_details?.pipeline_runs,
-      //   ),
-      // ];
-    }
-    // if (bulkDownload?.status === "success") {
-    // try {
-    //   const details = await get({
-    //     url: `/bulk_downloads/${bulkDownload?.id}.json`,
-    //     args,
-    //     context,
-    //   });
-    //   url = details?.bulk_download?.presigned_output_url;
-    //   entityInputs = [
-    //     ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
-    //     ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
-    //   ];
-    //   if (typeof details?.bulk_download?.params === "object") {
-    //     Object.entries(details?.bulk_download?.params)
-    //       // remove "workflow" and "sample_ids" from details?.bulk_download?.params
-    //       .filter(
-    //         param => param[0] !== "workflow" && param[0] !== "sample_ids",
-    //       )
-    //       // make params into an array of objects
-    //       .map(
-    //         (param: [string, { downloadName?: string; value: string }]) => {
-    //           const paramItem = {
-    //             paramType: snakeToCamel(param[0]),
-    //             ...param[1],
-    //           };
-    //           params.push(paramItem);
-    //         },
-    //       );
-    //   }
-    // } catch (e) {
-    //   console.error(
-    //     `Error fetching bulk download details for bulk download id ${bulkDownload?.id}`,
-    //     e,
-    //     bulkDownload?.created_at,
-    //   );
-    // }
-    // }
     const {
       id,
       status,
@@ -98,21 +68,16 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       analysis_type,
       analysis_count,
       error_message,
+      presigned_output_url,
     } = bulkDownload;
-    // In Next Gen we will have an array with all of the entity input
-    // filtered through the nodes entity query to get the relevant info
-    // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
-    // We will get `sampleNames` by checking __typename to see if the entity is a sample,
-    // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
-    // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
     return {
-      id: id.toString(), // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
+      id: id.toString(),
       startedAt: created_at,
       status: statusDictionary[status],
       downloadType: download_type,
       ownerUserId: user_id,
       fileSize: output_file_size,
-      url,
+      url: presigned_output_url,
       analysisCount: analysis_count,
       entityInputFileType: analysis_type,
       entityInputs,

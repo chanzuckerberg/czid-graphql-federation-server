@@ -90,7 +90,11 @@ describe.only("CreateBulkDownload Query", () => {
       },
     };
 
-    const runWorkflowVersionMutation = { id: "1234" };
+    const runWorkflowVersionMutation = { "data": {
+      "runWorkflowVersion": {
+          "id": "018e9f6b-5c95-7a0d-933f-c5ab489799f6"
+      }
+    }};
     (httpUtils.get as jest.Mock).mockReturnValueOnce(
       bulkDownloadDefaultVersion,
     );
@@ -109,7 +113,11 @@ describe.only("CreateBulkDownload Query", () => {
         workflowRunIds: [1991, 2007],
         workflowRunIdsStrings: ["1991", "2007"],
       });
-      expect(result.data.CreateBulkDownload).toStrictEqual({ id: "1234" });
+      expect(result.data.CreateBulkDownload).toStrictEqual({ "data": {
+        "runWorkflowVersion": {
+            "id": "018e9f6b-5c95-7a0d-933f-c5ab489799f6"
+        }
+    } });
     });
   });
 });

@@ -1,6 +1,6 @@
-import { get } from "../utils/httpUtils";
-import { formatUrlParams } from "../utils/paramsUtils";
-import { snakeToCamel } from "../utils/utils";
+import { get } from "../../utils/httpUtils";
+import { formatUrlParams } from "../../utils/paramsUtils";
+import { snakeToCamel } from "../../utils/utils";
 
 interface BulkDownloadFromRails {
   id: number;
@@ -54,7 +54,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     args,
     context,
   });
-
+  console.log(res);
   const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
     const entityInputs = [
       ...getEntityInputInfo(bulkDownload?.workflow_runs),

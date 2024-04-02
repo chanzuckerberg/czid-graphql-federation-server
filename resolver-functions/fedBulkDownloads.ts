@@ -2,6 +2,30 @@ import { get } from "../utils/httpUtils";
 import { formatUrlParams } from "../utils/paramsUtils";
 import { snakeToCamel } from "../utils/utils";
 
+interface BulkDownloadFromRails {
+  id: number;
+  download_type: string;
+  status: "success" | "error" | "waiting" | "running";
+  error_message: string | null;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+  output_file_size: number;
+  deleted_at: string | null;
+  analysis_type: string;
+  analysis_count: number;
+  log_url: string;
+  params: { [x: string]: Param };
+  pipeline_runs: { id: number; sample_name: string }[];
+  workflow_runs: { id: number; sample_name: string }[];
+  presigned_output_url: string | null;
+}
+interface Param {
+  paramType: string;
+  downloadName?: string;
+  value: string;
+}
+
 export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   /*----------------- Rails -----------------*/
   const statusDictionary = {
@@ -31,19 +55,12 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     context,
   });
 
-  const mappedRes = res.map(async (bulkDownload, index) => {
-    if (index < 8) {
-      console.log("bulk download", bulkDownload);
-    }
+  const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
     const entityInputs = [
       ...getEntityInputInfo(bulkDownload?.workflow_runs),
       ...getEntityInputInfo(bulkDownload?.pipeline_runs),
     ];
-    let params: {
-      paramType: string;
-      downloadName?: string;
-      value: string;
-    }[] = [];
+    let params: Param[] = [];
     if (typeof bulkDownload?.params === "object") {
       Object.entries(bulkDownload?.params)
         // remove "workflow" and "sample_ids" from details?.bulk_download?.params
@@ -64,14 +81,14 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       download_type,
       created_at,
       output_file_size,
-      logUrl,
+      log_url,
       analysis_type,
       analysis_count,
       error_message,
       presigned_output_url,
     } = bulkDownload;
     return {
-      id: id.toString(),
+      id: id?.toString(),
       startedAt: created_at,
       status: statusDictionary[status],
       downloadType: download_type,
@@ -83,7 +100,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       entityInputs,
       errorMessage: error_message,
       params,
-      logUrl, // used in admin only, we will deprecate log_url and use something like executionId
+      logUrl: log_url, // used in admin only, we will deprecate log_url in NextGen and use something like executionId
     };
   });
   return mappedRes;

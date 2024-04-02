@@ -1,0 +1,25 @@
+{
+  "where": {
+    "collectionId": {
+      "_in": [
+        1234
+      ]
+    },
+    "workflowVersion": {
+      "workflow": {
+        "name": {
+          "_in": [
+            "consensus-genome"
+          ]
+        }
+      }
+    },
+    "deprecatedById": {
+      "_is_null": true
+    }
+  },
+  "todoRemove": {
+    "domain": "my_data",
+    "projectId": "1234"
+  }
+}

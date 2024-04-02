@@ -1,0 +1,61 @@
+{
+    "type": "object",
+    "properties": {
+        "where": {
+            "type": "object",
+            "properties": {
+                "collectionId": {
+                    "type": "object",
+                    "properties": {
+                        "_in": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "workflowVersion": {
+                    "type": "object",
+                    "properties": {
+                        "workflow": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_in": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecatedById": {
+                    "type": "object",
+                    "properties": {
+                        "_is_null": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        "todoRemove": {
+            "type": "object",
+            "properties": {
+                "domain": {
+                    "type": "string"
+                },
+                "projectId": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

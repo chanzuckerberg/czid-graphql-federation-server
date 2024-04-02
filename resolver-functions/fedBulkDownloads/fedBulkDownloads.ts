@@ -54,7 +54,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     args,
     context,
   });
-  console.log(res);
   const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
     const entityInputs = [
       ...getEntityInputInfo(bulkDownload?.workflow_runs),

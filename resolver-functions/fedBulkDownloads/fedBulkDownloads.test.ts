@@ -137,7 +137,6 @@ describe("bulkDownloads Query:", () => {
         params: [],
       },
     ];
-    console.log(result);
     expect(result.data.fedBulkDownloads).toStrictEqual(bulkDownloadResponse);
   });
 });

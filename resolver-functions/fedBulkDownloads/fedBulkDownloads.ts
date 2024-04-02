@@ -104,19 +104,12 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   });
   const nextGenEnabled = await shouldReadFromNextGen(context);
   /*----------------- Next Gen -----------------*/
-  //TODO: Suzette - REMOVE THIS HARDCODED USERID
-  const userId = args?.input?.userId ?? 412;
-  if (!userId) {
-    console.error("No userId provided for bulk downloads query");
-    return mappedRes;
-  }
   console.log("nextGenEnabled", nextGenEnabled);
   if (nextGenEnabled) {
     const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
         workflowRuns(
           where: {
             workflowVersion: {workflow: {name: {_eq: "bulk-download"}}},
-            ownerUserId: {_eq: ${userId}},
             deletedAt: {_is_null: true}
         }
         orderBy: {createdAt: desc}
@@ -206,7 +199,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       },
     );
     console.log("nextGenBulkDownloads", nextGenBulkDownloads);
-    return nextGenBulkDownloads;
+    return nextGenBulkDownloads.concat(mappedRes);
   }
   return mappedRes;
 };

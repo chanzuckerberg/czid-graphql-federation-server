@@ -86,19 +86,11 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   });
   const bulkdownloadVersionId =
     resWorkflowVersionId.data?.workflowVersions?.[0]?.id;
-  // get the files from the entity service
-  let downloadEntity = "";
-  if (downloadType === "consensus_genome") {
-    downloadEntity = "sequence";
-  } else if (downloadType === "consensus_genome_intermediate_output_files") {
-    downloadEntity = "intermediateOutputs";
-  }
+
   const getFileIdsQuery = `query GetFilesFromEntities {
     consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings.map(id => `"${id}"`)}]}}){
         collectionId
-        ${downloadEntity} {
-          id
-        }
+        id
       }
     }
   `;
@@ -109,7 +101,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     customQuery: getFileIdsQuery,
   });
   const files = resFileIds.data?.consensusGenomes?.map(consensusGenome => {
-    return `{name: "consensus_genomes", entityType: "consensus_genome", entityId: "${consensusGenome[downloadEntity].id}"}`;
+    return `{name: "consensus_genomes", entityType: "consensus_genome", entityId: "${consensusGenome.id}"}`;
   });
   // run the workflow version with the files as inputs
   let aggregateAction = "zip";
@@ -117,12 +109,14 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     aggregateAction = "concatenate";
   }
   console.log("files", files);
+  const collectionId = resFileIds.data?.consensusGenomes?.[0]?.collectionId;
+  console.log("collectionId", collectionId);
   //TODO: add a real collectionId
   const runBulkDownload = `
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
-            collectionId: 1153,
+            collectionId: ${collectionId},
             workflowVersionId: "${bulkdownloadVersionId}",
             rawInputJson: "{ \\\"bulk_download_type\\\": \\\"${downloadType}\\\", \\\"aggregate_action\\\": \\\"${aggregateAction}\\\"}",
             entityInputs: [${files.join(",")}]

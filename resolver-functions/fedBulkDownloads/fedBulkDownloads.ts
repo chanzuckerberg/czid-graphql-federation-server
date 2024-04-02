@@ -104,11 +104,13 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   });
   const nextGenEnabled = await shouldReadFromNextGen(context);
   /*----------------- Next Gen -----------------*/
-  const userId = args.input.userId;
+  //TODO: Suzette - REMOVE THIS HARDCODED USERID
+  const userId = args.input.userId ?? 412;
   if (!userId) {
     console.error("No userId provided for bulk downloads query");
     return mappedRes;
   }
+  console.log("nextGenEnabled", nextGenEnabled);
   if (nextGenEnabled) {
     const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
         workflowRuns(
@@ -143,13 +145,13 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       serviceType: "workflows",
       customQuery: getAllBulkDownloadsQuery,
     });
-
+    console.log("allBulkDownloadsResp", allBulkDownloadsResp);
     // If the workflow run is successful, get the download link
     // Add the URL to the workflow run object
     const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
       ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
       .map(bulkDownload => bulkDownload.id);
-
+    console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
     const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         file {
@@ -167,6 +169,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       serviceType: "entities",
       customQuery: downloadLinkQuery,
     });
+    console.log("downloadLinksResp", downloadLinksResp);
     const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns?.map(
       workflowRun => {
         const bulkDownloadFromEntities =
@@ -183,7 +186,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           fileSize: bulkDownloadFromEntities?.file?.size,
           url: bulkDownloadFromEntities?.file?.downloadLink?.url,
           analysisCount: workflowRun.entityInputs.edges.length,
-          entityInputFileType: workflowRun.rawInputsJson.bulk_download_type, // got to remove this for Rails implementation too
+          entityInputFileType: workflowRun.rawInputsJson.bulk_download_type,
           entityInputs: workflowRun.entityInputs.edges.map(edge => {
             return {
               id: edge.node.inputEntityId,
@@ -202,7 +205,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         };
       },
     );
-    return nextGenBulkDownloads.concat(mappedRes);
+    console.log("nextGenBulkDownloads", nextGenBulkDownloads);
+    return nextGenBulkDownloads;
   }
   return mappedRes;
 };

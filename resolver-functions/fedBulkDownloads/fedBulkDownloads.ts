@@ -1,6 +1,6 @@
-import { get } from "../../utils/httpUtils";
+import { get, shouldReadFromNextGen } from "../../utils/httpUtils";
 import { formatUrlParams } from "../../utils/paramsUtils";
-import { snakeToCamel } from "../../utils/utils";
+import { snakeToCamel, toKebabCase } from "../../utils/utils";
 
 interface BulkDownloadFromRails {
   id: number;
@@ -102,5 +102,115 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       logUrl: log_url, // used in admin only, we will deprecate log_url in NextGen and use something like executionId
     };
   });
+  const nextGenEnabled = await shouldReadFromNextGen(context);
+  /*----------------- Next Gen -----------------*/
+  if (nextGenEnabled) {
+    const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
+        workflowRuns(
+          where: {
+            workflowVersion: {workflow: {name: {_eq: "bulk-download"}}},
+            deletedAt: {_is_null: true}
+        }
+        orderBy: {createdAt: desc}
+      ) {
+          id
+          status
+          rawInputsJson
+          createdAt
+          workflowVersion {
+            id
+          }
+          entityInputs{
+            edges{
+              node{
+                fieldName
+                inputEntityId
+                entityType
+              }
+            }
+          }
+          ownerUserId
+        }
+      }`;
+    const allBulkDownloadsResp = await get({
+      args,
+      context,
+      serviceType: "workflows",
+      customQuery: getAllBulkDownloadsQuery,
+    });
+    console.log("allBulkDownloadsResp", allBulkDownloadsResp);
+    // If the workflow run is successful, get the download link
+    // Add the URL to the workflow run object
+    const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
+      ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
+      .map(bulkDownload => bulkDownload.id);
+    console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
+    const downloadLinkQuery = `query GetDownloadURL {
+      bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
+        file {
+          size
+          downloadLink {
+            url
+          }
+        }
+        producingRunId
+      }
+    }`;
+    const downloadLinksResp = await get({
+      args,
+      context,
+      serviceType: "entities",
+      customQuery: downloadLinkQuery,
+    });
+    console.log("downloadLinksResp", downloadLinksResp);
+    const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns
+      ?.filter(wr => wr)
+      .map(workflowRun => {
+        const { file } =
+          downloadLinksResp?.data?.bulkDownloads?.find(
+            bulkDownload => bulkDownload.producingRunId === workflowRun.id,
+          ) || {};
+        const {
+          createdAt,
+          rawInputsJson,
+          id,
+          status,
+          ownerUserId,
+          entityInputs,
+          errorMessage,
+        } = workflowRun;
+        const inputs = entityInputs?.edges || [];
+        const { bulk_download_type, aggregate_action } =
+          JSON.parse(rawInputsJson) || {};
+        return {
+          id,
+          startedAt: createdAt,
+          status,
+          downloadType: bulk_download_type,
+          ownerUserId,
+          fileSize: file?.size,
+          url: file?.downloadLink?.url,
+          analysisCount: entityInputs?.edges?.length,
+          entityInputFileType: toKebabCase(inputs[0].node.entityType),
+          entityInputs: inputs.map(edge => {
+            return {
+              id: edge.node.inputEntityId,
+              name: edge.node.fieldName,
+            };
+          }),
+          errorMessage: errorMessage,
+          params: [
+            {
+              paramType: "downloadFormat",
+              displayName: "File Format",
+              value: aggregate_action,
+            },
+          ],
+          logUrl: null,
+        };
+      });
+    console.log("nextGenBulkDownloads", nextGenBulkDownloads);
+    return nextGenBulkDownloads.concat(mappedRes);
+  }
   return mappedRes;
 };

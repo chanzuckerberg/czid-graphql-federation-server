@@ -146,8 +146,9 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       .map(bulkDownload => bulkDownload.id);
     console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
     const allEntityInputsIds = allBulkDownloadsResp?.data?.workflowRuns
-      .map(workflowRun => {
-        workflowRun?.entityInputs?.edges?.map(
+      .map(bulkDownload => {
+        console.log("bulkDownload", bulkDownload.entityInputs);
+        return bulkDownload?.entityInputs?.edges?.map(
           entityInput => entityInput?.node?.inputEntityId,
         );
       })

@@ -4221,7 +4221,12 @@ input queryInput_fedSequencingReads_input_where_collectionId_Input {
 }
 
 input queryInput_fedSequencingReads_input_where_consensusGenomes_Input {
+  producingRunId: queryInput_fedSequencingReads_input_where_consensusGenomes_producingRunId_Input
   taxon: queryInput_fedSequencingReads_input_where_consensusGenomes_taxon_Input
+}
+
+input queryInput_fedSequencingReads_input_where_consensusGenomes_producingRunId_Input {
+  _in: [String]
 }
 
 input queryInput_fedSequencingReads_input_where_consensusGenomes_taxon_Input {
@@ -5102,6 +5107,7 @@ type query_fedSequencingReads_items_consensusGenomes_edges_items_node_referenceG
 }
 
 type query_fedSequencingReads_items_consensusGenomes_edges_items_node_taxon {
+  level: String
   name: String!
 }
 
@@ -5143,6 +5149,7 @@ type query_fedSequencingReads_items_sample_metadatas_edges_items_node {
 }
 
 type query_fedSequencingReads_items_taxon {
+  level: String
   name: String!
 }
 

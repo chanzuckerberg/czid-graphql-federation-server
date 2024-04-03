@@ -300,3 +300,4 @@ serve:
   playground: true
   cors:
     origin: "${ALLOWED_CORS_ORIGINS}"
+additionalEnvelopPlugins: ./envelopPlugins.ts

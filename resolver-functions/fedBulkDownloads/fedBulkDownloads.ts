@@ -153,7 +153,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             url
           }
         }
-        producingRunId
       }
     }`;
     const downloadLinksResp = await get({

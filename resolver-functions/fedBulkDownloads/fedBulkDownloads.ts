@@ -35,8 +35,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     running: "RUNNING",
   };
   const urlParams = formatUrlParams({
-    searchBy: args?.input?.toRemove?.searchBy,
-    n: args?.input?.toRemove?.limit,
+    searchBy: args?.input?.searchBy,
+    n: args?.input?.limit,
   });
   const getEntityInputInfo = entities => {
     if (!entities || entities.length === 0) {

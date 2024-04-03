@@ -49,9 +49,9 @@ sources:
             responseTypeName: Background
           - type: Query
             field: fedBulkDownloads
-            path: /bulk_downloads
+            path: /bulk_downloads?searchBy=${searchBy}&n=${limit}
             method: GET
-            requestSchema: ./json-schemas/fedBulkDownloadsRequest.json
+            requestSample: { searchBy: "string to search", limit: 10 }
             responseSchema: ./json-schemas/bulkDownloads.json
             responseTypeName: fedBulkDownloads
           - type: Query

@@ -11,7 +11,10 @@ import {
 import { SampleForReportResolver } from "./resolver-functions/SampleForReport";
 import { BulkDownloadsCGOverviewResolver } from "./resolver-functions/BulkDownloadsCGOverview";
 import { fedBulkDowloadsResolver } from "./resolver-functions/fedBulkDownloads/fedBulkDownloads";
-import { parseWorkflowsAggregateTotalCountsResponse, processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
+import {
+  parseWorkflowsAggregateTotalCountsResponse,
+  processWorkflowsAggregateResponse,
+} from "./utils/aggregateUtils";
 import {
   fetchFromNextGen,
   get,
@@ -32,7 +35,6 @@ import {
   formatFedQueryForNextGen,
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
-import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownloadResolver";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -130,9 +132,9 @@ export const resolvers: Resolvers = {
               file: {
                 downloadLink: {
                   url: referenceGenomeDownloadUrl.url,
-                }
-              }
-            }
+                },
+              },
+            },
           },
         ];
         return ret;
@@ -1024,18 +1026,20 @@ export const resolvers: Resolvers = {
     fedWorkflowRunsAggregateTotalCount: async (root, args, context, info) => {
       const input = args.input;
       const { countByWorkflow: railsCountByWorkflow } = await get({
-        url: "/samples/stats.json" +
+        url:
+          "/samples/stats.json" +
           formatUrlParams({
             domain: input?.todoRemove?.domain,
             projectId: input?.todoRemove?.projectId,
           }),
         args,
-        context
+        context,
       });
 
       let nextGenAggregates = [];
       // the frontend decides which workflows are fetched from NextGen vs Rails
-      const nextgenWorkflows = input?.where?.workflowVersion?.workflow?.name?._in as string[] || [];
+      const nextgenWorkflows =
+        (input?.where?.workflowVersion?.workflow?.name?._in as string[]) || [];
 
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
@@ -1064,11 +1068,17 @@ export const resolvers: Resolvers = {
             where: args.input?.where,
           },
         });
-        
-        nextGenAggregates = totalCountResponse?.data?.workflowRunsAggregate?.aggregate;
+
+        nextGenAggregates =
+          totalCountResponse?.data?.workflowRunsAggregate?.aggregate;
       }
 
-      return parseWorkflowsAggregateTotalCountsResponse(nextGenAggregates, railsCountByWorkflow, nextGenEnabled, nextgenWorkflows);
+      return parseWorkflowsAggregateTotalCountsResponse(
+        nextGenAggregates,
+        railsCountByWorkflow,
+        nextGenEnabled,
+        nextgenWorkflows,
+      );
     },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */
@@ -1129,7 +1139,45 @@ export const resolvers: Resolvers = {
     }),
   },
   Mutation: {
-    CreateBulkDownload: CreateBulkDownloadResolver,
+    CreateBulkDownload: async (root, args, context, info) => {
+      if (!args?.input) {
+        throw new Error("No input provided");
+      }
+      const {
+        downloadType,
+        workflow,
+        downloadFormat,
+        workflowRunIds,
+        workflowRunIdsStrings,
+      } = args?.input;
+
+      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
+        id => id && parseInt(id),
+      );
+      const body = {
+        download_type: downloadType,
+        workflow: workflow,
+        params: {
+          download_format: {
+            value: downloadFormat,
+          },
+          sample_ids: {
+            value: workflowRunIdsNumbers ?? workflowRunIds,
+          },
+          workflow: {
+            value: workflow,
+          },
+        },
+        workflow_run_ids: workflowRunIdsNumbers ?? workflowRunIds,
+      };
+      const res = await postWithCSRF({
+        url: `/bulk_downloads`,
+        body,
+        args,
+        context,
+      });
+      return res;
+    },
     DeleteSamples: async (root, args, context, info) => {
       if (!args?.input) {
         throw new Error("No input provided");

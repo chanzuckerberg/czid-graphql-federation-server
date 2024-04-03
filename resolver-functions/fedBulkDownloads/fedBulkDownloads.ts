@@ -1,6 +1,10 @@
 import { get, shouldReadFromNextGen } from "../../utils/httpUtils";
 import { formatUrlParams } from "../../utils/paramsUtils";
-import { snakeToCamel, toKebabCase } from "../../utils/utils";
+import {
+  convertArrayToObject,
+  snakeToCamel,
+  toKebabCase,
+} from "../../utils/utils";
 
 interface BulkDownloadFromRails {
   id: number;
@@ -147,7 +151,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
     const allEntityInputsIds = allBulkDownloadsResp?.data?.workflowRuns
       .map(bulkDownload => {
-        console.log("bulkDownload", bulkDownload.entityInputs);
         return bulkDownload?.entityInputs?.edges?.map(
           entityInput => entityInput?.node?.inputEntityId,
         );
@@ -156,6 +159,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     console.log("allEntityInputsIds", allEntityInputsIds);
     const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
+        producingRunId
         file {
           size
           downloadLink {
@@ -179,13 +183,19 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       customQuery: downloadLinkQuery,
     });
     console.log("downloadLinksResp", downloadLinksResp);
+    const bulkDownloads =
+      downloadLinksResp?.data?.bulkDownloads &&
+      convertArrayToObject(
+        downloadLinksResp.data.bulkDownloads,
+        "producingRunId",
+      );
+    const consensusGenomes =
+      downloadLinksResp?.data?.consensusGenomes &&
+      convertArrayToObject(downloadLinksResp.data.consensusGenomes, "id");
     const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns
       ?.filter(wr => wr)
       .map(workflowRun => {
-        const { file } =
-          downloadLinksResp?.data?.bulkDownloads?.find(
-            bulkDownload => bulkDownload.producingRunId === workflowRun.id,
-          ) || {};
+        const file = bulkDownloads[workflowRun.id]?.file;
         const {
           createdAt,
           rawInputsJson,
@@ -211,7 +221,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           entityInputs: inputs.map(edge => {
             return {
               id: edge.node.inputEntityId,
-              name: edge.node.fieldName,
+              name: consensusGenomes[edge.node.inputEntityId].sequencingRead
+                .sample.name,
             };
           }),
           errorMessage: errorMessage,

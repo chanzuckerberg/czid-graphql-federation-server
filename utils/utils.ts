@@ -11,3 +11,13 @@ export const toKebabCase = (str: unknown) => {
     ?.map(x => x.toLowerCase())
     .join("-");
 };
+
+export const convertArrayToObject = (array: object[], key: string) => {
+  const initialValue = {};
+  return array.reduce((obj, item) => {
+    return {
+      ...obj,
+      [item[key]]: item,
+    };
+  }, initialValue);
+};

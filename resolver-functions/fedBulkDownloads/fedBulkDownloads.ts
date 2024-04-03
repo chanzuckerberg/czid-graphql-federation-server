@@ -147,8 +147,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
     console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
     const allEntityInputsIds = allBulkDownloadsResp?.data?.workflowRuns
       .map(workflowRun => {
-        workflowRun.entityInputs.map(
-          entityInput => entityInput.node.inputEntityId,
+        workflowRun?.entityInputs?.edges?.map(
+          entityInput => entityInput?.node?.inputEntityId,
         );
       })
       .flat();

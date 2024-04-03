@@ -1,6 +1,6 @@
 import { get, shouldReadFromNextGen } from "../../utils/httpUtils";
 import { formatUrlParams } from "../../utils/paramsUtils";
-import { snakeToCamel } from "../../utils/utils";
+import { snakeToCamel, toKebabCase } from "../../utils/utils";
 
 interface BulkDownloadFromRails {
   id: number;
@@ -179,18 +179,20 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           entityInputs,
           errorMessage,
         } = workflowRun;
+        const inputs = entityInputs?.edges || [];
+        const { bulk_download_type, aggregate_action } =
+          JSON.parse(rawInputsJson) || {};
         return {
           id,
           startedAt: createdAt,
           status,
-          downloadType: JSON.parse(rawInputsJson)?.bulk_download_type,
+          downloadType: bulk_download_type,
           ownerUserId,
           fileSize: file?.size,
           url: file?.downloadLink?.url,
           analysisCount: entityInputs?.edges?.length,
-          entityInputFileType:
-            entityInputs?.edges[0]?.node?.entityType?.toKebabCase,
-          entityInputs: entityInputs?.edges?.map(edge => {
+          entityInputFileType: toKebabCase(inputs[0].node.entityType),
+          entityInputs: inputs.map(edge => {
             return {
               id: edge.node.inputEntityId,
               name: edge.node.fieldName,
@@ -200,8 +202,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           params: [
             {
               paramType: "downloadFormat",
-              downloadName: "File Format",
-              value: JSON.parse(rawInputsJson)?.aggregate_action,
+              displayName: "File Format",
+              value: aggregate_action,
             },
           ],
           logUrl: null,

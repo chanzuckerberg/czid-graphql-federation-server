@@ -110,13 +110,14 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           where: {
             workflowVersion: {workflow: {name: {_eq: "bulk-download"}}},
             deletedAt: {_is_null: true}
-        }
-        orderBy: {createdAt: desc}
+          }
       ) {
           id
           status
           rawInputsJson
           createdAt
+          ownerUserId
+          errorMessage
           workflowVersion {
             id
           }
@@ -129,7 +130,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
               }
             }
           }
-          ownerUserId
         }
       }`;
     const allBulkDownloadsResp = await get({
@@ -145,12 +145,28 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
       .map(bulkDownload => bulkDownload.id);
     console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
+    const allEntityInputsIds = allBulkDownloadsResp?.data?.workflowRuns
+      .map(workflowRun => {
+        workflowRun.entityInputs.map(
+          entityInput => entityInput.node.inputEntityId,
+        );
+      })
+      .flat();
+    console.log("allEntityInputsIds", allEntityInputsIds);
     const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         file {
           size
           downloadLink {
             url
+          }
+        }
+      }
+      consensusGenomes(where:{id:{_in: [${allEntityInputsIds?.map(id => `"${id}"`)}]}}){
+        id
+        sequencingRead{
+          sample{
+            name
           }
         }
       }

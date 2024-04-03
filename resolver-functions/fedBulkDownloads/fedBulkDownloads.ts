@@ -104,7 +104,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   });
   const nextGenEnabled = await shouldReadFromNextGen(context);
   /*----------------- Next Gen -----------------*/
-  console.log("nextGenEnabled", nextGenEnabled);
   if (nextGenEnabled) {
     const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
         workflowRuns(
@@ -126,6 +125,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
               node{
                 fieldName
                 inputEntityId
+                entityType
               }
             }
           }
@@ -163,41 +163,50 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       customQuery: downloadLinkQuery,
     });
     console.log("downloadLinksResp", downloadLinksResp);
-    const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns?.map(
-      workflowRun => {
-        const bulkDownloadFromEntities =
+    const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns
+      ?.filter(wr => wr)
+      .map(workflowRun => {
+        const { file } =
           downloadLinksResp?.data?.bulkDownloads?.find(
             bulkDownload => bulkDownload.producingRunId === workflowRun.id,
-          );
+          ) || {};
+        const {
+          createdAt,
+          rawInputsJson,
+          id,
+          status,
+          ownerUserId,
+          entityInputs,
+          errorMessage,
+        } = workflowRun;
         return {
-          id: workflowRun.id.toString(),
-          startedAt: workflowRun.createdAt,
-          status: workflowRun.status,
-          downloadType: JSON.parse(workflowRun.rawInputsJson)
-            ?.bulk_download_type,
-          ownerUserId: workflowRun.ownerUserId,
-          fileSize: bulkDownloadFromEntities?.file?.size,
-          url: bulkDownloadFromEntities?.file?.downloadLink?.url,
-          analysisCount: workflowRun.entityInputs.edges.length,
-          entityInputFileType: workflowRun.rawInputsJson.bulk_download_type,
-          entityInputs: workflowRun.entityInputs.edges.map(edge => {
+          id,
+          startedAt: createdAt,
+          status,
+          downloadType: JSON.parse(rawInputsJson)?.bulk_download_type,
+          ownerUserId,
+          fileSize: file?.size,
+          url: file?.downloadLink?.url,
+          analysisCount: entityInputs?.edges?.length,
+          entityInputFileType:
+            entityInputs?.edges[0]?.node?.entityType?.toKebabCase,
+          entityInputs: entityInputs?.edges?.map(edge => {
             return {
               id: edge.node.inputEntityId,
               name: edge.node.fieldName,
             };
           }),
-          errorMessage: workflowRun.errorMessage,
+          errorMessage: errorMessage,
           params: [
             {
               paramType: "downloadFormat",
               downloadName: "File Format",
-              value: workflowRun.rawInputsJson.aggregate_action,
+              value: JSON.parse(rawInputsJson)?.aggregate_action,
             },
           ],
           logUrl: null,
         };
-      },
-    );
+      });
     console.log("nextGenBulkDownloads", nextGenBulkDownloads);
     return nextGenBulkDownloads.concat(mappedRes);
   }

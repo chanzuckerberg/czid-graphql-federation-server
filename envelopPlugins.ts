@@ -3,6 +3,7 @@ import { Plugin, useMaskedErrors, MaskError } from "@envelop/core";
 import { MeshPlugin } from "@graphql-mesh/types";
 
 export const maskError: MaskError = (error: unknown): Error => {
+  return new GraphQLError("Sorry");
   if (error instanceof Error) {
     return error;
   }

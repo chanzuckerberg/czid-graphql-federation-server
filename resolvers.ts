@@ -11,7 +11,10 @@ import {
 import { SampleForReportResolver } from "./resolver-functions/SampleForReport";
 import { BulkDownloadsCGOverviewResolver } from "./resolver-functions/BulkDownloadsCGOverview";
 import { fedBulkDowloadsResolver } from "./resolver-functions/fedBulkDownloads/fedBulkDownloads";
-import { parseWorkflowsAggregateTotalCountsResponse, processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
+import {
+  parseWorkflowsAggregateTotalCountsResponse,
+  processWorkflowsAggregateResponse,
+} from "./utils/aggregateUtils";
 import {
   fetchFromNextGen,
   get,
@@ -129,9 +132,9 @@ export const resolvers: Resolvers = {
               file: {
                 downloadLink: {
                   url: referenceGenomeDownloadUrl.url,
-                }
-              }
-            }
+                },
+              },
+            },
           },
         ];
         return ret;
@@ -814,6 +817,7 @@ export const resolvers: Resolvers = {
       return annotations;
     },
     fedWorkflowRuns: async (_, args, context: any) => {
+      throw new Error("asdf");
       const input = args.input;
       if (input == null) {
         throw new Error("fedWorkflowRuns input is nullish");
@@ -890,7 +894,7 @@ export const resolvers: Resolvers = {
       // Entities call.
       const { workflow_runs } = await get({
         url:
-          "/workflow_runs.json" +
+          "/workflow_runs.jsofn" +
           formatUrlParams({
             mode: "basic",
             domain: input.todoRemove?.domain,
@@ -1023,18 +1027,20 @@ export const resolvers: Resolvers = {
     fedWorkflowRunsAggregateTotalCount: async (root, args, context, info) => {
       const input = args.input;
       const { countByWorkflow: railsCountByWorkflow } = await get({
-        url: "/samples/stats.json" +
+        url:
+          "/samples/stats.json" +
           formatUrlParams({
             domain: input?.todoRemove?.domain,
             projectId: input?.todoRemove?.projectId,
           }),
         args,
-        context
+        context,
       });
 
       let nextGenAggregates = [];
       // the frontend decides which workflows are fetched from NextGen vs Rails
-      const nextgenWorkflows = input?.where?.workflowVersion?.workflow?.name?._in as string[] || [];
+      const nextgenWorkflows =
+        (input?.where?.workflowVersion?.workflow?.name?._in as string[]) || [];
 
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
@@ -1063,11 +1069,17 @@ export const resolvers: Resolvers = {
             where: args.input?.where,
           },
         });
-        
-        nextGenAggregates = totalCountResponse?.data?.workflowRunsAggregate?.aggregate;
+
+        nextGenAggregates =
+          totalCountResponse?.data?.workflowRunsAggregate?.aggregate;
       }
 
-      return parseWorkflowsAggregateTotalCountsResponse(nextGenAggregates, railsCountByWorkflow, nextGenEnabled, nextgenWorkflows);
+      return parseWorkflowsAggregateTotalCountsResponse(
+        nextGenAggregates,
+        railsCountByWorkflow,
+        nextGenEnabled,
+        nextgenWorkflows,
+      );
     },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */

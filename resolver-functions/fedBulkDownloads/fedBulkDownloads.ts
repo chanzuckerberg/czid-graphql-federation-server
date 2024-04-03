@@ -32,82 +32,82 @@ interface Param {
 
 export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   const getRailsBulkDownloads = async (args, context) => {
-    // const statusDictionary = {
-    //   success: "SUCCEEDED",
-    //   error: "FAILED",
-    //   waiting: "PENDING",
-    //   running: "RUNNING",
-    // };
-    // const urlParams = formatUrlParams({
-    //   searchBy: args?.input?.searchBy,
-    //   n: args?.input?.limit,
-    // });
-    // const getEntityInputInfo = entities => {
-    //   if (!entities || entities.length === 0) {
-    //     return [];
-    //   }
-    //   return entities.map(entity => {
-    //     return {
-    //       id: entity?.id.toString(),
-    //       name: entity?.sample_name,
-    //     };
-    //   });
-    // };
-    // const res = await get({
-    //   url: `/bulk_downloads.json${urlParams}`,
-    //   args,
-    //   context,
-    // });
-    // const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
-    //   const entityInputs = [
-    //     ...getEntityInputInfo(bulkDownload?.workflow_runs),
-    //     ...getEntityInputInfo(bulkDownload?.pipeline_runs),
-    //   ];
-    //   let params: Param[] = [];
-    //   if (typeof bulkDownload?.params === "object") {
-    //     Object.entries(bulkDownload?.params)
-    //       // remove "workflow" and "sample_ids" from details?.bulk_download?.params
-    //       .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
-    //       // make params into an array of objects
-    //       .map((param: [string, { downloadName?: string; value: string }]) => {
-    //         const paramItem = {
-    //           paramType: snakeToCamel(param[0]),
-    //           ...param[1],
-    //         };
-    //         params.push(paramItem);
-    //       });
-    //   }
-    //   const {
-    //     id,
-    //     status,
-    //     user_id,
-    //     download_type,
-    //     created_at,
-    //     output_file_size,
-    //     log_url,
-    //     analysis_type,
-    //     analysis_count,
-    //     error_message,
-    //     presigned_output_url,
-    //   } = bulkDownload;
-    //   return {
-    //     id: id?.toString(),
-    //     startedAt: created_at,
-    //     status: statusDictionary[status],
-    //     downloadType: download_type,
-    //     ownerUserId: user_id,
-    //     fileSize: output_file_size,
-    //     url: presigned_output_url,
-    //     analysisCount: analysis_count,
-    //     entityInputFileType: analysis_type,
-    //     entityInputs,
-    //     errorMessage: error_message,
-    //     params,
-    //     logUrl: log_url, // used in admin only, we will deprecate log_url in NextGen and use something like executionId
-    //   };
-    // });
-    // return mappedRes;
-    return [];
+    const statusDictionary = {
+      success: "SUCCEEDED",
+      error: "FAILED",
+      waiting: "PENDING",
+      running: "RUNNING",
+    };
+    const getEntityInputInfo = entities => {
+      if (!entities || entities.length === 0) {
+        return [];
+      }
+      return entities.map(entity => {
+        return {
+          id: entity?.id?.toString(),
+          name: entity?.sample_name,
+        };
+      });
+    };
+    const urlParams = formatUrlParams({
+      searchBy: args?.input?.searchBy,
+      n: args?.input?.limit,
+    });
+    const res = await get({
+      url: `/bulk_downloas.json${urlParams}`,
+      args,
+      context,
+    });
+    console.log("res", res);
+    const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
+      const entityInputs = [
+        ...getEntityInputInfo(bulkDownload?.workflow_runs),
+        ...getEntityInputInfo(bulkDownload?.pipeline_runs),
+      ];
+      let params: Param[] = [];
+      if (typeof bulkDownload?.params === "object") {
+        Object.entries(bulkDownload?.params)
+          // remove "workflow" and "sample_ids" from details?.bulk_download?.params
+          .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
+          // make params into an array of objects
+          .map((param: [string, { downloadName?: string; value: string }]) => {
+            const paramItem = {
+              paramType: snakeToCamel(param[0]),
+              ...param[1],
+            };
+            params.push(paramItem);
+          });
+      }
+      const {
+        id,
+        status,
+        user_id,
+        download_type,
+        created_at,
+        output_file_size,
+        log_url,
+        analysis_type,
+        analysis_count,
+        error_message,
+        presigned_output_url,
+      } = bulkDownload;
+      return {
+        id: id?.toString(),
+        startedAt: created_at,
+        status: statusDictionary[status],
+        downloadType: download_type,
+        ownerUserId: user_id,
+        fileSize: output_file_size,
+        url: presigned_output_url,
+        analysisCount: analysis_count,
+        entityInputFileType: analysis_type,
+        entityInputs,
+        errorMessage: error_message,
+        params,
+        logUrl: log_url, // used in admin only, we will deprecate log_url in NextGen and use something like executionId
+      };
+    });
+    return mappedRes;
   };
   const getNextGenBulkDownloads = async (args, context) => {
     const nextGenEnabled = await shouldReadFromNextGen(context);
@@ -185,6 +185,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         serviceType: "entities",
         customQuery: downloadLinkQuery,
       });
+      console.log("downloadLinksResp", downloadLinksResp);
       const bulkDownloads =
         downloadLinksResp?.data?.bulkDownloads &&
         convertArrayToObject(
@@ -194,8 +195,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       const consensusGenomes =
         downloadLinksResp?.data?.consensusGenomes &&
         convertArrayToObject(downloadLinksResp.data.consensusGenomes, "id");
-      console.log("bulkDownloads", bulkDownloads);
-      console.log("consensusGenomes", consensusGenomes);
+      // console.log("bulkDownloads", bulkDownloads);
+      // console.log("consensusGenomes", consensusGenomes);
       const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns
         ?.filter(wr => wr)
         .map(workflowRun => {
@@ -223,6 +224,12 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             analysisCount: entityInputs?.edges?.length,
             entityInputFileType: toKebabCase(inputs[0].node.entityType),
             entityInputs: inputs.map(edge => {
+              console.log(
+                "name",
+                consensusGenomes[edge.node.inputEntityId],
+                consensusGenomes[edge.node.inputEntityId]?.sequencingRead
+                  ?.sample?.name,
+              );
               return {
                 id: edge.node.inputEntityId,
                 name: consensusGenomes[edge.node.inputEntityId]?.sequencingRead
@@ -240,7 +247,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             logUrl: null,
           };
         });
-      console.log("nextGenBulkDownloads", nextGenBulkDownloads);
+      // console.log("nextGenBulkDownloads", nextGenBulkDownloads);
       return nextGenBulkDownloads;
     }
     return [];

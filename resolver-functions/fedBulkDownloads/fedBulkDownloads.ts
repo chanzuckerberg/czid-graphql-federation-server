@@ -53,12 +53,15 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       searchBy: args?.input?.searchBy,
       n: args?.input?.limit,
     });
-    const res = await get({
+    let res = await get({
       url: `/bulk_downloas.json${urlParams}`,
       args,
       context,
     });
-    console.log("res", res);
+    if (!res) {
+      console.error("No bulk downloads returned from Rails");
+      res = [];
+    }
     const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
       const entityInputs = [
         ...getEntityInputInfo(bulkDownload?.workflow_runs),
@@ -145,13 +148,11 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         serviceType: "workflows",
         customQuery: getAllBulkDownloadsQuery,
       });
-      // console.log("allBulkDownloadsResp", allBulkDownloadsResp);
       // If the workflow run is successful, get the download link
       // Add the URL to the workflow run object
       const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
         ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
         .map(bulkDownload => bulkDownload.id);
-      // console.log("succeededWorkflowRunIds", succeededWorkflowRunIds);
       const allEntityInputsIds = allBulkDownloadsResp?.data?.workflowRuns
         .map(bulkDownload => {
           return bulkDownload?.entityInputs?.edges?.map(
@@ -159,7 +160,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           );
         })
         .flat();
-      // console.log("allEntityInputsIds", allEntityInputsIds);
       const downloadLinkQuery = `query GetDownloadURL {
       bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
         producingRunId
@@ -195,8 +195,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       const consensusGenomes =
         downloadLinksResp?.data?.consensusGenomes &&
         convertArrayToObject(downloadLinksResp.data.consensusGenomes, "id");
-      // console.log("bulkDownloads", bulkDownloads);
-      // console.log("consensusGenomes", consensusGenomes);
       const nextGenBulkDownloads = allBulkDownloadsResp?.data?.workflowRuns
         ?.filter(wr => wr)
         .map(workflowRun => {
@@ -224,12 +222,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             analysisCount: entityInputs?.edges?.length,
             entityInputFileType: toKebabCase(inputs[0].node.entityType),
             entityInputs: inputs.map(edge => {
-              console.log(
-                "name",
-                consensusGenomes[edge.node.inputEntityId],
-                consensusGenomes[edge.node.inputEntityId]?.sequencingRead
-                  ?.sample?.name,
-              );
               return {
                 id: edge.node.inputEntityId,
                 name: consensusGenomes[edge.node.inputEntityId]?.sequencingRead
@@ -240,14 +232,12 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             params: [
               {
                 paramType: "downloadFormat",
-                displayName: "File Format",
                 value: aggregate_action,
               },
             ],
             logUrl: null,
           };
         });
-      // console.log("nextGenBulkDownloads", nextGenBulkDownloads);
       return nextGenBulkDownloads;
     }
     return [];

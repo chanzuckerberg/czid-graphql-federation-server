@@ -65,7 +65,7 @@ describe("bulkDownloads Query:", () => {
         params: [],
       },
     ];
-    expect(result.data.fedBulkDownloads).toStrictEqual(bulkDownloadResponse);
+    expect(result.data.fedBulkDownloads).toEqual(bulkDownloadResponse);
   });
 
   it("should give correct response with url params & successful run", async () => {

@@ -564,6 +564,7 @@ export const resolvers: Resolvers = {
 
           const railsMetadata:
             | { [key: string]: string | { name: string } }
+            | null
             | undefined = railsSample?.details?.metadata;
           const railsDbSample = railsSample?.details?.db_sample;
 

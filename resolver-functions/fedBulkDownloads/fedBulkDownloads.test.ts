@@ -55,6 +55,7 @@ describe("bulkDownloads Query:", () => {
         status: "FAILED",
         startedAt: "2024-02-15T11:47:10.000-08:00",
         ownerUserId: 412,
+        analysisCount: 1,
         downloadType: "amr_combined_results_bulk_download",
         url: null,
         fileSize: null,
@@ -70,7 +71,8 @@ describe("bulkDownloads Query:", () => {
 
   it("should give correct response with url params & successful run", async () => {
     const query = getExampleQuery("bulk-downloads-with-limit");
-    const railsResponse = [{
+    const railsResponse = [
+      {
         id: 12715,
         download_type: "sample_taxon_report",
         status: "success",
@@ -102,7 +104,8 @@ describe("bulkDownloads Query:", () => {
         ],
         workflow_runs: [],
         presigned_output_url: "https://presignedUrl.com",
-    }];
+      },
+    ];
     (httpUtils.get as jest.Mock).mockImplementationOnce(() => railsResponse);
     const result = await execute(query, {
       limit: 2,

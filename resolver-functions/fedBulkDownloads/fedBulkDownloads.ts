@@ -54,14 +54,10 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       n: args?.input?.limit,
     });
     let res = await get({
-      url: `/bulk_downloas.json${urlParams}`,
+      url: `/bulk_downloads.json${urlParams}`,
       args,
       context,
     });
-    if (!res) {
-      console.error("No bulk downloads returned from Rails");
-      res = [];
-    }
     const mappedRes = res.map(async (bulkDownload: BulkDownloadFromRails) => {
       const entityInputs = [
         ...getEntityInputInfo(bulkDownload?.workflow_runs),

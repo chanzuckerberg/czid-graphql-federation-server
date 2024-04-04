@@ -50,7 +50,9 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   /* --------------------- Next Gen --------------------- */
   // get the default bulk download workflow version id from the workflow service
   if (!workflowRunIdsStrings) {
-    throw new Error("No Next Gen Workflow Ids provided for bulk download creation");
+    throw new Error(
+      "No Next Gen Workflow Ids provided for bulk download creation",
+    );
   }
   if (!downloadType) {
     throw new Error("No downloadType provided for bulk download creation");
@@ -89,7 +91,6 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
 
   const getFileIdsQuery = `query GetFilesFromEntities {
     consensusGenomes(where: {producingRunId: {_in: [${workflowRunIdsStrings.map(id => `"${id}"`)}]}}){
-        collectionId
         id
       }
     }
@@ -108,15 +109,10 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   if (downloadFormat === "Single File (Concatenated)") {
     aggregateAction = "concatenate";
   }
-  console.log("files", files);
-  const collectionId = resFileIds.data?.consensusGenomes?.[0]?.collectionId;
-  console.log("collectionId", collectionId);
-  //TODO: add a real collectionId
   const runBulkDownload = `
       mutation BulkDownload {
         runWorkflowVersion(
           input: {
-            collectionId: ${collectionId},
             workflowVersionId: "${bulkdownloadVersionId}",
             rawInputJson: "{ \\\"bulk_download_type\\\": \\\"${downloadType}\\\", \\\"aggregate_action\\\": \\\"${aggregateAction}\\\"}",
             entityInputs: [${files.join(",")}]

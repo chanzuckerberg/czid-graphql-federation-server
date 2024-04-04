@@ -13,6 +13,8 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     downloadType,
     workflow,
     downloadFormat,
+    // TO DO: remove workflowRunIds (and potentially rename workflowRunIdsStrings)
+    // after the dual write period is over
     workflowRunIds,
     workflowRunIdsStrings,
   } = args?.input;
@@ -49,7 +51,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
   }
   /* --------------------- Next Gen --------------------- */
   // get the default bulk download workflow version id from the workflow service
-  if (!workflowRunIdsStrings) {
+  if (!workflowRunIdsStrings || workflowRunIdsStrings.length === 0) {
     throw new Error(
       "No Next Gen Workflow Ids provided for bulk download creation",
     );
@@ -105,10 +107,10 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     return `{name: "consensus_genomes", entityType: "consensus_genome", entityId: "${consensusGenome.id}"}`;
   });
   // run the workflow version with the files as inputs
-  let aggregateAction = "zip";
-  if (downloadFormat === "Single File (Concatenated)") {
-    aggregateAction = "concatenate";
-  }
+
+  let aggregateAction =
+    downloadFormat === "Single File (Concatenated)" ? "concatenate" : "zip";
+
   const runBulkDownload = `
       mutation BulkDownload {
         runWorkflowVersion(

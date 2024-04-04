@@ -29,15 +29,15 @@ interface Param {
   downloadName?: string;
   value: string;
 }
+enum NextGenStatuses {
+  success = "SUCCEEDED",
+  error = "FAILED",
+  waiting = "PENDING",
+  running = "RUNNING",
+}
 
 export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   const getRailsBulkDownloads = async (args, context) => {
-    const statusDictionary = {
-      success: "SUCCEEDED",
-      error: "FAILED",
-      waiting: "PENDING",
-      running: "RUNNING",
-    };
     const getEntityInputInfo = entities => {
       if (!entities || entities.length === 0) {
         return [];
@@ -67,6 +67,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       if (typeof bulkDownload?.params === "object") {
         Object.entries(bulkDownload?.params)
           // remove "workflow" and "sample_ids" from details?.bulk_download?.params
+          // which leaves only the params that are shown in the sidebar of
+          // the bulk download list page ie. download_format, metrics, etc.
           .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
           // make params into an array of objects
           .map((param: [string, { downloadName?: string; value: string }]) => {
@@ -93,7 +95,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       return {
         id: id?.toString(),
         startedAt: created_at,
-        status: statusDictionary[status],
+        status: NextGenStatuses[status],
         downloadType: download_type,
         ownerUserId: user_id,
         fileSize: output_file_size,
@@ -155,33 +157,32 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             entityInput => entityInput?.node?.inputEntityId,
           );
         })
-        .flat();
-      const downloadLinkQuery = `query GetDownloadURL {
-      bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
-        producingRunId
-        file {
-          size
-          downloadLink {
-            url
+        .flatMap();
+      const downloadLinkQuery = `query GetDownloadURLAndSampleNames {
+        bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
+          producingRunId
+          file {
+            size
+            downloadLink {
+              url
+            }
           }
         }
-      }
-      consensusGenomes(where:{id:{_in: [${allEntityInputsIds?.map(id => `"${id}"`)}]}}){
-        id
-        sequencingRead{
-          sample{
-            name
+        consensusGenomes(where: {id: {_in: [${allEntityInputsIds?.map(id => `"${id}"`)}]}}) {
+          id
+          sequencingRead {
+            sample {
+              name
+            }
           }
         }
-      }
-    }`;
+      }`;
       const downloadLinksResp = await get({
         args,
         context,
         serviceType: "entities",
         customQuery: downloadLinkQuery,
       });
-      console.log("downloadLinksResp", downloadLinksResp);
       const bulkDownloads =
         downloadLinksResp?.data?.bulkDownloads &&
         convertArrayToObject(
@@ -195,6 +196,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         ?.filter(wr => wr)
         .map(workflowRun => {
           const file = bulkDownloads[workflowRun.id]?.file;
+          console.log("file", file);
           const {
             createdAt,
             rawInputsJson,

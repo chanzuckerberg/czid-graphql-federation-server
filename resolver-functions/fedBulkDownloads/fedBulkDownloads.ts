@@ -151,13 +151,12 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
       const succeededWorkflowRunIds = allBulkDownloadsResp?.data?.workflowRuns
         ?.filter(bulkDownload => bulkDownload.status === "SUCCEEDED")
         .map(bulkDownload => bulkDownload.id);
-      const allEntityInputsIds = allBulkDownloadsResp?.data?.workflowRuns
-        ?.map(bulkDownload => {
-          return bulkDownload?.entityInputs?.edges?.map(
+      const allEntityInputsIds =
+        allBulkDownloadsResp?.data?.workflowRuns?.flatMap(bulkDownload =>
+          bulkDownload?.entityInputs?.edges?.map(
             entityInput => entityInput?.node?.inputEntityId,
-          );
-        })
-        .flat();
+          ),
+        );
       const downloadLinkQuery = `query GetDownloadURLAndSampleNames {
         bulkDownloads(where: {producingRunId: {_in: [${succeededWorkflowRunIds?.map(id => `"${id}"`)}]}}) {
           producingRunId

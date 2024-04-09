@@ -1,4 +1,3 @@
-import { Accession, Taxon, WorkflowRun } from "../.mesh";
 import { get, getFromRails, shouldReadFromNextGen } from "../utils/httpUtils";
 import { isRunFinalized, parseRefFasta } from "../utils/responseHelperUtils";
 
@@ -161,7 +160,7 @@ export const SampleForReportResolver = async (root, args, context) => {
   const consensusGenomes =
     entitiesResp.data.samples[0].sequencingReads.edges[0].node.consensusGenomes
       .edges;
-  const workflowsWorkflowRuns: WorkflowRun[] = workflowsResp?.data?.workflowRuns || [];
+  const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
 
   // Fetch taxon info from entities based on workflow run inputs
   const taxonEntityIds = {
@@ -199,8 +198,8 @@ export const SampleForReportResolver = async (root, args, context) => {
     serviceType: "entities",
     customQuery: taxaQuery,
   });
-  const taxonInfo: Taxon[] = taxaResp?.data?.taxa || [];
-  const accessionInfo: Accession[] = taxaResp?.data?.accessions || [];
+  const taxonInfo = taxaResp?.data?.taxa || [];
+  const accessionInfo = taxaResp?.data?.accessions || [];
 
   const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
     const consensusGenome = consensusGenomes.find(consensusGenome => {
@@ -237,7 +236,7 @@ export const SampleForReportResolver = async (root, args, context) => {
         ref_fasta: parseRefFasta(
           consensusGenome?.node?.referenceGenome?.file?.path,
         ),
-        taxon_id: taxon?.id,
+        taxon_id: taxon?.upstreamDatabaseIdentifier,
         taxon_name: taxon?.name,
         technology: sequencingRead?.technology,
       },
@@ -262,7 +261,8 @@ export const SampleForReportResolver = async (root, args, context) => {
     }
   }
 
-  dedupedWorkflowRuns.sort((a, b) => {b.executed_at - a.executed_at});
+  // sort workflow runs by latest first so that the frontend defaults to the most recent one
+  dedupedWorkflowRuns.sort((a, b) => {return (a.executed_at < b.executed_at) ? 1 : ((a.executed_at > b.executed_at) ? -1 : 0);});
   return {
     id: args.railsSampleId,
     railsSampleId: args.railsSampleId,

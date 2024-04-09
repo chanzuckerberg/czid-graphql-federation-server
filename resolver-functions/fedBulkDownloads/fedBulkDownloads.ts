@@ -217,11 +217,11 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             fileSize: file?.size,
             url: file?.downloadLink?.url,
             analysisCount: entityInputs?.edges?.length,
-            entityInputFileType: toKebabCase(inputs[0].node.entityType),
+            entityInputFileType: toKebabCase(inputs[0]?.node?.entityType),
             entityInputs: inputs.map(edge => {
               return {
-                id: edge.node.inputEntityId,
-                name: consensusGenomes[edge.node.inputEntityId]?.sequencingRead
+                id: edge.node?.inputEntityId,
+                name: consensusGenomes[edge.node?.inputEntityId]?.sequencingRead
                   ?.sample?.name,
               };
             }),

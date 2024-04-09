@@ -1,3 +1,4 @@
+import { Accession, Taxon, WorkflowRun } from "../.mesh";
 import { get, getFromRails, shouldReadFromNextGen } from "../utils/httpUtils";
 import { isRunFinalized, parseRefFasta } from "../utils/responseHelperUtils";
 
@@ -79,14 +80,6 @@ export const SampleForReportResolver = async (root, args, context) => {
                           path
                         }
                       }
-                      accession {
-                        accessionId
-                        accessionName
-                      }
-                      taxon {
-                        id
-                        name
-                      }
                       sequencingRead {
                         technology
                       }
@@ -145,6 +138,14 @@ export const SampleForReportResolver = async (root, args, context) => {
               name
             }
           }
+          entityInputs(where: entityType { _in: ["taxon", "accession"] }) {
+            edges {
+              node {
+                inputEntityId
+                entityType
+              }
+            }
+          }
           createdAt
           endedAt
           rawInputsJson
@@ -160,13 +161,69 @@ export const SampleForReportResolver = async (root, args, context) => {
   const consensusGenomes =
     entitiesResp.data.samples[0].sequencingReads.edges[0].node.consensusGenomes
       .edges;
-  const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
+  const workflowsWorkflowRuns: WorkflowRun[] = workflowsResp?.data?.workflowRuns || [];
+
+  // Fetch taxon info from entities based on workflow run inputs
+  const taxonEntityIds = {
+    "taxon": [] as string[],
+    "accession": [] as string[],
+  };
+  workflowsWorkflowRuns.forEach(workflowRun => {
+    workflowRun.entityInputs.edges.forEach(
+      input => {
+        if (input.node.inputEntityId && input.node.entityType) {
+          taxonEntityIds[input.node.entityType].push(input.node.inputEntityId);
+        }
+      }
+    );
+  });
+
+  const taxaQuery = `
+    query TaxaQuery {
+      taxa(where: {id: {_in: ${taxonEntityIds["taxon"]}}}) {
+        id
+        name
+        upstreamDatabaseIdentifier
+      }
+      accessions(where: {id: {_in: ${taxonEntityIds["accession"]}}}) {
+        id
+        accessionId
+        accessionName
+      }
+    }
+  `;
+
+  const taxaResp = await get({
+    args,
+    context,
+    serviceType: "entities",
+    customQuery: taxaQuery,
+  });
+  const taxonInfo: Taxon[] = taxaResp?.data?.taxa || [];
+  const accessionInfo: Accession[] = taxaResp?.data?.accessions || [];
+
   const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
     const consensusGenome = consensusGenomes.find(consensusGenome => {
       return consensusGenome.node.producingRunId === workflowRun.id;
     });
-    const { accession, taxon, sequencingRead } = consensusGenome?.node || {};
-    const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson);
+    const { sequencingRead } = consensusGenome?.node || {};
+    const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson || "{}");
+    // Taxon will only be null if the user selected "unknown" for taxon in WGS upload
+    const taxon = taxonInfo.find(
+      taxon => {
+        const workflowTaxId = workflowRun.entityInputs.edges.find(
+          input => input.node.entityType === "taxon"
+        )?.node.inputEntityId;
+        return taxon.id === workflowTaxId;
+      }
+    );
+    // Accession will be null for WGS uploads
+    const accession = accessionInfo.find(
+      accession => 
+        accession.id === workflowRun.entityInputs.edges.find(
+          input => input.node.entityType === "accession"
+        )?.node?.inputEntityId
+    );
     // If !consensusGenome this is a workflow run that is in progress
     return {
       deprecated: null,
@@ -185,10 +242,10 @@ export const SampleForReportResolver = async (root, args, context) => {
         technology: sequencingRead?.technology,
       },
       rails_workflow_run_id: workflowRun?.railsWorkflowRunId, // this is added for deduplicating below
-      run_finalized: isRunFinalized(workflowRun?.status),
+      run_finalized: isRunFinalized(workflowRun.status || ""),
       status: workflowRun?.status,
-      wdl_version: workflowRun?.workflowVersion.version,
-      workflow: workflowRun?.workflowVersion.workflow.name,
+      wdl_version: workflowRun.workflowVersion?.version,
+      workflow: workflowRun.workflowVersion?.workflow?.name,
     };
   });
   // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
@@ -197,13 +254,15 @@ export const SampleForReportResolver = async (root, args, context) => {
   for (const railsWorkflowRun of sampleInfo.workflow_runs) {
     const alreadyExists = nextGenWorkflowRuns.find(
       nextGenWorkflowRun =>
-        nextGenWorkflowRun.rails_workflow_run_id.toString() ===
+        nextGenWorkflowRun.rails_workflow_run_id?.toString() ===
         railsWorkflowRun.id,
     );
     if (!alreadyExists) {
       dedupedWorkflowRuns.push(railsWorkflowRun);
     }
   }
+
+  dedupedWorkflowRuns.sort((a, b) => {b.executed_at - a.executed_at});
   return {
     id: args.railsSampleId,
     railsSampleId: args.railsSampleId,

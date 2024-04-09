@@ -62,28 +62,7 @@
                             "type": "string"
                         },
                         "value": {
-                            "oneOf": [
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "metric": {
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "integer"
-                                        },
-                                        "operator": {
-                                            "type": "string"
-                                        },
-                                        "metricDisplay": {
-                                            "type": "string"
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "string"
-                                }
-                              ]
+                            "type": "string"
                         }
                     }
                 }

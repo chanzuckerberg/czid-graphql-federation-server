@@ -27,7 +27,7 @@ interface BulkDownloadFromRails {
 interface Param {
   paramType: string;
   downloadName?: string;
-  value: string |  { metric: string, value: number, operator: string, metricDisplay: string}[]; 
+  value: string; 
 }
 enum NextGenStatuses {
   success = "SUCCEEDED",
@@ -74,6 +74,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           .map((param) => {
             const paramItem = {
               ...param[1],
+              value: JSON.stringify(param[1].value),
               paramType: snakeToCamel(param[0]),
             };
             params.push(paramItem);

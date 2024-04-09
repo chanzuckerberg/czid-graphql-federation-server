@@ -69,15 +69,15 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           // remove "workflow" and "sample_ids" from details?.bulk_download?.params
           // which leaves only the params that are shown in the sidebar of
           // the bulk download list page ie. download_format, metrics, etc.
-          .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
+          .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids" && param[1]?.value !== null)
           // make params into an array of objects
           .map((param) => {
-            if (param[1].displayName === "[]") {
+            if (param[1].displayName === []) {
               console.log(param[1]);
             }
             const paramItem = {
               ...param[1],
-              value: JSON.stringify(param[1].value),
+              value: typeof param[1].value === "string" ? param[1].value : JSON.stringify(param[1].value),
               paramType: snakeToCamel(param[0]),
             };
             params.push(paramItem);

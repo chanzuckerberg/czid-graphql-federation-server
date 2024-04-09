@@ -27,7 +27,7 @@ interface BulkDownloadFromRails {
 interface Param {
   paramType: string;
   downloadName?: string;
-  value: unknown;
+  value: string |  { metric: string, value: number, operator: string, metricDisplay: string}[]; 
 }
 enum NextGenStatuses {
   success = "SUCCEEDED",
@@ -71,10 +71,10 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           // the bulk download list page ie. download_format, metrics, etc.
           .filter(param => param[0] !== "workflow" && param[0] !== "sample_ids")
           // make params into an array of objects
-          .map((param: [string, { downloadName?: string; value: unknown }]) => {
+          .map((param) => {
             const paramItem = {
-              paramType: snakeToCamel(param[0]),
               ...param[1],
+              paramType: snakeToCamel(param[0]),
             };
             params.push(paramItem);
           });
@@ -92,7 +92,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         error_message,
         presigned_output_url,
       } = bulkDownload;
-      console.log("output_file_size", output_file_size);
       return {
         id: id?.toString(),
         startedAt: created_at,
@@ -196,7 +195,6 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         ?.filter(wr => wr)
         .map(workflowRun => {
           const file = bulkDownloads[workflowRun.id]?.file;
-          console.log("fileSize NextGen", file?.size);
           const {
             createdAt,
             rawInputsJson,
@@ -209,6 +207,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           const inputs = entityInputs?.edges || [];
           const { bulk_download_type, aggregate_action } =
             JSON.parse(rawInputsJson) || {};
+          console.log("entityInputFileType", inputs[0], toKebabCase(inputs[0]?.node?.entityType));
           return {
             id,
             startedAt: createdAt,

@@ -22,7 +22,7 @@
                 "type": "integer"
             },
             "fileSize": {
-                "type": "integer"
+                "type": "float"
             },
             "url": {
                 "type": "string"
@@ -62,7 +62,28 @@
                             "type": "string"
                         },
                         "value": {
-                            "type": "string"
+                            "oneOf": [
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "metric": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "integer"
+                                        },
+                                        "operator": {
+                                            "type": "string"
+                                        },
+                                        "metricDisplay": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "string"
+                                }
+                              ]
                         }
                     }
                 }

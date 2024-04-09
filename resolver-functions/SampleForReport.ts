@@ -167,9 +167,9 @@ export const SampleForReportResolver = async (root, args, context)=> {
   const workflowsWorkflowRuns: NextGenWorkflowsTypes.WorkflowRun[] = workflowsResp?.data?.workflowRuns || [];
 
   // Fetch taxon info from entities based on workflow run inputs
-  const taxonEntityIds : { taxon: string[], accession[] } = {
-    taxon: [] ,
-    accession: [] ,
+  const taxonEntityIds : { taxon: string[], accession: string [] } = {
+    taxon: [],
+    accession: [],
   };
   workflowsWorkflowRuns.forEach(workflowRun => {
     workflowRun.entityInputs.edges.forEach(

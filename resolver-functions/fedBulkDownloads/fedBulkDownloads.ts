@@ -73,7 +73,10 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           // make params into an array of objects
           .map((param) => {
             if (param[1].displayName === []) {
-              console.log(param[1]);
+              console.log("[] in displayName", param[1]);
+            }
+            if (typeof param[1].value !== "string") {
+              console.log("non string value", param[1]);
             }
             const paramItem = {
               ...param[1],

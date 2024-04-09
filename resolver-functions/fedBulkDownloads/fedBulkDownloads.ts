@@ -214,7 +214,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             status,
             downloadType: bulk_download_type,
             ownerUserId,
-            fileSize: file?.size,
+            fileSize: !isNaN(parseInt(file.size)) ? parseInt(file.size) : null,
             url: file?.downloadLink?.url,
             analysisCount: entityInputs?.edges?.length,
             entityInputFileType: toKebabCase(inputs[0]?.node?.entityType),

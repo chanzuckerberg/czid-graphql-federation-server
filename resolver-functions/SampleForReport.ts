@@ -1,7 +1,10 @@
+import { Accession, Sample, SampleForReport, Taxon, query_SampleForReport_workflow_runs_items } from "../.mesh";
 import { get, getFromRails, shouldReadFromNextGen } from "../utils/httpUtils";
 import { isRunFinalized, parseRefFasta } from "../utils/responseHelperUtils";
+import type { NextGenWorkflowsTypes } from '../.mesh/./sources/NextGenWorkflows/types';
+import type { NextGenEntitiesTypes } from '../.mesh/./sources/NextGenEntities/types';
 
-export const SampleForReportResolver = async (root, args, context) => {
+export const SampleForReportResolver = async (root, args, context)=> {
   /* --------------------- Rails and Next Gen --------------------- */
   const sampleInfo = await getFromRails({
     url: `/samples/${args.railsSampleId}.json`,
@@ -104,7 +107,8 @@ export const SampleForReportResolver = async (root, args, context) => {
   });
 
   // Non-WGS workflows will not have nextGenSampleId. In this case, return sampleInfo from Rails.
-  const nextGenSampleId = entitiesResp?.data.samples?.[0]?.id;
+  const samples: NextGenEntitiesTypes.Sample[] = entitiesResp?.data?.samples || [];
+  const nextGenSampleId = samples[0]?.id;
   if (!nextGenSampleId) {
     console.log(
       `No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`,
@@ -158,9 +162,9 @@ export const SampleForReportResolver = async (root, args, context) => {
     customQuery: workflowsQuery,
   });
   const consensusGenomes =
-    entitiesResp.data.samples[0].sequencingReads.edges[0].node.consensusGenomes
+    samples[0].sequencingReads.edges[0].node.consensusGenomes
       .edges;
-  const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
+  const workflowsWorkflowRuns: NextGenWorkflowsTypes.WorkflowRun[] = workflowsResp?.data?.workflowRuns || [];
 
   // Fetch taxon info from entities based on workflow run inputs
   const taxonEntityIds = {
@@ -198,10 +202,10 @@ export const SampleForReportResolver = async (root, args, context) => {
     serviceType: "entities",
     customQuery: taxaQuery,
   });
-  const taxonInfo = taxaResp?.data?.taxa || [];
-  const accessionInfo = taxaResp?.data?.accessions || [];
+  const taxonInfo: NextGenEntitiesTypes.Taxon[] = taxaResp?.data?.taxa || [];
+  const accessionInfo: NextGenEntitiesTypes.Accession[] = taxaResp?.data?.accessions || [];
 
-  const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
+  const nextGenWorkflowRuns: query_SampleForReport_workflow_runs_items[] = workflowsWorkflowRuns.map(workflowRun => {
     const consensusGenome = consensusGenomes.find(consensusGenome => {
       return consensusGenome.node.producingRunId === workflowRun.id;
     });
@@ -226,9 +230,9 @@ export const SampleForReportResolver = async (root, args, context) => {
     // If !consensusGenome this is a workflow run that is in progress
     return {
       deprecated: null,
-      executed_at: workflowRun?.createdAt,
-      id: workflowRun?.id,
-      input_error: workflowRun?.errorMessage,
+      executed_at: workflowRun.createdAt,
+      id: workflowRun.id,
+      input_error: workflowRun.errorMessage,
       inputs: {
         accession_id: accession?.accessionId,
         accession_name: accession?.accessionName,
@@ -236,24 +240,24 @@ export const SampleForReportResolver = async (root, args, context) => {
         ref_fasta: parseRefFasta(
           consensusGenome?.node?.referenceGenome?.file?.path,
         ),
-        taxon_id: taxon?.upstreamDatabaseIdentifier,
+        taxon_id: taxon?.upstreamDatabaseIdentifier, // this is the NCBI taxid, which should match the taxids used in the mNGS report
         taxon_name: taxon?.name,
         technology: sequencingRead?.technology,
       },
-      rails_workflow_run_id: workflowRun?.railsWorkflowRunId, // this is added for deduplicating below
+      rails_workflow_run_id: workflowRun.railsWorkflowRunId?.toString(), // this is added for deduplicating below
       run_finalized: isRunFinalized(workflowRun.status || ""),
-      status: workflowRun?.status,
+      status: workflowRun.status,
       wdl_version: workflowRun.workflowVersion?.version,
       workflow: workflowRun.workflowVersion?.workflow?.name,
     };
   });
   // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
-  let dedupedWorkflowRuns;
+  let dedupedWorkflowRuns: query_SampleForReport_workflow_runs_items[];
   dedupedWorkflowRuns = [...nextGenWorkflowRuns];
   for (const railsWorkflowRun of sampleInfo.workflow_runs) {
     const alreadyExists = nextGenWorkflowRuns.find(
       nextGenWorkflowRun =>
-        nextGenWorkflowRun.rails_workflow_run_id?.toString() ===
+        nextGenWorkflowRun.rails_workflow_run_id ===
         railsWorkflowRun.id,
     );
     if (!alreadyExists) {

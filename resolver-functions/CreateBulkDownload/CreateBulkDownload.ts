@@ -23,6 +23,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     id => id && parseInt(id),
   );
   const nextGenEnabled = await shouldReadFromNextGen(context);
+
   /* --------------------- Rails --------------------- */
   if (!nextGenEnabled) {
     const body = {
@@ -49,6 +50,7 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
     });
     return res;
   }
+
   /* --------------------- Next Gen --------------------- */
   // get the default bulk download workflow version id from the workflow service
   if (!workflowRunIdsStrings || workflowRunIdsStrings.length === 0) {

@@ -216,7 +216,7 @@ sources:
             method: POST
             requestSchema: ./json-schemas/createBulkDownload.json
             responseSchema: ./json-schemas/createBulkDownloadResponse.json
-            responseTypeName: BulkDownload
+            responseTypeName: fedCreateBulkDownload
           - type: Mutation
             field: DeleteSamples
             path: /samples/bulk_delete

@@ -215,6 +215,7 @@ sources:
             path: /bulk_download
             method: POST
             requestSchema: ./json-schemas/createBulkDownload.json
+            responseSchema: ./json-schemas/createBulkDownloadResponse.json
             responseTypeName: BulkDownload
           - type: Mutation
             field: DeleteSamples

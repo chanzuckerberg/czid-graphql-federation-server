@@ -42,13 +42,18 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
       },
       workflow_run_ids: workflowRunIdsNumbers ?? workflowRunIds,
     };
-    const res = await postWithCSRF({
+    const railsResponse = await postWithCSRF({
       url: `/bulk_downloads`,
       body,
       args,
       context,
     });
-    return res;
+    if (railsResponse.error_message != null) {
+      throw new Error(railsResponse.error_message);
+    }
+    return {
+      id: railsResponse.id.toString(),
+    };
   }
 
   /* --------------------- Next Gen --------------------- */
@@ -126,11 +131,12 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
         }
       }
     `;
-  const res = await fetchFromNextGen({
-    args,
-    context,
-    serviceType: "workflows",
-    customQuery: runBulkDownload,
-  });
-  return res;
+  return (
+    await fetchFromNextGen({
+      args,
+      context,
+      serviceType: "workflows",
+      customQuery: runBulkDownload,
+    })
+  ).data.runWorkflowVersion;
 };

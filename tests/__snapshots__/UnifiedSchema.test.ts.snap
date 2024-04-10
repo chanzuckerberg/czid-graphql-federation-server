@@ -3102,7 +3102,7 @@ type WorkflowRun implements EntityInterface & Node {
   _id: GlobalID!
   cachedResults: String
   collectionId: Int
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime!
   deletedAt: DateTime
   deprecated: Boolean!
   endedAt: DateTime
@@ -3134,7 +3134,7 @@ type WorkflowRun implements EntityInterface & Node {
   sampleId: Int
   sfnExecutionArn: String
   startedAt: DateTime
-  status: WorkflowRunStatus
+  status: String!
   steps(
     """Returns the items in the list that come after the specified cursor."""
     after: String = null
@@ -3149,7 +3149,7 @@ type WorkflowRun implements EntityInterface & Node {
   ): WorkflowRunStepConnection!
   stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
   timeToFinalized: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime!
   wdlVersion: String
   workflow: String!
   workflowRunnerInputsJson: String
@@ -4930,7 +4930,7 @@ type query_fedBulkDownloads_items {
   entityInputs: [query_fedBulkDownloads_items_entityInputs_items]
   errorMessage: String
   fileFormat: String
-  fileSize: Int
+  fileSize: Float
   id: String
   logUrl: String
   ownerUserId: Int

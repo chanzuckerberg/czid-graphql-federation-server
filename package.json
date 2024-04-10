@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
-    "@graphql-mesh/cli": "0.89.9-alpha-20240404080745-2253ba46f7b295c44299693a110cdb2c840c1b0a",
+    "@graphql-mesh/cli": "^0.89.9",
     "@graphql-mesh/graphql": "^0.97.0",
     "@graphql-mesh/json-schema": "^0.99.0",
     "@graphql-mesh/transform-encapsulate": "^0.97.0",

@@ -75,7 +75,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           // remove "workflow" and "sample_ids" from details?.bulk_download?.params
           // which leaves only the params that are shown in the sidebar of
           // the bulk download list page ie. download_format, metrics, etc.
-          // also remove any params that have values that are  null
+          // also remove any params that have values that are null
           .filter(
             param =>
               param[0] !== "workflow" &&
@@ -85,12 +85,8 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
           )
           // make params into an array of objects
           .forEach(param => {
+            // if the param value is an empty array, we do not need to present the information in the sidebar
             if (Array.isArray(param[1].value) && param[1].value.length === 0) {
-              console.log(
-                "param[1].value is an empty array",
-                param[0],
-                param[1],
-              );
               return;
             }
 

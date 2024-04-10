@@ -114,7 +114,7 @@ export const SampleForReportResolver = async (root, args, context) => {
   // Non-WGS workflows will not have nextGenSampleId. In this case, return sampleInfo from Rails.
   const nextGenSampleId = entitiesResp?.data.samples?.[0]?.id;
   if (!nextGenSampleId) {
-    console.log(
+    console.error(
       `No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`,
     );
     return {

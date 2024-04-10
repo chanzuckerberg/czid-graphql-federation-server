@@ -1,6 +1,27 @@
 # Changelog
 
 
+## [2.29.6](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.5...v2.29.6) (2024-04-10)
+
+
+### Bug Fixes
+
+* fix taxon/accession queries ([#317](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/317)) ([969c3d7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/969c3d70b93466c0879fd354cf192a1c619477d6))
+
+## [2.29.5](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.4...v2.29.5) (2024-04-10)
+
+
+### Bug Fixes
+
+* fix workflows query syntax and conditionally fire taxon/accession queries in sample report ([#314](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/314)) ([e4c0cab](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/e4c0cab3db364c4c0f119caaeb4c5df0e933af76))
+
+## [2.29.4](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.3...v2.29.4) (2024-04-10)
+
+
+### Bug Fixes
+
+* Bulk Download List fixes ([#309](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/309)) ([32b0eff](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/32b0effa4647b792f305df5b3b4f2889a385c4c0))
+
 ## [2.29.3](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.2...v2.29.3) (2024-04-09)
 
 

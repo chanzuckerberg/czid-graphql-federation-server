@@ -1,3 +1,4 @@
+import { getEnrichedToken } from "../../utils/enrichToken";
 import { get, shouldReadFromNextGen } from "../../utils/httpUtils";
 import { formatUrlParams } from "../../utils/paramsUtils";
 import {
@@ -113,6 +114,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
   const getNextGenBulkDownloads = async (args, context) => {
     const nextGenEnabled = await shouldReadFromNextGen(context);
     if (nextGenEnabled) {
+      const securityToken = await getEnrichedToken(context);
       const getAllBulkDownloadsQuery = `query GetAllBulkDownloadsQuery {
         workflowRuns(
           where: {
@@ -145,6 +147,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         context,
         serviceType: "workflows",
         customQuery: getAllBulkDownloadsQuery,
+        securityToken,
       });
       // If the workflow run is successful, get the download link
       // Add the URL to the workflow run object
@@ -181,6 +184,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
         context,
         serviceType: "entities",
         customQuery: downloadLinkQuery,
+        securityToken,
       });
       const bulkDownloads =
         downloadLinksResp?.data?.bulkDownloads &&

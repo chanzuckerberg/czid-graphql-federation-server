@@ -48,8 +48,8 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
       args,
       context,
     });
-    if (railsResponse.error_message != null) {
-      throw new Error(railsResponse.error_message);
+    if (railsResponse.error != null) {
+      throw new Error(railsResponse.error);
     }
     return {
       id: railsResponse.id.toString(),

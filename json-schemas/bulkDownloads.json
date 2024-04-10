@@ -22,7 +22,7 @@
                 "type": "integer"
             },
             "fileSize": {
-                "type": "float"
+                "type": "number"
             },
             "url": {
                 "type": "string"

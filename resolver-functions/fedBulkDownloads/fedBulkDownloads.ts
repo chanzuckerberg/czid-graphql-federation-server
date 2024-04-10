@@ -80,8 +80,7 @@ export const fedBulkDowloadsResolver = async (root, args, context, info) => {
             param =>
               param[0] !== "workflow" &&
               param[0] !== "sample_ids" &&
-              param[1]?.value !== null &&
-              param[1]?.value !== undefined,
+              param[1]?.value != undefined,
           )
           // make params into an array of objects
           .forEach(param => {

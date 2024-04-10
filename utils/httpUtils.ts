@@ -26,7 +26,6 @@ export const get = async ({
         args,
         context,
         serviceType,
-        fullResponse,
         customQuery,
         securityToken,
       });
@@ -97,7 +96,6 @@ export const fetchFromNextGen = async ({
   args,
   context,
   serviceType,
-  fullResponse,
   customQuery,
   customVariables,
   securityToken,
@@ -105,7 +103,6 @@ export const fetchFromNextGen = async ({
   args;
   context;
   serviceType: "workflows" | "entities";
-  fullResponse?: boolean;
   customQuery?: string;
   customVariables?: object;
   securityToken?: string;
@@ -136,11 +133,13 @@ export const fetchFromNextGen = async ({
       }),
     });
 
-    if (fullResponse === true) {
-      return response;
-    } else {
-      return await response.json();
+    const responseJson = await response.json();
+    if (responseJson.errors?.length) {
+      throw new Error(
+        `${responseJson.errors.length} error(s) from NextGen: ${responseJson.errors.map((error, i) => `${i + 1}. ${error.message}`).join(" ")}`,
+      );
     }
+    return responseJson;
   } catch (e) {
     handleFetchError(e);
   }

@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { getEnrichedToken } from "./enrichToken";
 import { formatFedQueryForNextGen } from "./queryFormatUtils";
 
@@ -9,6 +8,7 @@ export const get = async ({
   serviceType,
   fullResponse,
   customQuery,
+  securityToken,
 }: {
   url?: string;
   args: any;
@@ -16,6 +16,7 @@ export const get = async ({
   serviceType?: "workflows" | "entities";
   fullResponse?: boolean;
   customQuery?: string;
+  securityToken?: string;
 }) => {
   try {
     const nextGenEnabled = await shouldReadFromNextGen(context);
@@ -25,18 +26,22 @@ export const get = async ({
         args,
         context,
         serviceType,
-        fullResponse,
         customQuery,
+        securityToken,
       });
     } else {
       if (!url) {
-        console.error(`You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`);
-        throw new Error(`You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`);
+        console.error(
+          `You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`,
+        );
+        throw new Error(
+          `You must pass a url to call rails. If you meant to call NextGen, set the serviceType. url: ${url}, serviceType: ${serviceType}`,
+        );
       }
       return getFromRails({ url, args, context, fullResponse });
     }
   } catch (e) {
-    return Promise.reject(e.response);
+    handleFetchError(e);
   }
 };
 
@@ -62,17 +67,14 @@ export const postWithCSRF = async ({
       body: JSON.stringify(body),
     });
     checkForLogin(response?.url);
-    return await response.json();
+    const responseJson = await response.json();
+    console.log(
+      `Rails POST to ${url} response: ${JSON.stringify(responseJson)}`,
+    );
+    return responseJson;
   } catch (e) {
-    return Promise.reject(e.response ? e.response : e);
+    handleFetchError(e);
   }
-};
-
-export const notFound = (message: string) => {
-  return Promise.reject({
-    status: 404,
-    message: message,
-  });
 };
 
 export const getFeatureFlagsFromRequest = context => {
@@ -88,23 +90,28 @@ export const shouldReadFromNextGen = async context => {
   return false;
 };
 
+/**
+ * Gets an enriched token and then makes a call to NextGen.
+ *
+ * undefined properties in variables will not be sent (due to JSON.stringify() ignoring them).
+ */
 export const fetchFromNextGen = async ({
   args,
   context,
   serviceType,
-  fullResponse,
   customQuery,
   customVariables,
+  securityToken,
 }: {
   args;
   context;
   serviceType: "workflows" | "entities";
-  fullResponse?: boolean;
   customQuery?: string;
   customVariables?: object;
+  securityToken?: string;
 }) => {
   try {
-    const enrichedToken = await getEnrichedToken(context);
+    const enrichedToken = securityToken || (await getEnrichedToken(context));
     const baseUrl =
       serviceType === "workflows"
         ? process.env.NEXTGEN_WORKFLOWS_URL
@@ -112,7 +119,9 @@ export const fetchFromNextGen = async ({
     const formattedQuery = customQuery
       ? customQuery
       : formatFedQueryForNextGen(context.params.query);
-    console.log(formattedQuery);
+    console.log("fetchFromNextGen");
+    console.log({ formattedQuery });
+    console.log("%j", customVariables);
     const response = await fetch(`${baseUrl}/graphql`, {
       method: "POST",
       headers: {
@@ -126,13 +135,16 @@ export const fetchFromNextGen = async ({
         variables: customVariables ?? context.params.variables,
       }),
     });
-    if (fullResponse === true) {
-      return response;
-    } else {
-      return await response.json();
+
+    const responseJson = await response.json();
+    if (responseJson.errors?.length) {
+      throw new Error(
+        `${responseJson.errors.length} error(s) from NextGen: ${responseJson.errors.map((error, i) => `${i + 1}. ${error.message}`).join(" ")}`,
+      );
     }
+    return responseJson;
   } catch (e) {
-    return Promise.reject(e.response);
+    handleFetchError(e);
   }
 };
 
@@ -164,7 +176,7 @@ export const getFromRails = async ({
       return await response.json();
     }
   } catch (e) {
-    return Promise.reject(e.response);
+    handleFetchError(e);
   }
 };
 
@@ -172,4 +184,25 @@ const checkForLogin = (responseUrl: string | null) => {
   if (responseUrl?.includes("/auth0/refresh_token?mode=login")) {
     throw new Error("You must be logged in to perform this action.");
   }
+};
+
+/**
+ * Ensures that whatever is thrown will be logged with a stacktrace by wrapping non-Error values in
+ * Errors.
+ *
+ * For whatever reason, Node.js's json() doesn't throw an Error with a stacktrace. In fact, what it
+ * throws isn't even instance of Error, but just an object that looks like one.
+ */
+const handleFetchError = (thrownValue: any): void => {
+  if (thrownValue?.name === "SyntaxError") {
+    throw new Error(
+      `Could not json() deserialize fetch response: ${thrownValue.message}`,
+    );
+  }
+
+  if (thrownValue instanceof Error) {
+    throw thrownValue;
+  }
+
+  throw new Error(JSON.stringify(thrownValue));
 };

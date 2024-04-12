@@ -1,6 +1,208 @@
 # Changelog
 
 
+## [2.30.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.6...v2.30.0) (2024-04-11)
+
+
+### Features
+
+* Upgrade Mesh again to enable error logging ([#303](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/303)) ([3fb5996](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/3fb5996665cece97bf358d021da02b6c482e2943))
+
+
+### Bug Fixes
+
+* Make response schema for CreateBulkDownload consistent between flag on/off ([#319](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/319)) ([2c7663f](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/2c7663fff841c679ec735b486f4f5a3d3c1ff2b2))
+
+## [2.29.6](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.5...v2.29.6) (2024-04-10)
+
+
+### Bug Fixes
+
+* fix taxon/accession queries ([#317](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/317)) ([969c3d7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/969c3d70b93466c0879fd354cf192a1c619477d6))
+
+## [2.29.5](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.4...v2.29.5) (2024-04-10)
+
+
+### Bug Fixes
+
+* fix workflows query syntax and conditionally fire taxon/accession queries in sample report ([#314](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/314)) ([e4c0cab](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/e4c0cab3db364c4c0f119caaeb4c5df0e933af76))
+
+## [2.29.4](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.3...v2.29.4) (2024-04-10)
+
+
+### Bug Fixes
+
+* Bulk Download List fixes ([#309](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/309)) ([32b0eff](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/32b0effa4647b792f305df5b3b4f2889a385c4c0))
+
+## [2.29.3](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.2...v2.29.3) (2024-04-09)
+
+
+### Bug Fixes
+
+* query taxa and accessions for info in sample report ([#310](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/310)) ([ff2ffde](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/ff2ffded080f2cd4751e00f064b5a7ccfa3dc784))
+* Update collectionId in workflow schema to be nullable ([#311](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/311)) ([302c702](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/302c7021f38593d33ab56088593fd0d79f1725e5))
+
+## [2.29.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.1...v2.29.2) (2024-04-05)
+
+
+### Bug Fixes
+
+* bulk delete id types ([#307](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/307)) ([216b2d8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/216b2d88a01dcbd39078d0f80389f689befa3d68))
+* make taxon info optional in response ([#306](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/306)) ([98bb588](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/98bb5880ebac42477a30cb4ede9b35d5706b2982))
+
+## [2.29.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.29.0...v2.29.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* Handle object type in collection_location_v2 ([#304](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/304)) ([4e4a74f](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/4e4a74f9004a16f1fe502081c526bf5b6b94b76a))
+
+## [2.29.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.28.2...v2.29.0) (2024-04-04)
+
+
+### Features
+
+* Add producingRunId to request schema of sequencingReads ([#291](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/291)) ([cad49fd](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/cad49fd32177a7d4cbe48030b485cefe2731167f))
+* Connect Bulk Downloads to NextGen (both Create Bulk Download and Bulk Download list) ([#298](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/298)) ([ea206b7](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/ea206b7418ddce045d6eef01772a6ab0adf41491))
+
+
+### Bug Fixes
+
+* Add taxon level to fedSequencingReads ([#297](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/297)) ([fd29480](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/fd29480621a949906e47a696e3fb2454d0083895))
+* increase memory in prod ([#277](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/277)) ([76fe22e](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/76fe22e11ba47719990c9831d340216fa9f35de6))
+* Update collectionId in entity schema to be nullable ([#302](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/302)) ([f7466e3](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/f7466e33b0b11fba95185122ab911e4a86556d21))
+* Upgrade @graphql-mesh/cli ([#299](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/299)) ([940b02d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/940b02d6187603be29709320f29a20dffee8df67))
+
+## [2.28.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.28.1...v2.28.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* Use new Bulk Downloads Endpoint ([#294](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/294)) ([89c5574](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/89c5574b65ba43223406dd7c29c7c56247f55bda))
+
+## [2.28.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.28.0...v2.28.1) (2024-04-01)
+
+
+### Bug Fixes
+
+* allow for deprecatedById field in aggregate queries ([#282](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/282)) ([20ecb02](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/20ecb0209ee0914368a60d9a47d99013e18a4146))
+* fedBulkDownloads improvements ([#249](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/249)) ([2adf599](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/2adf5997179f0a4d17913e13113a07dd7f13cf13))
+
+## [2.28.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.27.0...v2.28.0) (2024-03-29)
+
+
+### Features
+
+* Add new input to fedSequencingReads - workflowRunIds and sampleIds ([#283](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/283)) ([3e6ff5e](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/3e6ff5e0f825f6a0a6b919bd9dda48a7d9e667b2))
+
+
+### Reverts
+
+* Enable more detailed logs in sandbox and staging envs" ([#271](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/271)) ([7c12a14](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/7c12a14d46328db0a888c52f21b673988acbbc14))
+
+## [2.27.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.26.1...v2.27.0) (2024-03-28)
+
+
+### Features
+
+* federate querying total count of each workflow ([#189](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/189)) ([93b8c29](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/93b8c2972d8227fa0cb30a5e47ffdb560082d71a))
+
+## [2.26.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.26.0...v2.26.1) (2024-03-28)
+
+
+### Bug Fixes
+
+* Add back query log ([#272](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/272)) ([49e7f30](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/49e7f300d787736432105967800043547c809b87))
+
+## [2.26.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.25.0...v2.26.0) (2024-03-28)
+
+
+### Features
+
+* Add sorting by consensusGenomes field functionality in Fed ([#246](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/246)) ([c87eaa2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c87eaa25dbc0f84aed80bfa54e8527c8dc0ad00c))
+* Allow security token to be passed for nextGen calls ([#218](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/218)) ([bed5cd2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/bed5cd26daf5a91b9a416fe9d3e14cc8624c9c5f))
+* CZID-9499 Add referenceGenome to fedConsensusGenome ([#260](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/260)) ([409d793](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/409d79391170a5a02ea60bb73d9a3eeed9b900ca))
+
+## [2.25.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.24.0...v2.25.0) (2024-03-28)
+
+
+### Features
+
+* Add includes metadata to BulkDownloadCGOverview ([#250](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/250)) ([c2ade09](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c2ade09b09fb3b4e9f13af3d537762c1ebb6a9d7))
+* Add sorting by SequencingRead fields ([#235](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/235)) ([4bb438d](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/4bb438d5a8598b94bcce4a8ce4797798328f59dd))
+* Enable more detailed logs in sandbox and staging envs ([#261](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/261)) ([4fda2e1](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/4fda2e185d8bbf3f30e1807b4d064dc426ff8a18))
+
+## [2.24.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.5...v2.24.0) (2024-03-26)
+
+
+### Features
+
+* update taxon nullable ([#240](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/240)) ([c61d7a9](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c61d7a9c65dad0853f603f3853af35b008082734))
+
+
+### Bug Fixes
+
+* change the type of BulkDownloadCGOverview.params ([#242](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/242)) ([e71af07](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/e71af077d66527ee1d5aee526553358791b8004d))
+
+## [2.23.5](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.4...v2.23.5) (2024-03-25)
+
+
+### Bug Fixes
+
+* in Progress CG Overview testing ([#238](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/238)) ([1ba36ec](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/1ba36ec69cf1935ff4eb4351b4c5370509c84358))
+
+## [2.23.4](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.3...v2.23.4) (2024-03-22)
+
+
+### Bug Fixes
+
+* Bulk download cg overview next gen2 ([#236](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/236)) ([2189473](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/2189473b03d1f6bc3b23f71fef15fa843aadb641))
+
+## [2.23.3](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.2...v2.23.3) (2024-03-22)
+
+
+### Bug Fixes
+
+* account for deprecated and bulk-download runs in SampleForReport query ([#230](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/230)) ([567a2f2](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/567a2f2e36c4e695a712c753be81aff0b7235351))
+* testing cg bulk download overview ([#233](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/233)) ([b16f33a](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/b16f33a1d28cf2a56b4fbe6ed91ca8ed484bf50b))
+
+## [2.23.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.1...v2.23.2) (2024-03-22)
+
+
+### Bug Fixes
+
+* bulk download overview in progress ([#231](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/231)) ([478aeeb](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/478aeeb6529e7e8c412548f5287c0eddecfedc55))
+
+## [2.23.1](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.23.0...v2.23.1) (2024-03-22)
+
+
+### Bug Fixes
+
+* begin testing BulkDownloadCGOverview to nextGen ([#227](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/227)) ([5c2c3a8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/5c2c3a8842e2951e36474c9aad4e633a3fa8e24d))
+
+## [2.23.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.22.0...v2.23.0) (2024-03-21)
+
+
+### Features
+
+* Also print query inputs in logs. ([#212](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/212)) ([c1687a5](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c1687a51acc8e1cedad88fe80e9fdb0f339a417a))
+
+
+### Bug Fixes
+
+* BulkDownloadModal Validation - Reformat query ([#219](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/219)) ([c9444f8](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/c9444f83ad1a8b8261a7426aadf7e088f5aad9d4))
+* Edits to fedBulkDownloads ([#198](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/198)) ([1cee495](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/1cee495266f46f0fdb741b18d3fa0fa6e742da12))
+* Use workflowRunIdsNumbers when available ([#225](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/225)) ([cc890fd](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/cc890fd22bc9b80bf5369e0932aacec1a33c85bc))
+
+## [2.22.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.21.0...v2.22.0) (2024-03-20)
+
+
+### Features
+
+* Add filtering by sampleIds & workflowRunIds on /worklflow_runs for API testing ([#223](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/223)) ([167b5a4](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/167b5a49ca6be1d3563d6a4f7748404e4fd0f495))
+* Add sample name match argument ([#221](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/221)) ([6e2607c](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/6e2607c45d136b11ed64b47c71baa73ca21a7f37))
+* Parallelize the Rails and NexGen join calls for fedSequencingReads ID query ([#216](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/216)) ([6e341d0](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/6e341d0ea3b4b2ef2afcdb662c50e344e5160d76))
+
 ## [2.21.0](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.20.2...v2.21.0) (2024-03-19)
 
 

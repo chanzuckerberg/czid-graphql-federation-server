@@ -1,6 +1,6 @@
 {
   "name": "czi-graphql-federation",
-  "version": "2.21.0",
+  "version": "2.30.0",
   "description": "",
   "scripts": {
     "start": "mesh start",
@@ -10,12 +10,14 @@
   },
   "nodemonConfig": {
     "exec": "mesh dev",
+    "ext": "cjs, json, ts",
     "watch": [
       ".meshrc.yaml",
       "**/*.ts"
     ],
     "ignore": [
-      "**/tests/**"
+      "**/tests/**",
+      ".mesh/**"
     ],
     "delay": 250
   },
@@ -31,7 +33,7 @@
   },
   "homepage": "https://github.com/chanzuckerberg/graphql-federation-server#readme",
   "dependencies": {
-    "@graphql-mesh/cli": "^0.89.0",
+    "@graphql-mesh/cli": "^0.89.9",
     "@graphql-mesh/graphql": "^0.97.0",
     "@graphql-mesh/json-schema": "^0.99.0",
     "@graphql-mesh/transform-encapsulate": "^0.97.0",

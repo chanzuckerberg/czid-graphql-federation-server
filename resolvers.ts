@@ -8,7 +8,13 @@ import {
   query_fedWorkflowRunsAggregate_aggregate_items,
   query_fedWorkflowRuns_items,
 } from "./.mesh";
-import { processWorkflowsAggregateResponse } from "./utils/aggregateUtils";
+import { SampleForReportResolver } from "./resolver-functions/SampleForReport";
+import { BulkDownloadsCGOverviewResolver } from "./resolver-functions/BulkDownloadsCGOverview";
+import { fedBulkDowloadsResolver } from "./resolver-functions/fedBulkDownloads/fedBulkDownloads";
+import {
+  parseWorkflowsAggregateTotalCountsResponse,
+  processWorkflowsAggregateResponse,
+} from "./utils/aggregateUtils";
 import {
   fetchFromNextGen,
   get,
@@ -22,12 +28,14 @@ import {
 } from "./utils/mngsWorkflowResultsUtils";
 import { formatUrlParams } from "./utils/paramsUtils";
 import {
+  convertConsensusGenomesQuery,
   convertSequencingReadsQuery,
   convertValidateConsensusGenomeQuery,
   convertWorkflowRunsQuery,
   formatFedQueryForNextGen,
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
+import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownload/CreateBulkDownload";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -62,171 +70,24 @@ export const resolvers: Resolvers = {
         };
       }, []);
     },
-    fedBulkDownloads: async (root, args, context, info) => {
-      const statusDictionary = {
-        success: "SUCCEEDED",
-        error: "FAILED",
-        waiting: "PENDING",
-        running: "INPROGRESS",
-        //fyi: in NextGen there is also a status of STARTED
-      };
-      const urlParams = formatUrlParams({
-        searchBy: args?.input?.searchBy,
-        n: args?.input?.limit,
-      });
-      const getEntityInputInfo = entities => {
-        return entities.map(entity => {
-          return {
-            id: entity?.id,
-            name: entity?.sample_name,
-          };
-        });
-      };
-      const res = await get({
-        url: `/bulk_downloads.json${urlParams}`,
-        args,
-        context,
-      });
-      const mappedRes = res.map(async bulkDownload => {
-        let url: string | null = null;
-        let entityInputs: { id: string; name: string }[] = [];
-        let sampleNames: Set<string> | null = null;
-        let totalSamples: number | null = null;
-        let description: string;
-        let file_type_display: string;
-        const details = await get({
-          url: `/bulk_downloads/${bulkDownload?.id}.json`,
-          args,
-          context,
-        });
-        if (bulkDownload.status === "success") {
-          url = details?.bulk_download?.presigned_output_url;
-          entityInputs = [
-            ...getEntityInputInfo(details?.bulk_download?.workflow_runs),
-            ...getEntityInputInfo(details?.bulk_download?.pipeline_runs),
-          ];
-          sampleNames = new Set(
-            entityInputs.map(entityInput => entityInput.name),
-          );
-          totalSamples =
-            details?.bulk_download?.params?.sample_ids?.value?.length;
-        }
-        description = details?.download_type?.description;
-        file_type_display = details?.download_type?.file_type_display;
-
-        const {
-          id,
-          status,
-          user_id,
-          download_type,
-          created_at,
-          download_name,
-          output_file_size,
-          user_name,
-          log_url,
-          analysis_type,
-          progress, // --> to be discussed on Feb 16th, 2024
-        } = bulkDownload;
-
-        // In Next Gen we will have an array with all of the entity input
-        // filtered through the nodes entity query to get the relevant info
-        // If there are 22 Consensus Genome Files coming from 20 Samples, there will be 42 items in the array.
-        // We will get `sampleNames` by checking __typename to see if the entity is a sample,
-        // The amount of other items left in the array should be a the `analysisCount` and the analysis type will come from the file.entity.type
-        // Some work will have to be done in the resolver here to surface the right information to the front end from NextGen
-        return {
-          id, // in NextGen this will be the workflowRun id because that is the only place that has info about failed and in progress bulk download workflows
-          startedAt: created_at,
-          status: statusDictionary[status],
-          rawInputsJson: {
-            downloadType: download_type,
-            downloadDisplayName: download_name,
-            description: description,
-            fileFormat: file_type_display,
-          },
-          ownerUserId: user_id,
-          file: {
-            size: output_file_size,
-            downloadLink: {
-              url: url,
-            },
-          },
-          sampleNames,
-          analysisCount: entityInputs.length,
-          entityInputFileType: analysis_type,
-          entityInputs,
-          toDelete: {
-            progress, // --> to be discussed on Feb 16th, 2024
-            user_name, // will need to get from a new Rails endpoint from the FE
-            log_url, // used in admin only, we will deprecate log_url and use something like executionId
-            totalSamples,
-            // dedupping by name isn't entirely reliable
-            // we will use this as the accurate number of samples until we switch to NextGen
-            // (then it can be the amount of Sample entitys in entityInputs on the workflowRun)
-          },
-        };
-      });
-      return mappedRes;
-    },
-    BulkDownloadCGOverview: async (root, args, context, info) => {
-      if (!args?.input) {
-        throw new Error("No input provided");
-      }
-      const {
-        downloadType,
-        workflow,
-        includeMetadata,
-        workflowRunIds,
-        workflowRunIdsStrings,
-      } = args?.input;
-
-      //array of strings to array of numbers
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
-        id => id && parseInt(id),
-      );
-      const body = {
-        download_type: downloadType,
-        workflow: workflow,
-        params: {
-          include_metadata: { value: includeMetadata },
-          sample_ids: {
-            value: workflowRunIdsNumbers
-              ? workflowRunIdsNumbers
-              : workflowRunIds,
-          },
-          workflow: {
-            value: workflow,
-          },
-        },
-        workflow_run_ids: workflowRunIds,
-      };
-      const res = await postWithCSRF({
-        url: `/bulk_downloads/consensus_genome_overview_data`,
-        body,
-        args,
-        context,
-      });
-      if (res?.cg_overview_rows) {
-        return {
-          cgOverviewRows: res?.cg_overview_rows,
-        };
-      } else {
-        throw new Error(res.error);
-      }
-    },
-    fedConsensusGenomes: async (root, args, context) => {
-      /* --------------------- Next Gen ------------------------- */
+    fedBulkDownloads: fedBulkDowloadsResolver,
+    BulkDownloadCGOverview: BulkDownloadsCGOverviewResolver,
+    fedConsensusGenomes: async (root, args, context: any) => {
       const nextGenEnabled = await shouldReadFromNextGen(context);
-      if (nextGenEnabled) {
-        const ret = await get({ args, context, serviceType: "entities" });
-        return ret.data.consensusGenomes;
-      }
-      /* --------------------- Rails ------------------------- */
       const input = args.input;
-      if (input?.where?.producingRunId?._eq) {
-        // if there is an _eq in the response than it is a call for a single workflow run result
-        // and the rails call will be like this:
-        const workflowRunId = input?.where?.producingRunId?._eq;
+      if (input == null) {
+        throw new Error("fedConsensusGenomes input was nullish");
+      }
+
+      // if there is an _eq in the response then it is a call for a single workflow run result
+      if (input.where?.producingRunId?._eq) {
+        /* --------------------- Next Gen ------------------------- */
+        if (nextGenEnabled) {
+          const ret = await get({ args, context, serviceType: "entities" });
+          return ret.data.consensusGenomes;
+        }
+        /* --------------------- Rails ----------------------------- */
+        const workflowRunId = input.where.producingRunId._eq;
         const data = await get({
           url: `/workflow_runs/${workflowRunId}/results`,
           args,
@@ -235,6 +96,15 @@ export const resolvers: Resolvers = {
         const { coverage_viz, quality_metrics, taxon_info } = data;
         const { accession_id, accession_name, taxon_id, taxon_name } =
           taxon_info || {};
+
+        const referenceGenomeDownloadUrl = await get({
+          url: `/workflow_runs/${workflowRunId}/cg_report_downloads?downloadType=ref_fasta`,
+          args,
+          context,
+        });
+
+        const accession = accession_id && accession_name ? { accessionId: accession_id, accessionName: accession_name } : null;
+        const taxon = taxon_id && taxon_name ? { id: taxon_id.toString(), name: taxon_name, commonName: taxon_name } : null;
         const ret = [
           {
             metrics: {
@@ -252,14 +122,14 @@ export const resolvers: Resolvers = {
               nActg: quality_metrics?.n_actg,
               mappedReads: quality_metrics?.mapped_reads,
             },
-            accession: {
-              accessionId: accession_id,
-              accessionName: accession_name,
-            },
-            taxon: {
-              id: taxon_id?.toString(),
-              commonName: taxon_name,
-              name: taxon_name,
+            accession: accession,
+            taxon: taxon,
+            referenceGenome: {
+              file: {
+                downloadLink: {
+                  url: referenceGenomeDownloadUrl.url,
+                },
+              },
             },
           },
         ];
@@ -267,26 +137,31 @@ export const resolvers: Resolvers = {
       }
 
       // DISCOVERY VIEW:
-      // The comments in the formatUrlParams() call correspond to the line in the current
-      // codebase's callstack where the params are set, so help ensure we're not missing anything.
+      if (nextGenEnabled) {
+        return (
+          await fetchFromNextGen({
+            customQuery: convertConsensusGenomesQuery(context.params.query),
+            customVariables: {
+              where: input.where,
+              orderBy: input.orderBy,
+            },
+            serviceType: "entities",
+            args,
+            context,
+          })
+        ).data.consensusGenomes;
+      }
+
       const { workflow_runs } = await get({
         url:
           "/workflow_runs.json" +
           formatUrlParams({
-            // index.ts
-            // const getWorkflowRuns = ({
-            mode: "with_sample_info",
-            //  - DiscoveryDataLayer.ts
-            //    await this._collection.fetchDataCallback({
+            mode: "basic",
             domain: input?.todoRemove?.domain,
-            //  -- DiscoveryView.tsx
-            //     ...this.getConditions(workflow)
             projectId: input?.todoRemove?.projectId,
             search: input?.todoRemove?.search,
             orderBy: input?.todoRemove?.orderBy,
             orderDir: input?.todoRemove?.orderDir,
-            //  --- DiscoveryView.tsx
-            //      filters: {
             host: input?.todoRemove?.host,
             locationV2: input?.todoRemove?.locationV2,
             taxon: input?.todoRemove?.taxons,
@@ -295,93 +170,20 @@ export const resolvers: Resolvers = {
             tissue: input?.todoRemove?.tissue,
             visibility: input?.todoRemove?.visibility,
             workflow: input?.todoRemove?.workflow,
-            //  - DiscoveryDataLayer.ts
-            //    await this._collection.fetchDataCallback({
-            limit: input?.limit,
-            offset: input?.offset,
+            workflowRunIds: input?.todoRemove?.workflowRunIds,
+            sampleIds: input?.todoRemove?.sampleIds,
+            limit: TEN_MILLION,
+            offset: 0,
             listAllIds: false,
           }),
         args,
         context,
       });
-      if (!workflow_runs?.length) {
-        return [];
-      }
-
-      return workflow_runs.map((run): query_fedConsensusGenomes_items => {
-        const inputs = run.inputs;
-        const qualityMetrics = run.cached_results?.quality_metrics;
-        const sample = run.sample;
-        const sampleInfo = sample?.info;
-        const sampleMetadata = sample?.metadata;
-
-        const taxon =
-          inputs?.taxon_name != null
-            ? {
-                name: inputs.taxon_name,
-              }
-            : null;
-        const accession =
-          inputs?.accession_id != null && inputs?.accession_name != null
-            ? {
-                accessionId: inputs?.accession_id,
-                accessionName: inputs?.accession_name,
-              }
-            : null;
-        return {
-          producingRunId: run.id?.toString(),
-          taxon,
-          accession,
-          metrics: {
-            coverageDepth: run.cached_results?.coverage_viz?.coverage_depth,
-            totalReads: qualityMetrics?.total_reads,
-            gcPercent: qualityMetrics?.gc_percent,
-            refSnps: qualityMetrics?.ref_snps,
-            percentIdentity: qualityMetrics?.percent_identity,
-            nActg: qualityMetrics?.n_actg,
-            percentGenomeCalled: qualityMetrics?.percent_genome_called,
-            nMissing: qualityMetrics?.n_missing,
-            nAmbiguous: qualityMetrics?.n_ambiguous,
-            referenceGenomeLength: qualityMetrics?.reference_genome_length,
-          },
-          sequencingRead: {
-            nucleicAcid: sampleMetadata?.nucleotide_type ?? "",
-            protocol: inputs?.wetlab_protocol,
-            medakaModel: inputs?.medaka_model,
-            technology: inputs?.technology ?? "",
-            taxon,
-            sample: {
-              railsSampleId: sample?.id,
-              name: sampleInfo?.name ?? "",
-              notes: sampleInfo?.sample_notes,
-              uploadError: sampleInfo?.result_status_description,
-              collectionLocation:
-                typeof sampleMetadata?.collection_location_v2 === "string"
-                  ? sampleMetadata.collection_location_v2
-                  : sampleMetadata?.collection_location_v2?.name ?? "",
-              sampleType: sampleMetadata?.sample_type ?? "",
-              waterControl: sampleMetadata?.water_control === "Yes",
-              hostOrganism:
-                sampleInfo?.host_genome_name != null
-                  ? {
-                      name: sampleInfo.host_genome_name,
-                    }
-                  : null,
-              collection: {
-                name: sample?.project_name,
-                public: Boolean(sampleInfo?.public),
-              },
-              ownerUserId: sample?.uploader?.id,
-              // TODO: Make runner come from Workflows stitched with the user service when NextGen
-              // ready.
-              ownerUserName: run.runner?.name ?? sample?.uploader?.name,
-              metadatas: {
-                edges: getMetadataEdges(sampleMetadata),
-              },
-            },
-          },
-        };
-      });
+      return workflow_runs.map(run => ({
+        sequencingRead: {
+          id: run.sample.info.id.toString(),
+        },
+      }));
     },
     ConsensusGenomeWorkflowResults: async (root, args, context, info) => {
       const { coverage_viz, quality_metrics, taxon_info } = await get({
@@ -477,217 +279,7 @@ export const resolvers: Resolvers = {
         return res;
       }
     },
-    SampleForReport: async (root, args, context) => {
-      /* --------------------- Rails and Next Gen --------------------- */
-      const sampleInfo = await getFromRails({
-        url: `/samples/${args.railsSampleId}.json`,
-        args,
-        context,
-      });
-      // Make output acceptable to Relay - convert ids to strings
-      if (sampleInfo?.pipeline_runs) {
-        const updatedPipelineRuns = sampleInfo?.pipeline_runs.map(
-          pipelineRun => {
-            return {
-              ...pipelineRun,
-              id: pipelineRun.id.toString(),
-            };
-          },
-        );
-        sampleInfo.pipeline_runs = updatedPipelineRuns;
-      }
-      if (sampleInfo?.default_pipeline_run_id) {
-        sampleInfo.default_pipeline_run_id =
-          sampleInfo.default_pipeline_run_id.toString();
-      }
-      if (sampleInfo?.workflow_runs) {
-        const updatedWorkflowRuns = sampleInfo?.workflow_runs.map(
-          workflowRun => {
-            return {
-              ...workflowRun,
-              id: workflowRun.id.toString(),
-            };
-          },
-        );
-        sampleInfo.workflow_runs = updatedWorkflowRuns;
-      }
-      if (sampleInfo?.project) {
-        sampleInfo.project.id = sampleInfo.project.id.toString();
-      }
-
-      const nextGenEnabled = await shouldReadFromNextGen(context);
-      /* --------------------- Rails --------------------- */
-      if (!nextGenEnabled) {
-        return {
-          id: args?.railsSampleId,
-          railsSampleId: args.railsSampleId,
-          ...sampleInfo,
-        };
-      }
-      /* --------------------- Next Gen --------------------- */
-
-      // NextGen Steps:
-      // continue using everything from rails except for workflow_runs
-      // get sample from rails using railsSampleId (same as above). This includes:
-      // -- sample info
-      // -- pipeline runs
-      // -- workflowRuns:
-      // ---- AMR workflow runs
-      // ---- pre-migration CG workflow runs
-      // ---- dual write CG workflow runs
-      // query entities using railsSampleId to get NextGenSampleId and done CG workflow runs
-      // query workflows using NextGenSampleId to get in progress CG workflow runs
-      // combine workflow data from entities and workflows
-      // deduplicate between rails and next gen
-
-      const entitiesQuery = `
-          query EntitiesQuery {
-            samples(where: {railsSampleId: {_eq: ${args.railsSampleId}}}) {
-              id
-              sequencingReads {
-                edges {
-                  node {
-                    consensusGenomes {
-                      edges {
-                        node {
-                          id
-                          createdAt
-                          producingRunId
-                          referenceGenome {
-                            id
-                            file {
-                              path
-                            }
-                          }
-                          accession {
-                            accessionId
-                            accessionName
-                          }
-                          taxon {
-                            id
-                            name
-                          }
-                          sequencingRead {
-                            technology
-                          }
-                        }
-                      }
-                    }
-                    sample {
-                      hostOrganism {
-                        id
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          } 
-        `;
-      const entitiesResp = await get({
-        args,
-        context,
-        serviceType: "entities",
-        customQuery: entitiesQuery,
-      });
-
-      // Non-WGS workflows will not have nextGenSampleId. In this case, return sampleInfo from Rails.
-      const nextGenSampleId = entitiesResp?.data.samples?.[0]?.id;
-      if (!nextGenSampleId) {
-        console.log(
-          `No NextGenSampleId found for railsSampleId: ${args.railsSampleId}`,
-        );
-        return {
-          id: args.railsSampleId,
-          railsSampleId: args.railsSampleId,
-          ...sampleInfo,
-        };
-      }
-
-      // Query workflows using NextGenSampleId to get in progress CG workflow runs
-      const workflowsQuery = `
-          query WorkflowsQuery {
-            workflowRuns(where: {entityInputs: {inputEntityId: {_eq: "${nextGenSampleId}"}}}) {
-              id
-              _id
-              railsWorkflowRunId
-              status
-              ownerUserId
-              errorMessage
-              workflowVersion {
-                version
-                id
-                workflow {
-                  name
-                }
-              }
-              createdAt
-              endedAt
-              rawInputsJson
-            }
-          }
-      `;
-      const workflowsResp = await get({
-        args,
-        context,
-        serviceType: "workflows",
-        customQuery: workflowsQuery,
-      });
-      const consensusGenomes =
-        entitiesResp.data.samples[0].sequencingReads.edges[0].node
-          .consensusGenomes.edges;
-      const workflowsWorkflowRuns = workflowsResp?.data?.workflowRuns || [];
-      const nextGenWorkflowRuns = workflowsWorkflowRuns.map(workflowRun => {
-        const consensusGenome = consensusGenomes.find(consensusGenome => {
-          return consensusGenome.node.producingRunId === workflowRun.id;
-        });
-        const { accession, taxon, sequencingRead } =
-          consensusGenome?.node || {};
-        const parsedRawInputsJson = JSON.parse(workflowRun.rawInputsJson);
-        // If !consensusGenome this is a workflow run that is in progress
-        return {
-          deprecated: workflowRun?.deprecated_by,
-          executed_at: workflowRun?.createdAt,
-          id: workflowRun?.id,
-          input_error: workflowRun?.errorMessage,
-          inputs: {
-            accession_id: accession?.accessionId,
-            accession_name: accession?.accessionName,
-            creation_source: parsedRawInputsJson?.creation_source,
-            ref_fasta: parseRefFasta(
-              consensusGenome?.node?.referenceGenome?.file?.path,
-            ),
-            taxon_id: taxon?.id,
-            taxon_name: taxon?.name,
-            technology: sequencingRead?.technology,
-          },
-          rails_workflow_run_id: workflowRun?.railsWorkflowRunId, // this is added for deduplicating below
-          run_finalized: isRunFinalized(workflowRun?.status),
-          status: workflowRun?.status,
-          wdl_version: workflowRun?.workflowVersion.version,
-          workflow: workflowRun?.workflowVersion.workflow.name,
-        };
-      });
-      // Deduplicate sampleInfo.workflow_runs(from Rails) and nextGenWorkflowRuns(from NextGen)
-      let dedupedWorkflowRuns;
-      dedupedWorkflowRuns = [...nextGenWorkflowRuns];
-      for (const railsWorkflowRun of sampleInfo.workflow_runs) {
-        const alreadyExists = nextGenWorkflowRuns.find(
-          nextGenWorkflowRun =>
-            nextGenWorkflowRun.rails_workflow_run_id.toString() ===
-            railsWorkflowRun.id,
-        );
-        if (!alreadyExists) {
-          dedupedWorkflowRuns.push(railsWorkflowRun);
-        }
-      }
-      return {
-        id: args.railsSampleId,
-        railsSampleId: args.railsSampleId,
-        ...sampleInfo,
-        workflow_runs: dedupedWorkflowRuns,
-      };
-    },
+    SampleForReport: SampleForReportResolver,
     MngsWorkflowResults: async (root, args, context, info) => {
       const data = await get({
         url: `/samples/${args.sampleId}.json`,
@@ -829,58 +421,101 @@ export const resolvers: Resolvers = {
       // NEXT GEN:
       const nextGenEnabled = await shouldReadFromNextGen(context);
       if (nextGenEnabled) {
+        // NEXT GEN IDS:
         if (queryingIdsOnly) {
           const nextGenPromise = fetchFromNextGen({
             customQuery: convertSequencingReadsQuery(context.params.query),
             customVariables: {
-              // Entities Service doesn't support sample metadata yet.
               where: {
                 collectionId: input.where?.collectionId,
                 taxon: input.where?.taxon,
                 consensusGenomes: input.where?.consensusGenomes,
+                // Entities Service doesn't support sample host + metadata yet.
+                sample:
+                  input.where?.sample?.name != null
+                    ? {
+                        name: input.where.sample.name,
+                      }
+                    : undefined,
               },
+              orderBy:
+                input.orderByArray?.[0]?.protocol != null ||
+                input.orderByArray?.[0]?.technology != null ||
+                input.orderByArray?.[0]?.medakaModel != null ||
+                input.orderByArray?.[0]?.sample?.name != null
+                  ? input.orderByArray
+                  : undefined,
             },
             serviceType: "entities",
             args,
             context,
           });
-          if (input.where?.sample != null) {
-            const filteredSampleIds = new Set(
-              (
-                await getFromRails({
-                  url:
-                    "/samples/index_v2.json" +
-                    formatUrlParams({
-                      locationV2: input.where.sample.collectionLocation?._in,
-                      host: input.where.sample.hostOrganism?.name?._in,
-                      tissue: input.where.sample.sampleType?._in,
-                      limit: 0,
-                      offset: 0,
-                      listAllIds: true,
-                    }),
-                  args,
-                  context,
-                })
-              ).all_samples_ids,
-            );
+
+          const isSortingInRails =
+            input.orderByArray?.[0]?.sample?.metadata != null ||
+            input.orderByArray?.[0]?.sample?.hostOrganism?.name != null;
+          if (
+            !input.where?.sample?.collectionLocation?._in?.length &&
+            !input.where?.sample?.hostOrganism?.name?._in?.length &&
+            !input.where?.sample?.sampleType?._in?.length &&
+            !isSortingInRails
+          ) {
+            // Don't need Rails.
+            return (await nextGenPromise).data.sequencingReads;
+          }
+
+          const railsSampleIds: number[] = (
+            await getFromRails({
+              url:
+                "/samples/index_v2.json" +
+                formatUrlParams({
+                  locationV2: input?.where?.sample?.collectionLocation?._in,
+                  host: input?.where?.sample?.hostOrganism?.name?._in,
+                  tissue: input?.where?.sample?.sampleType?._in,
+                  orderBy: isSortingInRails
+                    ? input.orderByArray?.[0]?.sample?.metadata?.fieldName ??
+                      "host"
+                    : undefined,
+                  orderDir: isSortingInRails
+                    ? (input.orderByArray?.[0]?.sample?.metadata?.dir ??
+                        input.orderByArray?.[0]?.sample?.hostOrganism?.name) ===
+                      "asc_nulls_first"
+                      ? "ASC"
+                      : "DESC"
+                    : undefined,
+                  limit: 0,
+                  offset: 0,
+                  listAllIds: true,
+                }),
+              args,
+              context,
+            })
+          ).all_samples_ids;
+
+          if (isSortingInRails) {
+            const sampleIdsToReads = new Map<number, any>();
+            for (const read of (await nextGenPromise).data.sequencingReads) {
+              if (!sampleIdsToReads.has(read.sample.railsSampleId)) {
+                sampleIdsToReads.set(read.sample.railsSampleId, [read]);
+              } else {
+                sampleIdsToReads.get(read.sample.railsSampleId)?.push(read);
+              }
+            }
+            return railsSampleIds.flatMap(id => sampleIdsToReads.get(id) ?? []);
+          } else {
+            const railsSampleIdsSet = new Set(railsSampleIds);
             return (await nextGenPromise).data.sequencingReads.filter(
               sequencingRead =>
-                filteredSampleIds.has(sequencingRead.sample.railsSampleId),
+                railsSampleIdsSet.has(sequencingRead.sample.railsSampleId),
             );
-          } else {
-            return (await nextGenPromise).data.sequencingReads;
           }
         }
 
+        // NEXT GEN PAGE:
         const nextGenResponse = await fetchFromNextGen({
           customQuery: convertSequencingReadsQuery(context.params.query),
           customVariables: {
             where: input.where,
-            // TODO: Migrate to array orderBy.
-            orderBy:
-              (input.orderBy != null ? [input.orderBy] : undefined) ??
-              input.orderByArray,
-            limitOffset: input.limitOffset,
             producingRunIds:
               input.consensusGenomesInput?.where?.producingRunId?._in,
           },
@@ -922,13 +557,18 @@ export const resolvers: Resolvers = {
           const nextGenSample = nextGenSequencingRead.sample;
           const railsSample = railsSamplesById.get(nextGenSample.railsSampleId);
 
-          const railsMetadata = railsSample?.details?.metadata;
+          const railsMetadata:
+            | { [key: string]: string | { name: string } }
+            | null
+            | undefined = railsSample?.details?.metadata;
           const railsDbSample = railsSample?.details?.db_sample;
 
           nextGenSequencingRead.nucleicAcid =
             railsMetadata?.nucleotide_type ?? "";
           nextGenSample.collectionLocation =
-            railsMetadata?.collection_location_v2 ?? "";
+            typeof railsMetadata?.collection_location_v2 === "string"
+              ? railsMetadata.collection_location_v2
+              : railsMetadata?.collection_location_v2?.name ?? "";
           nextGenSample.sampleType = railsMetadata?.sample_type ?? "";
           nextGenSample.waterControl = railsMetadata?.water_control === "Yes";
           nextGenSample.notes = railsDbSample?.sample_notes;
@@ -978,6 +618,9 @@ export const resolvers: Resolvers = {
               ? 0
               : input.offset ?? input.limitOffset?.offset,
             listAllIds: false,
+            // workflowRunIds and sampleIds are only used for API testing.
+            workflowRunIds: input?.todoRemove?.workflowRunIds,
+            sampleIds: input?.todoRemove?.sampleIds,
           }),
         args,
         context,
@@ -1106,7 +749,10 @@ export const resolvers: Resolvers = {
         args,
         context,
       });
-      return res;
+      return {
+        validIds: res.validIds.map((id: number) => id.toString()),
+        ...res,
+      }
     },
     Taxons: async (root, args, context, info) => {
       const urlParams = formatUrlParams({
@@ -1381,6 +1027,63 @@ export const resolvers: Resolvers = {
         nextGenEnabled,
       );
     },
+    fedWorkflowRunsAggregateTotalCount: async (root, args, context, info) => {
+      const input = args.input;
+      const { countByWorkflow: railsCountByWorkflow } = await get({
+        url:
+          "/samples/stats.json" +
+          formatUrlParams({
+            domain: input?.todoRemove?.domain,
+            projectId: input?.todoRemove?.projectId,
+          }),
+        args,
+        context,
+      });
+
+      let nextGenAggregates = [];
+      // the frontend decides which workflows are fetched from NextGen vs Rails
+      const nextgenWorkflows =
+        (input?.where?.workflowVersion?.workflow?.name?._in as string[]) || [];
+
+      const nextGenEnabled = await shouldReadFromNextGen(context);
+      if (nextGenEnabled) {
+        const totalCountQuery = `
+          query nextGenWorkflowsAggregateTotalCount($where: WorkflowRunWhereClause) {
+            workflowRunsAggregate(where: $where) {
+              aggregate {
+                count
+                groupBy {
+                  workflowVersion {
+                    workflow {
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `;
+        const totalCountResponse = await fetchFromNextGen({
+          args,
+          context,
+          serviceType: "workflows",
+          customQuery: totalCountQuery,
+          customVariables: {
+            where: args.input?.where,
+          },
+        });
+
+        nextGenAggregates =
+          totalCountResponse?.data?.workflowRunsAggregate?.aggregate;
+      }
+
+      return parseWorkflowsAggregateTotalCountsResponse(
+        nextGenAggregates,
+        railsCountByWorkflow,
+        nextGenEnabled,
+        nextgenWorkflows,
+      );
+    },
     ZipLink: async (root, args, context, info) => {
       /* --------------------- Next Gen ------------------------- */
       const nextGenEnabled = await shouldReadFromNextGen(context);
@@ -1402,7 +1105,6 @@ export const resolvers: Resolvers = {
           serviceType: "entities",
           customQuery,
         });
-        console.log("ret - ZipLink", JSON.stringify(ret));
         if (
           ret.data?.consensusGenomes[0]?.intermediateOutputs?.downloadLink?.url
         ) {
@@ -1441,45 +1143,7 @@ export const resolvers: Resolvers = {
     }),
   },
   Mutation: {
-    CreateBulkDownload: async (root, args, context, info) => {
-      if (!args?.input) {
-        throw new Error("No input provided");
-      }
-      const {
-        downloadType,
-        workflow,
-        downloadFormat,
-        workflowRunIds,
-        workflowRunIdsStrings,
-      } = args?.input;
-
-      const workflowRunIdsNumbers = workflowRunIdsStrings?.map(
-        id => id && parseInt(id),
-      );
-      const body = {
-        download_type: downloadType,
-        workflow: workflow,
-        params: {
-          download_format: {
-            value: downloadFormat,
-          },
-          sample_ids: {
-            value: workflowRunIdsNumbers ?? workflowRunIds,
-          },
-          workflow: {
-            value: workflow,
-          },
-        },
-        workflow_run_ids: workflowRunIdsNumbers ?? workflowRunIds,
-      };
-      const res = await postWithCSRF({
-        url: `/bulk_downloads`,
-        body,
-        args,
-        context,
-      });
-      return res;
-    },
+    CreateBulkDownload: CreateBulkDownloadResolver,
     DeleteSamples: async (root, args, context, info) => {
       if (!args?.input) {
         throw new Error("No input provided");

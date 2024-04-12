@@ -46,6 +46,14 @@
                 "sample": {
                     "type": "object",
                     "properties": {
+                        "name": {
+                            "type": "object",
+                            "properties": {
+                                "_iregex": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "collectionLocation": {
                             "type": "object",
                             "properties": {
@@ -105,6 +113,17 @@
                 "consensusGenomes": {
                     "type": "object",
                     "properties": {
+                        "producingRunId": {
+                            "type": "object",
+                            "properties": {
+                                "_in": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
                         "taxon": {
                             "type": "object",
                             "properties": {
@@ -320,6 +339,18 @@
                 },
                 "orderDir": {
                     "type": "string"
+                },
+                "sampleIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "workflowRunIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         }

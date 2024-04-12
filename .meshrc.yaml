@@ -175,7 +175,12 @@ sources:
             path: /samples/validate_user_can_delete_objects.json
             method: POST
             requestSample:
-              { "selectedIds": [28114, 28151], "selectedIdsStrings": ["28114", "28151"], "workflow": "short-read-mngs", "authenticityToken": "token" }
+              {
+                "selectedIds": [28114, 28151],
+                "selectedIdsStrings": ["28114", "28151"],
+                "workflow": "short-read-mngs",
+                "authenticityToken": "token",
+              }
             responseSchema: ./json-schemas/validateUsersCanDeleteObjects.json
             responseTypeName: ValidateUserCanDeleteObjects
           - type: Query
@@ -193,6 +198,13 @@ sources:
             responseSchema: ./json-schemas/workflowRunsAggregateResponse.json
             responseTypeName: fedWorkflowRunsAggregate
           - type: Query
+            field: fedWorkflowRunsAggregateTotalCount
+            path: /samples/stats.json
+            method: GET
+            requestSchema: ./json-schemas/fedWorkflowRunsAggregateTotalCountRequest.json
+            responseSchema: ./json-schemas/fedWorkflowRunsAggregateTotalCountResponse.json
+            responseTypeName: fedWorkflowRunsAggregateTotalCount
+          - type: Query
             field: ZipLink
             path: /workflow_runs/{args.workflowRunId}/zip_link.json
             method: GET
@@ -203,12 +215,19 @@ sources:
             path: /bulk_download
             method: POST
             requestSchema: ./json-schemas/createBulkDownload.json
-            responseTypeName: BulkDownload
+            responseSchema: ./json-schemas/createBulkDownloadResponse.json
+            responseTypeName: fedCreateBulkDownload
           - type: Mutation
             field: DeleteSamples
             path: /samples/bulk_delete
             method: POST
-            requestSample: { "ids": [1], "idsStrings": ["1"], "workflow": "short-read-mngs", "authenticityToken": "token" }
+            requestSample:
+              {
+                "ids": [1],
+                "idsStrings": ["1"],
+                "workflow": "short-read-mngs",
+                "authenticityToken": "token",
+              }
             responseSchema: ./json-schemas/deleteSamples.json
             responseTypeName: DeleteSamples
           - type: Mutation
@@ -256,7 +275,11 @@ sources:
             path: /samples/{args.sampleId}/kickoff_workflow
             method: POST
             requestSample:
-              { "inputs_json": { "start_from_mngs": true }, "workflow": "amr", "authenticityToken": "token" }
+              {
+                "inputs_json": { "start_from_mngs": true },
+                "workflow": "amr",
+                "authenticityToken": "token",
+              }
             responseSchema: ./json-schemas/kickoffWorkflow.json
             responseTypeName: KickoffAMRWorkflow
             headers:

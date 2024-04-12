@@ -1,10 +1,7 @@
-query workflowRunsAggregateQuery {
-  fedWorkflowRunsAggregate(
+query workflowRunsAggregateTotalCountQuery {
+  fedWorkflowRunsAggregateTotalCount(
     input: {
       where: {
-        id: {
-          _in: ["1", "2", "3"]
-        }
         collectionId: {
           _in: [2, 3]
         }
@@ -21,22 +18,19 @@ query workflowRunsAggregateQuery {
       }
       todoRemove: { 
         domain: "my_data",
-        visibility: "public",
-        search: "abc",
-        time: ["20240214", "20240222"]
+        projectId: "123",
       }
     }
   ) {
     aggregate {
+      count
       groupBy {
-        collectionId
         workflowVersion {
           workflow {
             name
           }
         }
       }
-      count
     }
   }
 }

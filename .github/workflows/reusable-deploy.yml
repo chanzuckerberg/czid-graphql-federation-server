@@ -84,4 +84,5 @@ jobs:
           create-tag: true
           stack-name: ${{ inputs.stack_name }}
           repository: chanzuckerberg/czid-graphql-federation-server
+          github-repo-branch: main
           version-lock-file: .happy/version.lock

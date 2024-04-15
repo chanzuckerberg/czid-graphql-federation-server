@@ -32,23 +32,14 @@ jobs:
   deploy:
     runs-on: [ARM64, self-hosted, Linux]
     environment: ${{ inputs.environment }}
-    strategy: 
-      matrix: 
-        app_configs: 
-          - name: API_URL
-            value: ${{ inputs.api_url }}
-          - name: NEXTGEN_ENTITIES_URL
-            value: ${{ inputs.nextgen_entities_url }}
-          - name: NEXTGEN_WORKFLOWS_URL
-            value: ${{ inputs.nextgen_workflows_url }}
-          - name: ALLOWED_CORS_ORIGINS
-            value: ${{ inputs.allowed_cors_origin }}
     permissions:
       id-token: write
       contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          repository: chanzuckerberg/czid-graphql-federation-server
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -64,8 +55,26 @@ jobs:
       - name: Set env variables
         uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
         with:
-          app_config_name: ${{ matrix.app_configs.name }}
-          app_config_value: ${{ matrix.app_configs.value }}
+          app_config_name: API_URL
+          app_config_value: ${{ inputs.api_url }}
+          happy_env: ${{ inputs.environment }}
+      - name: Set env variables
+        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
+        with:
+          app_config_name: NEXTGEN_ENTITIES_URL
+          app_config_value: ${{ inputs.nextgen_entities_url }}
+          happy_env: ${{ inputs.environment }}
+      - name: Set env variables
+        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
+        with:
+          app_config_name: NEXTGEN_WORKFLOWS_URL
+          app_config_value: ${{ inputs.nextgen_workflows_url }}
+          happy_env: ${{ inputs.environment }}
+      - name: Set env variables
+        uses: chanzuckerberg/czid-graphql-federation-server/.github/actions/happy-config-set@main
+        with:
+          app_config_name: ALLOWED_CORS_ORIGINS
+          app_config_value: ${{ inputs.allowed_cors_origin }}
           happy_env: ${{ inputs.environment }}
       - name: Update stack
         uses: chanzuckerberg/github-actions/.github/actions/deploy-happy-stack@v1.26.0

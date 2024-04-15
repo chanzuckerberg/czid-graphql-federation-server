@@ -83,4 +83,5 @@ jobs:
           env: ${{ inputs.environment }}
           create-tag: true
           stack-name: ${{ inputs.stack_name }}
+          repository: chanzuckerberg/czid-graphql-federation-server
           version-lock-file: .happy/version.lock

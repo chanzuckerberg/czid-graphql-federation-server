@@ -21,6 +21,10 @@ on:
       stack_name: 
         required: true
         type: string
+      operation: 
+        required: false
+        default: 'create-or-update'
+        type: string
     secrets:
       AWS_ROLE_TO_ASSUME:
         required: true
@@ -85,4 +89,5 @@ jobs:
           stack-name: ${{ inputs.stack_name }}
           repository: chanzuckerberg/czid-graphql-federation-server
           github-repo-branch: main
+          operation: ${{ inputs.operation }}
           version-lock-file: .happy/version.lock

@@ -45,7 +45,7 @@ const TEN_MILLION = 10_000_000;
 
 export const resolvers: Resolvers = {
   Query: {
-    adminEntities: async (root, args, context, info) => {
+    adminSamples: async (root, args, context, info) => {
       const { entities } = await fetchFromNextGen({
         args,
         context,

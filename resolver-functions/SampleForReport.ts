@@ -256,10 +256,13 @@ export const SampleForReportResolver = async (root, args, context) => {
         deprecated: null,
         executed_at: workflowRun.createdAt,
         id: workflowRun.id,
-        input_error: {
-          label: workflowRun.errorLabel,
-          message: workflowRun.errorMessage,
-        },
+        input_error:
+          workflowRun.errorLabel != null || workflowRun.errorMessage != null
+            ? {
+                label: workflowRun.errorLabel,
+                message: workflowRun.errorMessage,
+              }
+            : undefined,
         inputs: {
           accession_id: accession?.accessionId,
           accession_name: accession?.accessionName,

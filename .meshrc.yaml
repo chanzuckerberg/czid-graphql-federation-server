@@ -35,6 +35,13 @@ sources:
             responseSchema: ./json-schemas/adminSamplesResponse.json
             responseTypeName: adminSamples
           - type: Query
+            field: adminWorkflowRuns
+            path: /workflow_runs.json
+            method: GET
+            requestSchema: ./json-schemas/adminWorkflowRunsRequest.json
+            responseSchema: ./json-schemas/adminWorkflowRunsResponse.json
+            responseTypeName: adminWorkflowRuns
+          - type: Query
             field: AmrDeprecatedResults
             path: /samples/{args.sampleId}/amr.json
             method: GET

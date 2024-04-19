@@ -37,6 +37,7 @@ import {
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
 import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownload/CreateBulkDownload";
+import { NextGenWorkflowsTypes } from "./.mesh/sources/NextGenWorkflows/types";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -50,7 +51,6 @@ export const resolvers: Resolvers = {
       let query: string = context.params.query;
       // TODO: this is only needed to avoid namespace collision while we are using a custom resolver
       query = formatFedQueryForNextGen(query.replace("adminSamples", "samples"));
-      console.log(query);
       const response = await fetchFromNextGen({
         args,
         context,
@@ -62,6 +62,22 @@ export const resolvers: Resolvers = {
         throw new Error(`Error fetching samples from NextGen: ${JSON.stringify(response)}`);
       }
       return samples;
+    },
+    adminWorkflowRuns: async (root, args, context: any, info) => {
+      let query: string = context.params.query;
+      // TODO: this is only needed to avoid namespace collision while we are using a custom resolver
+      query = formatFedQueryForNextGen(query.replace("adminWorkflowRuns", "workflowRuns"));
+      const response = await fetchFromNextGen({
+        args,
+        context,
+        serviceType: "workflows",
+        customQuery: query,
+      });
+      const workflowRuns: NextGenWorkflowsTypes.WorkflowRun[] = response.data.workflowRuns;
+      if (!workflowRuns) {
+        throw new Error(`Error fetching workflowRuns from NextGen: ${JSON.stringify(response)}`);
+      }
+      return workflowRuns;
     },
     AmrWorkflowResults: async (root, args, context, info) => {
       const { quality_metrics, report_table_data } = await get({

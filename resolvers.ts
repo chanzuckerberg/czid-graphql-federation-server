@@ -11,6 +11,7 @@ import {
 import { SampleForReportResolver } from "./resolver-functions/SampleForReport";
 import { BulkDownloadsCGOverviewResolver } from "./resolver-functions/BulkDownloadsCGOverview";
 import { fedBulkDowloadsResolver } from "./resolver-functions/fedBulkDownloads/fedBulkDownloads";
+import type { NextGenEntitiesTypes } from './.mesh/sources/NextGenEntities/types';
 import {
   parseWorkflowsAggregateTotalCountsResponse,
   processWorkflowsAggregateResponse,
@@ -45,16 +46,22 @@ const TEN_MILLION = 10_000_000;
 
 export const resolvers: Resolvers = {
   Query: {
-    adminSamples: async (root, args, context, info) => {
-      const { entities } = await fetchFromNextGen({
+    adminSamples: async (root, args, context: any, info) => {
+      let query: string = context.params.query;
+      // TODO: this is only needed to avoid namespace collision while we are using a custom resolver
+      query = formatFedQueryForNextGen(query.replace("adminSamples", "samples"));
+      console.log(query);
+      const response = await fetchFromNextGen({
         args,
         context,
         serviceType: "entities",
+        customQuery: query,
       });
-      if (!entities.data.samples) {
-        throw new Error(`Error fetching samples from NextGen: ${JSON.stringify(entities)}`);
+      const samples: NextGenEntitiesTypes.Sample[] = response.data.samples;
+      if (!samples) {
+        throw new Error(`Error fetching samples from NextGen: ${JSON.stringify(response)}`);
       }
-      return entities.data;
+      return samples;
     },
     AmrWorkflowResults: async (root, args, context, info) => {
       const { quality_metrics, report_table_data } = await get({

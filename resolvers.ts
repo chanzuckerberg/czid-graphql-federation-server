@@ -45,6 +45,17 @@ const TEN_MILLION = 10_000_000;
 
 export const resolvers: Resolvers = {
   Query: {
+    adminEntities: async (root, args, context, info) => {
+      const { entities } = await fetchFromNextGen({
+        args,
+        context,
+        serviceType: "entities",
+      });
+      if (!entities.data.samples) {
+        throw new Error(`Error fetching samples from NextGen: ${JSON.stringify(entities)}`);
+      }
+      return entities.data;
+    },
     AmrWorkflowResults: async (root, args, context, info) => {
       const { quality_metrics, report_table_data } = await get({
         url: `/workflow_runs/${args.workflowRunId}/results`,

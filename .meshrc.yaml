@@ -28,6 +28,13 @@ sources:
         endpoint: ${API_URL}/
         operations:
           - type: Query
+            field: adminEntities
+            path: /samples/{args.sampleId}.json
+            method: GET
+            requestSchema: ./json-schemas/adminEntitiesRequest.json
+            responseSchema: ./json-schemas/adminEntitiesResponse.json
+            responseTypeName: adminEntities
+          - type: Query
             field: AmrDeprecatedResults
             path: /samples/{args.sampleId}/amr.json
             method: GET

@@ -1805,6 +1805,7 @@ type Query {
   ZipLink(workflowRunId: String): ZipLink @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs/{args.workflowRunId}/zip_link.json", httpMethod: GET)
   accessions(limitOffset: LimitOffsetClause = null, orderBy: [AccessionOrderByClause!] = [], where: AccessionWhereClause = null): [Accession!]!
   accessionsAggregate(where: AccessionWhereClause = null): AccessionAggregate!
+  adminEntities(input: queryInput_adminEntities_input_Input, sampleId: String): adminEntities @httpOperation(subgraph: "CZIDREST", path: "/samples/{args.sampleId}.json", httpMethod: GET)
   appConfig(id: ID!): AppConfig
   bulkDownloads(limitOffset: LimitOffsetClause = null, orderBy: [BulkDownloadOrderByClause!] = [], where: BulkDownloadWhereClause = null): [BulkDownload!]!
   bulkDownloadsAggregate(where: BulkDownloadWhereClause = null): BulkDownloadAggregate!
@@ -1998,7 +1999,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -2057,7 +2058,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!
@@ -3111,7 +3112,7 @@ type WorkflowRun implements EntityInterface & Node {
   _id: GlobalID!
   cachedResults: String
   collectionId: Int
-  createdAt: DateTime!
+  createdAt: ISO8601DateTime!
   deletedAt: DateTime
   deprecated: Boolean!
   deprecatedById: ID
@@ -3145,7 +3146,7 @@ type WorkflowRun implements EntityInterface & Node {
   sampleId: Int
   sfnExecutionArn: String
   startedAt: DateTime
-  status: WorkflowRunStatus
+  status: String!
   steps(
     """Returns the items in the list that come after the specified cursor."""
     after: String = null
@@ -3160,7 +3161,7 @@ type WorkflowRun implements EntityInterface & Node {
   ): WorkflowRunStepConnection!
   stepsAggregate(where: WorkflowRunStepWhereClause = null): WorkflowRunStepAggregate
   timeToFinalized: Int
-  updatedAt: DateTime
+  updatedAt: ISO8601DateTime!
   wdlVersion: String
   workflow: String!
   workflowRunnerInputsJson: String
@@ -3808,6 +3809,15 @@ type ZipLink {
   url: String
 }
 
+type adminEntities {
+  collectionId: Int
+  createdAt: String
+  id: String
+  ownerUserId: Int
+  railsSampleId: Int
+  sequencingReads: query_adminEntities_sequencingReads
+}
+
 type fedCreateBulkDownload {
   id: String!
 }
@@ -3948,6 +3958,18 @@ input queryInput_ValidateUserCanDeleteObjects_input_Input @example(subgraph: "CZ
   selectedIds: [Int]
   selectedIdsStrings: [String]
   workflow: String
+}
+
+input queryInput_adminEntities_input_Input {
+  where: queryInput_adminEntities_input_where_Input
+}
+
+input queryInput_adminEntities_input_where_Input {
+  railsSampleId: queryInput_adminEntities_input_where_railsSampleId_Input
+}
+
+input queryInput_adminEntities_input_where_railsSampleId_Input {
+  _eq: Float
 }
 
 input queryInput_fedBulkDownloads_input_Input @example(subgraph: "CZIDREST", value: "{\\"searchBy\\":\\"string to search\\",\\"limit\\":10}") {
@@ -4947,6 +4969,96 @@ type query_Taxons_items {
 type query_UserBlastAnnotations_items {
   annotation: JSON
   tax_id: JSON
+}
+
+type query_adminEntities_sequencingReads {
+  edges: [query_adminEntities_sequencingReads_edges_items]
+}
+
+type query_adminEntities_sequencingReads_edges_items {
+  node: query_adminEntities_sequencingReads_edges_items_node
+}
+
+type query_adminEntities_sequencingReads_edges_items_node {
+  clearlabsExport: Boolean
+  consensusGenomes: query_adminEntities_sequencingReads_edges_items_node_consensusGenomes
+  createdAt: String
+  id: String
+  medakaModel: String
+  primerFile: query_adminEntities_sequencingReads_edges_items_node_primerFile
+  protocol: String
+  r1File: query_adminEntities_sequencingReads_edges_items_node_r1File
+  r2File: query_adminEntities_sequencingReads_edges_items_node_r2File
+  taxon: query_adminEntities_sequencingReads_edges_items_node_taxon
+  technology: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes {
+  edges: [query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items]
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items {
+  node: query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node {
+  accession: query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_accession
+  createdAt: String
+  id: String
+  producingRunId: String
+  referenceGenome: query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome
+  taxon: query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_taxon
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_accession {
+  accessionId: String
+  accessionName: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome {
+  file: query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome_file
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome_file {
+  namespace: String
+  path: String
+  protocol: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_taxon {
+  id: String
+  name: String
+  upstreamDatabaseIdentifier: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_primerFile {
+  file: query_adminEntities_sequencingReads_edges_items_node_primerFile_file
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_primerFile_file {
+  id: String
+  namespace: String
+  path: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_r1File {
+  id: String
+  namespace: String
+  path: String
+  protocol: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_r2File {
+  id: String
+  namespace: String
+  path: String
+  protocol: String
+}
+
+type query_adminEntities_sequencingReads_edges_items_node_taxon {
+  id: String
+  name: String
+  upstreamDatabaseIdentifier: String
 }
 
 type query_fedBulkDownloads_items {

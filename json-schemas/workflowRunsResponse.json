@@ -15,6 +15,12 @@
             "status": {
                 "type": "string"
             },
+            "errorLabel": {
+                "type": "string"
+            },
+            "errorMessage": {
+                "type": "string"
+            },
             "rawInputsJson": {
                 "type": "string"
             },

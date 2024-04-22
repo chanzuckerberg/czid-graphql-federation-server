@@ -1,18 +1,12 @@
-import {
-  Accession,
-  Sample,
-  SampleForReport,
-  Taxon,
-  query_SampleForReport_workflow_runs_items,
-} from "../../.mesh";
+import { query_SampleForReport_workflow_runs_items } from "../../.mesh";
 import {
   get,
   getFromRails,
   shouldReadFromNextGen,
 } from "../../utils/httpUtils";
 import { isRunFinalized, parseRefFasta } from "../../utils/responseHelperUtils";
-import type { NextGenWorkflowsTypes } from "../../.mesh/sources/NextGenWorkflows/types";
-import type { NextGenEntitiesTypes } from "../../.mesh/sources/NextGenEntities/types";
+import type { NextGenWorkflowsTypes } from "../../.mesh/./sources/NextGenWorkflows/types";
+import type { NextGenEntitiesTypes } from "../../.mesh/./sources/NextGenEntities/types";
 
 export const SampleForReportResolver = async (root, args, context) => {
   /* --------------------- Rails and Next Gen --------------------- */
@@ -144,6 +138,7 @@ export const SampleForReportResolver = async (root, args, context) => {
           railsWorkflowRunId
           status
           ownerUserId
+          errorLabel
           errorMessage
           workflowVersion {
             version
@@ -259,7 +254,13 @@ export const SampleForReportResolver = async (root, args, context) => {
         deprecated: null,
         executed_at: workflowRun.createdAt,
         id: workflowRun.id,
-        input_error: workflowRun.errorMessage,
+        input_error:
+          workflowRun.errorLabel != null || workflowRun.errorMessage != null
+            ? {
+                label: workflowRun.errorLabel,
+                message: workflowRun.errorMessage,
+              }
+            : undefined,
         inputs: {
           accession_id: accession?.accessionId,
           accession_name: accession?.accessionName,

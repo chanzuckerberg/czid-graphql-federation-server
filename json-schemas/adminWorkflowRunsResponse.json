@@ -12,11 +12,11 @@
             "collectionId": {
                 "type": "integer"
             },
-            "executedAt": {
-                "type": "NoneType"
+            "startedAt": {
+                "type": "string"
             },
             "errorMessage": {
-                "type": "NoneType"
+                "type": "string"
             },
             "rawInputsJson": {
                 "type": "string"

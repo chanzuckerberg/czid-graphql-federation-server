@@ -2000,7 +2000,7 @@ type Sample implements EntityInterface & Node {
   alignmentConfigName: String
   basespaceAccessToken: String
   collectionId: Int
-  createdAt: ISO8601DateTime
+  createdAt: DateTime!
   dagVars: String
   defaultBackgroundId: Int
   defaultPipelineRunId: Int
@@ -2059,7 +2059,7 @@ type Sample implements EntityInterface & Node {
   sequencingReadsAggregate(where: SequencingReadWhereClause = null): SequencingReadAggregate
   status: String
   subsample: Int
-  updatedAt: ISO8601DateTime
+  updatedAt: DateTime
   uploadError: String
   uploadedFromBasespace: Int
   useTaxonWhitelist: Boolean!
@@ -5080,13 +5080,13 @@ type query_adminSamples_items_sequencingReads_edges_items_node_taxon {
 
 type query_adminWorkflowRuns_items {
   collectionId: Int
-  createdAt: String
+  createdAt: String!
   endedAt: String
-  entityInputs: query_adminWorkflowRuns_items_entityInputs
+  entityInputs: query_adminWorkflowRuns_items_entityInputs!
   errorMessage: String
   executionId: String
-  id: String
-  ownerUserId: Int
+  id: String!
+  ownerUserId: Int!
   railsWorkflowRunId: Int
   rawInputsJson: String
   startedAt: String

@@ -79,6 +79,12 @@
                     }
                 }
             }
-        }
+        },
+        "required": [
+            "id",
+            "createdAt",
+            "ownerUserId",
+            "entityInputs"
+        ]
     }
 }

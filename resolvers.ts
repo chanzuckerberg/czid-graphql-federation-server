@@ -74,6 +74,9 @@ export const resolvers: Resolvers = {
         context,
         serviceType: "workflows",
         customQuery: query,
+        customVariables: {
+          where: args.input?.where,
+        }
       });
       const workflowRuns: NextGenWorkflowsTypes.WorkflowRun[] = response.data.workflowRuns;
       if (!workflowRuns) {

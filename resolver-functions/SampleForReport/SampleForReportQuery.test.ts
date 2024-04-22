@@ -1,7 +1,7 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getMeshInstance } from "./utils/MeshInstance";
-import * as httpUtils from "../utils/httpUtils";
-import { getExampleQuery } from "./utils/ExampleQueryFiles";
+import { getMeshInstance } from "../../tests/utils/MeshInstance";
+import * as httpUtils from "../../utils/httpUtils";
+import { getExampleQuery } from "../../tests/utils/ExampleQueryFiles";
 
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "getFromRails");
@@ -207,16 +207,16 @@ describe("SampleForReport query:", () => {
                 {
                   node: {
                     inputEntityId: "018ded47-34ac-7f3a-9dff-a43e5036393a",
-                    entityType: "taxon"
+                    entityType: "taxon",
                   },
                 },
                 {
                   node: {
                     inputEntityId: "def",
-                    entityType: "accession"
-                  }
-                }
-              ]
+                    entityType: "accession",
+                  },
+                },
+              ],
             },
             createdAt: "2024-02-29T23:09:10.470257+00:00",
             endedAt: null,
@@ -234,9 +234,9 @@ describe("SampleForReport query:", () => {
             id: "018ded47-34ac-7f3a-9dff-a43e5036393a",
             name: "Severe acute respiratory syndrome coronavirus 2",
             upstreamDatabaseIdentifier: "2697049",
-          }
+          },
         ],
-      }
+      },
     }));
     (httpUtils.get as jest.Mock).mockImplementationOnce(() => ({
       data: {
@@ -244,10 +244,11 @@ describe("SampleForReport query:", () => {
           {
             id: "def",
             accessionId: "MN908947.3",
-            accessionName: "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
-          }
+            accessionName:
+              "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
+          },
         ],
-      }
+      },
     }));
 
     const result = await execute(query, {
@@ -353,16 +354,16 @@ describe("SampleForReport query:", () => {
                 {
                   node: {
                     inputEntityId: "018ded47-34ac-7f3a-9dff-a43e5036393a",
-                    entityType: "taxon"
+                    entityType: "taxon",
                   },
                 },
                 {
                   node: {
                     inputEntityId: "def",
-                    entityType: "accession"
-                  }
-                }
-              ]
+                    entityType: "accession",
+                  },
+                },
+              ],
             },
             createdAt: "2024-02-29T23:09:10.470257+00:00",
             endedAt: null,
@@ -380,9 +381,9 @@ describe("SampleForReport query:", () => {
             id: "018ded47-34ac-7f3a-9dff-a43e5036393a",
             name: "Severe acute respiratory syndrome coronavirus 2",
             upstreamDatabaseIdentifier: "2697049",
-          }
+          },
         ],
-      }
+      },
     }));
     (httpUtils.get as jest.Mock).mockImplementationOnce(() => ({
       data: {
@@ -390,10 +391,11 @@ describe("SampleForReport query:", () => {
           {
             id: "def",
             accessionId: "MN908947.3",
-            accessionName: "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
-          }
+            accessionName:
+              "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
+          },
         ],
-      }
+      },
     }));
 
     const result = await execute(query, {

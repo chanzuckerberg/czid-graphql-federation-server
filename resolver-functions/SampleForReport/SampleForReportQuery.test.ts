@@ -1,7 +1,7 @@
 import { ExecuteMeshFn } from "@graphql-mesh/runtime";
-import { getMeshInstance } from "../../tests/utils/MeshInstance";
 import * as httpUtils from "../../utils/httpUtils";
 import { getExampleQuery } from "../../tests/utils/ExampleQueryFiles";
+import { getMeshInstance } from "../../tests/utils/MeshInstance";
 
 jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "getFromRails");
@@ -46,7 +46,10 @@ describe("SampleForReport query:", () => {
         wdl_version: "3.5.0",
         executed_at: "2024-02-29T15:09:11.000-08:00",
         deprecated: false,
-        input_error: null,
+        input_error: {
+          label: "Error label",
+          message: "Error message",
+        },
         inputs: {
           accession_id: "MN908947.3",
           accession_name:
@@ -124,7 +127,10 @@ describe("SampleForReport query:", () => {
             deprecated: false,
             executed_at: "2024-02-29T15:09:11.000-08:00",
             id: "7126",
-            input_error: null,
+            input_error: {
+              label: "Error label",
+              message: "Error message",
+            },
             inputs: {
               accession_id: "MN908947.3",
               accession_name:
@@ -196,7 +202,8 @@ describe("SampleForReport query:", () => {
             railsWorkflowRunId: 7126,
             status: "SUCCEEDED",
             ownerUserId: 345,
-            errorMessage: null,
+            errorLabel: "Error label",
+            errorMessage: "Error message",
             workflowVersion: {
               version: "3.5.0",
               id: "018df6ca-d3c0-7edd-a243-4127e06eb1d1",
@@ -282,7 +289,10 @@ describe("SampleForReport query:", () => {
             deprecated: null,
             executed_at: "2024-02-29T23:09:10.470257+00:00",
             id: "018df720-fbd6-77f9-9b4a-1ca468d5207f",
-            input_error: null,
+            input_error: {
+              label: "Error label",
+              message: "Error message",
+            },
             inputs: {
               accession_id: "MN908947.3",
               accession_name:

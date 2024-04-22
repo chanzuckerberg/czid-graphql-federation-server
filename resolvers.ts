@@ -29,6 +29,8 @@ import {
 } from "./utils/mngsWorkflowResultsUtils";
 import { formatUrlParams } from "./utils/paramsUtils";
 import {
+  convertAdminSamplesQuery,
+  convertAdminWorkflowRunsQuery,
   convertConsensusGenomesQuery,
   convertSequencingReadsQuery,
   convertValidateConsensusGenomeQuery,
@@ -47,15 +49,17 @@ const TEN_MILLION = 10_000_000;
 
 export const resolvers: Resolvers = {
   Query: {
+    // TODO: both of these resolvers should be removed once we can query NG directly from the FE.
     adminSamples: async (root, args, context: any, info) => {
-      let query: string = context.params.query;
-      // TODO: this is only needed to avoid namespace collision while we are using a custom resolver
-      query = formatFedQueryForNextGen(query.replace("adminSamples", "samples"));
+      const query = convertAdminSamplesQuery(context.params.query);
       const response = await fetchFromNextGen({
         args,
         context,
         serviceType: "entities",
         customQuery: query,
+        customVariables: {
+          where: args.input?.where,
+        }
       });
       const samples: NextGenEntitiesTypes.Sample[] = response.data.samples;
       if (!samples) {
@@ -64,9 +68,7 @@ export const resolvers: Resolvers = {
       return samples;
     },
     adminWorkflowRuns: async (root, args, context: any, info) => {
-      let query: string = context.params.query;
-      // TODO: this is only needed to avoid namespace collision while we are using a custom resolver
-      query = formatFedQueryForNextGen(query.replace("adminWorkflowRuns", "workflowRuns"));
+      const query = convertAdminWorkflowRunsQuery(context.params.query);
       const response = await fetchFromNextGen({
         args,
         context,

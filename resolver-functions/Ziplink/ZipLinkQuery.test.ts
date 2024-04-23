@@ -3,7 +3,7 @@ import { getExampleQuery } from "../../tests/utils/ExampleQueryFiles";
 import { getMeshInstance } from "../../tests/utils/MeshInstance";
 
 import * as httpUtils from "../../utils/httpUtils";
-jest.mock("../utils/httpUtils");
+jest.mock("../../utils/httpUtils");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();

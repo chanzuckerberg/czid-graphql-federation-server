@@ -11,7 +11,6 @@ import {
 import { SampleForReportResolver } from "./resolver-functions/SampleForReport";
 import { BulkDownloadsCGOverviewResolver } from "./resolver-functions/BulkDownloadsCGOverview";
 import { fedBulkDowloadsResolver } from "./resolver-functions/fedBulkDownloads/fedBulkDownloads";
-import type { NextGenEntitiesTypes } from './.mesh/sources/NextGenEntities/types';
 import {
   parseWorkflowsAggregateTotalCountsResponse,
   processWorkflowsAggregateResponse,
@@ -39,7 +38,8 @@ import {
 } from "./utils/queryFormatUtils";
 import { isRunFinalized, parseRefFasta } from "./utils/responseHelperUtils";
 import { CreateBulkDownloadResolver } from "./resolver-functions/CreateBulkDownload/CreateBulkDownload";
-import { NextGenWorkflowsTypes } from "./.mesh/sources/NextGenWorkflows/types";
+import { adminSamplesResolver } from "./resolver-functions/admin/adminSamples";
+import { adminWorkflowRunsResolver } from "./resolver-functions/admin/adminWorkflowRuns";
 
 /**
  * Arbitrary very large number used temporarily during Rails read phase to force Rails not to
@@ -49,41 +49,8 @@ const TEN_MILLION = 10_000_000;
 
 export const resolvers: Resolvers = {
   Query: {
-    // TODO: both of these resolvers should be removed once we can query NG directly from the FE.
-    adminSamples: async (root, args, context: any, info) => {
-      const query = convertAdminSamplesQuery(context.params.query);
-      const response = await fetchFromNextGen({
-        args,
-        context,
-        serviceType: "entities",
-        customQuery: query,
-        customVariables: {
-          where: args.input?.where,
-        }
-      });
-      const samples: NextGenEntitiesTypes.Sample[] = response.data.samples;
-      if (!samples) {
-        throw new Error(`Error fetching samples from NextGen: ${JSON.stringify(response)}`);
-      }
-      return samples;
-    },
-    adminWorkflowRuns: async (root, args, context: any, info) => {
-      const query = convertAdminWorkflowRunsQuery(context.params.query);
-      const response = await fetchFromNextGen({
-        args,
-        context,
-        serviceType: "workflows",
-        customQuery: query,
-        customVariables: {
-          where: args.input?.where,
-        }
-      });
-      const workflowRuns: NextGenWorkflowsTypes.WorkflowRun[] = response.data.workflowRuns;
-      if (!workflowRuns) {
-        throw new Error(`Error fetching workflowRuns from NextGen: ${JSON.stringify(response)}`);
-      }
-      return workflowRuns;
-    },
+    adminSamples: adminSamplesResolver,
+    adminWorkflowRuns: adminWorkflowRunsResolver,
     AmrWorkflowResults: async (root, args, context, info) => {
       const { quality_metrics, report_table_data } = await get({
         url: `/workflow_runs/${args.workflowRunId}/results`,

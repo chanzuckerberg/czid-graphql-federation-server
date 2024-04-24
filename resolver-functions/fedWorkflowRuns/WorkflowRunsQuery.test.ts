@@ -4,6 +4,8 @@ import { getMeshInstance } from "../../tests/utils/MeshInstance";
 import { assertEqualsNoWhitespace } from "../../tests/utils/StringUtils";
 
 import * as httpUtils from "../../utils/httpUtils";
+import * as enrichToken from "../../utils/enrichToken";
+
 import {
   convertValidateConsensusGenomeQuery,
   convertWorkflowRunsQuery,
@@ -12,6 +14,7 @@ jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "postWithCSRF");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
 jest.spyOn(httpUtils, "fetchFromNextGen");
+jest.spyOn(enrichToken, "getEnrichedToken");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
@@ -26,6 +29,9 @@ describe("workflowRuns query:", () => {
   beforeEach(async () => {
     const mesh$ = await getMeshInstance();
     ({ execute } = mesh$);
+    (enrichToken.getEnrichedToken as jest.Mock).mockImplementation(
+      () => "23423413123",
+    );
   });
 
   it("Returns input sequencing read", async () => {

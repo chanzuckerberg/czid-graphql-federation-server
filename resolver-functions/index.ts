@@ -16,6 +16,8 @@ import { UpdateSampleNameResolver } from "./UpdateSampleName/UpdateSampleName";
 import { SampleForReportResolver } from "./SampleForReport/SampleForReport";
 import { BulkDownloadsCGOverviewResolver } from "./BulkDownloadsCGOverview/BulkDownloadsCGOverview";
 import { fedBulkDowloadsResolver } from "./fedBulkDownloads/fedBulkDownloads";
+import { adminSamplesResolver } from "./admin/adminSamples";
+import { adminWorkflowRunsResolver } from "./admin/adminWorkflowRuns";
 
 export {
   CreateBulkDownloadResolver,
@@ -36,4 +38,6 @@ export {
   SampleForReportResolver,
   BulkDownloadsCGOverviewResolver,
   fedBulkDowloadsResolver,
+  adminSamplesResolver,
+  adminWorkflowRunsResolver,
 };

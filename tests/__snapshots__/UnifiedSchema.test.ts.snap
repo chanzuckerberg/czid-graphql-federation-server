@@ -180,6 +180,28 @@ type AlignmentConfig {
   updatedAt: ISO8601DateTime!
 }
 
+type AmrDeprecatedResults {
+  allele: String
+  annotation_gene: String
+  coverage: Float
+  created_at: String
+  depth: Float
+  dpm: Float
+  drug_family: String
+  genbank_accession: String
+  gene: String
+  id: Int
+  pipeline_run_id: Int
+  rpm: Float
+  total_reads: Int
+  updated_at: String
+}
+
+type AmrWorkflowResults {
+  amr_hit: [query_AmrWorkflowResults_amr_hit_items]
+  metric_amr: query_AmrWorkflowResults_metric_amr
+}
+
 input Annotation {
   name: String!
 }
@@ -187,6 +209,11 @@ input Annotation {
 type AppConfig {
   key: String!
   value: String!
+}
+
+type Background {
+  other_backgrounds: [query_Background_other_backgrounds_items]
+  owned_backgrounds: [JSON]
 }
 
 """
@@ -1740,6 +1767,9 @@ type Project {
 }
 
 type Query {
+  AmrDeprecatedResults(sampleId: String): AmrDeprecatedResults @httpOperation(subgraph: "CZIDREST", path: "/samples/{args.sampleId}/amr.json", operationSpecificHeaders: "{\\"Cookie\\":\\"{context.headers['cookie']}\\"}", httpMethod: GET)
+  AmrWorkflowResults(workflowRunId: String): AmrWorkflowResults @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
+  Background(snapshotLinkId: String): Background @httpOperation(subgraph: "CZIDREST", path: "/pub/{args.snapshotLinkId}/backgrounds.json", httpMethod: GET)
   BulkDownloadCGOverview(input: queryInput_BulkDownloadCGOverview_input_Input): ConsensusGenomeOverviewRows @httpOperation(subgraph: "CZIDREST", path: "/bulk_downloads", httpMethod: POST)
   ConsensusGenomeWorkflowResults(workflowRunId: String): ConsensusGenomeWorkflowResults @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs/{args.workflowRunId}/results", httpMethod: GET)
   GraphQLFederationVersion: GraphQLFederationVersion
@@ -1750,6 +1780,8 @@ type Query {
   ZipLink(workflowRunId: String): ZipLink @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs/{args.workflowRunId}/zip_link.json", httpMethod: GET)
   accessions(limitOffset: LimitOffsetClause = null, orderBy: [AccessionOrderByClause!] = [], where: AccessionWhereClause = null): [Accession!]!
   accessionsAggregate(where: AccessionWhereClause = null): AccessionAggregate!
+  adminSamples(input: queryInput_adminSamples_input_Input): [query_adminSamples_items] @httpOperation(subgraph: "CZIDREST", path: "/samples/index_v2.json", httpMethod: GET)
+  adminWorkflowRuns(input: queryInput_adminWorkflowRuns_input_Input): [query_adminWorkflowRuns_items] @httpOperation(subgraph: "CZIDREST", path: "/workflow_runs.json", httpMethod: GET)
   appConfig(id: ID!): AppConfig
   bulkDownloads(limitOffset: LimitOffsetClause = null, orderBy: [BulkDownloadOrderByClause!] = [], where: BulkDownloadWhereClause = null): [BulkDownload!]!
   bulkDownloadsAggregate(where: BulkDownloadWhereClause = null): BulkDownloadAggregate!
@@ -3878,6 +3910,34 @@ input queryInput_ValidateUserCanDeleteObjects_input_Input @example(subgraph: "CZ
   workflow: String
 }
 
+input queryInput_adminSamples_input_Input {
+  where: queryInput_adminSamples_input_where_Input
+}
+
+input queryInput_adminSamples_input_where_Input {
+  railsSampleId: queryInput_adminSamples_input_where_railsSampleId_Input
+}
+
+input queryInput_adminSamples_input_where_railsSampleId_Input {
+  _eq: Float
+}
+
+input queryInput_adminWorkflowRuns_input_Input {
+  where: queryInput_adminWorkflowRuns_input_where_Input
+}
+
+input queryInput_adminWorkflowRuns_input_where_Input {
+  entityInputs: queryInput_adminWorkflowRuns_input_where_entityInputs_Input
+}
+
+input queryInput_adminWorkflowRuns_input_where_entityInputs_Input {
+  inputEntityId: queryInput_adminWorkflowRuns_input_where_entityInputs_inputEntityId_Input
+}
+
+input queryInput_adminWorkflowRuns_input_where_entityInputs_inputEntityId_Input {
+  _eq: String
+}
+
 input queryInput_fedBulkDownloads_input_Input @example(subgraph: "CZIDREST", value: "{\\"searchBy\\":\\"string to search\\",\\"limit\\":10}") {
   limit: Int
   searchBy: String
@@ -4316,6 +4376,52 @@ input queryInput_fedWorkflowRuns_input_where_workflowVersion_workflow_name_Input
   _in: [String]
 }
 
+type query_AmrWorkflowResults_amr_hit_items {
+  aro_accession: String
+  contig_coverage_breadth: String
+  contig_percent_id: String
+  contig_species: String
+  contigs: String
+  cutoff: String
+  dpm: Float
+  drug_class: String
+  gene: String
+  gene_family: String
+  gene_id: String
+  high_level_drug_class: String
+  mechanism: String
+  model: String
+  read_coverage_breadth: String
+  read_coverage_depth: String
+  read_species: String
+  reads: String
+  rpm: Float
+}
+
+type query_AmrWorkflowResults_metric_amr {
+  adjusted_remaining_reads: Int
+  compression_ratio: Float
+  fraction_subsampled: Float
+  insert_size_mean: Int
+  insert_size_standard_deviation: Float
+  percent_remaining: Float
+  qc_percent: Float
+  total_ercc_reads: Int
+  total_reads: Int
+}
+
+type query_Background_other_backgrounds_items {
+  created_at: String
+  description: String
+  id: Int
+  mass_normalized: Boolean
+  name: String
+  public_access: Int
+  ready: Int
+  updated_at: String
+  user_id: Int
+}
+
 type query_ConsensusGenomeWorkflowResults_metric_consensus_genome {
   coverage_viz: query_ConsensusGenomeWorkflowResults_metric_consensus_genome_coverage_viz
   ercc_mapped_reads: Int
@@ -4577,6 +4683,144 @@ input query_SampleMetadata_metadata_items_location_validated_value_oneOf_1_Input
   subdivision_name: String
   title: String
   updated_at: String
+}
+
+type query_adminSamples_items {
+  collectionId: Int
+  createdAt: String!
+  id: String!
+  ownerUserId: Int!
+  railsSampleId: Int
+  sequencingReads: query_adminSamples_items_sequencingReads!
+}
+
+type query_adminSamples_items_sequencingReads {
+  edges: [query_adminSamples_items_sequencingReads_edges_items]!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items {
+  node: query_adminSamples_items_sequencingReads_edges_items_node!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node {
+  clearlabsExport: Boolean!
+  consensusGenomes: query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes!
+  createdAt: String!
+  id: String!
+  medakaModel: String
+  primerFile: query_adminSamples_items_sequencingReads_edges_items_node_primerFile
+  protocol: String
+  r1File: query_adminSamples_items_sequencingReads_edges_items_node_r1File
+  r2File: query_adminSamples_items_sequencingReads_edges_items_node_r2File
+  taxon: query_adminSamples_items_sequencingReads_edges_items_node_taxon
+  technology: String!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes {
+  edges: [query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items]!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items {
+  node: query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node {
+  accession: query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_accession
+  createdAt: String!
+  id: String!
+  producingRunId: String
+  referenceGenome: query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome
+  taxon: query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_taxon
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_accession {
+  accessionId: String!
+  accessionName: String!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome {
+  file: query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome_file
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_referenceGenome_file {
+  namespace: String!
+  path: String!
+  protocol: String!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_consensusGenomes_edges_items_node_taxon {
+  id: String!
+  name: String!
+  upstreamDatabaseIdentifier: String!
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_primerFile {
+  file: query_adminSamples_items_sequencingReads_edges_items_node_primerFile_file
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_primerFile_file {
+  id: String
+  namespace: String
+  path: String
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_r1File {
+  id: String
+  namespace: String
+  path: String
+  protocol: String
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_r2File {
+  id: String
+  namespace: String
+  path: String
+  protocol: String
+}
+
+type query_adminSamples_items_sequencingReads_edges_items_node_taxon {
+  id: String
+  name: String
+  upstreamDatabaseIdentifier: String
+}
+
+type query_adminWorkflowRuns_items {
+  collectionId: Int
+  createdAt: String!
+  endedAt: String
+  entityInputs: query_adminWorkflowRuns_items_entityInputs!
+  errorMessage: String
+  executionId: String
+  id: String!
+  ownerUserId: Int!
+  railsWorkflowRunId: Int
+  rawInputsJson: String
+  startedAt: String
+  status: String
+  workflowVersion: query_adminWorkflowRuns_items_workflowVersion
+}
+
+type query_adminWorkflowRuns_items_entityInputs {
+  edges: [query_adminWorkflowRuns_items_entityInputs_edges_items]
+}
+
+type query_adminWorkflowRuns_items_entityInputs_edges_items {
+  node: query_adminWorkflowRuns_items_entityInputs_edges_items_node
+}
+
+type query_adminWorkflowRuns_items_entityInputs_edges_items_node {
+  entityType: String
+  fieldName: String
+  inputEntityId: String
+}
+
+type query_adminWorkflowRuns_items_workflowVersion {
+  version: String
+  workflow: query_adminWorkflowRuns_items_workflowVersion_workflow
+}
+
+type query_adminWorkflowRuns_items_workflowVersion_workflow {
+  name: String
 }
 
 type query_fedBulkDownloads_items {

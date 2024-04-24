@@ -1,5 +1,6 @@
 import { query_fedSequencingReads_items } from "../../.mesh";
 import { TEN_MILLION } from "../../utils/constants";
+import { getEnrichedToken } from "../../utils/enrichToken";
 import {
   fetchFromNextGen,
   get,
@@ -20,6 +21,7 @@ export const fedSequencingReadsResolver = async (root, args, context: any) => {
   // NEXT GEN:
   const nextGenEnabled = await shouldReadFromNextGen(context);
   if (nextGenEnabled) {
+    const enrichedToken = await getEnrichedToken(context);
     // NEXT GEN IDS:
     if (queryingIdsOnly) {
       const nextGenPromise = fetchFromNextGen({
@@ -48,6 +50,7 @@ export const fedSequencingReadsResolver = async (root, args, context: any) => {
         serviceType: "entities",
         args,
         context,
+        securityToken: enrichedToken,
       });
 
       const isSortingInRails =
@@ -120,6 +123,7 @@ export const fedSequencingReadsResolver = async (root, args, context: any) => {
       serviceType: "entities",
       args,
       context,
+      securityToken: enrichedToken,
     });
     const nextGenSequencingReads = nextGenResponse?.data?.sequencingReads;
     if (nextGenSequencingReads == null) {

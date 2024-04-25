@@ -5,7 +5,6 @@ import {
   getMeshInstance,
 } from "../../tests/utils/MeshInstance";
 import * as httpUtils from "../../utils/httpUtils";
-import * as enrichToken from "../../utils/enrichToken";
 import { getExampleQuery } from "../../tests/utils/ExampleQueryFiles";
 import { assertEqualsNoWhitespace } from "../../tests/utils/StringUtils";
 import { convertSequencingReadsQuery } from "../../utils/queryFormatUtils";
@@ -14,7 +13,6 @@ jest.spyOn(httpUtils, "get");
 jest.spyOn(httpUtils, "shouldReadFromNextGen");
 jest.spyOn(httpUtils, "fetchFromNextGen");
 jest.spyOn(httpUtils, "getFromRails");
-jest.spyOn(enrichToken, "getEnrichedToken");
 
 beforeEach(() => {
   (httpUtils.get as jest.Mock).mockClear();
@@ -31,9 +29,6 @@ describe("sequencingReads query:", () => {
   beforeEach(async () => {
     (httpUtils.shouldReadFromNextGen as jest.Mock).mockImplementation(() =>
       Promise.resolve(false),
-    );
-    (enrichToken.getEnrichedToken as jest.Mock).mockImplementation(
-      () => "23423413123",
     );
     execute = await getMeshExecute();
   });

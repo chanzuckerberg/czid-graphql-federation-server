@@ -1,6 +1,5 @@
 import { query_fedWorkflowRuns_items } from "../../.mesh";
 import { TEN_MILLION } from "../../utils/constants";
-import { getEnrichedToken } from "../../utils/enrichToken";
 import {
   fetchFromNextGen,
   get,
@@ -19,10 +18,6 @@ export const fedWorkflowRunsResolver = async (_, args, context: any) => {
     throw new Error("fedWorkflowRuns input is nullish");
   }
   const nextGenEnabled = await shouldReadFromNextGen(context);
-  let enrichedToken;
-  if (nextGenEnabled) {
-    enrichedToken = await getEnrichedToken(context);
-  }
   // CG BULK DOWNLOAD MODAL:
   // If we provide a list of workflowRunIds, we assume that this is for getting valid consensus genome workflow runs.
   // This endpoint only provides id, ownerUserId, and status.
@@ -38,7 +33,6 @@ export const fedWorkflowRunsResolver = async (_, args, context: any) => {
         args,
         context,
         serviceType: "workflows",
-        securityToken: enrichedToken,
       });
       if (response?.data?.workflowRuns == null) {
         throw new Error(
@@ -79,7 +73,6 @@ export const fedWorkflowRunsResolver = async (_, args, context: any) => {
       serviceType: "workflows",
       args,
       context,
-      securityToken: enrichedToken,
     });
     if (response?.data?.workflowRuns == null) {
       throw new Error(

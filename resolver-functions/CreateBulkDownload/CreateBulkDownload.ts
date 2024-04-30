@@ -49,6 +49,11 @@ export const CreateBulkDownloadResolver = async (root, args, context, info) => {
       args,
       context,
     });
-    return res;
+    if (res.error != null) {
+      throw new Error(res.error);
+    }
+    return {
+      id: res.id,
+    };
   }
 };

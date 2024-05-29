@@ -213,7 +213,7 @@ export const fedSequencingReadsResolver = async (root, args, context: any) => {
           : input.limit ?? input.limitOffset?.limit, // TODO: Just use limitOffset.
         offset: queryingIdsOnly ? 0 : input.offset ?? input.limitOffset?.offset,
         listAllIds: false,
-        workflowRunIds: input.consensusGenomesInput?.where?.producingRunId?._in,
+        workflowRunIds: input?.todoRemove?.workflowRunIds,
         // Only used for API testing:
         sampleIds: input?.todoRemove?.sampleIds,
       }),

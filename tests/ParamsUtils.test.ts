@@ -7,7 +7,7 @@ describe("ParamsUtils:", () => {
         formatUrlParams({
           param1: 123,
           param2: "456",
-        })
+        }),
       ).toBe("?&param1=123&param2=456");
     });
 
@@ -18,17 +18,27 @@ describe("ParamsUtils:", () => {
           param2: undefined,
           param3: null,
           param4: 456,
-        })
+        }),
       ).toBe("?&param1=123&param4=456");
     });
 
-    it("Handles arrays", () => {
+    it("Handles arrays of strings", () => {
       expect(
         formatUrlParams({
           param1: [123, 456],
           param2: [],
-        })
+        }),
       ).toBe("?&param1[]=123&param1[]=456");
+    });
+
+    it("Handles arrays of objects", () => {
+      expect(
+        formatUrlParams({
+          param1: [{ name: "Not a hit" }, { name: "Inconclusive" }],
+        }),
+      ).toBe(
+        '?&param1[]={"name":"Not a hit"}&param1[]={"name":"Inconclusive"}',
+      );
     });
 
     it("Handles Spaces in strings", () => {
@@ -36,7 +46,7 @@ describe("ParamsUtils:", () => {
         formatUrlParams({
           param1: 123,
           param2: "456 789",
-        })
+        }),
       ).toBe("?&param1=123&param2=456+789");
     });
   });

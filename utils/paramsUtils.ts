@@ -14,10 +14,13 @@ export const formatUrlParams = (params: { [s: string]: unknown }) => {
     .filter(([_, value]) => value != null)
     .flatMap(([key, value]) =>
       Array.isArray(value)
-        ? value.map(arrayElement => `${key}[]=${JSON.stringify(arrayElement)}`)
+        ? value.map(
+            arrayElement =>
+              `${key}[]=${typeof arrayElement === "object" ? JSON.stringify(arrayElement) : arrayElement}`,
+          )
         : typeof value === "string"
           ? [`${key}=${replaceSpaces(value)}`]
-          : [`${key}=${JSON.stringify(value)}`],
+          : [`${key}=${value}`],
     );
   if (paramList.length === 0) {
     return "";

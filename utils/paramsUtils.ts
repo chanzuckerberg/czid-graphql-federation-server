@@ -20,7 +20,9 @@ export const formatUrlParams = (params: { [s: string]: unknown }) => {
           )
         : typeof value === "string"
           ? [`${key}=${replaceSpaces(value)}`]
-          : [`${key}=${value}`],
+          : typeof value === "object"
+            ? [`${key}=${JSON.stringify(value)}`]
+            : [`${key}=${value}`],
     );
   if (paramList.length === 0) {
     return "";

@@ -2,13 +2,29 @@ import { formatUrlParams } from "../utils/paramsUtils";
 
 describe("ParamsUtils:", () => {
   describe("formatUrlParams:", () => {
-    it("Returns empty string", () => {
+    it("Handles basic types", () => {
       expect(
         formatUrlParams({
           param1: 123,
           param2: "456",
         }),
       ).toBe("?&param1=123&param2=456");
+    });
+
+    it("Handles spaces in strings", () => {
+      expect(
+        formatUrlParams({
+          param2: "456 789",
+        }),
+      ).toBe("?&param2=456+789");
+    });
+
+    it("Handles objects", () => {
+      expect(
+        formatUrlParams({
+          param1: { name: "Not a hit" },
+        }),
+      ).toBe('?&param1={"name":"Not a hit"}');
     });
 
     it("Filters out nullishes", () => {
@@ -22,7 +38,7 @@ describe("ParamsUtils:", () => {
       ).toBe("?&param1=123&param4=456");
     });
 
-    it("Handles arrays of strings", () => {
+    it("Handles arrays", () => {
       expect(
         formatUrlParams({
           param1: [123, 456],
@@ -39,15 +55,6 @@ describe("ParamsUtils:", () => {
       ).toBe(
         '?&param1[]={"name":"Not a hit"}&param1[]={"name":"Inconclusive"}',
       );
-    });
-
-    it("Handles Spaces in strings", () => {
-      expect(
-        formatUrlParams({
-          param1: 123,
-          param2: "456 789",
-        }),
-      ).toBe("?&param1=123&param2=456+789");
     });
   });
 });

@@ -7,17 +7,17 @@
 
 export const formatUrlParams = (params: { [s: string]: unknown }) => {
   const replaceSpaces = (value: string) => {
-    const safeString = value.split(' ').join('+');
+    const safeString = value.split(" ").join("+");
     return safeString;
-  }
+  };
   const paramList = Object.entries(params)
     .filter(([_, value]) => value != null)
     .flatMap(([key, value]) =>
       Array.isArray(value)
-        ? value.map((arrayElement) => `${key}[]=${arrayElement}`)
+        ? value.map(arrayElement => `${key}[]=${JSON.stringify(arrayElement)}`)
         : typeof value === "string"
           ? [`${key}=${replaceSpaces(value)}`]
-          : [`${key}=${value}`]
+          : [`${key}=${JSON.stringify(value)}`],
     );
   if (paramList.length === 0) {
     return "";

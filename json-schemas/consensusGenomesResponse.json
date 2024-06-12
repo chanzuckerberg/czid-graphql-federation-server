@@ -17,6 +17,9 @@
                     },
                     "commonName": {
                         "type": "string"
+                    },
+                    "level": {
+                        "type": "string"
                     }
                 },
                 "required": ["name"]

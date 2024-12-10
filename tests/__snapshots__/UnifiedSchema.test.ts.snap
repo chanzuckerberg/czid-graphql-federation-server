@@ -4523,7 +4523,7 @@ type query_SampleForReport_workflow_runs_items_inputs {
   taxon_id: String
   taxon_name: String
   technology: String
-  wilcard_version: String
+  wildcard_version: String
 }
 
 type query_SampleForReport_workflow_runs_items_parsed_cached_results {

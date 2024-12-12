@@ -1,4 +1,4 @@
-# Pull Request
+# CZ ID graphQL federation server pull request
 
 ## JIRA Ticket
 
@@ -19,3 +19,8 @@
 
 * *Server-side code should have automated tests*
 * *Client-side code and scripts should have at least a manual test plan*
+
+## Dependencies
+
+*Link any pull request(s) (including ones in other repos) that this PR is dependent on*
+*If there are dependencies, DO NOT MERGE the PR until the dependencies are verified to be working and will be available in production before this PR is deployed.*

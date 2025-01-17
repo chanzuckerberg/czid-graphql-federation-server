@@ -41,6 +41,7 @@ module "stack" {
       memory_requests           = "8000Mi"
       cpu                       = "3000m"
       cpu_requests              = "3000m"
+      initial_delay_seconds     = "120"
       liveness_timeout_seconds  = "180"
       readiness_timeout_seconds = "180"
       health_check_path         = "/health"

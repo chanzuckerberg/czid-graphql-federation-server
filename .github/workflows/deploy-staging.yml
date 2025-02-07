@@ -25,7 +25,7 @@ jobs:
   deploy-to-staging-env:
     needs: get-release-tag
     if: needs.get-release-tag.outputs.release_tag != ''
-    runs-on: ARM64-dev
+    runs-on: ARM64
     environment: staging
     permissions:
       id-token: write

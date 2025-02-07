@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [2.35.3](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.35.2...v2.35.3) (2025-02-07)
+
+
+### Bug Fixes
+
+* Update runs-on labels in GitHub Actions workflows ([#364](https://github.com/chanzuckerberg/czid-graphql-federation-server/issues/364)) ([390847c](https://github.com/chanzuckerberg/czid-graphql-federation-server/commit/390847ce4c2fb961e741b7cd0c5946953da0447f))
+
 ## [2.35.2](https://github.com/chanzuckerberg/czid-graphql-federation-server/compare/v2.35.1...v2.35.2) (2025-01-17)
 
 
